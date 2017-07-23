@@ -23,7 +23,7 @@ body {
     width: auto;
     fill: #fff;
 }
-#sliders {
+.container-body {
     padding: 2em;
     border-bottom: solid 2px #363636;
 }
@@ -95,6 +95,20 @@ body {
 .row-fluid .col-sm-1{
     display: inline-block;
     max-width: 35% !important;
+}
+.nav-pills .nav-link {
+    border: solid 1px #363636 !important;
+    margin-right: 0.5em;
+    padding: 0.25em 0.5em;
+}
+.nav-pills .nav-item.show .nav-link, .nav-pills .nav-link.active {
+    background-color: #363636;
+}
+.nav-pills .nav-item a {
+    color: #fff;
+}
+.section-left {
+    border-right: solid 2px #363636;
 }
 
 @media screen and (max-width: 509px) {
