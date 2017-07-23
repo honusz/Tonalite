@@ -25,6 +25,7 @@ body {
 }
 #sliders {
     padding: 2em;
+    border-bottom: solid 2px #363636;
 }
 .slider-track, .slider-selection {
     width: 3.5em !important;
@@ -63,7 +64,7 @@ body {
 }
 
 .slider-button:hover {
-    background-color:red !important;
+    background-color: #363636 !important;
     cursor: pointer;
 }
 
