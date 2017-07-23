@@ -95,3 +95,27 @@ body {
 .row-fluid .col-sm-1{
     display: inline-block;
 }
+
+@media screen and (min-width: 1100px) {
+    .row-fluid .col-sm-1{
+        max-width: 7% !important;
+    }
+}
+
+@media screen and (min-width: 1100px) {
+    .row-fluid .col-sm-1{
+        max-width: 7% !important;
+    }
+}
+
+@media screen and (min-width: 510px) {
+    .row-fluid .col-sm-1{
+        max-width: 17% !important;
+    }
+}
+
+@media screen and (max-width: 509px) {
+    .row-fluid .col-sm-1{
+        max-width: 27% !important;
+    }
+}
