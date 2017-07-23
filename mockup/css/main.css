@@ -45,7 +45,7 @@ body {
 .slider-value {
     font-size: 0.6em;
     margin-top: 2em;
-    border: solid 1px #fff;
+    border: solid 1px #363636;
     border-radius: 7px;
     padding: 0.5em;
     width: 70px;
@@ -55,9 +55,19 @@ body {
 .slider-button {
     font-size: 0.6em;
     margin-bottom: 1em;
-    border: solid 1px #fff;
+    border: solid 1px #363636;
     border-radius: 7px;
     padding: 0.5em;
     width: 66px;
     text-align: center;
+}
+
+.slider-button:hover {
+    background-color:red !important;
+    cursor: pointer;
+}
+
+.slider-button a {
+    text-decoration: none;
+    color: #fff;
 }
