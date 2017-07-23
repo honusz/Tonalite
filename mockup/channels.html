@@ -39,6 +39,9 @@
                         <li class="nav-item">
                             <a class="nav-link active" data-toggle="tab" href="#tombstone" role="tab">Tombstone</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#table" role="tab">Table</a>
+                        </li>
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="tombstone" role="tabpanel">
@@ -145,30 +148,30 @@
                 </div>
                 <div class="col-sm-4">
                     <div class="keypad">
-                        <button class="btn btn-ui">1</button>
-                        <button class="btn btn-ui">2</button>
-                        <button class="btn btn-ui">3</button>
-                        <button class="btn btn-ui">Channel</button>
+                        <button class="btn btn-ui keypad-btn" keypad-val="1">1</button>
+                        <button class="btn btn-ui keypad-btn" keypad-val="2">2</button>
+                        <button class="btn btn-ui keypad-btn" keypad-val="3">3</button>
+                        <button class="btn btn-ui keypad-btn" keypad-val="chan ">Channel</button>
                         <br>
-                        <button class="btn btn-ui">4</button>
-                        <button class="btn btn-ui">5</button>
-                        <button class="btn btn-ui">6</button>
-                        <button class="btn btn-ui">Cue</button>
+                        <button class="btn btn-ui keypad-btn" keypad-val="4">4</button>
+                        <button class="btn btn-ui keypad-btn" keypad-val="5">5</button>
+                        <button class="btn btn-ui keypad-btn" keypad-val="6">6</button>
+                        <button class="btn btn-ui keypad-btn" keypad-val="cue">Cue</button>
                         <br>
-                        <button class="btn btn-ui">7</button>
-                        <button class="btn btn-ui">8</button>
-                        <button class="btn btn-ui">9</button>
-                        <button class="btn btn-ui">Label</button>
+                        <button class="btn btn-ui keypad-btn" keypad-val="7">7</button>
+                        <button class="btn btn-ui keypad-btn" keypad-val="8">8</button>
+                        <button class="btn btn-ui keypad-btn" keypad-val="9">9</button>
+                        <button class="btn btn-ui keypad-btn" keypad-val=" label ">Label</button>
                         <br>
-                        <button class="btn btn-ui"><span style="font-size: 0.65em;">At</span></button>
-                        <button class="btn btn-ui">0</button>
-                        <button class="btn btn-ui"><span style="font-size: 0.65em;">Fl</span></button>
-                        <button class="btn btn-ui">Time</button>
+                        <button class="btn btn-ui keypad-btn" keypad-val=" at "><span style="font-size: 0.65em;">At</span></button>
+                        <button class="btn btn-ui keypad-btn" keypad-val="0">0</button>
+                        <button class="btn btn-ui keypad-btn" keypad-val=" full "><span style="font-size: 0.65em;">Fl</span></button>
+                        <button class="btn btn-ui keypad-btn" keypad-val=" time ">Time</button>
                     </div>
                     <br>
                     <form class="form-inline">
                         <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                            <input type="text" class="form-control input-ui" id="inlineFormInputGroup" placeholder="Command">
+                            <input type="text" class="form-control input-ui" id="command-text" placeholder="Command">
                         </div>
                         <button type="submit" class="btn btn-ui">Please</button>
                     </form>
@@ -180,6 +183,11 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.1/bootstrap-slider.min.js"></script>
+        <script>
+            $(".keypad-btn").click(function(){
+                $('#command-text').val($('#command-text').val() + $(this).attr("keypad-val"));
+            });
+        </script>
         <script>
             $('img.svg').each(function(){
             var $img = $(this);
