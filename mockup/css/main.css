@@ -110,6 +110,24 @@ body {
 .section-left {
     border-right: solid 2px #363636;
 }
+.tab-pane .row .col-1 {
+    margin-top: 1em;
+}
+.tombstone {
+    border: solid 2px #363636;
+    border-radius: 25%;
+    text-align: center;
+    min-width: 2.25em;
+}
+
+.ts-title {
+    text-decoration: underline;
+}
+
+.ts-value {
+    font-size: 1.5em;
+    color: #e74c3c;
+}
 
 @media screen and (max-width: 509px) {
     .row-fluid .col-sm-1{
