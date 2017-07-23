@@ -129,6 +129,23 @@ body {
     color: #e74c3c;
 }
 
+.btn-ui {
+    border: solid 1px #363636;
+    background-color: #050505;
+    color: #fff;
+}
+
+.btn-ui:hover {
+    background-color: #363636;
+    cursor: pointer;
+}
+
+.input-ui {
+    border: solid 1px #363636;
+    background-color: #050505;
+    color: #fff;
+}
+
 @media screen and (max-width: 509px) {
     .row-fluid .col-sm-1{
         max-width: 35% !important;
