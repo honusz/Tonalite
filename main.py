@@ -21,5 +21,9 @@ thread = None
 def index():
     return render_template('channels.html', async_mode=socketio.async_mode)
 
+@socketio.on('command-line', namespace='/test')
+def command_line(message):
+    print(message['command'])
+
 if __name__ == '__main__':
     socketio.run(app, host=server_host, port=server_port)

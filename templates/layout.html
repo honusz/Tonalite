@@ -14,6 +14,10 @@
             $(document).ready(function () {
                 namespace = '/test';
                 var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
+                $('form#command-line').submit(function (event) {
+                    socket.emit('command-line', { command: $('#command-text').val() });
+                    return false;
+                });
             });
         </script>
     </head>
