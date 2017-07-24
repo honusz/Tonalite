@@ -1,61 +1,61 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="container-fluid container-body" id="channels">
-            <div class="row">
-                <div class="col-md-8 col-sm-12 section-left">
-                    <ul class="nav nav-pills" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" data-toggle="tab" href="#tombstone" role="tab">Tombstone</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#table" role="tab">Table</a>
-                        </li>
-                    </ul>
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="tombstone" role="tabpanel" style="max-height: 21.5em; overflow:scroll;">
-                            <div class="row">
-                                {% for i in range(512) %}
-                                <div class="col-1">
-                                    <div class="tombstone">
-                                        <span class="ts-title">{{ i + 1 }}</span><br>
-                                        <span class="ts-value" id="chan{{i+1}}">0</span>
-                                    </div>
+    <div class="container-fluid container-body" id="channels">
+        <div class="row">
+            <div class="col-md-8 col-sm-12 section-left">
+                <ul class="nav nav-pills" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#tombstone" role="tab">Tombstone</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#table" role="tab">Table</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tombstone" role="tabpanel" style="max-height: 21.5em; overflow:scroll;">
+                        <div class="row">
+                            {% for i in range(512) %}
+                            <div class="col-1">
+                                <div class="tombstone">
+                                    <span class="ts-title">{{ i + 1 }}</span><br>
+                                    <span class="ts-value" id="chan{{i+1}}">0</span>
                                 </div>
-                                {% endfor %}
                             </div>
+                            {% endfor %}
                         </div>
                     </div>
-                </div>
-                <div class="col-md-4 col-sm-12">
-                    <div class="keypad">
-                        <button class="btn btn-ui keypad-btn" keypad-val="1">1</button>
-                        <button class="btn btn-ui keypad-btn" keypad-val="2">2</button>
-                        <button class="btn btn-ui keypad-btn" keypad-val="3">3</button>
-                        <button class="btn btn-ui keypad-btn" keypad-val="chan ">Channel</button>
-                        <br>
-                        <button class="btn btn-ui keypad-btn" keypad-val="4">4</button>
-                        <button class="btn btn-ui keypad-btn" keypad-val="5">5</button>
-                        <button class="btn btn-ui keypad-btn" keypad-val="6">6</button>
-                        <button class="btn btn-ui keypad-btn" keypad-val="cue ">Cue</button>
-                        <br>
-                        <button class="btn btn-ui keypad-btn" keypad-val="7">7</button>
-                        <button class="btn btn-ui keypad-btn" keypad-val="8">8</button>
-                        <button class="btn btn-ui keypad-btn" keypad-val="9">9</button>
-                        <button class="btn btn-ui keypad-btn" keypad-val=" label ">Label</button>
-                        <br>
-                        <button class="btn btn-ui keypad-btn" keypad-val=" at "><span style="font-size: 0.65em;">At</span></button>
-                        <button class="btn btn-ui keypad-btn" keypad-val="0">0</button>
-                        <button class="btn btn-ui keypad-btn" keypad-val=" 255 "><span style="font-size: 0.65em;">Fl</span></button>
-                        <button class="btn btn-ui keypad-btn" keypad-val=" time ">Time</button>
-                    </div>
-                    <br>
-                    <form class="form-inline" id="command-line">
-                        <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                            <input type="text" class="form-control input-ui" style="font-size: 1.5em;" id="command-text" placeholder="Command">
-                        </div>
-                        <button type="submit" class="btn btn-ui" style="font-size: 1.5em;">Go</button>
-                    </form>
                 </div>
             </div>
+            <div class="col-md-4 col-sm-12">
+                <div class="keypad">
+                    <button class="btn btn-ui keypad-btn" keypad-val="1">1</button>
+                    <button class="btn btn-ui keypad-btn" keypad-val="2">2</button>
+                    <button class="btn btn-ui keypad-btn" keypad-val="3">3</button>
+                    <button class="btn btn-ui keypad-btn" keypad-val="chan ">Channel</button>
+                    <br>
+                    <button class="btn btn-ui keypad-btn" keypad-val="4">4</button>
+                    <button class="btn btn-ui keypad-btn" keypad-val="5">5</button>
+                    <button class="btn btn-ui keypad-btn" keypad-val="6">6</button>
+                    <button class="btn btn-ui keypad-btn" keypad-val="cue ">Cue</button>
+                    <br>
+                    <button class="btn btn-ui keypad-btn" keypad-val="7">7</button>
+                    <button class="btn btn-ui keypad-btn" keypad-val="8">8</button>
+                    <button class="btn btn-ui keypad-btn" keypad-val="9">9</button>
+                    <button class="btn btn-ui keypad-btn" keypad-val=" label ">Label</button>
+                    <br>
+                    <button class="btn btn-ui keypad-btn" keypad-val=" at "><span style="font-size: 0.65em;">At</span></button>
+                    <button class="btn btn-ui keypad-btn" keypad-val="0">0</button>
+                    <button class="btn btn-ui keypad-btn" keypad-val=" 255 "><span style="font-size: 0.65em;">Fl</span></button>
+                    <button class="btn btn-ui keypad-btn" keypad-val=" time ">Time</button>
+                </div>
+                <br>
+                <form class="form-inline" id="command-line">
+                    <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                        <input type="text" class="form-control input-ui" style="font-size: 1.5em;" id="command-text" placeholder="Command">
+                    </div>
+                    <button type="submit" class="btn btn-ui" style="font-size: 1.5em;">Go</button>
+                </form>
+            </div>
         </div>
+    </div>
 {% endblock %}

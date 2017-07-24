@@ -21,6 +21,7 @@
                 });
                 $('form#command-line').submit(function (event) {
                     socket.emit('command-line', { command: $('#command-text').val() });
+                    $('#command-text').val('');
                     return false;
                 });
             });

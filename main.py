@@ -5,7 +5,7 @@ import re
 
 from sACN import DMXSource
 
-server_host = '192.168.0.108'
+server_host = '192.168.0.103'
 server_port = 6578
 files_location = "./"
 sacn_ip = "169.254.39.191"
@@ -34,10 +34,12 @@ def command_line(message):
         if isinstance( int(cmd[1]), ( int, long ) ):
             if cmd[2] == "at":
                 if isinstance( int(cmd[3]), ( int, long ) ):
-                    if int(cmd[3]) >= 0 and int(cmd[3]) <= 255:
+                    if int(cmd[3]) >= 0:
+                        if int(cmd[3]) > 255:
+                            cmd[3] = 255
                         channels[int(cmd[1])-1] = int(cmd[3])
                         source.send_data(channels)
-                        emit('update_chan', {'chan': int(cmd[1]), 'val': int(cmd[3])})
+                        emit('update_chan', {'chan': int(cmd[1]), 'val': int(cmd[3])}, broadcast=True)
 
 
 if __name__ == '__main__':
