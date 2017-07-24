@@ -37,6 +37,7 @@ def cue_select(message):
 
 @socketio.on('command-line', namespace='/test')
 def command_line(message):
+    global selected_cue
     cmd = re.sub(' +',' ',message['command'])
     cmd = cmd.split(" ")
 
