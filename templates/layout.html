@@ -31,6 +31,10 @@
                     socket.emit('cue_record', {});
                     return false;
                 });
+                $("#goforward").click(function (event) {
+                    socket.emit('cue_forward', {});
+                    return false;
+                });
                 $('form#command-line').submit(function (event) {
                     socket.emit('command-line', { command: $('#command-text').val() });
                     $('#command-text').val('');
@@ -81,9 +85,9 @@
                 <div class="col-2">
                     <button class="btn btn-ui" id="recordcue">Record</button>
                     <br>
-                    <button class="btn btn-ui">Go Back</button>
+                    <button class="btn btn-ui" id="goback">Go Back</button>
                     <br>
-                    <button class="btn btn-ui">Go Forward</button>
+                    <button class="btn btn-ui" id="goforward">Go Forward</button>
                 </div>
             </div>
         </div>

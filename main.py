@@ -42,6 +42,14 @@ def cue_record(message):
         cues.append(channels)
         emit('add_cue', {'cue': len(cues)}, broadcast=True)
 
+@socketio.on('cue_forward', namespace='/test')
+def cue_record(message):
+    global selected_cue
+    if selected_cue != "add":
+        channels = cues[int(selected_cue)]
+        for i in len(channels):
+            emit('update_chan', {'chan': i+1, 'val': channels[i]}, broadcast=True)
+
 @socketio.on('command-line', namespace='/test')
 def command_line(message):
     global selected_cue
