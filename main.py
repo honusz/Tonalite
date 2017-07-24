@@ -28,6 +28,14 @@ def index():
 @socketio.on('command-line', namespace='/test')
 def command_line(message):
     cmd = re.sub(' +',' ',message['command'])
+    cmd = cmd.split(" ")
+
+    if cmd[0] == "chan":
+        if isinstance( int(cmd[1]), ( int, long ) ):
+            if cmd[2] == "at":
+                if isinstance( int(cmd[3]), ( int, long ) ):
+                    channels[int(cmd[1])-1] = int(cmd[3])
+                    source.send_data(channels)
 
 
 if __name__ == '__main__':
