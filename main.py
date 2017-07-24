@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, session
 from flask_socketio import SocketIO, disconnect, emit
 
+import re
+
 from sACN import DMXSource
 
 server_host = '192.168.0.108'
@@ -17,13 +19,16 @@ app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app, async_mode=async_mode)
 thread = None
 
+channels = [0] * 512
+
 @app.route('/')
 def index():
     return render_template('channels.html', async_mode=socketio.async_mode)
 
 @socketio.on('command-line', namespace='/test')
 def command_line(message):
-    print(message['command'])
+    cmd = re.sub(' +',' ',message['command'])
+
 
 if __name__ == '__main__':
     socketio.run(app, host=server_host, port=server_port)
