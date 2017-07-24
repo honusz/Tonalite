@@ -36,6 +36,7 @@ def command_line(message):
                 if isinstance( int(cmd[3]), ( int, long ) ):
                     channels[int(cmd[1])-1] = int(cmd[3])
                     source.send_data(channels)
+                    emit('update_chan', {'chan': int(cmd[1]), 'val': int(cmd[3])})
 
 
 if __name__ == '__main__':
