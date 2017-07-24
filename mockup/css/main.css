@@ -145,8 +145,16 @@ body {
     background-color: #050505;
     color: #fff;
 }
+.keypad {
+    margin-top: 1em;
+}
 .keypad-btn {
     font-size: 1.5em;
+}
+@media screen and (max-width: 350px) {
+    .keypad-btn {
+        font-size: 1em;
+    }
 }
 @media screen and (max-width: 509px) {
     .row-fluid .col-sm-1{
