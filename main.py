@@ -23,7 +23,7 @@ channels = [0] * 512
 
 @app.route('/')
 def index():
-    return render_template('channels.html', async_mode=socketio.async_mode)
+    return render_template('channels.html', async_mode=socketio.async_mode, channels=channels)
 
 @socketio.on('command-line', namespace='/test')
 def command_line(message):
