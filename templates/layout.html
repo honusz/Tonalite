@@ -17,6 +17,7 @@
                 socket.on('update_chan', function (msg) {
                     console.log(msg.chan);
                     console.log(msg.val);
+                    $('#chan'+msg.chan).text(msg.val);
                 });
                 $('form#command-line').submit(function (event) {
                     socket.emit('command-line', { command: $('#command-text').val() });
