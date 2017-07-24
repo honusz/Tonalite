@@ -19,8 +19,16 @@
                 socket.on('update_chan', function (msg) {
                     $('#chan'+msg.chan).text(msg.val);
                 });
+                socket.on('add_cue', function (msg) {
+                    var cueItem=$('<div class="col-sm-1 cue" id="cue'+msg.cue+'">Cue '+msg.cue+'</div>');
+                    $("#cueadd").before(cueItem);
+                });
                 $(".cue").click(function (event) {
                     socket.emit('cue_select', { cue: $(this).attr('id') });
+                    return false;
+                });
+                $("#recordcue").click(function (event) {
+                    socket.emit('cue_record', {});
                     return false;
                 });
                 $('form#command-line').submit(function (event) {
@@ -71,9 +79,11 @@
                     </div>
                 </div>
                 <div class="col-2">
-                    <button class="btn btn-ui"><</button>
+                    <button class="btn btn-ui" id="recordcue">Record</button>
                     <br>
-                    <button class="btn btn-ui">></button>
+                    <button class="btn btn-ui">Go Back</button>
+                    <br>
+                    <button class="btn btn-ui">Go Forward</button>
                 </div>
             </div>
         </div>

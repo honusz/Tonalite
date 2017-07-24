@@ -22,8 +22,6 @@ thread = None
 channels = [0] * 512
 cues = []
 selected_cue = "add"
-for i in range(25):
-    cues.append(channels)
 
 @app.route('/')
 def index():
@@ -34,6 +32,15 @@ def cue_select(message):
     global selected_cue
     selected_cue = message['cue']
     selected_cue = selected_cue.replace("cue", "")
+
+@socketio.on('cue_record', namespace='/test')
+def cue_record(message):
+    global selected_cue
+    if selected_cue != "add":
+        cues[int(selected_cue)] = channels
+    else:
+        cues.append(channels)
+        emit('add_cue', {'cue': len(cues)}, broadcast=True)
 
 @socketio.on('command-line', namespace='/test')
 def command_line(message):
