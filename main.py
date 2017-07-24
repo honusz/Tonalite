@@ -20,10 +20,20 @@ socketio = SocketIO(app, async_mode=async_mode)
 thread = None
 
 channels = [0] * 512
+cues = []
+selected_cue = "add"
+for i in range(25):
+    cues.append(channels)
 
 @app.route('/')
 def index():
-    return render_template('channels.html', async_mode=socketio.async_mode, channels=channels)
+    return render_template('channels.html', async_mode=socketio.async_mode, channels=channels, cues=cues)
+
+@socketio.on('cue_select', namespace='/test')
+def cue_select(message):
+    global selected_cue
+    selected_cue = message['cue']
+    selected_cue = selected_cue.replace("cue", "")
 
 @socketio.on('command-line', namespace='/test')
 def command_line(message):

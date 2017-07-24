@@ -17,9 +17,11 @@
                 namespace = '/test';
                 var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
                 socket.on('update_chan', function (msg) {
-                    console.log(msg.chan);
-                    console.log(msg.val);
                     $('#chan'+msg.chan).text(msg.val);
+                });
+                $(".cue").click(function (event) {
+                    socket.emit('cue_select', { cue: $(this).attr('id') });
+                    return false;
                 });
                 $('form#command-line').submit(function (event) {
                     socket.emit('command-line', { command: $('#command-text').val() });
@@ -58,16 +60,12 @@
             <div class="row">
                 <div class="col-10" style="overflow: auto">
                     <div class="row-fluid">
-                        <div class="col-sm-1 cue">
-                            Cue 1
+                        {% for i in range(cues|length) %}
+                        <div class="col-sm-1 cue" id="cue{{i+1}}">
+                            Cue {{i+1}}
                         </div>
-                        <div class="col-sm-1 cue">
-                            Cue 2
-                        </div>
-                        <div class="col-sm-1 cue cue-selected">
-                            Cue 3
-                        </div>
-                        <div class="col-sm-1 cue add-cue">
+                        {% endfor %}
+                        <div class="col-sm-1 cue add-cue" id="cueadd">
                             +
                         </div>
                     </div>
