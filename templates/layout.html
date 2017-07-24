@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+        <link href="https://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-slider.min.css') }}" />
+        <link href="{{ url_for('static', filename='css/main.css') }}" type="text/css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="header">
+            <div class="header-right" style="float: right;">
+                <div class="header-btn">
+                    <a href="#"><img src="{{ url_for('static', filename='img/icons/cog.svg') }}" class="svg"></a>
+                </div>
+                <div class="header-btn">
+                    <a href="#"><img src="{{ url_for('static', filename='img/icons/power-off.svg') }}" class="svg"></a>
+                </div>
+                <div class="header-btn">
+                    <a href="#"><img src="{{ url_for('static', filename='img/icons/signal.svg') }}" class="svg"></a>
+                </div>
+            </div>
+            <div class="header-left">
+                <div class="header-btn">
+                    <a href="#"><img src="{{ url_for('static', filename='img/icons/columns.svg') }}" class="svg"></a>
+                </div>
+                <div class="header-btn">
+                    <a href="#"><img src="{{ url_for('static', filename='img/icons/plus.svg') }}" class="svg"></a>
+                </div>
+            </div>
+        </div>
+
+        {% block content %}{% endblock %}
+
+        <div class="container-fluid" id="cues">
+            <div class="row">
+                <div class="col-10" style="overflow: auto">
+                    <div class="row-fluid">
+                        <div class="col-sm-1 cue">
+                            Cue 1
+                        </div>
+                        <div class="col-sm-1 cue">
+                            Cue 2
+                        </div>
+                        <div class="col-sm-1 cue cue-selected">
+                            Cue 3
+                        </div>
+                        <div class="col-sm-1 cue add-cue">
+                            +
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <button class="btn btn-ui"><</button>
+                    <br>
+                    <button class="btn btn-ui">></button>
+                </div>
+            </div>
+        </div>
+
+        <script src="{{ url_for('static', filename='js/jquery-3.2.1.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/socket.io.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/tether.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/bootstrap-slider.min.js') }}"></script>
+        <script>
+            $(".keypad-btn").click(function(){
+                $('#command-text').val($('#command-text').val() + $(this).attr("keypad-val"));
+            });
+        </script>
+        <script>
+            $('img.svg').each(function(){
+            var $img = $(this);
+            var imgID = $img.attr('id');
+            var imgClass = $img.attr('class');
+            var imgURL = $img.attr('src');
+
+            $.get(imgURL, function(data) {
+                // Get the SVG tag, ignore the rest
+                var $svg = $(data).find('svg');
+
+                // Add replaced image's ID to the new SVG
+                if(typeof imgID !== 'undefined') {
+                    $svg = $svg.attr('id', imgID);
+                }
+                // Add replaced image's classes to the new SVG
+                if(typeof imgClass !== 'undefined') {
+                    $svg = $svg.attr('class', imgClass+' replaced-svg');
+                }
+
+                // Remove any invalid XML tags as per http://validator.w3.org
+                $svg = $svg.removeAttr('xmlns:a');
+
+                // Replace image with new SVG
+                $img.replaceWith($svg);
+
+            }, 'xml');
+
+        });
+        </script>
+    </body>
+</html>

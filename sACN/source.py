@@ -1,7 +1,7 @@
 import socket
 import struct
 
-from packet import E131Packet
+from .packet import E131Packet
 
 
 def ip_from_universe(universe):

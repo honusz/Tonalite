@@ -1,1 +1,1 @@
-from source import DMXSource
+from .source import DMXSource
