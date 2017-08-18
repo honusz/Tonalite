@@ -1,72 +1,10 @@
-from flask import Flask, render_template, request, session
-from flask_socketio import SocketIO, disconnect, emit
-
-import re
-
 from sACN import DMXSource
 
-server_host = '192.168.0.103'
-server_port = 6578
-files_location = "./"
 sacn_ip = "169.254.39.191"
 
 source = DMXSource(universe=1, net_ip=sacn_ip)
 
-async_mode = None
-
-app = Flask(__name__)
-app.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(app, async_mode=async_mode)
-thread = None
-
 channels = [0] * 512
 cues = []
-selected_cue = "add"
 
-@app.route('/')
-def index():
-    return render_template('channels.html', async_mode=socketio.async_mode, channels=channels, cues=cues)
-
-@socketio.on('cue_select', namespace='/test')
-def cue_select(message):
-    global selected_cue
-    selected_cue = message['cue']
-    selected_cue = selected_cue.replace("cue", "")
-
-@socketio.on('cue_record', namespace='/test')
-def cue_record(message):
-    global selected_cue
-    if selected_cue != "add":
-        cues[int(selected_cue)] = channels
-    else:
-        cues.append(channels)
-        emit('add_cue', {'cue': len(cues)}, broadcast=True)
-
-@socketio.on('cue_forward', namespace='/test')
-def cue_record(message):
-    global selected_cue
-    if selected_cue != "add":
-        channels = cues[int(selected_cue)]
-        for i in len(channels):
-            emit('update_chan', {'chan': i+1, 'val': channels[i]}, broadcast=True)
-
-@socketio.on('command-line', namespace='/test')
-def command_line(message):
-    global selected_cue
-    cmd = re.sub(' +',' ',message['command'])
-    cmd = cmd.split(" ")
-
-    if cmd[0] == "chan":
-        if isinstance( int(cmd[1]), ( int, long ) ):
-            if cmd[2] == "at":
-                if isinstance( int(cmd[3]), ( int, long ) ):
-                    if int(cmd[3]) >= 0:
-                        if int(cmd[3]) > 255:
-                            cmd[3] = 255
-                        channels[int(cmd[1])-1] = int(cmd[3])
-                        source.send_data(channels)
-                        emit('update_chan', {'chan': int(cmd[1]), 'val': int(cmd[3])}, broadcast=True)
-
-
-if __name__ == '__main__':
-    socketio.run(app, host=server_host, port=server_port)
+# source.send_data(channels)
