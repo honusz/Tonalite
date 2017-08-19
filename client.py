@@ -60,7 +60,12 @@ async def test_message(sid, message):
     elif len(cmd) == 4:
         if cmd[0] == "c":
             if cmd[2] == "a":
-                set_list(channels, int(cmd[1]) - 1, int(cmd[3]))
+                value = int(cmd[3])
+                if value > 255:
+                    value = 255
+                elif value < 0:
+                    value = 0
+                set_list(channels, int(cmd[1]) - 1, value)
                 source.send_data(channels)
 
     await sio.emit('my response', {'data': 'Command recieved and processed!'}, room=sid,

@@ -21,14 +21,35 @@
                 $('#command_data').val("")
                 return false;
             });
+
+            $('.commandBtn').click(function(event) {
+                $('#command_data').val($('#command_data').val() + $(this).attr('inputVal'));
+            });
         });
         </script>
     </head>
     <body>
         <h1>Tonalite Client</h1>
+        <button class="commandBtn" inputVal="c ">Channel</button>
+        <button class="commandBtn" inputVal=" a ">At</button>
+        <button class="commandBtn" inputVal="q ">Cue</button>
+        <button class="commandBtn" inputVal=" r">Record</button>
+        <button class="commandBtn" inputVal=" g">Go</button>
+        <button class="commandBtn" inputVal="255">Full</button>
+        <br>
+        <button class="commandBtn" inputVal="1">1</button>
+        <button class="commandBtn" inputVal="2">2</button>
+        <button class="commandBtn" inputVal="3">3</button>
+        <button class="commandBtn" inputVal="4">4</button>
+        <button class="commandBtn" inputVal="5">5</button>
+        <button class="commandBtn" inputVal="6">6</button>
+        <button class="commandBtn" inputVal="7">7</button>
+        <button class="commandBtn" inputVal="8">8</button>
+        <button class="commandBtn" inputVal="9">9</button>
+        <button class="commandBtn" inputVal="0">0</button>
         <form id="command" method="POST" action='#'>
             <input type="text" name="command_data" id="command_data" placeholder="Command">
-            <input type="submit" value="Go">
+            <input type="submit" value="Please">
         </form>
     </body>
 </html>
