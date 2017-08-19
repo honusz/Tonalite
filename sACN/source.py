@@ -23,7 +23,6 @@ class DMXSource(object):
             self.ip = ip_from_universe(universe)
         else:
             self.ip = net_ip
-        print(self.ip)
         self.sequence = 0
         # open UDP socket
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
