@@ -1,7 +1,10 @@
 <!DOCTYPE HTML>
 <html>
     <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Tonalite Client</title>
+        <link href="https://fonts.googleapis.com/css?family=Lato|Roboto:100,300,400" rel="stylesheet">
+        <link href="/static/css/style.css" rel="stylesheet">
         <script
         src="http://code.jquery.com/jquery-3.2.1.min.js"
         integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
@@ -18,38 +21,57 @@
 
             $('form#command').submit(function(event) {
                 socket.emit('command message', {data: $('#command_data').val()});
-                $('#command_data').val("")
+                $('#command_data').val("");
                 return false;
             });
 
             $('.commandBtn').click(function(event) {
                 $('#command_data').val($('#command_data').val() + $(this).attr('inputVal'));
             });
+
+            $('#clr_btn').click(function(event) {
+                $('#command_data').val("");
+            });
         });
         </script>
     </head>
     <body>
-        <h1>Tonalite Client</h1>
-        <button class="commandBtn" inputVal="c ">Channel</button>
-        <button class="commandBtn" inputVal=" a ">At</button>
-        <button class="commandBtn" inputVal="q ">Cue</button>
-        <button class="commandBtn" inputVal=" r">Record</button>
-        <button class="commandBtn" inputVal=" g">Go</button>
-        <button class="commandBtn" inputVal="255">Full</button>
-        <br>
-        <button class="commandBtn" inputVal="1">1</button>
-        <button class="commandBtn" inputVal="2">2</button>
-        <button class="commandBtn" inputVal="3">3</button>
-        <button class="commandBtn" inputVal="4">4</button>
-        <button class="commandBtn" inputVal="5">5</button>
-        <button class="commandBtn" inputVal="6">6</button>
-        <button class="commandBtn" inputVal="7">7</button>
-        <button class="commandBtn" inputVal="8">8</button>
-        <button class="commandBtn" inputVal="9">9</button>
-        <button class="commandBtn" inputVal="0">0</button>
-        <form id="command" method="POST" action='#'>
-            <input type="text" name="command_data" id="command_data" placeholder="Command">
-            <input type="submit" value="Please">
-        </form>
+        <div class="container">
+            <div class="keypad">
+                <button class="commandBtn" inputVal="c ">Channel</button>
+                <button class="commandBtn" inputVal="1">1</button>
+                <button class="commandBtn" inputVal="2">2</button>
+                <button class="commandBtn" inputVal="3">3</button>
+                <br>
+                <button class="commandBtn" inputVal=" a ">At</button>
+                <button class="commandBtn" inputVal="4">4</button>
+                <button class="commandBtn" inputVal="5">5</button>
+                <button class="commandBtn" inputVal="6">6</button>
+                <br>
+                <button class="commandBtn" inputVal="q ">Cue</button>
+                <button class="commandBtn" inputVal="7">7</button>
+                <button class="commandBtn" inputVal="8">8</button>
+                <button class="commandBtn" inputVal="9">9</button>
+                <br>
+                <button class="commandBtn" inputVal=" r">Record</button>
+                <button class="commandBtn" inputVal="0">0</button>
+                <button class="commandBtn" inputVal="255">Full</button>
+                <br>
+                <button class="commandBtn" inputVal=" g">Go</button>
+                <button class="commandBtn" inputVal="d">Dim</button>
+                <button class="commandBtn" inputVal="b">Bright</button>
+                <br>
+                <button class="commandBtn" inputVal=" t ">Time</button>
+                <button class="commandBtn" inputVal=" l">Last</button>
+                <button class="commandBtn" inputVal=" n">Next</button>
+                <br>
+                <button class="commandBtn" inputVal=" s">Stop</button>
+            </div>
+            <form id="command" method="POST" action='#'>
+                <input type="text" name="command_data" id="command_data" placeholder="Command" class="primary">
+                <input type="submit" value="Please" class="secondary" id="submit_btn">
+                <button class="danger" id="clr_btn">Clr</button>
+            </form>
+        </div>
     </body>
 </html>
