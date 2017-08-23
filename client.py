@@ -1,6 +1,7 @@
 import asyncio
-import time
 import os
+import time
+import pickle
 
 import socketio
 
@@ -88,10 +89,15 @@ async def test_message(sid, message):
                         cmd[1]) - 1], secs=cues[int(cmd[1]) - 1][1])
                     ccue = int(cmd[1]) - 1
             elif cmd[0] == "sh":
+                showspath = os.path.join(os.path.expanduser('~'), "tonalite-shows")
+                if not os.path.exists(showspath):
+                    os.makedirs(showspath)
                 if cmd[1] == "sv":
-
+                    with open(os.path.join(showspath, cmd[2] + '.show'), 'wb') as f:
+                        pickle.dump(cues, f, pickle.HIGHEST_PROTOCOL)
                 elif cmd[1] == "op":
-                    print("opening show")
+                    with open(os.path.join(showspath, cmd[2] + '.show'), 'rb') as f:
+                        cues = pickle.load(f)
         elif len(cmd) == 4:
             if cmd[0] == "c":
                 if "+" in cmd[1]:
