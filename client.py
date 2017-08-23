@@ -1,5 +1,6 @@
 import asyncio
 import time
+import os
 
 import socketio
 
@@ -69,11 +70,13 @@ async def test_message(sid, message):
             if cmd[0] == "q":
                 if cmd[1] == "n":
                     running = True
-                    generate_fade(cues[ccue], cues[ccue + 1], secs=cues[ccue + 1][1])
+                    generate_fade(cues[ccue], cues[ccue + 1],
+                                  secs=cues[ccue + 1][1])
                     ccue = ccue + 1
                 elif cmd[1] == "l":
                     running = True
-                    generate_fade(cues[ccue], cues[ccue - 1], secs=cues[ccue - 1][1])
+                    generate_fade(cues[ccue], cues[ccue - 1],
+                                  secs=cues[ccue - 1][1])
                     ccue = ccue - 1
         elif len(cmd) == 3:
             if cmd[0] == "q":
@@ -81,8 +84,14 @@ async def test_message(sid, message):
                     set_list(cues, int(cmd[1]) - 1, [channels[:], 3.0])
                 elif cmd[2] == "g":
                     running = True
-                    generate_fade(cues[ccue], cues[int(cmd[1]) - 1], secs=cues[int(cmd[1]) - 1][1])
+                    generate_fade(cues[ccue], cues[int(
+                        cmd[1]) - 1], secs=cues[int(cmd[1]) - 1][1])
                     ccue = int(cmd[1]) - 1
+            elif cmd[0] == "sh":
+                if cmd[1] == "sv":
+
+                elif cmd[1] == "op":
+                    print("opening show")
         elif len(cmd) == 4:
             if cmd[0] == "c":
                 if "+" in cmd[1]:
