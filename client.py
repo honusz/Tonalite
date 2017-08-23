@@ -10,7 +10,7 @@ sacn_ip = "169.254.39.191"
 
 source = DMXSource(universe=1, net_ip=sacn_ip)
 
-channels = [0] * 48
+channels = [0] * 512
 cues = []
 ccue = 0
 
@@ -26,7 +26,7 @@ def set_list(l, i, v):
         l[i] = v
 
 
-def generate_fade(threadname, start, end, secs=3.0, fps=40):
+def generate_fade(start, end, secs=3.0, fps=40):
     global running
     for index in range(int(secs * fps)):
         if running == True:
@@ -85,25 +85,38 @@ async def test_message(sid, message):
                     ccue = int(cmd[1]) - 1
         elif len(cmd) == 4:
             if cmd[0] == "c":
+                if "+" in cmd[1]:
+                    schans = cmd[1].split("+")
+                elif "-" in cmd[1]:
+                    schans = cmd[1].split("-")
+                    if len(schans) == 2:
+                        crange = int(schans[1]) - int(schans[0])
+                        cchans = []
+                        for i in range(crange + 1):
+                            cchans = cchans + [int(schans[0]) + i]
+                        schans = cchans
+                else:
+                    schans = [cmd[1]]
                 if cmd[2] == "a":
                     value = cmd[3]
-                    if value != "d" and value != "b":
-                        value = int(cmd[3])
-                        if value > 255:
-                            value = 255
-                        elif value < 0:
+                    for chn in schans:
+                        if value != "d" and value != "b":
+                            value = int(cmd[3])
+                            if value > 255:
+                                value = 255
+                            elif value < 0:
+                                value = 0
+                        elif value == "d":
+                            value = channels[int(chn) - 1] - 10
+                            if value < 0:
+                                value = 0
+                        elif value == "b":
+                            value = channels[int(chn) - 1] + 10
+                            if value > 255:
+                                value = 255
+                        else:
                             value = 0
-                    elif value == "d":
-                        value = channels[int(cmd[1]) - 1] - 10
-                        if value < 0:
-                            value = 0
-                    elif value == "b":
-                        value = channels[int(cmd[1]) - 1] + 10
-                        if value > 255:
-                            value = 255
-                    else:
-                        value = 0
-                    set_list(channels, int(cmd[1]) - 1, value)
+                        set_list(channels, int(chn) - 1, value)
                     source.send_data(channels)
             elif cmd[0] == "q":
                 if cmd[2] == "t":
@@ -117,4 +130,4 @@ app.router.add_get('/', index)
 
 
 if __name__ == '__main__':
-    web.run_app(app, host='192.168.0.102', port=9898)
+    web.run_app(app, host='192.168.0.105', port=9898)
