@@ -1,7 +1,7 @@
 import asyncio
 import os
-import time
 import pickle
+import time
 
 import socketio
 
@@ -48,9 +48,11 @@ sio = socketio.AsyncServer(async_mode='aiohttp')
 app = web.Application()
 sio.attach(app)
 
+
 async def index(request):
     with open('index.html') as f:
         return web.Response(text=f.read(), content_type='text/html')
+
 
 async def mobile(request):
     with open('mobile.html') as f:
@@ -92,7 +94,8 @@ async def test_message(sid, message):
                         cmd[1]) - 1], secs=cues[int(cmd[1]) - 1][1])
                     ccue = int(cmd[1]) - 1
             elif cmd[0] == "sh":
-                showspath = os.path.join(os.path.expanduser('~'), "tonalite-shows")
+                showspath = os.path.join(
+                    os.path.expanduser('~'), "tonalite-shows")
                 if not os.path.exists(showspath):
                     os.makedirs(showspath)
                 if cmd[1] == "sv":
