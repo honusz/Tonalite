@@ -49,8 +49,8 @@ app = web.Application()
 sio.attach(app)
 
 
-async def index(request):
-    with open('client.html') as f:
+async def mobile(request):
+    with open('mobile.html') as f:
         return web.Response(text=f.read(), content_type='text/html')
 
 
@@ -141,7 +141,7 @@ async def test_message(sid, message):
                    namespace='/tonalite')
 
 app.router.add_static('/static', 'static')
-app.router.add_get('/', index)
+app.router.add_get('/mobile', mobile)
 
 
 if __name__ == '__main__':
