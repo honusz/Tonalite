@@ -3,13 +3,9 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Tonalite Client</title>
-        <link href="https://fonts.googleapis.com/css?family=Lato|Roboto:100,300,400" rel="stylesheet">
         <link href="/static/css/style.css" rel="stylesheet">
-        <script
-        src="http://code.jquery.com/jquery-3.2.1.min.js"
-        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-        crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js" integrity="sha256-sdmLD9jD1PIzq3KOQPNSGZYxjv76rds79Mnyk5JNp1M=" crossorigin="anonymous"></script>
+        <script src="/static/js/jquery-3.2.1.min.js"></script>
+        <script src="/static/js/socket.io.js"></script>
         <script type="text/javascript" charset="utf-8">
         $(document).ready(function(){
             namespace = '/tonalite';
@@ -39,45 +35,45 @@
     <body>
         <div class="container">
             <div class="keypad">
-                <button class="commandBtn" inputVal="c ">Channel</button>
-                <button class="commandBtn" inputVal="1">1</button>
-                <button class="commandBtn" inputVal="2">2</button>
-                <button class="commandBtn" inputVal="3">3</button>
+                <button class="commandBtn btn btn-primary btn-keypad" inputVal="c ">Channel</button>
+                <button class="commandBtn btn btn-secondary btn-keypad" inputVal="1">1</button>
+                <button class="commandBtn btn btn-secondary btn-keypad" inputVal="2">2</button>
+                <button class="commandBtn btn btn-secondary btn-keypad" inputVal="3">3</button>
                 <br>
-                <button class="commandBtn" inputVal=" a ">At</button>
-                <button class="commandBtn" inputVal="4">4</button>
-                <button class="commandBtn" inputVal="5">5</button>
-                <button class="commandBtn" inputVal="6">6</button>
+                <button class="commandBtn btn btn-primary btn-keypad" inputVal=" a ">At</button>
+                <button class="commandBtn btn btn-secondary btn-keypad" inputVal="4">4</button>
+                <button class="commandBtn btn btn-secondary btn-keypad" inputVal="5">5</button>
+                <button class="commandBtn btn btn-secondary btn-keypad" inputVal="6">6</button>
                 <br>
-                <button class="commandBtn" inputVal="q ">Cue</button>
-                <button class="commandBtn" inputVal="7">7</button>
-                <button class="commandBtn" inputVal="8">8</button>
-                <button class="commandBtn" inputVal="9">9</button>
+                <button class="commandBtn btn btn-primary btn-keypad" inputVal="q ">Cue</button>
+                <button class="commandBtn btn btn-secondary btn-keypad" inputVal="7">7</button>
+                <button class="commandBtn btn btn-secondary btn-keypad" inputVal="8">8</button>
+                <button class="commandBtn btn btn-secondary btn-keypad" inputVal="9">9</button>
                 <br>
-                <button class="commandBtn" inputVal=" r">Record</button>
-                <button class="commandBtn" inputVal="0">0</button>
-                <button class="commandBtn" inputVal="255">Full</button>
+                <button class="commandBtn btn btn-primary btn-keypad" inputVal=" r">Record</button>
+                <button class="commandBtn btn btn-secondary btn-keypad" inputVal="0">0</button>
+                <button class="commandBtn btn btn-primary btn-keypad" inputVal="255">Full</button>
                 <br>
-                <button class="commandBtn" inputVal=" g">Go</button>
-                <button class="commandBtn" inputVal="d">Dim</button>
-                <button class="commandBtn" inputVal="b">Bright</button>
+                <button class="commandBtn btn btn-primary btn-keypad" inputVal=" g">Go</button>
+                <button class="commandBtn btn btn-primary btn-keypad" inputVal="d">Dim</button>
+                <button class="commandBtn btn btn-primary btn-keypad" inputVal="b">Bright</button>
                 <br>
-                <button class="commandBtn" inputVal=" t ">Time</button>
-                <button class="commandBtn" inputVal=" l">Last</button>
-                <button class="commandBtn" inputVal=" n">Next</button>
+                <button class="commandBtn btn btn-primary btn-keypad" inputVal=" t ">Time</button>
+                <button class="commandBtn btn btn-primary btn-keypad" inputVal=" l">Last</button>
+                <button class="commandBtn btn btn-primary btn-keypad" inputVal=" n">Next</button>
                 <br>
-                <button class="commandBtn" inputVal=" s">Stop</button>
-                <button class="commandBtn" inputVal="+">And</button>
-                <button class="commandBtn" inputVal="-">Through</button>
+                <button class="commandBtn btn btn-primary btn-keypad" inputVal=" s">Stop</button>
+                <button class="commandBtn btn btn-primary btn-keypad" inputVal="+">And</button>
+                <button class="commandBtn btn btn-primary btn-keypad" inputVal="-">Through</button>
                 <br>
-                <button class="commandBtn" inputVal="sh">Show</button>
-                <button class="commandBtn" inputVal=" op ">Open</button>
-                <button class="commandBtn" inputVal=" sv ">Save</button>
+                <button class="commandBtn btn btn-primary btn-keypad" inputVal="sh">Show</button>
+                <button class="commandBtn btn btn-primary btn-keypad" inputVal=" op ">Open</button>
+                <button class="commandBtn btn btn-primary btn-keypad" inputVal=" sv ">Save</button>
             </div>
             <form id="command" method="POST" action='#'>
                 <input type="text" name="command_data" id="command_data" placeholder="Command" class="primary">
-                <input type="submit" value="Please" class="secondary" id="submit_btn">
-                <button class="danger" id="clr_btn">Clr</button>
+                <input type="submit" value="Please" class="btn btn-secondary" id="submit_btn">
+                <button class="btn btn-primary" id="clr_btn">Clr</button>
             </form>
         </div>
     </body>
