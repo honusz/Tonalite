@@ -1,5 +1,27 @@
-.sliders
+#sliders
     display: flex
     flex-wrap: nowrap
     overflow-x: scroll
     height: 50vh
+    background-color: $color-text-light
+    padding-left: 1.5em
+
+.sliders
+    margin-right: 3em
+    margin-top: 1.5em
+    height: 75%
+
+    .noUi-base
+        width: 1.1em
+    
+    .noUi-connect
+        background: $color-green
+    
+    .noUi-handle:focus
+        outline: none
+    
+    .noUi-handle:hover
+        cursor: pointer
+
+.slidernum
+    font-size: 1.25rem

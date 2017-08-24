@@ -3,10 +3,13 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Tonalite Client</title>
+        <link href="/static/css/nouislider.min.css" rel="stylesheet">
         <link href="/static/css/style.css" rel="stylesheet">
         <script src="/static/js/jquery-3.2.1.min.js"></script>
         <script src="/static/js/socket.io.js"></script>
         <script src="/static/js/isMobile.min.js"></script>
+        <script src="/static/js/nouislider.min.js"></script>
+        <script src="/static/js/wNumb.js"></script>
         <script>
             (function () {
                 var MOBILE_SITE = '/mobile';
@@ -39,10 +42,43 @@
         $(document).ready(function(){
             namespace = '/tonalite';
 
-            for(var i = 0; i <= 512; i++) {
-                $("#channels").append("<div class=\"tombstone\"><h1 class=\"subtitle channelNum\">"+i+"</h1> \
-                                       <input type=\"number\" class=\"channelVal\" min=\"0\" max=\"255\" value=\"0\" id=\"cval-"+i+"\"></div>");                
+            for(var i = 0; i <= 511; i++) {
+                $("#channels").append("<div class=\"tombstone\"><h1 class=\"subtitle channelNum\">"+(i+1)+"</h1> \
+                                       <input type=\"number\" class=\"channelVal\" min=\"0\" max=\"255\" value=\"0\" id=\"cval-"+(i+1)+"\"></div>");
+                $("#sliders").append("<div><div class=\"sliders\" id=\"sliderchan-"+(i+1)+"\"></div><br><span class=\"slidernum\">"+(i+1)+"</span></div>");                
             }
+
+            var sliders = document.getElementsByClassName('sliders');
+            
+            for ( var i = 0; i < sliders.length; i++ ) {
+            
+                noUiSlider.create(sliders[i], {
+                    start: 0,
+                    connect: [true, false],
+                    direction: 'rtl',
+                    orientation: "vertical",
+                    range: {
+                        'min': 0,
+                        'max': 255
+                    },
+                    format: wNumb({
+                        decimals: 0,
+                    })
+                });
+
+                sliders[i].noUiSlider.on('slide', updateChan);
+            }
+
+            function updateChan() {
+                var allValues = [];
+                
+                for (var i = 0; i < sliders.length; i++) {
+                    allValues.push(sliders[i].noUiSlider.get());
+                };
+
+                socket.emit('update chans', {chans: allValues});
+            }
+
             var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
 
             socket.on('my response', function(msg) {
@@ -137,8 +173,8 @@
             </div>
         </div>
         <div id="slidercues" class="tabcontent">
-            <div class="sliders"></div>
-            <div class="cues"></div>
+            <div id="sliders"></div>
+            <div id="cues"></div>
         </div>
     </body>
 </html>
