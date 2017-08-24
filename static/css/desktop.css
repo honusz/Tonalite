@@ -64,6 +64,43 @@ input:focus {
   .tombstone .channelVal {
     width: 50%; }
 
+#keypad {
+  display: flex;
+  flex-wrap: wrap; }
+  #keypad .numbers {
+    background-color: #dee5e8;
+    padding: 0.5em 0.5em 0.1em;
+    border-radius: 3px;
+    -webkit-box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.25);
+    box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.25); }
+    #keypad .numbers button {
+      margin-bottom: 0.5em;
+      width: 32.85%; }
+  #keypad .commandBox {
+    margin-top: 1em;
+    background-color: #dee5e8;
+    padding: 0.5em 0.5em 0.1em;
+    border-radius: 3px;
+    -webkit-box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.25);
+    box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.25); }
+    #keypad .commandBox button {
+      margin-bottom: 0.5em; }
+  #keypad .helpers {
+    margin-right: 1em;
+    background-color: #dee5e8;
+    padding: 0.5em 0.5em 0.1em;
+    border-radius: 3px;
+    -webkit-box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.25);
+    box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.25);
+    margin-bottom: 1em; }
+    #keypad .helpers button {
+      display: block;
+      margin-bottom: 0.5em;
+      width: 100%; }
+
 body {
   font-family: "Roboto", sans-serif;
   color: #afbaca;

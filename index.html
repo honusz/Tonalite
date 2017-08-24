@@ -47,9 +47,9 @@
             var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
 
             socket.on('my response', function(msg) {
-                console.log('Received: ' + msg.data);
+                /*console.log('Received: ' + msg.data);*/
                 for(var i = 0; i <= 512; i++) {
-                    $("#cval-"+i).val(msg.channels[i])
+                    $("#cval-"+(i+1)).val(msg.data[i])
                 }
             });
 
@@ -59,12 +59,13 @@
                 return false;
             });
 
-            $('.commandBtn').click(function(event) {
-                $('#command_data').val($('#command_data').val() + $(this).attr('inputVal'));
+            $('.channelVal').change(function(event) {
+                socket.emit('update chan', {val: $("#"+this.id).val(), chan: this.id});
+                return false;
             });
 
-            $('#clr_btn').click(function(event) {
-                $('#command_data').val("");
+            $('.keypad-btn').click(function(event) {
+                $('#command_data').val($('#command_data').val() + $(this).attr('inputVal'));
             });
         });
         </script>
@@ -76,6 +77,64 @@
         </div>
         <br>
         <div id="channels" class="tabcontent"></div>
-        <div id="keypad" class="tabcontent"></div>
+        <div id="keypad" class="tabcontent">
+            <div>
+                <div class="helpers">
+                    <button class="keypad-btn btn btn-secondary" inputVal="c ">Channel</button>
+                    <button class="keypad-btn btn btn-secondary" inputVal="q ">Cue</button>
+                    <button class="keypad-btn btn btn-secondary" inputVal="sh">Show</button>
+                </div>
+                <div class="helpers">
+                    <button class="keypad-btn btn btn-secondary" inputVal=" r">Record</button>
+                    <button class="keypad-btn btn btn-secondary" inputVal=" t ">Time</button>
+                    <button class="keypad-btn btn btn-secondary" inputVal=" n">Next</button>
+                    <button class="keypad-btn btn btn-secondary" inputVal=" l">Last</button>
+                </div>
+            </div>
+            <div>
+                <div class="helpers">
+                    <button class="keypad-btn btn btn-secondary" inputVal=" a ">At</button>
+                    <button class="keypad-btn btn btn-secondary" inputVal="+">And</button>
+                    <button class="keypad-btn btn btn-secondary" inputVal="-">Through</button>
+                </div>
+                <div class="helpers">
+                    <button class="keypad-btn btn btn-secondary" inputVal=" g">Go</button>
+                    <button class="keypad-btn btn btn-secondary" inputVal=" s">Stop</button>
+                    <button class="keypad-btn btn btn-secondary" inputVal=" op ">Open</button>
+                    <button class="keypad-btn btn btn-secondary" inputVal=" sv ">Save</button>
+                </div>
+            </div>
+            <div>
+                <div class="numbers">
+                    <div>
+                        <button class="keypad-btn btn btn-primary" inputVal="1">1</button>
+                        <button class="keypad-btn btn btn-primary" inputVal="2">2</button>
+                        <button class="keypad-btn btn btn-primary" inputVal="3">3</button>
+                    </div>
+                    <div>
+                        <button class="keypad-btn btn btn-primary" inputVal="4">4</button>
+                        <button class="keypad-btn btn btn-primary" inputVal="5">5</button>
+                        <button class="keypad-btn btn btn-primary" inputVal="6">6</button>
+                    </div>
+                    <div>
+                        <button class="keypad-btn btn btn-primary" inputVal="7">7</button>
+                        <button class="keypad-btn btn btn-primary" inputVal="8">8</button>
+                        <button class="keypad-btn btn btn-primary" inputVal="9">9</button>
+                    </div>
+                    <div>
+                        <button class="keypad-btn btn btn-primary" inputVal="d">+</button>
+                        <button class="keypad-btn btn btn-primary" inputVal="0">0</button>
+                        <button class="keypad-btn btn btn-primary" inputVal="b">-</button>
+                    </div>
+                </div>
+                <div class="commandBox">
+                    <form id="command" method="POST" action='#'>
+                        <input type="text" name="command_data" id="command_data" placeholder="Command here">
+                        <button type="submit" class="btn btn-secondary" id="submit_btn">Please</button>
+                        <button type="reset" class="btn btn-primary" id="clr_btn">Clr</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </body>
 </html>

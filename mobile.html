@@ -16,7 +16,8 @@
             var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
 
             socket.on('my response', function(msg) {
-                console.log('Received: ' + msg.data);
+                /*console.log('Received: ' + msg.data); */
+                console.log('Received data!');
             });
 
             $('form#command').submit(function(event) {

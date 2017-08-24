@@ -59,6 +59,21 @@ async def mobile(request):
         return web.Response(text=f.read(), content_type='text/html')
 
 
+@sio.on('connect', namespace='/tonalite')
+async def connect(sid, environ):
+    await sio.emit('my response', {'data': channels}, namespace='/tonalite')
+
+
+@sio.on('update chan', namespace='/tonalite')
+async def updatechan_message(sid, message):
+    chan = int(message['chan'].replace("cval-", "")) - 1
+    value = int(message['val'])
+
+    channels[chan] = value
+
+    await sio.emit('my response', {'data': channels}, namespace='/tonalite')
+
+
 @sio.on('command message', namespace='/tonalite')
 async def test_message(sid, message):
     global running
@@ -143,8 +158,7 @@ async def test_message(sid, message):
                 if cmd[2] == "t":
                     cues[int(cmd[1]) - 1][1] = float(cmd[3])
 
-    await sio.emit('my response', {'data': 'Command recieved and processed!', 'channels': channels}, room=sid,
-                   namespace='/tonalite')
+    await sio.emit('my response', {'data': channels}, namespace='/tonalite')
 
 app.router.add_static('/static', 'static')
 app.router.add_get('/', index)
