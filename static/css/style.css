@@ -114,18 +114,42 @@ input:focus {
 .sliders {
   margin-right: 3em;
   margin-top: 1.5em;
-  height: 75%; }
+  height: 75%;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
   .sliders .noUi-base {
-    width: 1.1em; }
+    width: 1.1em;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none; }
   .sliders .noUi-connect {
-    background: #9aca40; }
+    background: #9aca40;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none; }
   .sliders .noUi-handle:focus {
     outline: none; }
   .sliders .noUi-handle:hover {
     cursor: pointer; }
 
 .slidernum {
-  font-size: 1.25rem; }
+  font-size: 1.25rem;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
 
 #cues {
   display: flex;
