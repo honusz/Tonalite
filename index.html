@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Tonalite Client</title>
+        <link href="https://fonts.googleapis.com/css?family=Lato|Roboto:100,300,400" rel="stylesheet">
+        <link href="/static/css/style.css" rel="stylesheet">
+        <script src="/static/js/jquery-3.2.1.min.js"></script>
+        <script src="/static/js/socket.io.js"></script>
+        <script src="/static/js/isMobile.min.js"></script>
+        <script type="text/javascript" charset="utf-8">
+        $(document).ready(function(){
+            namespace = '/tonalite';
+            var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
+
+            socket.on('my response', function(msg) {
+                console.log('Received: ' + msg.data);
+            });
+
+            $('form#command').submit(function(event) {
+                socket.emit('command message', {data: $('#command_data').val()});
+                $('#command_data').val("");
+                return false;
+            });
+
+            $('.commandBtn').click(function(event) {
+                $('#command_data').val($('#command_data').val() + $(this).attr('inputVal'));
+            });
+
+            $('#clr_btn').click(function(event) {
+                $('#command_data').val("");
+            });
+        });
+        </script>
+    </head>
+    <body>
+        <h1>Hello World!</h1>
+    </body>
+</html>
