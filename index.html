@@ -83,7 +83,7 @@
 
             socket.on('my response', function(msg) {
                 /*console.log('Received: ' + msg.data);*/
-                for(var i = 0; i <= 512; i++) {
+                for(var i = 0; i <= 48; i++) {
                     $("#cval-"+(i+1)).val(msg.data[i])
                 }
             });

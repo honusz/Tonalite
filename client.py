@@ -12,7 +12,7 @@ sacn_ip = "169.254.39.191"
 
 source = DMXSource(universe=1, net_ip=sacn_ip)
 
-channels = [0] * 512
+channels = [0] * 48
 cues = []
 ccue = 0
 
