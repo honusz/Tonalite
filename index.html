@@ -8,6 +8,14 @@
         <script src="/static/js/jquery-3.2.1.min.js"></script>
         <script src="/static/js/socket.io.js"></script>
         <script src="/static/js/isMobile.min.js"></script>
+        <script>
+            (function () {
+                var MOBILE_SITE = '/mobile';
+                if (isMobile.any) {
+                    document.location = MOBILE_SITE;
+                }
+            })();
+        </script>
         <script type="text/javascript" charset="utf-8">
         $(document).ready(function(){
             namespace = '/tonalite';
