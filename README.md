@@ -3,6 +3,5 @@ Tonalite is a wireless lighting control system that runs on desktop and mobile. 
 
 ## Requirements
 
-- Python socketio
-- Python asyncio
-- Python aiohttp
+- [socketio](https://pypi.org/project/python-socketio/)
+- [aiohttp](https://pypi.org/project/aiohttp/)
