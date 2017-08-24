@@ -71,13 +71,20 @@ async def updatechan_message(sid, message):
 
     channels[chan] = value
 
+    source.send_data(channels)
+
     await sio.emit('my response', {'data': channels}, namespace='/tonalite')
 
 @sio.on('update chans', namespace='/tonalite')
 async def updatechan_message(sid, message):
     chans = message['chans']
 
+    for i in range(len(chans)):
+        chans[i] = int(chans[i])
+
     channels = chans
+
+    source.send_data(channels)
 
     await sio.emit('my response', {'data': channels}, namespace='/tonalite')
 
