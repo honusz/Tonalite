@@ -143,7 +143,7 @@ async def test_message(sid, message):
                 if cmd[2] == "t":
                     cues[int(cmd[1]) - 1][1] = float(cmd[3])
 
-    await sio.emit('my response', {'data': 'Command recieved and processed!'}, room=sid,
+    await sio.emit('my response', {'data': 'Command recieved and processed!', 'channels': channels}, room=sid,
                    namespace='/tonalite')
 
 app.router.add_static('/static', 'static')
@@ -152,4 +152,5 @@ app.router.add_get('/mobile', mobile)
 
 
 if __name__ == '__main__':
-    web.run_app(app, host='192.168.0.105', port=9898)
+    host = input("Which host? ")
+    web.run_app(app, host=host, port=9898)

@@ -4,7 +4,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Tonalite Client</title>
         <link href="https://fonts.googleapis.com/css?family=Lato|Roboto:100,300,400" rel="stylesheet">
-        <link href="/static/css/style.css" rel="stylesheet">
+        <link href="/static/css/desktop.css" rel="stylesheet">
         <script src="/static/js/jquery-3.2.1.min.js"></script>
         <script src="/static/js/socket.io.js"></script>
         <script src="/static/js/isMobile.min.js"></script>
@@ -17,12 +17,40 @@
             })();
         </script>
         <script type="text/javascript" charset="utf-8">
+        function openTab(evt, cityName) {
+            // Declare all variables
+            var i, tabcontent, tablinks;
+
+            // Get all elements with class="tabcontent" and hide them
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            // Get all elements with class="tablinks" and remove the class "active"
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+
+            // Show the current tab, and add an "active" class to the button that opened the tab
+            document.getElementById(cityName).style.display = "flex";
+            evt.currentTarget.className += " active";
+        }
         $(document).ready(function(){
             namespace = '/tonalite';
+
+            for(var i = 0; i <= 512; i++) {
+                $("#channels").append("<div class=\"tombstone\"><h1 class=\"subtitle channelNum\">"+i+"</h1> \
+                                       <input type=\"number\" class=\"channelVal\" min=\"0\" max=\"255\" value=\"0\" id=\"cval-"+i+"\"></div>");                
+            }
             var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
 
             socket.on('my response', function(msg) {
                 console.log('Received: ' + msg.data);
+                for(var i = 0; i <= 512; i++) {
+                    $("#cval-"+i).val(msg.channels[i])
+                }
             });
 
             $('form#command').submit(function(event) {
@@ -42,6 +70,12 @@
         </script>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <div class="tab">
+            <button class="tablinks btn btn-primary" onclick="openTab(event, 'channels')">Channels</button>
+            <button class="tablinks btn btn-primary" onclick="openTab(event, 'keypad')">Keypad</button>
+        </div>
+        <br>
+        <div id="channels" class="tabcontent"></div>
+        <div id="keypad" class="tabcontent"></div>
     </body>
 </html>
