@@ -59,6 +59,11 @@ async def mobile(request):
         return web.Response(text=f.read(), content_type='text/html')
 
 
+async def cue_control(request):
+    with open('cue_control.html') as f:
+        return web.Response(text=f.read(), content_type='text/html')
+
+
 @sio.on('connect', namespace='/tonalite')
 async def connect(sid, environ):
     await sio.emit('my response', {'data': channels}, namespace='/tonalite')
@@ -179,6 +184,7 @@ async def test_message(sid, message):
 app.router.add_static('/static', 'static')
 app.router.add_get('/', index)
 app.router.add_get('/mobile', mobile)
+app.router.add_get('/cues', cue_control)
 
 
 if __name__ == '__main__':
