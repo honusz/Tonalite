@@ -44,6 +44,13 @@
 .btn-secondary:hover {
   background-color: #8dbc34; }
 
+.btn-danger {
+  background-color: #f54141;
+  color: #ffffff; }
+
+.btn-danger:hover {
+  background-color: #f42929; }
+
 input {
   color: #798ca7;
   font-weight: 700;

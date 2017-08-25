@@ -127,7 +127,8 @@
                 <div class="helpers">
                     <button class="keypad-btn btn btn-secondary" inputVal="c "><i class="fa fa-cube"></i> Channel</button>
                     <button class="keypad-btn btn btn-secondary" inputVal="q "><i class="fa fa-list"></i> Cue</button>
-                    <button class="keypad-btn btn btn-secondary" inputVal="sh"><i class="fa fa-lightbulb"></i> Show</button>
+                    <button class="keypad-btn btn btn-secondary" inputVal=" g"><i class="fa fa-hand-point-right"></i> Go</button>
+                    <!--<button class="keypad-btn btn btn-secondary" inputVal="sh"><i class="fa fa-lightbulb"></i> Show</button>-->
                 </div>
                 <div class="helpers">
                     <button class="keypad-btn btn btn-secondary" inputVal=" r"><i class="fa fa-circle"></i> Record</button>
@@ -136,19 +137,14 @@
                     <button class="keypad-btn btn btn-secondary" inputVal=" l"><i class="fa fa-arrow-alt-from-right"></i> Last</button>
                 </div>
             </div>
-            <div>
-                <div class="helpers">
-                    <button class="keypad-btn btn btn-secondary" inputVal=" a "><i class="fa fa-at"></i> At</button>
-                    <button class="keypad-btn btn btn-secondary" inputVal="+"><i class="fa fa-plus-circle"></i> And</button>
-                    <button class="keypad-btn btn btn-secondary" inputVal="-"><i class="fa fa-arrows-h"></i> Through</button>
-                </div>
+            <!--<div>
                 <div class="helpers">
                     <button class="keypad-btn btn btn-secondary" inputVal=" g"><i class="fa fa-hand-point-right"></i> Go</button>
                     <button class="keypad-btn btn btn-secondary" inputVal=" s"><i class="fa fa-stop-circle"></i> Stop</button>
                     <button class="keypad-btn btn btn-secondary" inputVal=" op "><i class="fa fa-folder-open"></i> Open</button>
                     <button class="keypad-btn btn btn-secondary" inputVal=" sv "><i class="fa fa-save"></i> Save</button>
                 </div>
-            </div>
+            </div>-->
             <div>
                 <div class="numbers">
                     <div>
@@ -171,12 +167,17 @@
                         <button class="keypad-btn btn btn-primary" inputVal="0">0</button>
                         <button class="keypad-btn btn btn-primary" inputVal="b"><i class="fa fa-chevron-double-down"></i></button>
                     </div>
+                    <div>
+                        <button class="keypad-btn btn btn-secondary" inputVal=" a "><i class="fa fa-at"></i> At</button>
+                        <button class="keypad-btn btn btn-secondary" inputVal="+"><i class="fa fa-plus-circle"></i> And</button>
+                        <button class="keypad-btn btn btn-secondary" inputVal="-" style="padding: 1em 4em"><i class="fa fa-arrows-h"></i> Through</button>
+                    </div>
                 </div>
                 <div class="commandBox">
                     <form id="command" method="POST" action='#'>
                         <input type="text" name="command_data" id="command_data" placeholder="Command here">
                         <button type="submit" class="btn btn-secondary" id="submit_btn"><i class="fa fa-play-circle"></i> Please</button>
-                        <button type="reset" class="btn btn-primary" id="clr_btn"><i class="fa fa-window-close"></i> Clr</button>
+                        <button type="reset" class="btn btn-danger" id="clr_btn"><i class="fa fa-window-close"></i> Clr</button>
                     </form>
                 </div>
             </div>
