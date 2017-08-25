@@ -21,7 +21,7 @@
             })();
         </script>
         <script type="text/javascript" charset="utf-8">
-        function openTab(evt, cityName) {
+        function openTab(evt, tabName) {
             // Declare all variables
             var i, tabcontent, tablinks;
 
@@ -38,7 +38,8 @@
             }
 
             // Show the current tab, and add an "active" class to the button that opened the tab
-            document.getElementById(cityName).style.display = "flex";
+            document.getElementById(tabName).style.display = "flex";
+            document.title = "Tonalite Client - " + tabName.charAt(0).toUpperCase() + tabName.slice(1)
             evt.currentTarget.className += " active";
         }
         $(document).ready(function(){
