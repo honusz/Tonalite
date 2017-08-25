@@ -75,6 +75,7 @@ async def updatechan_message(sid, message):
 
     await sio.emit('my response', {'data': channels}, namespace='/tonalite')
 
+
 @sio.on('update chans', namespace='/tonalite')
 async def updatechan_message(sid, message):
     chans = message['chans']
@@ -87,6 +88,7 @@ async def updatechan_message(sid, message):
     source.send_data(channels)
 
     await sio.emit('my response', {'data': channels}, namespace='/tonalite')
+
 
 @sio.on('command message', namespace='/tonalite')
 async def test_message(sid, message):
