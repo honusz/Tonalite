@@ -224,17 +224,17 @@ button, .btn {
   float: left;
   border-radius: 0;
   background-color: #798ca7;
-  color: #dee5e8; }
+  color: #dee5e8;
+  border-right: solid 2px #afbaca; }
 
 .tablinks:first-child {
   border-top-left-radius: 3px;
-  border-bottom-left-radius: 3px;
-  border-right: solid 2px #afbaca; }
+  border-bottom-left-radius: 3px; }
 
 .tablinks:last-child {
   border-top-right-radius: 3px;
   border-bottom-right-radius: 3px;
-  border-left: solid 2px #afbaca; }
+  border-right: none; }
 
 .tablinks.active {
   background-color: #42a5f5;
