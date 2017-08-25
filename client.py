@@ -188,5 +188,11 @@ app.router.add_get('/cues', cue_control)
 
 
 if __name__ == '__main__':
-    host = input("Which host? ")
+    host = input("Which Host IP? [192.168.0.102] ")
+    thost = input("Which sACN IP? [169.254.39.191] ")
+    if host == "":
+        host = "192.168.0.102"
+    if thost == "":
+        thost = "169.254.39.191"
+    source = DMXSource(universe=1, net_ip=thost)
     web.run_app(app, host=host, port=9898)
