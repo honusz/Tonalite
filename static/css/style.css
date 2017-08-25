@@ -8,6 +8,22 @@
   -ms-user-select: none;
   user-select: none; }
 
+@media only screen and (max-width: 788px) {
+  .btn {
+    padding-left: 3em;
+    padding-right: 3em; } }
+@media only screen and (max-width: 580px) {
+  .btn {
+    padding-left: 2em;
+    padding-right: 2em; } }
+@media only screen and (max-width: 500px) {
+  .btn {
+    padding-left: 1em;
+    padding-right: 1em; } }
+@media only screen and (max-width: 406px) {
+  .btn {
+    padding-left: 0.5em;
+    padding-right: 0.5em; } }
 .btn-keypad {
   padding: 1em 1em; }
 
@@ -166,7 +182,7 @@ body {
   font-size: 15px;
   margin: 0; }
 
-button {
+button, .btn {
   font-family: "Roboto", sans-serif;
   font-weight: 500;
   font-size: 16px;
@@ -216,22 +232,5 @@ button {
 .tablinks.active {
   background-color: #42a5f5;
   color: #ffffff; }
-
-@media only screen and (max-width: 788px) {
-  .tablinks {
-    padding-left: 3em;
-    padding-right: 3em; } }
-@media only screen and (max-width: 580px) {
-  .tablinks {
-    padding-left: 2em;
-    padding-right: 2em; } }
-@media only screen and (max-width: 500px) {
-  .tablinks {
-    padding-left: 1em;
-    padding-right: 1em; } }
-@media only screen and (max-width: 406px) {
-  .tablinks {
-    padding-left: 0.5em;
-    padding-right: 0.5em; } }
 
 /*# sourceMappingURL=style.css.map */
