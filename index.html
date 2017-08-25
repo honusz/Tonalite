@@ -40,6 +40,7 @@
             evt.currentTarget.className += " active";
         }
         $(document).ready(function(){
+            document.getElementById("channelsTabBtn").click();
             namespace = '/tonalite';
 
             for(var i = 0; i <= 47; i++) {
@@ -111,7 +112,7 @@
     </head>
     <body>
         <div class="tab">
-            <button class="tablinks btn btn-primary" onclick="openTab(event, 'channels')">Channels</button>
+            <button class="tablinks btn btn-primary" onclick="openTab(event, 'channels')" id="channelsTabBtn">Channels</button>
             <button class="tablinks btn btn-primary" onclick="openTab(event, 'keypad')">Keypad</button>
             <button class="tablinks btn btn-primary" onclick="openTab(event, 'slidercues')">Sliders and Cues</button>
         </div>
