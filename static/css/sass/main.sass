@@ -44,3 +44,23 @@ button
 .tab
     padding-top: 0.5em
     padding-left: 0.5em
+
+.tablinks
+    float: left
+    border-radius: 0
+    background-color: $color-text-dark
+    color: $color-text-light
+
+.tablinks:first-child
+    border-top-left-radius: 3px
+    border-bottom-left-radius: 3px
+    border-right: solid 2px $color-text
+
+.tablinks:last-child
+    border-top-right-radius: 3px
+    border-bottom-right-radius: 3px
+    border-left: solid 2px $color-text
+
+.tablinks.active
+    background-color: $color-blue
+    color: #ffffff

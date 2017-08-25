@@ -195,4 +195,24 @@ button {
   padding-top: 0.5em;
   padding-left: 0.5em; }
 
+.tablinks {
+  float: left;
+  border-radius: 0;
+  background-color: #798ca7;
+  color: #dee5e8; }
+
+.tablinks:first-child {
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+  border-right: solid 2px #afbaca; }
+
+.tablinks:last-child {
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+  border-left: solid 2px #afbaca; }
+
+.tablinks.active {
+  background-color: #42a5f5;
+  color: #ffffff; }
+
 /*# sourceMappingURL=style.css.map */
