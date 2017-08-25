@@ -66,7 +66,7 @@
                     })
                 });
 
-                sliders[i].noUiSlider.on('slide', updateChan);
+                sliders[i].noUiSlider.on('end', updateChan);
             }
 
             function updateChan() {
@@ -84,8 +84,12 @@
             socket.on('my response', function(msg) {
                 /*console.log('Received: ' + msg.data);*/
                 for(var i = 0; i <= 48; i++) {
-                    $("#cval-"+(i+1)).val(msg.data[i])
-                }
+                    $("#cval-"+(i+1)).val(msg.data[i]);
+                };
+
+                for (var i = 0; i < sliders.length; i++) {
+                    sliders[i].noUiSlider.set(msg.data[i])
+                };
             });
 
             $('form#command').submit(function(event) {
