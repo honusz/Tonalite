@@ -158,22 +158,14 @@ async def test_message(sid, message):
                     value = cmd[3]
                     for chn in schans:
                         if value != "d" and value != "b":
-                            value = int(cmd[3])
-                            if value > 255:
-                                value = 255
-                            elif value < 0:
-                                value = 0
+                            value = max(0, min(int(value), 255))
                         elif value == "d":
-                            value = channels[int(chn) - 1] - 10
-                            if value < 0:
-                                value = 0
+                            value = max(0, min(channels[int(chn) - 1] - 10, 255))
                         elif value == "b":
-                            value = channels[int(chn) - 1] + 10
-                            if value > 255:
-                                value = 255
+                            value = max(0, min(channels[int(chn) - 1] + 10, 255))
                         else:
                             value = 0
-                        set_list(channels, int(chn) - 1, value)
+                        channels[int(chn) - 1] = value
                     source.send_data(channels)
             elif cmd[0] == "q":
                 if cmd[2] == "t":
