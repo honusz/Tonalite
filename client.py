@@ -2,6 +2,7 @@ import asyncio
 import os
 import pickle
 import time
+import webbrowser
 
 import socketio
 
@@ -160,9 +161,11 @@ async def test_message(sid, message):
                         if value != "d" and value != "b":
                             value = max(0, min(int(value), 255))
                         elif value == "d":
-                            value = max(0, min(channels[int(chn) - 1] - 10, 255))
+                            value = max(
+                                0, min(channels[int(chn) - 1] - 10, 255))
                         elif value == "b":
-                            value = max(0, min(channels[int(chn) - 1] + 10, 255))
+                            value = max(
+                                0, min(channels[int(chn) - 1] + 10, 255))
                         else:
                             value = 0
                         channels[int(chn) - 1] = value
@@ -186,5 +189,6 @@ if __name__ == '__main__':
         host = "192.168.0.102"
     if thost == "":
         thost = "169.254.39.191"
+    webbrowser.open("http://" + host + ":9898")
     source = DMXSource(universe=1, net_ip=thost)
     web.run_app(app, host=host, port=9898)
