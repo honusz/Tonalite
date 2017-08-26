@@ -77,7 +77,7 @@ input:focus {
   display: flex;
   flex-wrap: wrap;
   padding-left: 0.5em;
-  height: 89vh;
+  height: 87vh;
   overflow-y: scroll; }
 
 .tombstone {
@@ -180,7 +180,7 @@ input:focus {
   display: flex;
   flex-wrap: nowrap;
   overflow-x: scroll;
-  height: 39vh; }
+  height: 37vh; }
 
 body {
   font-family: "Roboto", sans-serif;
