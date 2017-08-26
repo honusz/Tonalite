@@ -81,7 +81,10 @@ async def connect(sid, environ):
 @sio.on('update chan', namespace='/tonalite')
 async def updatechan_message(sid, message):
     chan = int(message['chan'].replace("cval-", "")) - 1
-    value = int(message['val'])
+    if message['val'] != '':
+        value = int(message['val'])
+    else:
+        value = 0
 
     channels[chan] = value
 
@@ -167,7 +170,7 @@ async def test_message(sid, message):
                     value = cmd[3]
                     for chn in schans:
                         setdata = True
-                        if value != "d" and value != "b" and not validus.ishexcolor(value):
+                        if value != "d" and value != "b" and not validus.ishexcolor(str(value)):
                             value = max(0, min(int(value), 255))
                         elif value == "d":
                             value = max(
@@ -175,7 +178,7 @@ async def test_message(sid, message):
                         elif value == "b":
                             value = max(
                                 0, min(channels[int(chn) - 1] + 10, 255))
-                        elif validus.ishexcolor(value):
+                        elif validus.ishexcolor(str(value)):
                             setdata = False
                             values = hex_to_rgb(value)
                             channels[int(chn) - 1] = values[0]
