@@ -189,6 +189,7 @@ if __name__ == '__main__':
         host = "192.168.0.102"
     if thost == "":
         thost = "169.254.39.191"
-    webbrowser.open("http://" + host + ":9898")
+
     source = DMXSource(universe=1, net_ip=thost)
+    webbrowser.open("http://" + host + ":9898")
     web.run_app(app, host=host, port=9898)
