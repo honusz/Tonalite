@@ -50,6 +50,13 @@ sio = socketio.AsyncServer(async_mode='aiohttp')
 app = web.Application()
 sio.attach(app)
 
+def hex_to_rgb(value):
+    value = value.lstrip('#')
+    lv = len(value)
+    return tuple(int(value[i:i+lv/3], 16) for i in range(0, lv, lv/3))
+
+def rgb_to_hex(rgb):
+    return '#%02x%02x%02x' % rgb
 
 async def index(request):
     with open('index.html') as f:
@@ -159,7 +166,8 @@ async def test_message(sid, message):
                 if cmd[2] == "a":
                     value = cmd[3]
                     for chn in schans:
-                        if value != "d" and value != "b":
+                        setdata = True
+                        if value != "d" and value != "b" and not validus.ishexcolor(value):
                             value = max(0, min(int(value), 255))
                         elif value == "d":
                             value = max(
@@ -167,9 +175,17 @@ async def test_message(sid, message):
                         elif value == "b":
                             value = max(
                                 0, min(channels[int(chn) - 1] + 10, 255))
+                        elif validus.ishexcolor(value):
+                            setdata = False
+                            values = hex_to_rgb(value)
+                            channels[int(chn) - 1] = values[0]
+                            channels[int(chn)] = values[1]
+                            channels[int(chn) + 1] = values[2]
                         else:
                             value = 0
-                        channels[int(chn) - 1] = value
+                        if setdata:
+                            channels[int(chn) - 1] = value
+                        setdata = True
                     source.send_data(channels)
             elif cmd[0] == "q":
                 if cmd[2] == "t":
