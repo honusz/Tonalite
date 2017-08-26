@@ -7,11 +7,13 @@ import uuid
 
 default_cid = uuid.uuid1().bytes
 
+
 def int_to_16bit(i):
     """
     return an int as a pair of bytes
     """
     return ((i >> 8) & 0xff, i & 0xff)
+
 
 def length_as_low12(i):
     """
@@ -19,9 +21,11 @@ def length_as_low12(i):
     """
     return(int_to_16bit(0x7000 | i))
 
+
 class LayerBase(object):
     def length(self):
         return len(self.data)
+
 
 class DMPLayer(LayerBase):
     def __init__(self, data):
@@ -51,6 +55,7 @@ class DMPLayer(LayerBase):
 
     def length(self):
         return 10 + 1 + len(self.data)
+
 
 class FramingLayer(LayerBase):
     def __init__(self, dmp_packet=None, universe=1, name=None, priority=100, sequence=0):
@@ -105,5 +110,6 @@ class E131Packet(object):
     def __init__(self, cid=None, name=None, universe=None, data=[], sequence=0):
         self.dmp_packet = DMPLayer(data=data).packet_data()
         self.framing_packet = FramingLayer(name=name, universe=universe,
-                dmp_packet=self.dmp_packet, sequence=sequence).packet_data()
-        self.packet_data = RootLayer(cid=cid, framing_packet=self.framing_packet).packet_data()
+                                           dmp_packet=self.dmp_packet, sequence=sequence).packet_data()
+        self.packet_data = RootLayer(
+            cid=cid, framing_packet=self.framing_packet).packet_data()

@@ -9,7 +9,7 @@ def ip_from_universe(universe):
     high_byte = (universe >> 8) & 0xff
     low_byte = universe & 0xff
     return "239.255.{}.{}".format(high_byte, low_byte)
-    #return "169.254.39.191"
+    # return "169.254.39.191"
 
 
 class DMXSource(object):
