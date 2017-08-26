@@ -5,3 +5,4 @@ Tonalite is a wireless sACN (E.131) lighting control system that runs on desktop
 
 - [python-socketio](https://pypi.org/project/python-socketio/)
 - [aiohttp](https://pypi.org/project/aiohttp/)
+- [validus](https://pypi.org/project/validus/)

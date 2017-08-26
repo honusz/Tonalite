@@ -6,6 +6,7 @@ import webbrowser
 
 import socketio
 
+import validus
 from aiohttp import web
 from sACN import DMXSource
 
