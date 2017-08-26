@@ -82,7 +82,7 @@ input:focus {
 
 .tombstone {
   background-color: #dee5e8;
-  border-radius: 5px;
+  border-radius: 6px;
   padding: 1em 0.5em;
   text-align: center;
   margin-right: 1em;
