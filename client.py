@@ -17,6 +17,12 @@ source = DMXSource(universe=1, net_ip=sacn_ip)
 channels = [0] * 48
 cues = []
 ccue = 0
+show_info = {
+    "name": None,
+    "author": None,
+    "copyright": None,
+    "last_updated": None
+}
 
 running = False
 
@@ -112,6 +118,7 @@ async def test_message(sid, message):
     global running
     global cues
     global channels
+    global show_info
     global ccue
     cmd = message['data'].lower().split()
     if running != False:
@@ -148,10 +155,12 @@ async def test_message(sid, message):
                     os.makedirs(showspath)
                 if cmd[1] == "sv":
                     with open(os.path.join(showspath, cmd[2] + '.show'), 'wb') as f:
-                        pickle.dump(cues, f, pickle.HIGHEST_PROTOCOL)
+                        pickle.dump([cues, show_info], f, pickle.HIGHEST_PROTOCOL)
                 elif cmd[1] == "op":
                     with open(os.path.join(showspath, cmd[2] + '.show'), 'rb') as f:
-                        cues = pickle.load(f)
+                        show = pickle.load(f)
+                        cues = show[0]
+                        show_info = show[1]
         elif len(cmd) == 4:
             if cmd[0] == "c":
                 if "+" in cmd[1]:

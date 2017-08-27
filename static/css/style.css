@@ -182,6 +182,32 @@ input:focus {
   overflow-x: scroll;
   height: 37vh; }
 
+#show {
+  display: flex;
+  flex-wrap: wrap;
+  padding-left: 0.5em; }
+  #show .helpers {
+    margin-right: 1em;
+    background-color: #dee5e8;
+    padding: 1em 1em 0.1em;
+    border-radius: 3px;
+    -webkit-box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.25);
+    box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.25);
+    margin-bottom: 1em; }
+    #show .helpers h1 {
+      margin: 0;
+      margin-bottom: 0.5em; }
+    #show .helpers button {
+      display: block;
+      margin-bottom: 0.5em;
+      width: 100%; }
+    #show .helpers input {
+      margin-bottom: 1em; }
+    #show .helpers input[type="text"] {
+      width: 100%;
+      box-sizing: border-box; }
+
 body {
   font-family: "Roboto", sans-serif;
   color: #afbaca;

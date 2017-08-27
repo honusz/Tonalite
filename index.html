@@ -102,6 +102,22 @@
                 return false;
             });
 
+            $('form#open_show').submit(function(event) {
+                socket.emit('open show', {data: $('#open_show_name').val()});
+                $('#open_show_name').val("");
+                return false;
+            });
+
+            $('form#save_show').submit(function(event) {
+                if (confirm('Are you sure you want to save this show? If another show with the same name exists, it will be overwritten.')) {
+                    socket.emit('save show', {name: $('#save_show_name').val(), author: $('#save_show_author').val(), copyright: $('#save_show_copyright').val()});
+                    $('#save_show_name').val("");
+                    $('#save_show_author').val("");
+                    $('#save_show_copyright').val("");
+                }
+                return false;
+            });
+
             $('.channelVal').change(function(event) {
                 socket.emit('update chan', {val: $("#"+this.id).val(), chan: this.id});
                 return false;
@@ -187,6 +203,29 @@
             <div id="sliders"></div>
             <div id="cues"></div>
         </div>
-        <div id="show" class="tabcontent"></div>
+        <div id="show" class="tabcontent">
+            <div class="helpers">
+                <h1 class="subtitle">Open Show</h1>
+                <form id="open_show" method="POST" action='#'>
+                    <input type="text" id="open_show_name" placeholder="Name">
+                    <br>
+                    <input type="submit" class="btn btn-primary" value="Open">
+                </form>
+                <br>
+            </div>
+            <div class="helpers">
+                <h1 class="subtitle">Save Show</h1>
+                <form id="save_show" method="POST" action='#'>
+                    <input type="text" id="save_show_name" placeholder="Name">
+                    <br>
+                    <input type="text" id="save_show_author" placeholder="Author">
+                    <br>
+                    <input type="text" id="save_show_copyright" placeholder="Copyright">
+                    <br>
+                    <input type="submit" class="btn btn-secondary" value="Save">
+                    <input type="reset" class="btn btn-danger" value="Clear">
+                </form>
+            </div>
+        </div>
     </body>
 </html>
