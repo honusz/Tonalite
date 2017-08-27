@@ -1,7 +1,9 @@
 import asyncio
 import os
 import pickle
+import re
 import time
+import unicodedata
 import webbrowser
 
 import socketio
@@ -25,6 +27,10 @@ show_info = {
 }
 
 running = False
+
+sio = socketio.AsyncServer(async_mode='aiohttp')
+app = web.Application()
+sio.attach(app)
 
 
 def set_list(l, i, v):
@@ -52,17 +58,22 @@ def generate_fade(start, end, secs=3.0, fps=40):
     running = False
 
 
-sio = socketio.AsyncServer(async_mode='aiohttp')
-app = web.Application()
-sio.attach(app)
-
 def hex_to_rgb(value):
     value = value.lstrip('#')
     lv = len(value)
-    return tuple(int(value[i:i+lv//3], 16) for i in range(0, lv, lv//3))
+    return tuple(int(value[i:i + lv // 3], 16) for i in range(0, lv, lv // 3))
+
 
 def rgb_to_hex(rgb):
     return '#%02x%02x%02x' % rgb
+
+
+def slugify(value):
+    value = str(value)
+    value = unicodedata.normalize('NFKC', value)
+    value = re.sub(r'[^\w\s-]', '', value).strip().lower()
+    return re.sub(r'[-\s]+', '-', value)
+
 
 async def index(request):
     with open('index.html') as f:
@@ -99,6 +110,32 @@ async def updatechan_message(sid, message):
     await sio.emit('my response', {'data': channels}, namespace='/tonalite')
 
 
+@sio.on('open show', namespace='/tonalite')
+async def openshow_message(sid, message):
+    global show_info
+    global cues
+    showname = slugify(message['name'])
+    showspath = os.path.join(os.path.expanduser('~'), "tonalite-shows")
+    with open(os.path.join(showspath, showname + '.show'), 'rb') as f:
+        show = pickle.load(f)
+        cues = show[0]
+        show_info = show[1]
+
+    await sio.emit('update show', {'name': show_info['name'], 'author': show_info['author'], 'copyright': show_info['copyright']}, namespace='/tonalite')
+
+@sio.on('save show', namespace='/tonalite')
+async def saveshow_message(sid, message):
+    show_info['name'] = message['name']
+    show_info['author'] = message['author']
+    show_info['copyright'] = message['copyright']
+    show_info['last_updated'] = time.strftime("%c")
+    showspath = os.path.join(os.path.expanduser('~'), "tonalite-shows")
+    with open(os.path.join(showspath, slugify(show_info['name']) + '.show'), 'wb') as f:
+        pickle.dump([cues, show_info], f, pickle.HIGHEST_PROTOCOL)
+
+    await sio.emit('update show', {'name': show_info['name'], 'author': show_info['author'], 'copyright': show_info['copyright']}, namespace='/tonalite')
+
+
 @sio.on('update chans', namespace='/tonalite')
 async def updatechan_message(sid, message):
     chans = message['chans']
@@ -116,9 +153,7 @@ async def updatechan_message(sid, message):
 @sio.on('command message', namespace='/tonalite')
 async def test_message(sid, message):
     global running
-    global cues
     global channels
-    global show_info
     global ccue
     cmd = message['data'].lower().split()
     if running != False:
@@ -148,19 +183,6 @@ async def test_message(sid, message):
                     generate_fade(cues[ccue], cues[int(
                         cmd[1]) - 1], secs=cues[int(cmd[1]) - 1][1])
                     ccue = int(cmd[1]) - 1
-            elif cmd[0] == "sh":
-                showspath = os.path.join(
-                    os.path.expanduser('~'), "tonalite-shows")
-                if not os.path.exists(showspath):
-                    os.makedirs(showspath)
-                if cmd[1] == "sv":
-                    with open(os.path.join(showspath, cmd[2] + '.show'), 'wb') as f:
-                        pickle.dump([cues, show_info], f, pickle.HIGHEST_PROTOCOL)
-                elif cmd[1] == "op":
-                    with open(os.path.join(showspath, cmd[2] + '.show'), 'rb') as f:
-                        show = pickle.load(f)
-                        cues = show[0]
-                        show_info = show[1]
         elif len(cmd) == 4:
             if cmd[0] == "c":
                 if "+" in cmd[1]:
