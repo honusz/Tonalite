@@ -92,7 +92,7 @@ async def cue_control(request):
 
 @sio.on('connect', namespace='/tonalite')
 async def connect(sid, environ):
-    await sio.emit('my response', {'data': channels}, namespace='/tonalite')
+    await sio.emit('my response', {'data': channels, 'cues': cues, 'ccue': ccue}, namespace='/tonalite')
 
 
 @sio.on('update chan', namespace='/tonalite')
@@ -107,7 +107,7 @@ async def updatechan_message(sid, message):
 
     source.send_data(channels)
 
-    await sio.emit('my response', {'data': channels}, namespace='/tonalite')
+    await sio.emit('my response', {'data': channels, 'cues': cues, 'ccue': ccue}, namespace='/tonalite')
 
 
 @sio.on('open show', namespace='/tonalite')
@@ -147,7 +147,7 @@ async def updatechan_message(sid, message):
 
     source.send_data(channels)
 
-    await sio.emit('my response', {'data': channels}, namespace='/tonalite')
+    await sio.emit('my response', {'data': channels, 'cues': cues, 'ccue': ccue}, namespace='/tonalite')
 
 
 @sio.on('command message', namespace='/tonalite')
@@ -225,7 +225,7 @@ async def test_message(sid, message):
                 if cmd[2] == "t":
                     cues[int(cmd[1]) - 1][1] = float(cmd[3])
 
-    await sio.emit('my response', {'data': channels}, namespace='/tonalite')
+    await sio.emit('my response', {'data': channels, 'cues': cues, 'ccue': ccue}, namespace='/tonalite')
 
 app.router.add_static('/static', 'static')
 app.router.add_get('/', index)

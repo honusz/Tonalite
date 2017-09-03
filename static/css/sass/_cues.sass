@@ -2,4 +2,23 @@
     display: flex
     flex-wrap: nowrap
     overflow-x: scroll
-    height: 37vh
+    height: 35vh
+
+.cue
+    margin-right: 1em
+    margin-top: 1.5em
+    background-color: $color-text-dark
+    text-align: center
+    padding: 5em 6em
+    font-family: $font-family
+    color: $color-text
+    font-weight: 400
+    font-size: 15px
+
+.cue:hover
+    cursor: pointer
+    background-color: lighten($color-text-dark, 10%)
+    color: lighten($color-text, 25%)
+
+.cue.active
+    border: solid 5px $color-secondary

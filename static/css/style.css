@@ -150,7 +150,7 @@ input:focus {
   display: flex;
   flex-wrap: nowrap;
   overflow-x: scroll;
-  height: 50vh;
+  height: 52vh;
   background-color: #dee5e8;
   padding-left: 1.5em; }
 
@@ -180,7 +180,26 @@ input:focus {
   display: flex;
   flex-wrap: nowrap;
   overflow-x: scroll;
-  height: 37vh; }
+  height: 35vh; }
+
+.cue {
+  margin-right: 1em;
+  margin-top: 1.5em;
+  background-color: #798ca7;
+  text-align: center;
+  padding: 5em 6em;
+  font-family: "Roboto", sans-serif;
+  color: #afbaca;
+  font-weight: 400;
+  font-size: 15px; }
+
+.cue:hover {
+  cursor: pointer;
+  background-color: #98a6bb;
+  color: #fcfcfd; }
+
+.cue.active {
+  border: solid 5px #9aca40; }
 
 #show {
   display: flex;

@@ -94,6 +94,15 @@
                 for (var i = 0; i < sliders.length; i++) {
                     sliders[i].noUiSlider.set(msg.data[i])
                 };
+
+                $("#cues").empty();
+                for (var i = 0; i < msg.cues.length; i++) {
+                    if (i == msg.ccue) {
+                        $("#cues").append("<div class=\"cue active\" cuenumber=\""+i+"\">"+(i+1)+"</div>");
+                    } else {
+                        $("#cues").append("<div class=\"cue\" cuenumber=\""+i+"\">"+(i+1)+"</div>");
+                    }
+                };
             });
 
             socket.on('update show', function(msg) {
@@ -131,6 +140,11 @@
 
             $('.keypad-btn').click(function(event) {
                 $('#command_data').val($('#command_data').val() + $(this).attr('inputVal'));
+            });
+            $(document).on('click', '.cue', function(event) {
+                console.log("q "+$(this).attr('cuenumber')+" g");
+                socket.emit('command message', {data: "q n"});
+                return false;
             });
         });
         </script>
