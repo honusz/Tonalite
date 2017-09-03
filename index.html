@@ -142,8 +142,7 @@
                 $('#command_data').val($('#command_data').val() + $(this).attr('inputVal'));
             });
             $(document).on('click', '.cue', function(event) {
-                console.log("q "+$(this).attr('cuenumber')+" g");
-                socket.emit('command message', {data: "q n"});
+                socket.emit('command message', {data: "q "+$(this).attr('cuenumber')+" g"});
                 return false;
             });
         });
