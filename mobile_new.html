@@ -5,34 +5,33 @@
         <title>Tonalite Client - Cue Control</title>
         <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
         <script src="static/js/jquery-3.2.1.min.js"></script>
-        <script src="static/js/wNumb.js"></script>
-        <link href="static/css/nouislider.min.css" rel="stylesheet">
-        <script src="static/js/nouislider.min.js"></script>
+        <script src="static/js/rangeslider.min.js"></script>
+        <link href="static/css/rangeslider.css" rel="stylesheet">
         <style>
             body {
                 margin: 0;
                 padding: 0;
             }
             .header {
-                height: 50px;
+                height: 12vh;
                 background-color: #595959;
                 box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.42);
-                padding-left: 20px;
+                padding-left: 1em;
                 position: relative;
             }
             .header .btn {
-                margin-top: 9px;
+                margin-top: 0.5em;
             }
             .btn {
-                width: 70px;
-                height: 30px;
+                width: 6em;
+                height: 3em;
                 border: none;
                 box-shadow: 0px 3px 6px rgba(0,0,0, 0.16);
                 font-family: 'Roboto', sans-serif;
                 font-size: 15px;
                 font-weight: 400;
                 color: #fff;
-                margin-right: 15px;
+                margin-right: 1em;
                 background-color: #595959;
             }
             .btn:hover {
@@ -46,57 +45,48 @@
             }
             #sliders {
                 background-color: #E6E6E6;
-                height: 210px;
+                height: 65vh;
                 overflow: auto;
                 white-space: nowrap;
+                padding-left: 2em;
             }
-            #sliders div{
+            #sliders div {
                 display: inline-block;
+                margin-right: 2em;
+                margin-top: 2em;
             }
-            .sliders {
-                margin-right: 3em;
-                margin-top: 1.5em;
-                height: 75%; }
-                .sliders .noUi-base {
-                  width: 1.1em; }
-                .sliders .noUi-connect {
-                  background: #9aca40; }
-                .sliders .noUi-handle:focus {
-                  outline: none; }
-                .sliders .noUi-handle:hover {
-                  cursor: pointer; }
             .cues {
                 background-color: #B3B3B3;
-                height: 100px;
+                height: 23vh;
                 display: flex;
                 padding-left: 20px;
             }
             .cue-btns {
-                margin-top: 18px;
+                margin-top: 1.25em;
             }
             .cue-btns .btn {
-                margin-bottom: 5px;
+                margin-bottom: 0.75em;
             }
             .cue-items {
                 overflow: auto;
                 white-space: nowrap;
-                margin-top: 18px;
-                height: 71px;
+                margin-top: 1em;
+                height: 7em;
             }
             .cue {
                 display: inline-block;
-                margin-top: 3px;
-                width: 65px;
-                height: 65px;
+                margin-top: 0.2em;
+                width: 5em;
+                height: 5em;
                 background-color: #FFFFFF;
                 box-shadow: 1px 3px 6px rgba(0,0,0, 0.16);
-                margin-right: 18px;
+                margin-right: 1em;
                 text-align: center;
                 font-family: 'Roboto', sans-serif;
                 font-weight: 700;
                 font-size: 20px;
                 color: #959A98;
-                line-height: 65px;
+                line-height: 5em;
             }
             .cue.active {
                 outline: solid 3px #95989A;
@@ -105,31 +95,6 @@
                 cursor: pointer;
             }
         </style>
-        <script>
-            $(document).ready(function(){
-                for(var i = 0; i <= 47; i++) {
-                    $("#sliders").append("<div><div class=\"sliders\" id=\"sliderchan-"+(i+1)+"\"></div><br><span class=\"slidernum\">"+(i+1)+"</span></div>");                
-                }
-                var sliders = document.getElementsByClassName('sliders');
-                
-                for ( var i = 0; i < sliders.length; i++ ) {
-                
-                    noUiSlider.create(sliders[i], {
-                        start: 0,
-                        connect: [true, false],
-                        direction: 'rtl',
-                        orientation: "vertical",
-                        range: {
-                            'min': 0,
-                            'max': 255
-                        },
-                        format: wNumb({
-                            decimals: 0,
-                        })
-                    });
-                }
-            });
-        </script>
     </head>
     <body>
         <div class="header">
@@ -137,7 +102,8 @@
             <button class="btn btn-red">Update</button>
         </div>
         <div id="sliders">
-
+            <input type="range" data-orientation="vertical">
+            <input type="range" data-orientation="vertical">
         </div>
         <div class="cues">
             <div class="cue-items">
@@ -156,5 +122,13 @@
                 <button class="btn">Last</button>
             </div>
         </div>
+        <script>
+            var $element = $('input[type="range"]');
+            
+            $element
+              .rangeslider({
+                polyfill: false
+              });
+        </script>
     </body>
 </html>
