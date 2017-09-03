@@ -4,6 +4,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Tonalite Client - Cue Control</title>
         <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+        <script src="static/js/jquery-3.2.1.min.js"></script>
+        <script src="static/js/wNumb.js"></script>
+        <link href="static/css/nouislider.min.css" rel="stylesheet">
+        <script src="static/js/nouislider.min.js"></script>
         <style>
             body {
                 margin: 0;
@@ -40,10 +44,27 @@
             .btn-red {
                 background-color: #FF5959;
             }
-            .sliders {
+            #sliders {
                 background-color: #E6E6E6;
                 height: 210px;
+                overflow: auto;
+                white-space: nowrap;
             }
+            #sliders div{
+                display: inline-block;
+            }
+            .sliders {
+                margin-right: 3em;
+                margin-top: 1.5em;
+                height: 75%; }
+                .sliders .noUi-base {
+                  width: 1.1em; }
+                .sliders .noUi-connect {
+                  background: #9aca40; }
+                .sliders .noUi-handle:focus {
+                  outline: none; }
+                .sliders .noUi-handle:hover {
+                  cursor: pointer; }
             .cues {
                 background-color: #B3B3B3;
                 height: 100px;
@@ -57,8 +78,8 @@
                 margin-bottom: 5px;
             }
             .cue-items {
-                overflow-x: scroll;
-                overflow-y: hidden;
+                overflow: auto;
+                white-space: nowrap;
                 margin-top: 18px;
                 height: 71px;
             }
@@ -84,13 +105,38 @@
                 cursor: pointer;
             }
         </style>
+        <script>
+            $(document).ready(function(){
+                for(var i = 0; i <= 47; i++) {
+                    $("#sliders").append("<div><div class=\"sliders\" id=\"sliderchan-"+(i+1)+"\"></div><br><span class=\"slidernum\">"+(i+1)+"</span></div>");                
+                }
+                var sliders = document.getElementsByClassName('sliders');
+                
+                for ( var i = 0; i < sliders.length; i++ ) {
+                
+                    noUiSlider.create(sliders[i], {
+                        start: 0,
+                        connect: [true, false],
+                        direction: 'rtl',
+                        orientation: "vertical",
+                        range: {
+                            'min': 0,
+                            'max': 255
+                        },
+                        format: wNumb({
+                            decimals: 0,
+                        })
+                    });
+                }
+            });
+        </script>
     </head>
     <body>
         <div class="header">
             <button class="btn btn-green">Record</button>
             <button class="btn btn-red">Update</button>
         </div>
-        <div class="sliders">
+        <div id="sliders">
 
         </div>
         <div class="cues">
