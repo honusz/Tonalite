@@ -1,0 +1,1 @@
+pyinstaller --onefile tonalite.spec
