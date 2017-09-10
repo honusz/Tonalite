@@ -3,7 +3,8 @@
 block_cipher = None
 
 added_files = [
-    ( 'static', 'static' )
+    ( 'static', 'static' ),
+    ( 'app.html', '.' ),
 ]
 a = Analysis(['tonalite.py'],
              pathex=['C:\\Users\\johnr\\Documents\\Tonalite'],
