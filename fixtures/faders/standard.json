@@ -3,6 +3,9 @@
     "channels": [
         {
             "id": 1,
+            "name": "Tracker 1",
+            "fade": true,
+            "value": 0,
             "type": "standard"
         }
     ]

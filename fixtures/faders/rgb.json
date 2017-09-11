@@ -3,7 +3,24 @@
     "channels": [
         {
             "id": 1,
-            "type": "rgb"
+            "name": "R",
+            "fade": true,
+            "value": 0,
+            "type": "r"
+        },
+        {
+            "id": 2,
+            "name": "G",
+            "fade": true,
+            "value": 0,
+            "type": "g"
+        },
+        {
+            "id": 3,
+            "name": "B",
+            "fade": true,
+            "value": 0,
+            "type": "b"
         }
     ]
 }

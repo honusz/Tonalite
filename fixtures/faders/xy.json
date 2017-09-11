@@ -3,7 +3,17 @@
     "channels": [
         {
             "id": 1,
-            "type": "xy"
+            "name": "X",
+            "fade": true,
+            "value": 0,
+            "type": "x"
+        },
+        {
+            "id": 2,
+            "name": "Y",
+            "fade": true,
+            "value": 0,
+            "type": "y"
         }
     ]
 }
