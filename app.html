@@ -4,11 +4,52 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link href="/static/css/main.css" rel="stylesheet">
+        <style>
+          ul {
+            padding: 0;
+            list-style-type: none;
+          }
+          #demo {
+            width: 200px; /* Set a width if you like */
+            
+        }
+        #demo li {
+          background-color: #eee; /* Grey background color */
+          color: black; /* Black text color */
+          display: block; /* Make the links appear below each other */
+          padding: 12px; /* Add some padding */
+          text-decoration: none; /* Remove underline from links */
+      }
+      #demo li:hover {
+        background-color: #ccc; /* Dark grey background on mouse-over */
+    }
+        </style>
     </head>
     <body>
-        <div id="app">
-            {{ message }}
-        </div>
+      <script type="text/x-template" id="item-template">
+        <li>
+          <div v-show="!open"
+            @click="toggle"
+            @dblclick="changeType">
+            {{model.name}}
+          </div>
+          <ul v-show="open" v-if="isFolder">
+            <item
+              class="item"
+              v-for="model in model.children"
+              :model="model">
+            </item>
+            <li class="add" @click="addChild">+</li>
+          </ul>
+        </li>
+      </script>
+
+      <ul id="demo">
+        <item
+          class="item"
+          :model="treeData">
+        </item>
+      </ul>
         <script src="/static/js/vue.min.js"></script>
         <script src="/static/js/app.js"></script>
     </body>

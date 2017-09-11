@@ -1,0 +1,9 @@
+{
+    "name": "Standard",
+    "channels": [
+        {
+            "id": 1,
+            "type": "standard"
+        }
+    ]
+}
