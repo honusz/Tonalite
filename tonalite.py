@@ -3,7 +3,30 @@ import webbrowser
 from multiprocessing import Process
 from tkinter import *
 
+import socketio
+
+from aiohttp import web
 from sACN import DMXSource
+
+sio = socketio.AsyncServer(async_mode='aiohttp')
+app = web.Application()
+sio.attach(app)
+
+async def index(request):
+    with open('app.html') as f:
+        return web.Response(text=f.read(), content_type='text/html')
+
+app.router.add_static('/static', 'static')
+app.router.add_get('/', index)
+
+
+def set_list(l, i, v):
+    try:
+        l[i] = v
+    except IndexError:
+        for _ in range(i - len(l) + 1):
+            l.append(None)
+        l[i] = v
 
 
 def server(app_ip, app_port, sacn_ip):
@@ -16,7 +39,7 @@ def server(app_ip, app_port, sacn_ip):
 
     source = DMXSource(universe=1, net_ip=sacn_ip)
     webbrowser.open("http://" + app_ip + ":" + app_port)
-    #web.run_app(app, host=app_ip, port=int(app_port))
+    web.run_app(app, host=app_ip, port=int(app_port))
 
 
 class App:
