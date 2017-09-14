@@ -9,12 +9,35 @@
         <link href="/static/css/main.css" rel="stylesheet">
     </head>
     <body>
+        <script type="x/template" id="modal-template">
+            <transition name="modal">
+                <div class="modal-mask" @click="close" v-show="show">
+                    <div class="modal-container" @click.stop>
+                        <slot></slot>
+                    </div>
+                </div>
+            </transition>
+        </script>
+        <script type="x/template" id="add-modal-template">
+            <modal :show="show" @close="close">
+                <div class="modal-body">
+                    <h2>Controls</h2>
+                    <div class="choice-option">
+                        <div class="choice-box">
+                            <i class="fal fa-sliders-v"></i>
+                        </div>
+                        <h3>DMX Fader</h3>
+                    </div>
+                </div>
+            </modal>
+        </script>
         <div id="app">
             <div class="menu">
-                <a class="menu-item"><i class="fal fa-plus"></i></a>
+                <a class="menu-item" @click="showAddModal = true"><i class="fal fa-plus"></i></a>
             </div>
             <div class="sliders"></div>
             <div class="scenes"></div>
+            <add-modal :show="showAddModal" @close="showAddModal = false"></add-modal>
         </div>
         
     	<script src="/static/js/vue.min.js"></script>
