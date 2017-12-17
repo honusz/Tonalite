@@ -1,6 +1,8 @@
 import socketio
 import webbrowser
 
+import pickle
+
 from aiohttp import web
 from sACN import DMXSource
 
@@ -9,6 +11,7 @@ app = web.Application()
 sio.attach(app)
 
 fixtures = []
+submasters = []
 channels = [0] * 48
 cues = []
 show = {
@@ -25,8 +28,12 @@ async def index(request):
     with open('app.html') as f:
         return web.Response(text=f.read(), content_type='text/html')
 
+async def saveshow(request):
+        return web.Response(body=pickle.dumps([fixtures, submasters, cues, show], pickle.HIGHEST_PROTOCOL), headers={'Content-Disposition': 'attachment; filename="f.tonalite"'}, content_type='application/octet-stream')
+
 app.router.add_static('/static', 'static')
 app.router.add_get('/', index)
+app.router.add_get('/show', saveshow)
 
 def server(app_ip, app_port, sacn_ip):
     if app_ip == "":
