@@ -20,4 +20,8 @@ function openTab(evt, tabName) {
 $(document).ready(function(){
   document.getElementById("keyboardTabBtn").click();
   var socket = io.connect('http://' + document.domain + ':' + location.port + '/tonalite');
+
+  $('.kbtn').click(function(event) {
+    $('#commandInput').val($('#commandInput').val() + $(this).attr('inputVal'));
+  });
 });
