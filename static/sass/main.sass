@@ -1,69 +1,32 @@
-@import config
-@import slider
-@import modal
-@import button
-
-*
-    box-sizing: border-box
+@import "config"
+@import "responsive"
+@import "header"
+@import "content"
+@import "footer"
+@import "button"
+@import "channels"
+@import "cues"
+@import "keyboard"
 
 body
-    font-family: 'Catamaran', sans-serif
+    margin: 0
+    padding: 0
+    font-family: 'Roboto', sans-serif
     font-weight: 400
-    background-color: $background-color
+    background-color: $bg-color
     color: $text-color
-    padding: 0
-    margin: 0
+    height: 100vh
 
-h1, h2, h3
-    font-family: 'Catamaran', sans-serif
-    font-weight: 300
-    margin: 0
-    padding: 0
-    color: $text-color-dark
-
-.menu
-    height: 10vh
-    line-height: 10vh
-    border-bottom: solid 1px $border-darker-color
-    overflow: hidden
-
-.menu-item
-    font-size: 2em
-    position: absolute
-    vertical-align: middle
-    color: $text-light-color
-    margin-left: 1vw
-
-.menu-item:hover
-    color: $text-color
-    cursor: pointer
-
-.sliders
-    height: 65vh
-    overflow: hidden
-
-.scenes
-    height: 25vh
-    border-top: solid 1px $border-darker-color
-    overflow: hidden
-
-.choice-box
-    width: 6vw
-    height: 6vw
-    border-radius: 15px
-    background-color: $background-color
-    line-height: 5.5vw
-    text-align: center
-    font-size: 2em
-    color: $text-light-color
-    margin: 0
-
-.choice-box:hover
-    color: $text-color
-
-.choice-option
-    margin-top: 2vh
-    color: $text-color
-
-.choice-option:hover
-    cursor: pointer
+input
+    width: 100%
+    height: 3em
+    border: none
+    border-radius: 0px
+    margin-bottom: 0.5em
+    padding-left: 1em
+    padding-right: 1em
+    font-family: 'Roboto', sans-serif
+    font-weight: 400
+    background-color: $text-color
+    color: $bg-color
+    font-size: 0.9em

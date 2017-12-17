@@ -1,21 +1,37 @@
-button
-    font-family: 'Catamaran', sans-serif
-    font-weight: 300
-    border-radius: 10px
-    font-size: 17px
-    padding: 0.4em 0.8em
-    border: solid 1px $border-light-color
+.btn
+    font-family: 'Roboto', sans-serif
+    font-weight: 500
+    border-radius: 0px
+    border: none
+    font-size: 1em
+    color: $text-color
+    padding: 0.5em 1em
 
-.btn-dark
-    background-color: $background-color
-    border: solid 1px $border-darker-color
-    color: $text-light-color
+    &:hover
+        cursor: pointer
+        color: darken($text-color, 15%)
+    
+    &:focus
+        outline: none
+    
+    &::-moz-focus-inner
+        outline: none
+        border: 0px
 
-button:hover
-    cursor: pointer
-    outline: none
-    background-color: $background-dark-color
-    color: $text-light-color
+.btn-green
+    background-color: $green-color
 
-button:focus
-    outline: none
+.btn-yellow
+    background-color: $yellow-color
+
+.btn-red
+    background-color: $red-color
+
+.btn-blue
+    background-color: $active-text-color
+
+.btn-full
+    width: 100%
+
+.btn-tall
+    height: 2.7em

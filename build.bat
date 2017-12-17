@@ -1,1 +1,0 @@
-pyinstaller --onefile --noconsole --windowed tonalite.spec

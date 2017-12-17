@@ -1,0 +1,43 @@
+#cue-list, #cue-settings
+    margin-left: 1em
+    margin-top: 1em
+    padding: 1em
+    background-color: $bg-light-color
+
+#cue-list
+    max-height: 70vh
+    overflow-y: auto
+    
+    .btn
+        margin-bottom: 1em
+
+#cue-settings
+    h1
+        font-weight: 400
+    h2
+        padding: 0
+        margin: 0
+        font-weight: 500
+        margin-bottom: 0.5em
+
+.cue-item
+    width: 100%
+    background-color: darken($text-dark-color, 25%)
+    margin-bottom: 1em
+    padding: 1em
+    color: $text-dark-color
+
+    &:hover
+        cursor: pointer
+
+    h4
+        font-weight: 500
+        color: $text-color
+        margin: 0
+        padding: 0
+    
+.background-green
+    background-color: $green-color
+
+.no-hover:hover
+    cursor: default
