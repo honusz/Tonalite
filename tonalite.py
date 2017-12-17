@@ -5,6 +5,7 @@ import pickle
 
 from aiohttp import web
 from sACN import DMXSource
+from pyudmx import uDMXDevice
 
 sio = socketio.AsyncServer(async_mode='aiohttp')
 app = web.Application()
@@ -44,6 +45,7 @@ def server(app_ip, app_port, sacn_ip):
         sacn_ip = "127.0.0.1"
 
     source = DMXSource(universe=1, net_ip=sacn_ip)
+    sourceusb = uDMXDevice()
     webbrowser.open("http://" + app_ip + ":" + app_port)
     web.run_app(app, host=app_ip, port=int(app_port))
 

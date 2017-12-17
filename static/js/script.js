@@ -24,4 +24,15 @@ $(document).ready(function(){
   $('.kbtn').click(function(event) {
     $('#commandInput').val($('#commandInput').val() + $(this).attr('inputVal'));
   });
+
+  $('#commandSubmitBtn').click(function(event) {
+    socket.emit('command message', {data: $('#commandInput').val()});
+    $('#commandInput').val("");
+    return false;
+  });
+
+  $('#commandClearBtn').click(function(event) {
+    $('#commandInput').val("");
+    return false;
+  });
 });
