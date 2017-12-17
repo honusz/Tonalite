@@ -48,4 +48,4 @@ def server(app_ip, app_port, sacn_ip):
     web.run_app(app, host=app_ip, port=int(app_port))
 
 if __name__ == "__main__":
-    server("", "", "")
+    server("192.168.0.104", "", "")
