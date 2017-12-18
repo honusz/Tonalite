@@ -77,18 +77,20 @@ async def update_cue(sid, message):
     cues[clickedCue]["values"] = channels[:]
     await sio.emit('success', {'message': "Cue updated!", 'channels': channels, 'cues': cues, 'selected_cue': clickedCue}, namespace='/tonalite')
 
+
 @sio.on('cue move', namespace='/tonalite')
 async def cue_move(sid, message):
     global clickedCue
     if message['action'] == "up":
         if not clickedCue == 0:
-            cues.insert(clickedCue-1, cues.pop(clickedCue))
+            cues.insert(clickedCue - 1, cues.pop(clickedCue))
             clickedCue -= 1
     elif message['action'] == "down":
         if not clickedCue == len(cues):
-            cues.insert(clickedCue+1, cues.pop(clickedCue))
+            cues.insert(clickedCue + 1, cues.pop(clickedCue))
             clickedCue += 1
     await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue}, namespace='/tonalite')
+
 
 @sio.on('save cue', namespace='/tonalite')
 async def save_cue(sid, message):
