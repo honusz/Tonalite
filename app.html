@@ -125,27 +125,27 @@
           <div id="cues"></div>
           <div class="row">
             <div class="col-6 keyboard-btn">
-              <button style="margin-bottom: 0px;" class="btn btn-yellow btn-full" id="cueUpBtn"><i class="fas fa-chevron-up"></i></button>
+              <button style="margin-bottom: 0px;" class="hidden-item btn btn-yellow btn-full" id="cueUpBtn"><i class="fas fa-chevron-up"></i></button>
             </div>
             <div class="col-6 keyboard-btn">
-              <button style="margin-bottom: 0px;" class="btn btn-yellow btn-full" id="cueDownBtn"><i class="fas fa-chevron-down"></i></button>
+              <button style="margin-bottom: 0px;" class="hidden-item btn btn-yellow btn-full" id="cueDownBtn"><i class="fas fa-chevron-down"></i></button>
             </div>
           </div>
           <button style="margin-bottom: 0px;" class="btn btn-green btn-full" id="recordCueBtn"><i class="fas fa-camera"></i> Record New</button>
         </div>
         <div class="col-8 col-sm-full" id="cue-settings">
-          <h2>Cue Settings:</h2>
-          <input type="text" placeholder="Name:" maxlength="20" id="cueName">
-          <br>
-          <input type="text" placeholder="Description:" maxlength="70" id="cueDescription">
-          <br>
-          <input type="number" placeholder="Time:" value="3" min="0" id="cueTime">
-          <br>
-          <input type="number" placeholder="Follow:" value="0" min="0" id="cueFollow">
-          <br>
-          <button class="btn btn-green" id="saveCue"><i class="fas fa-save"></i> Save</button>
-          <button class="btn btn-yellow" id="updateCue"><i class="fas fa-edit"></i> Update</button>
-          <button class="btn btn-red"><i class="fas fa-trash-alt"></i> Delete</button>
+          <h2 class="hidden-item">Cue Settings:</h2>
+          <input class="hidden-item" type="text" placeholder="Name:" maxlength="20" id="cueName">
+          <br class="hidden-item">
+          <input class="hidden-item" type="text" placeholder="Description:" maxlength="70" id="cueDescription">
+          <br class="hidden-item">
+          <input class="hidden-item" type="number" placeholder="Time:" value="3" min="0" id="cueTime">
+          <br class="hidden-item">
+          <input class="hidden-item" type="number" placeholder="Follow:" value="0" min="0" id="cueFollow">
+          <br class="hidden-item">
+          <button class="hidden-item btn btn-green" id="saveCue"><i class="fas fa-save"></i> Save</button>
+          <button class="hidden-item btn btn-yellow" id="updateCue"><i class="fas fa-edit"></i> Update</button>
+          <button class="hidden-item btn btn-red" id="deleteCue"><i class="fas fa-trash-alt"></i> Delete</button>
         </div>
     </div>
     <div class="row content" id="Show">

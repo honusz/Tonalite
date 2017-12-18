@@ -89,6 +89,9 @@ async def cue_move(sid, message):
         if not clickedCue == len(cues):
             cues.insert(clickedCue + 1, cues.pop(clickedCue))
             clickedCue += 1
+    elif message['action'] == "delete":
+        cues.pop(clickedCue)
+        clickedCue = None
     await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue}, namespace='/tonalite')
 
 
@@ -109,8 +112,8 @@ async def command_message(sid, message):
     if len(cmd) == 2:
         if cmd[0] == "r" and cmd[1] == "q":
             cues.append({
-                "name": "New Cue",
-                "description": "this is a new cue",
+                "name": "Cue "+str(len(cues)+1),
+                "description": "This is a new cue",
                 "time": 3,
                 "follow": 0,
                 "values": channels[:]

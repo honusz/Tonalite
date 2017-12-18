@@ -46,6 +46,19 @@ function updateCues(msg) {
       }
     }
   }
+  if (msg.selected_cue == null) {
+    $("#cueName").val("");
+    $("#cueDescription").val("");
+    $("#cueTime").val("");
+    $("#cueFollow").val("");
+  }
+  if (msg.cues.length != 0) {
+    if ($(".hidden-item").hasClass("hidden")) {
+      $(".hidden-item").removeClass('hidden');
+    }
+  } else {
+    $(".hidden-item").addClass('hidden');
+  }
   return 0;
 }
 
@@ -118,6 +131,10 @@ $(document).ready(function () {
 
   $("#cueDownBtn").click(function (event) {
     socket.emit('cue move', { action: "down" });
+  });
+
+  $("#deleteCue").click(function (event) {
+    socket.emit('cue move', { action: "delete" });
   });
 
   $('#commandClearBtn').click(function (event) {
