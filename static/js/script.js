@@ -101,7 +101,7 @@ $(document).ready(function () {
   });
 
   $('#recordCueBtn').click(function (event) {
-    socket.emit('command message', { command: "rnc"});
+    socket.emit('command message', { command: "r q"});
     return false;
   });
 

@@ -92,8 +92,8 @@ async def command_message(sid, message):
     global channels
     global cues
     cmd = message['command'].lower().split()
-    if len(cmd) == 1:
-        if cmd[0] == "rnc":
+    if len(cmd) == 2:
+        if cmd[0] == "r" and cmd[1] == "q":
             cues.append({
                 "name": "New Cue",
                 "description": "this is a new cue",
