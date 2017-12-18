@@ -64,8 +64,8 @@ async def update_cue(sid, message):
     print(cues[clickedCue])
     cues[clickedCue]["name"] = message['name']
     cues[clickedCue]["description"] = message['description']
-    cues[clickedCue]["time"] = message['time']
-    cues[clickedCue]["follow"] = message['follow']
+    cues[clickedCue]["time"] = int(message['time'])
+    cues[clickedCue]["follow"] = int(message['follow'])
     cues[clickedCue]["values"] = channels[:]
     print(cues[clickedCue])
     await sio.emit('success', {'message': "Cue updated!"}, namespace='/tonalite')
@@ -76,8 +76,8 @@ async def save_cue(sid, message):
     print(cues[clickedCue])
     cues[clickedCue]["name"] = message['name']
     cues[clickedCue]["description"] = message['description']
-    cues[clickedCue]["time"] = message['time']
-    cues[clickedCue]["follow"] = message['follow']
+    cues[clickedCue]["time"] = int(message['time'])
+    cues[clickedCue]["follow"] = int(message['follow'])
     print(cues[clickedCue])
     await sio.emit('success', {'message': "Cue saved!"}, namespace='/tonalite')
 
