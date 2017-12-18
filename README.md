@@ -1,10 +1,13 @@
 # Tonalite
 
+Tonalite is a mobile lighting controller written in Python and JavaScript using SocketIO.
+
 ## Required Features
 
 - Save/load show
 - Record and playback cues
 - Change cue time
+- Mobile responsive
 
 ## Wanted Features
 
@@ -15,7 +18,9 @@
 
 ## Implimented Features
 
-None yet...
+- Save show
+- Record cues
+- Change cue time
 
 ## Implimentation Details
 
