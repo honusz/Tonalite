@@ -96,6 +96,16 @@ $(document).ready(function () {
   socket.on('update all', function (msg) {
     updateChannels(msg);
     updateCues(msg);
+    if (msg.show.name != "") {
+      $("#showName").val(msg.show.name);
+      $("#showDescription").val(msg.show.description);
+      $("#showAuthor").val(msg.show.author);
+      $("#showCopyright").val(msg.show.copyright);
+    }
+  });
+
+  socket.on('redirect', function (msg) {
+    window.location = 'http://' + document.domain + ':' + location.port + msg.url
   });
 
   $('.kbtn').click(function (event) {
@@ -135,6 +145,10 @@ $(document).ready(function () {
 
   $("#deleteCue").click(function (event) {
     socket.emit('cue move', { action: "delete" });
+  });
+
+  $("#saveShowBtn").click(function (event) {
+    socket.emit('save show', { name: $("#showName").val(), description: $("#showDescription").val(), author: $("#showAuthor").val(), copyright: $("#showCopyright").val() });
   });
 
   $('#commandClearBtn').click(function (event) {

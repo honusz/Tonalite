@@ -2,6 +2,7 @@ import pickle
 import re
 import unicodedata
 import webbrowser
+import datetime
 
 import socketio
 from aiohttp import web
@@ -19,11 +20,11 @@ submasters = []
 channels = [0] * 48
 cues = []
 show = {
-    "name": None,
-    "description": None,
-    "authior": None,
-    "copyright": None,
-    "last_updated": None,
+    "name": "",
+    "description": "",
+    "authior": "",
+    "copyright": "",
+    "last_updated": "",
     "fixtures": [],
     "cues": []
 }
@@ -87,12 +88,12 @@ async def store_show_handler(request):
 
 
 async def saveshow(request):
-    return web.Response(body=pickle.dumps([fixtures, submasters, cues, show], pickle.HIGHEST_PROTOCOL), headers={'Content-Disposition': 'attachment; filename="f.tonalite"'}, content_type='application/octet-stream')
+    return web.Response(body=pickle.dumps([fixtures, submasters, cues, show], pickle.HIGHEST_PROTOCOL), headers={'Content-Disposition': 'attachment; filename="' + slugify(show["name"]) + '.tonalite"'}, content_type='application/octet-stream')
 
 
 @sio.on('connect', namespace='/tonalite')
 async def connect(sid, environ):
-    await sio.emit('update all', {'channels': channels, 'cues': cues, 'selected_cue': clickedCue}, namespace='/tonalite')
+    await sio.emit('update all', {'channels': channels, 'cues': cues, 'selected_cue': clickedCue, 'show': show}, namespace='/tonalite')
 
 
 @sio.on('cue info', namespace='/tonalite')
@@ -109,7 +110,18 @@ async def update_cue(sid, message):
     cues[clickedCue]["time"] = int(message['time'])
     cues[clickedCue]["follow"] = int(message['follow'])
     cues[clickedCue]["values"] = channels[:]
-    await sio.emit('success', {'message': "Cue updated!", 'channels': channels, 'cues': cues, 'selected_cue': clickedCue}, namespace='/tonalite')
+    await sio.emit('success', {'message': "Cue updated!", 'channels': channels, 'cues': cues, 'selected_cue': clickedCue, 'show': show}, namespace='/tonalite')
+
+
+@sio.on('save show', namespace='/tonalite')
+async def save_show(sid, message):
+    global show
+    show["name"] = message['name']
+    show["description"] = message['description']
+    show["author"] = message['author']
+    show["copyright"] = message['copyright']
+    show["last_updated"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    await sio.emit('redirect', {'url': "/show"}, namespace='/tonalite')
 
 
 @sio.on('cue move', namespace='/tonalite')
@@ -135,7 +147,7 @@ async def save_cue(sid, message):
     cues[clickedCue]["description"] = message['description']
     cues[clickedCue]["time"] = int(message['time'])
     cues[clickedCue]["follow"] = int(message['follow'])
-    await sio.emit('success', {'message': "Cue saved!"}, namespace='/tonalite')
+    await sio.emit('success', {'message': "Cue saved!", 'channels': channels, 'cues': cues, 'selected_cue': clickedCue, 'show': show}, namespace='/tonalite')
 
 
 @sio.on('command message', namespace='/tonalite')
