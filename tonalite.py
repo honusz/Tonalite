@@ -75,16 +75,19 @@ async def update_cue(sid, message):
     cues[clickedCue]["time"] = int(message['time'])
     cues[clickedCue]["follow"] = int(message['follow'])
     cues[clickedCue]["values"] = channels[:]
-    await sio.emit('success', {'message': "Cue updated!"}, namespace='/tonalite')
+    await sio.emit('success', {'message': "Cue updated!", 'channels': channels, 'cues': cues, 'selected_cue': clickedCue}, namespace='/tonalite')
 
 @sio.on('cue move', namespace='/tonalite')
-async def update_cue(sid, message):
-    if message.action == "up":
-        cues.insert(clickedCue-1, cues.pop(clickedCue))
-        clickedCue -= 1
-    elif message.action == "down":
-        cues.insert(clickedCue+1, cues.pop(clickedCue))
-        clickedCue += 1
+async def cue_move(sid, message):
+    global clickedCue
+    if message['action'] == "up":
+        if not clickedCue == 0:
+            cues.insert(clickedCue-1, cues.pop(clickedCue))
+            clickedCue -= 1
+    elif message['action'] == "down":
+        if not clickedCue == len(cues):
+            cues.insert(clickedCue+1, cues.pop(clickedCue))
+            clickedCue += 1
     await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue}, namespace='/tonalite')
 
 @sio.on('save cue', namespace='/tonalite')
@@ -164,4 +167,4 @@ def server(app_ip, app_port, sacn_ip):
 
 
 if __name__ == "__main__":
-    server("192.168.0.104", "", "")
+    server("", "", "")

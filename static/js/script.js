@@ -59,6 +59,8 @@ $(document).ready(function () {
   var socket = io.connect('http://' + document.domain + ':' + location.port + '/tonalite');
 
   socket.on('success', function (msg) {
+    updateChannels(msg);
+    updateCues(msg);
     alert(msg.message);
   });
 
