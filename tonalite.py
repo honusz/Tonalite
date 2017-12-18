@@ -14,7 +14,12 @@ sio.attach(app)
 fixtures = []
 submasters = []
 channels = [0] * 48
-cues = []
+cues = [
+    {
+        "name": "Cue 1",
+        "description": "This is a test cue that does not go above 100 characters because it is"
+    }
+]
 show = {
     "name": None,
     "description": None,
@@ -51,8 +56,12 @@ async def connect(sid, environ):
     await sio.emit('update all', {'channels': channels, 'cues': cues}, namespace='/tonalite')
 
 
+@sio.on('cue info', namespace='/tonalite')
+async def cue_info(sid, message):
+    print(message['cue_id'])
+
 @sio.on('command message', namespace='/tonalite')
-async def test_message(sid, message):
+async def command_message(sid, message):
     global channels
     cmd = message['command'].lower().split()
     if len(cmd) == 4:

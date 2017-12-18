@@ -31,6 +31,16 @@ function updateChannels(msg) {
     }
     $("#cval-" + (i + 1)).text(msg.channels[i]);
   };
+  return 0;
+}
+
+function updateCues(msg) {
+  $("#cues").empty();
+  console.log(msg);
+  for (var i = 0; i <= msg.cues.length; i++) {
+    $("#cues").append("<div class=\"cue-item\" cueval=\"cue-" + i + "\"><h4>"+msg.cues[i].name+"</h4>"+msg.cues[i].description+"</div>");
+  }
+  return 0;
 }
 
 $(document).ready(function () {
@@ -48,10 +58,15 @@ $(document).ready(function () {
 
   socket.on('update all', function (msg) {
     updateChannels(msg);
+      updateCues(msg);
   });
 
   $('.kbtn').click(function (event) {
     $('#commandInput').val($('#commandInput').val() + $(this).attr('inputVal'));
+  });
+
+  $('.cue-item').click(function (event) {
+    console.log($(this).attr('cueval'));
   });
 
   $('#commandSubmitBtn').click(function (event) {
