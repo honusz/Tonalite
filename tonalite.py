@@ -1,12 +1,14 @@
-import socketio
+import pickle
+import re
+import unicodedata
 import webbrowser
 
-import pickle
+import socketio
+from aiohttp import web
 from multidict import MultiDict
 
-from aiohttp import web
-from sACN import DMXSource
 from pyudmx import uDMXDevice
+from sACN import DMXSource
 
 sio = socketio.AsyncServer(async_mode='aiohttp')
 app = web.Application()
@@ -52,6 +54,7 @@ async def index(request):
     with open('app.html') as f:
         return web.Response(text=f.read(), content_type='text/html')
 
+
 async def store_show_handler(request):
     global cues
     global fixtures
@@ -74,6 +77,7 @@ async def store_show_handler(request):
     show = content[3]
 
     return web.HTTPFound('/')
+
 
 async def saveshow(request):
     return web.Response(body=pickle.dumps([fixtures, submasters, cues, show], pickle.HIGHEST_PROTOCOL), headers={'Content-Disposition': 'attachment; filename="f.tonalite"'}, content_type='application/octet-stream')
@@ -135,7 +139,7 @@ async def command_message(sid, message):
     if len(cmd) == 2:
         if cmd[0] == "r" and cmd[1] == "q":
             cues.append({
-                "name": "Cue "+str(len(cues)+1),
+                "name": "Cue " + str(len(cues) + 1),
                 "description": "This is a new cue",
                 "time": 3,
                 "follow": 0,
@@ -177,6 +181,7 @@ app.router.add_static('/static', 'static')
 app.router.add_get('/', index)
 app.router.add_get('/show', saveshow)
 app.router.add_post('/show', store_show_handler)
+
 
 def server(app_ip, app_port, sacn_ip):
     global source

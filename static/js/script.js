@@ -74,7 +74,7 @@ $(document).ready(function () {
   socket.on('success', function (msg) {
     updateChannels(msg);
     updateCues(msg);
-    alert(msg.message);
+    console.log(msg.message);
   });
 
   socket.on('update chans', function (msg) {
@@ -107,7 +107,7 @@ $(document).ready(function () {
   });
 
   $('#saveCue').click(function (event) {
-    socket.emit('update cue', { name: $('#cueName').val(), description: $('#cueDescription').val(), time: $('#cueTime').val(), follow: $('#cueFollow').val() });
+    socket.emit('save cue', { name: $('#cueName').val(), description: $('#cueDescription').val(), time: $('#cueTime').val(), follow: $('#cueFollow').val() });
   });
 
   $("#cues").on("click", "div.cue-item", function () {
