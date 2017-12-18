@@ -2,6 +2,7 @@ import socketio
 import webbrowser
 
 import pickle
+from multidict import MultiDict
 
 from aiohttp import web
 from sACN import DMXSource
@@ -51,6 +52,28 @@ async def index(request):
     with open('app.html') as f:
         return web.Response(text=f.read(), content_type='text/html')
 
+async def store_show_handler(request):
+    global cues
+    global fixtures
+    global submasters
+    global show
+    data = await request.post()
+
+    mp3 = data['show']
+
+    # .filename contains the name of the file in string format.
+    filename = mp3.filename
+
+    # .file contains the actual file data that needs to be stored somewhere.
+    mp3_file = data['show'].file
+
+    content = pickle.loads(mp3_file.read())
+    fixtures = content[0]
+    submasters = content[1]
+    cues = content[2]
+    show = content[3]
+
+    return web.HTTPFound('/')
 
 async def saveshow(request):
     return web.Response(body=pickle.dumps([fixtures, submasters, cues, show], pickle.HIGHEST_PROTOCOL), headers={'Content-Disposition': 'attachment; filename="f.tonalite"'}, content_type='application/octet-stream')
@@ -153,7 +176,7 @@ async def command_message(sid, message):
 app.router.add_static('/static', 'static')
 app.router.add_get('/', index)
 app.router.add_get('/show', saveshow)
-
+app.router.add_post('/show', store_show_handler)
 
 def server(app_ip, app_port, sacn_ip):
     global source
