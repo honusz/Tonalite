@@ -110,6 +110,14 @@ $(document).ready(function () {
     return false;
   });
 
+  $("#cueUpBtn").click(function (event) {
+    socket.emit('cue move', { action: "up" });
+  });
+
+  $("#cueDownBtn").click(function (event) {
+    socket.emit('cue move', { action: "down" });
+  });
+
   $('#commandClearBtn').click(function (event) {
     $('#commandInput').val("");
     return false;
