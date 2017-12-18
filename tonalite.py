@@ -33,7 +33,7 @@ def sendDMX(chans):
     global sourceusb
     source.send_data(chans)
     # sourceusb.open()
-    #sourceusb.send_multi_value(1, chans)
+    # sourceusb.send_multi_value(1, chans)
     # sourceusb.close()
 
 
