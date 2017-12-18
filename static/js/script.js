@@ -89,8 +89,8 @@ $(document).ready(function () {
     socket.emit('update cue', { name: $('#cueName').val(), description: $('#cueDescription').val(), time: $('#cueTime').val(), follow: $('#cueFollow').val() });
   });
 
-  $("#cues").on("click", "div.cue-item", function(){
-      socket.emit('cue info', { cue_id: $(this).attr('cueVal') });
+  $("#cues").on("click", "div.cue-item", function () {
+    socket.emit('cue info', { cue_id: $(this).attr('cueVal') });
   });
 
   $('#commandSubmitBtn').click(function (event) {
