@@ -38,7 +38,8 @@ function updateCues(msg) {
   $("#cues").empty();
   if (msg.cues.length != 0) {
     for (var i = 0; i < msg.cues.length; i++) {
-      $("#cues").append("<div class=\"cue-item\" cueVal=\"" + i + "\"><h4>" + msg.cues[i].name + "</h4>" + msg.cues[i].description + "</div>");
+      console.log(msg.cues[i])
+      /*$("#cues").append("<div class=\"cue-item\" cueVal=\"" + i + "\"><h4>" + msg.cues[i].name + "</h4>" + msg.cues[i].description + "</div>");*/
     }
   }
   return 0;
@@ -100,7 +101,7 @@ $(document).ready(function () {
   });
 
   $('#recordCueBtn').click(function (event) {
-    socket.emit('command message', { command: "rnc" });
+    socket.emit('command message', { command: "rnc"});
     return false;
   });
 
