@@ -14,12 +14,7 @@ sio.attach(app)
 fixtures = []
 submasters = []
 channels = [0] * 48
-cues = [
-    {
-        "name": "Cue 1",
-        "description": "This is a test cue that does not go above 100 characters because it is"
-    }
-]
+cues = []
 show = {
     "name": None,
     "description": None,
@@ -63,7 +58,18 @@ async def cue_info(sid, message):
 @sio.on('command message', namespace='/tonalite')
 async def command_message(sid, message):
     global channels
+    global cues
     cmd = message['command'].lower().split()
+    if len(cmd) == 1:
+        if cmd[0] == "rnc":
+            cues.append({
+                "name": "New Cue",
+                "description": "this is a new cue",
+                "time": 3,
+                "follow": 0,
+                "values": channels[:]
+            })
+            await sio.emit('update cues', {'cues': cues}, namespace='/tonalite')
     if len(cmd) == 4:
         if cmd[0] == "c":
             if "+" in cmd[1]:
@@ -81,7 +87,6 @@ async def command_message(sid, message):
             if cmd[2] == "a":
                 value = cmd[3]
                 for chn in schans:
-                    setdata = True
                     if value != "d" and value != "b":
                         value = max(0, min(int(value), 255))
                     elif value == "d":
@@ -92,11 +97,9 @@ async def command_message(sid, message):
                             0, min(channels[int(chn) - 1] + 10, 255))
                     else:
                         value = 0
-                    if setdata:
-                        channels[int(chn) - 1] = value
-                    setdata = True
-    sendDMX(channels)
-    await sio.emit('update chans', {'channels': channels}, namespace='/tonalite')
+                    channels[int(chn) - 1] = value
+                sendDMX(channels)
+                await sio.emit('update chans', {'channels': channels}, namespace='/tonalite')
 
 app.router.add_static('/static', 'static')
 app.router.add_get('/', index)

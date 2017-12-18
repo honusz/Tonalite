@@ -36,9 +36,10 @@ function updateChannels(msg) {
 
 function updateCues(msg) {
   $("#cues").empty();
-  console.log(msg);
-  for (var i = 0; i <= msg.cues.length; i++) {
-    $("#cues").append("<div class=\"cue-item\" cueval=\"cue-" + i + "\"><h4>"+msg.cues[i].name+"</h4>"+msg.cues[i].description+"</div>");
+  if (msg.cues.length != 0) {
+    for (var i = 0; i < msg.cues.length; i++) {
+      $("#cues").append("<div class=\"cue-item\" cueval=\"cue-" + i + "\"><h4>" + msg.cues[i].name + "</h4>" + msg.cues[i].description + "</div>");
+    }
   }
   return 0;
 }
@@ -56,22 +57,31 @@ $(document).ready(function () {
     updateChannels(msg);
   });
 
+  socket.on('update cues', function (msg) {
+    updateCues(msg);
+  });
+
   socket.on('update all', function (msg) {
     updateChannels(msg);
-      updateCues(msg);
+    updateCues(msg);
   });
 
   $('.kbtn').click(function (event) {
     $('#commandInput').val($('#commandInput').val() + $(this).attr('inputVal'));
   });
 
-  $('.cue-item').click(function (event) {
-    console.log($(this).attr('cueval'));
+  $(".cue-item").click(function () {
+    console.log("it works!");
   });
 
   $('#commandSubmitBtn').click(function (event) {
     socket.emit('command message', { command: $('#commandInput').val() });
     $('#commandInput').val("");
+    return false;
+  });
+
+  $('#recordCueBtn').click(function (event) {
+    socket.emit('command message', { command: "rnc" });
     return false;
   });
 
