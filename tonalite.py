@@ -32,6 +32,13 @@ source = None
 sourceusb = None
 
 
+def slugify(value):
+    value = str(value)
+    value = unicodedata.normalize('NFKC', value)
+    value = re.sub(r'[^\w\s-]', '', value).strip().lower()
+    return re.sub(r'[-\s]+', '-', value)
+
+
 def set_list(l, i, v):
     try:
         l[i] = v
