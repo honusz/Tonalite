@@ -20,6 +20,15 @@ function openTab(evt, tabName) {
 
 function updateChannels(msg) {
   for (var i = 0; i <= 47; i++) {
+    if ($("#cval-" + (i + 1)).text() != msg.channels[i]) {
+      $("#cval-" + (i + 1)).addClass('green-text');
+      $("#cval-" + (i + 1)).removeClass('red-text');
+    } else {
+      if ($("#cval-" + (i + 1)).hasClass("green-text")) {
+        $("#cval-" + (i + 1)).removeClass('green-text');
+      }
+      $("#cval-" + (i + 1)).addClass('red-text');
+    }
     $("#cval-" + (i + 1)).text(msg.channels[i]);
   };
 }
