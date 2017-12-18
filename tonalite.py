@@ -58,14 +58,14 @@ async def saveshow(request):
 
 @sio.on('connect', namespace='/tonalite')
 async def connect(sid, environ):
-    await sio.emit('update all', {'channels': channels, 'cues': cues}, namespace='/tonalite')
+    await sio.emit('update all', {'channels': channels, 'cues': cues, 'selected_cue': clickedCue}, namespace='/tonalite')
 
 
 @sio.on('cue info', namespace='/tonalite')
 async def cue_info(sid, message):
     global clickedCue
     clickedCue = int(message['cue_id'])
-    await sio.emit('cue settings', {'name': cues[int(message['cue_id'])]["name"], 'description': cues[int(message['cue_id'])]["description"], "time": cues[int(message['cue_id'])]["time"], "follow": cues[int(message['cue_id'])]["follow"]}, namespace='/tonalite')
+    await sio.emit('cue settings', {'cues': cues, 'selected_cue': clickedCue, 'name': cues[int(message['cue_id'])]["name"], 'description': cues[int(message['cue_id'])]["description"], "time": cues[int(message['cue_id'])]["time"], "follow": cues[int(message['cue_id'])]["follow"]}, namespace='/tonalite')
 
 
 @sio.on('update cue', namespace='/tonalite')
@@ -101,7 +101,7 @@ async def command_message(sid, message):
                 "follow": 0,
                 "values": channels[:]
             })
-            await sio.emit('update cues', {'cues': cues}, namespace='/tonalite')
+            await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue}, namespace='/tonalite')
     if len(cmd) == 4:
         if cmd[0] == "c":
             if "+" in cmd[1]:

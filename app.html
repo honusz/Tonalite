@@ -123,7 +123,15 @@
     <div class="row content" id="Cues">
         <div class="col-3 col-sm-full" id="cue-list">
           <div id="cues"></div>
-          <button class="btn btn-green btn-full" id="recordCueBtn"><i class="fas fa-camera"></i> Record New</button>
+          <div class="row">
+            <div class="col-6 keyboard-btn">
+              <button style="margin-bottom: 0px;" class="btn btn-yellow btn-full" id="cueUpBtn"><i class="fas fa-chevron-up"></i></button>
+            </div>
+            <div class="col-6 keyboard-btn">
+              <button style="margin-bottom: 0px;" class="btn btn-yellow btn-full" id="cueDownBtn"><i class="fas fa-chevron-down"></i></button>
+            </div>
+          </div>
+          <button style="margin-bottom: 0px;" class="btn btn-green btn-full" id="recordCueBtn"><i class="fas fa-camera"></i> Record New</button>
         </div>
         <div class="col-8 col-sm-full" id="cue-settings">
           <h2>Cue Settings:</h2>
@@ -135,7 +143,7 @@
           <br>
           <input type="number" placeholder="Follow:" value="0" min="0" id="cueFollow">
           <br>
-          <button class="btn btn-green"><i class="fas fa-save"></i> Save</button>
+          <button class="btn btn-green" id="saveCue"><i class="fas fa-save"></i> Save</button>
           <button class="btn btn-yellow" id="updateCue"><i class="fas fa-edit"></i> Update</button>
           <button class="btn btn-red"><i class="fas fa-trash-alt"></i> Delete</button>
         </div>

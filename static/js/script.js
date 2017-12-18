@@ -38,8 +38,12 @@ function updateCues(msg) {
   $("#cues").empty();
   if (msg.cues.length != 0) {
     for (var i = 0; i < msg.cues.length; i++) {
-      console.log(msg.cues[i])
-      /*$("#cues").append("<div class=\"cue-item\" cueVal=\"" + i + "\"><h4>" + msg.cues[i].name + "</h4>" + msg.cues[i].description + "</div>");*/
+      $("#cues").append("<div class=\"cue-item\" cueVal=\"" + i + "\"><h4>" + msg.cues[i].name + "</h4>" + msg.cues[i].description + "</div>");
+      if (msg.selected_cue != null) {
+        if (msg.selected_cue == i) {
+          $("div[cueVal="+i+"]").addClass("background-green");
+        }
+      }
     }
   }
   return 0;
@@ -67,6 +71,7 @@ $(document).ready(function () {
   });
 
   socket.on('cue settings', function (msg) {
+    updateCues(msg);
     $("#cueName").val(msg.name);
     $("#cueDescription").val(msg.description);
     $("#cueTime").val(msg.time);
