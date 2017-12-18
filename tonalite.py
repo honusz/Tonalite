@@ -30,7 +30,7 @@ show = {
     "cues": []
 }
 clickedCue = None
-currentCue = 1
+currentCue = 0
 source = None
 sourceusb = None
 
@@ -129,6 +129,7 @@ async def save_show(sid, message):
 @sio.on('cue move', namespace='/tonalite')
 async def cue_move(sid, message):
     global clickedCue
+    global currentCue
     if message['action'] == "up":
         if not clickedCue == 0:
             cues.insert(clickedCue - 1, cues.pop(clickedCue))
@@ -140,6 +141,12 @@ async def cue_move(sid, message):
     elif message['action'] == "delete":
         cues.pop(clickedCue)
         clickedCue = None
+    elif message['action'] == "next":
+        if currentCue != len(cues)-1:
+            currentCue += 1
+    elif message['action'] == "last":
+        if currentCue != 0:
+            currentCue -= 1
     await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
 
 

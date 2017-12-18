@@ -155,6 +155,14 @@ $(document).ready(function () {
     socket.emit('cue move', { action: "delete" });
   });
 
+  $("#nextCue").click(function (event) {
+    socket.emit('cue move', { action: "next" });
+  });
+
+  $("#lastCue").click(function (event) {
+    socket.emit('cue move', { action: "last" });
+  });
+
   $("#saveShowBtn").click(function (event) {
     socket.emit('save show', { name: $("#showName").val(), description: $("#showDescription").val(), author: $("#showAuthor").val(), copyright: $("#showCopyright").val() });
   });
