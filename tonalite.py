@@ -27,24 +27,29 @@ show = {
 source = None
 sourceusb = None
 
+
 def sendDMX(chans):
     global source
     global sourceusb
     source.send_data(chans)
-    #sourceusb.open()
+    # sourceusb.open()
     #sourceusb.send_multi_value(1, chans)
-    #sourceusb.close()
+    # sourceusb.close()
+
 
 async def index(request):
     with open('app.html') as f:
         return web.Response(text=f.read(), content_type='text/html')
 
+
 async def saveshow(request):
-        return web.Response(body=pickle.dumps([fixtures, submasters, cues, show], pickle.HIGHEST_PROTOCOL), headers={'Content-Disposition': 'attachment; filename="f.tonalite"'}, content_type='application/octet-stream')
+    return web.Response(body=pickle.dumps([fixtures, submasters, cues, show], pickle.HIGHEST_PROTOCOL), headers={'Content-Disposition': 'attachment; filename="f.tonalite"'}, content_type='application/octet-stream')
+
 
 @sio.on('connect', namespace='/tonalite')
 async def connect(sid, environ):
     await sio.emit('update chans', {'data': channels}, namespace='/tonalite')
+
 
 @sio.on('command message', namespace='/tonalite')
 async def test_message(sid, message):
@@ -88,6 +93,7 @@ app.router.add_static('/static', 'static')
 app.router.add_get('/', index)
 app.router.add_get('/show', saveshow)
 
+
 def server(app_ip, app_port, sacn_ip):
     global source
     global sourceusb
@@ -102,6 +108,7 @@ def server(app_ip, app_port, sacn_ip):
     sourceusb = uDMXDevice()
     webbrowser.open("http://" + app_ip + ":" + app_port)
     web.run_app(app, host=app_ip, port=int(app_port))
+
 
 if __name__ == "__main__":
     server("192.168.0.104", "", "")
