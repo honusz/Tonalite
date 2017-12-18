@@ -41,7 +41,7 @@ function updateCues(msg) {
       $("#cues").append("<div class=\"cue-item\" cueVal=\"" + i + "\"><h4>" + msg.cues[i].name + "</h4>" + msg.cues[i].description + "</div>");
       if (msg.selected_cue != null) {
         if (msg.selected_cue == i) {
-          $("div[cueVal="+i+"]").addClass("background-green");
+          $("div[cueVal=" + i + "]").addClass("background-green");
         }
       }
     }
@@ -106,7 +106,7 @@ $(document).ready(function () {
   });
 
   $('#recordCueBtn').click(function (event) {
-    socket.emit('command message', { command: "r q"});
+    socket.emit('command message', { command: "r q" });
     return false;
   });
 
