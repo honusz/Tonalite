@@ -24,6 +24,16 @@ show = {
     "fixtures": [],
     "cues": []
 }
+source = None
+sourceusb = None
+
+def sendDMX(chans):
+    global source
+    global sourceusb
+    source.send_data(chans)
+    #sourceusb.open()
+    #sourceusb.send_multi_value(1, chans)
+    #sourceusb.close()
 
 async def index(request):
     with open('app.html') as f:
@@ -32,11 +42,55 @@ async def index(request):
 async def saveshow(request):
         return web.Response(body=pickle.dumps([fixtures, submasters, cues, show], pickle.HIGHEST_PROTOCOL), headers={'Content-Disposition': 'attachment; filename="f.tonalite"'}, content_type='application/octet-stream')
 
+@sio.on('connect', namespace='/tonalite')
+async def connect(sid, environ):
+    await sio.emit('update chans', {'data': channels}, namespace='/tonalite')
+
+@sio.on('command message', namespace='/tonalite')
+async def test_message(sid, message):
+    global channels
+    cmd = message['data'].lower().split()
+    if len(cmd) == 4:
+        if cmd[0] == "c":
+            if "+" in cmd[1]:
+                schans = cmd[1].split("+")
+            elif "-" in cmd[1]:
+                schans = cmd[1].split("-")
+                if len(schans) == 2:
+                    crange = int(schans[1]) - int(schans[0])
+                    cchans = []
+                    for i in range(crange + 1):
+                        cchans = cchans + [int(schans[0]) + i]
+                    schans = cchans
+            else:
+                schans = [cmd[1]]
+            if cmd[2] == "a":
+                value = cmd[3]
+                for chn in schans:
+                    setdata = True
+                    if value != "d" and value != "b":
+                        value = max(0, min(int(value), 255))
+                    elif value == "d":
+                        value = max(
+                            0, min(channels[int(chn) - 1] - 10, 255))
+                    elif value == "b":
+                        value = max(
+                            0, min(channels[int(chn) - 1] + 10, 255))
+                    else:
+                        value = 0
+                    if setdata:
+                        channels[int(chn) - 1] = value
+                    setdata = True
+    sendDMX(channels)
+    await sio.emit('update chans', {'data': channels}, namespace='/tonalite')
+
 app.router.add_static('/static', 'static')
 app.router.add_get('/', index)
 app.router.add_get('/show', saveshow)
 
 def server(app_ip, app_port, sacn_ip):
+    global source
+    global sourceusb
     if app_ip == "":
         app_ip = "127.0.0.1"
     if app_port == "":

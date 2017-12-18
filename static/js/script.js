@@ -19,7 +19,19 @@ function openTab(evt, tabName) {
 }
 $(document).ready(function(){
   document.getElementById("keyboardTabBtn").click();
+
+  for(var i = 0; i <= 47; i++) {
+    $("#Channels").append("<div class=\"col-1 channel\"><div class=\"channel-item\"><h2>"+(i+1)+"</h2><h1 id=\"cval-"+(i+1)+"\">0</h1></div></div>");
+  }
+
   var socket = io.connect('http://' + document.domain + ':' + location.port + '/tonalite');
+
+  socket.on('update chans', function(msg) {
+    console.log(msg.data);
+    for(var i = 0; i <= 47; i++) {
+        $("#cval-"+(i+1)).text(msg.data[i]);
+    };
+  });
 
   $('.kbtn').click(function(event) {
     $('#commandInput').val($('#commandInput').val() + $(this).attr('inputVal'));
