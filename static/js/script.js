@@ -38,7 +38,7 @@ function updateCues(msg) {
   $("#cues").empty();
   if (msg.cues.length != 0) {
     for (var i = 0; i < msg.cues.length; i++) {
-      $("#cues").append("<div class=\"cue-item\" cueval=\"cue-" + i + "\"><h4>" + msg.cues[i].name + "</h4>" + msg.cues[i].description + "</div>");
+      $("#cues").append("<div class=\"cue-item\" cueVal=\"" + i + "\"><h4>" + msg.cues[i].name + "</h4>" + msg.cues[i].description + "</div>");
     }
   }
   return 0;
@@ -70,8 +70,8 @@ $(document).ready(function () {
     $('#commandInput').val($('#commandInput').val() + $(this).attr('inputVal'));
   });
 
-  $(".cue-item").click(function () {
-    console.log("it works!");
+  $("#cues").on("click", "div.cue-item", function(){
+      alert($(this).attr('cueVal'));
   });
 
   $('#commandSubmitBtn').click(function (event) {
