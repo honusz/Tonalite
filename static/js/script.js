@@ -27,9 +27,8 @@ $(document).ready(function () {
   var socket = io.connect('http://' + document.domain + ':' + location.port + '/tonalite');
 
   socket.on('update chans', function (msg) {
-    console.log(msg.data);
     for (var i = 0; i <= 47; i++) {
-      $("#cval-" + (i + 1)).text(msg.data[i]);
+      $("#cval-" + (i + 1)).text(msg.channels[i]);
     };
   });
 
@@ -38,7 +37,7 @@ $(document).ready(function () {
   });
 
   $('#commandSubmitBtn').click(function (event) {
-    socket.emit('command message', { data: $('#commandInput').val() });
+    socket.emit('command message', { command: $('#commandInput').val() });
     $('#commandInput').val("");
     return false;
   });

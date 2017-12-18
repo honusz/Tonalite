@@ -48,13 +48,13 @@ async def saveshow(request):
 
 @sio.on('connect', namespace='/tonalite')
 async def connect(sid, environ):
-    await sio.emit('update chans', {'data': channels}, namespace='/tonalite')
+    await sio.emit('update all', {'channels': channels, 'cues': cues}, namespace='/tonalite')
 
 
 @sio.on('command message', namespace='/tonalite')
 async def test_message(sid, message):
     global channels
-    cmd = message['data'].lower().split()
+    cmd = message['command'].lower().split()
     if len(cmd) == 4:
         if cmd[0] == "c":
             if "+" in cmd[1]:
@@ -87,7 +87,7 @@ async def test_message(sid, message):
                         channels[int(chn) - 1] = value
                     setdata = True
     sendDMX(channels)
-    await sio.emit('update chans', {'data': channels}, namespace='/tonalite')
+    await sio.emit('update chans', {'channels': channels}, namespace='/tonalite')
 
 app.router.add_static('/static', 'static')
 app.router.add_get('/', index)
