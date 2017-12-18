@@ -53,12 +53,23 @@ $(document).ready(function () {
 
   var socket = io.connect('http://' + document.domain + ':' + location.port + '/tonalite');
 
+  socket.on('success', function (msg) {
+    alert(msg.message);
+  });
+
   socket.on('update chans', function (msg) {
     updateChannels(msg);
   });
 
   socket.on('update cues', function (msg) {
     updateCues(msg);
+  });
+
+  socket.on('cue settings', function (msg) {
+    $("#cueName").val(msg.name);
+    $("#cueDescription").val(msg.description);
+    $("#cueTime").val(msg.time);
+    $("#cueFollow").val(msg.follow);
   });
 
   socket.on('update all', function (msg) {
@@ -70,8 +81,16 @@ $(document).ready(function () {
     $('#commandInput').val($('#commandInput').val() + $(this).attr('inputVal'));
   });
 
+  $('#updateCue').click(function (event) {
+    socket.emit('update cue', { name: $('#cueName').val(), description: $('#cueDescription').val(), time: $('#cueTime').val(), follow: $('#cueFollow').val() });
+  });
+
+  $('#saveCue').click(function (event) {
+    socket.emit('update cue', { name: $('#cueName').val(), description: $('#cueDescription').val(), time: $('#cueTime').val(), follow: $('#cueFollow').val() });
+  });
+
   $("#cues").on("click", "div.cue-item", function(){
-      alert($(this).attr('cueVal'));
+      socket.emit('cue info', { cue_id: $(this).attr('cueVal') });
   });
 
   $('#commandSubmitBtn').click(function (event) {

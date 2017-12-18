@@ -121,16 +121,16 @@
         </div>
         <div class="col-8 col-sm-full" id="cue-settings">
           <h2>Cue Settings:</h2>
-          <input type="text" placeholder="Name:" maxlength="20">
+          <input type="text" placeholder="Name:" maxlength="20" id="cueName">
           <br>
-          <input type="text" placeholder="Description:" maxlength="70">
+          <input type="text" placeholder="Description:" maxlength="70" id="cueDescription">
           <br>
-          <input type="number" placeholder="Time:" value="3" min="0">
+          <input type="number" placeholder="Time:" value="3" min="0" id="cueTime">
           <br>
-          <input type="number" placeholder="Follow:" value="0" min="0">
+          <input type="number" placeholder="Follow:" value="0" min="0" id="cueFollow">
           <br>
           <button class="btn btn-green"><i class="fas fa-save"></i> Save</button>
-          <button class="btn btn-yellow"><i class="fas fa-edit"></i> Update</button>
+          <button class="btn btn-yellow" id="updateCue"><i class="fas fa-edit"></i> Update</button>
           <button class="btn btn-red"><i class="fas fa-trash-alt"></i> Delete</button>
         </div>
     </div>
