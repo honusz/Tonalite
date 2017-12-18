@@ -17,6 +17,13 @@ function openTab(evt, tabName) {
   document.getElementById(tabName).style.display = "block";
   evt.currentTarget.className += " active";
 }
+
+function updateChannels(msg) {
+  for (var i = 0; i <= 47; i++) {
+    $("#cval-" + (i + 1)).text(msg.channels[i]);
+  };
+}
+
 $(document).ready(function () {
   document.getElementById("keyboardTabBtn").click();
 
@@ -27,9 +34,11 @@ $(document).ready(function () {
   var socket = io.connect('http://' + document.domain + ':' + location.port + '/tonalite');
 
   socket.on('update chans', function (msg) {
-    for (var i = 0; i <= 47; i++) {
-      $("#cval-" + (i + 1)).text(msg.channels[i]);
-    };
+    updateChannels(msg);
+  });
+
+  socket.on('update all', function (msg) {
+    updateChannels(msg);
   });
 
   $('.kbtn').click(function (event) {
