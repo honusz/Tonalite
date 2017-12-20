@@ -1,6 +1,7 @@
 import datetime
 import pickle
 import re
+import time
 import unicodedata
 import webbrowser
 
@@ -58,6 +59,17 @@ def sendDMX(chans):
     # sourceusb.open()
     # sourceusb.send_multi_value(1, chans)
     # sourceusb.close()
+
+
+def generate_fade(start, end, secs=3.0, fps=40):
+    global channels
+    for index in range(int(secs * fps)):
+        for channel in range(len(start)):
+            a = start[channel] or 0
+            b = end[channel] or 0
+            channels[channel] = int(a + (((b - a) / (secs * fps)) * index))
+        sendDMX(channels)
+        time.sleep(secs / (int(secs * fps)))
 
 
 async def index(request):
@@ -134,20 +146,28 @@ async def cue_move(sid, message):
         if not clickedCue == 0:
             cues.insert(clickedCue - 1, cues.pop(clickedCue))
             clickedCue -= 1
+        await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
     elif message['action'] == "down":
         if not clickedCue == len(cues):
             cues.insert(clickedCue + 1, cues.pop(clickedCue))
             clickedCue += 1
+        await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
     elif message['action'] == "delete":
         cues.pop(clickedCue)
         clickedCue = None
+        await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
     elif message['action'] == "next":
-        if currentCue != len(cues)-1:
+        if currentCue != len(cues) - 1:
             currentCue += 1
+            generate_fade(cues[currentCue - 1]["values"],
+                          cues[currentCue]["values"], cues[currentCue]["time"])
+        await sio.emit('update all', {'channels': channels, 'cues': cues, 'selected_cue': clickedCue, 'show': show, 'current_cue': currentCue}, namespace='/tonalite')
     elif message['action'] == "last":
         if currentCue != 0:
             currentCue -= 1
-    await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
+            generate_fade(cues[currentCue + 1]["values"],
+                          cues[currentCue]["values"], cues[currentCue]["time"])
+        await sio.emit('update all', {'channels': channels, 'cues': cues, 'selected_cue': clickedCue, 'show': show, 'current_cue': currentCue}, namespace='/tonalite')
 
 
 @sio.on('save cue', namespace='/tonalite')
