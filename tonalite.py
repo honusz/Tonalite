@@ -162,7 +162,7 @@ async def cue_move(sid, message):
             currentCue += 1
             await generate_fade(cues[currentCue - 1]["values"],
                           cues[currentCue]["values"], cues[currentCue]["time"])
-            while cues[currentCue]["follow"] != "0":
+            while int(cues[currentCue]["follow"]) != 0:
                 time.sleep(int(cues[currentCue]["follow"]))
                 currentCue += 1
                 if currentCue != len(cues) - 1:
