@@ -61,7 +61,7 @@ def sendDMX(chans):
     # sourceusb.close()
 
 
-def generate_fade(start, end, secs=3.0, fps=40):
+async def generate_fade(start, end, secs=3.0, fps=40):
     global channels
     for index in range(int(secs * fps)):
         for channel in range(len(start)):
@@ -69,6 +69,7 @@ def generate_fade(start, end, secs=3.0, fps=40):
             b = end[channel] or 0
             channels[channel] = int(a + (((b - a) / (secs * fps)) * index))
         sendDMX(channels)
+        await sio.emit('update all', {'channels': channels, 'cues': cues, 'selected_cue': clickedCue, 'show': show, 'current_cue': currentCue}, namespace='/tonalite')
         time.sleep(secs / (int(secs * fps)))
 
 
@@ -159,13 +160,13 @@ async def cue_move(sid, message):
     elif message['action'] == "next":
         if currentCue != len(cues) - 1:
             currentCue += 1
-            generate_fade(cues[currentCue - 1]["values"],
+            await generate_fade(cues[currentCue - 1]["values"],
                           cues[currentCue]["values"], cues[currentCue]["time"])
         await sio.emit('update all', {'channels': channels, 'cues': cues, 'selected_cue': clickedCue, 'show': show, 'current_cue': currentCue}, namespace='/tonalite')
     elif message['action'] == "last":
         if currentCue != 0:
             currentCue -= 1
-            generate_fade(cues[currentCue + 1]["values"],
+            await generate_fade(cues[currentCue + 1]["values"],
                           cues[currentCue]["values"], cues[currentCue]["time"])
         await sio.emit('update all', {'channels': channels, 'cues': cues, 'selected_cue': clickedCue, 'show': show, 'current_cue': currentCue}, namespace='/tonalite')
 
