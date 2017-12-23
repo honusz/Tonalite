@@ -20,7 +20,7 @@
       <div class="header-item col-12">Tonalite Lighting Control</div>
     </div>
     <div class="row content" id="Keyboard">
-        <div class="col-3 col-sm-full" id="cue-display">
+        <div class="col-3 col-sm-12" id="cue-display">
           <div id="cues-display"></div>
           <div class="row">
             <div class="col-6 keyboard-btn btn-tall">
@@ -34,7 +34,7 @@
             </div>
           </div>
         </div>
-        <div class="col-8 col-sm-full" id="keyboard-box">
+        <div class="col-8 col-sm-12" id="keyboard-box">
           <div class="row">
             <div class="col-4 keyboard-btn">
               <button class="kbtn btn btn-yellow btn-full" inputVal="1">1</button>
@@ -110,7 +110,7 @@
     </div>
     <div class="row content" id="Channels"></div>
     <div class="row content" id="Cues">
-        <div class="col-3 col-sm-full" id="cue-list">
+        <div class="col-3 col-sm-12" id="cue-list">
           <div id="cues"></div>
           <div class="row">
             <div class="col-6 keyboard-btn">
@@ -122,7 +122,7 @@
           </div>
           <button style="margin-bottom: 0px;" class="btn btn-green btn-full" id="recordCueBtn"><i class="fas fa-camera"></i> Record New</button>
         </div>
-        <div class="col-8 col-sm-full" id="cue-settings">
+        <div class="col-8 col-sm-12" id="cue-settings">
           <h2 class="hidden-item">Cue Settings:</h2>
           <input class="hidden-item" type="text" placeholder="Name:" maxlength="20" id="cueName">
           <br class="hidden-item">
@@ -139,7 +139,7 @@
         </div>
     </div>
     <div class="row content" id="Show">
-        <div class="col-5 col-sm-full" id="cue-settings">
+        <div class="col-5 col-sm-12" id="cue-settings">
           <h2>Load Show:</h2>
           <form action="/show" method="post" accept-charset="utf-8" enctype="multipart/form-data">
             <input name="show" id="show" type="file" accept=".tonalite" required>
@@ -151,7 +151,7 @@
           Are you sure you actually want to do this?
           <button class="btn btn-red btn-full" id="clearShowBtn"><i class="fas fa-trash-alt"></i> Clear</button>
         </div>
-        <div class="col-6 col-sm-full" id="cue-settings">
+        <div class="col-6 col-sm-12" id="cue-settings">
           <h2>Save Show:</h2>
           <input type="text" placeholder="Name:" id="showName" required>
           <br>
