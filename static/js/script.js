@@ -70,6 +70,10 @@ function updateCues(msg) {
   return 0;
 }
 
+function settingsDropdown() {
+  document.getElementById("settingsDropdown").classList.toggle("show");
+}
+
 $(document).ready(function () {
   document.getElementById("keyboardTabBtn").click();
 
@@ -110,6 +114,9 @@ $(document).ready(function () {
       $("#showAuthor").val(msg.show.author);
       $("#showCopyright").val(msg.show.copyright);
     }
+    $("#serverIP").val(msg.tonaliteSettings.serverIP);
+    $("#serverPort").val(msg.tonaliteSettings.serverPort);
+    $("#sacnIP").val(msg.tonaliteSettings.sacnIP);
   });
 
   socket.on('redirect', function (msg) {

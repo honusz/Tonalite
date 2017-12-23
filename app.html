@@ -17,7 +17,17 @@
   </head>
   <body>
     <div class="row" id="header">
-      <div class="header-item col-12">Tonalite Lighting Control</div>
+      <div class="header-item header-btn col-1 dropdown">
+        <button onclick="settingsDropdown()" class="btn btn-small btn-yellow dropbtn"><i class="fas fa-cog"></i></button>
+        <div id="settingsDropdown" class="dropdown-content">
+          <input type="text" placeholder="Server IP" id="serverIP" value="127.0.0.1">
+          <input type="number" value="9898" placeholder="Server Port" id="serverPort">
+          <input type="text" placeholder="sACN IP" id="sacnIP" value="127.0.0.1">
+          <button class="btn btn-green btn-full" id="saveSettingsBtn">Save</button>
+        </div>
+      </div>
+      <div class="header-item col-10">Tonalite Lighting Control</div>
+      <div class="header-item col-1"></div>
     </div>
     <div class="row content" id="Keyboard">
         <div class="col-3 col-sm-12" id="cue-display">
