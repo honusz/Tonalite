@@ -282,6 +282,11 @@ async def command_message(sid, message):
                 await sio.emit('update chans', {'channels': channels}, namespace='/tonalite')
 
 
+@sio.on('quit tonalite', namespace='/tonalite')
+async def quit_tonalite(sid, message):
+    sys.exit()
+
+
 @sio.on('save settings', namespace='/tonalite')
 async def save_settings(sid, message):
     global tonaliteSettings

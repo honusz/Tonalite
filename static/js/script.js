@@ -189,4 +189,10 @@ $(document).ready(function () {
     alert("The server must be restarted for the changes to take effect.");
     socket.emit('save settings', { serverIP: $("#serverIP").val(), serverPort: $("#serverPort").val(), sacnIP: $("#sacnIP").val() });
   });
+
+  $('#quitBtn').click(function (event) {
+    if (confirm('Are you sure you want to quit? Your current show will not be saved.')) {
+      socket.emit('quit tonalite', "none");
+    }
+  });
 });
