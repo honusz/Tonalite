@@ -162,12 +162,10 @@ async def cue_move(sid, message):
             currentCue += 1
             await generate_fade(cues[currentCue - 1]["values"],
                           cues[currentCue]["values"], cues[currentCue]["time"])
-            while int(cues[currentCue]["follow"]) != 0:
-                time.sleep(int(cues[currentCue]["follow"]))
+            while cues[currentCue]["follow"] != 0:
+                await sio.sleep(cues[currentCue]["follow"])
                 currentCue += 1
-                if currentCue != len(cues) - 1:
-                    await generate_fade(cues[currentCue - 1]["values"],
-                            cues[currentCue]["values"], cues[currentCue]["time"])
+                await generate_fade(cues[currentCue - 1]["values"], cues[currentCue]["values"], cues[currentCue]["time"])
         await sio.emit('update all', {'channels': channels, 'cues': cues, 'selected_cue': clickedCue, 'show': show, 'current_cue': currentCue}, namespace='/tonalite')
     elif message['action'] == "last":
         if currentCue != 0:
