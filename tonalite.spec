@@ -6,7 +6,11 @@ block_cipher = None
 a = Analysis(['tonalite.py'],
              pathex=['/home/johnroper100/Documents/Tonalite'],
              binaries=[],
-             datas=[('app.html', '.'), ('static', 'static')],
+             datas=[
+                 ('LICENSE', '.'),
+                 ('README.md', '.'),
+                 ('app.html', '.'),
+                 ('static', 'static')],
              hiddenimports=['engineio.async_aiohttp'],
              hookspath=[],
              runtime_hooks=[],
