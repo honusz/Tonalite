@@ -24,6 +24,7 @@ Tonalite requires Python 3.6+ and the folowing libraries installed through pip:
 - [x] Follow cue
 - [ ] Submasters
 - [ ] Safe channels
+- [ ] Better cue transitions
 
 ### Implimentation Details
 
