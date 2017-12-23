@@ -172,6 +172,10 @@ $(document).ready(function () {
   });
 
   $("#clearShowBtn").click(function (event) {
+    $("#showName").val("");
+    $("#showDescription").val("");
+    $("#showAuthor").val("");
+    $("#showCopyright").val("");
     socket.emit('clear show', "none");
   });
 
