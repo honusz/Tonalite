@@ -83,12 +83,6 @@ $(document).ready(function () {
 
   var socket = io.connect('http://' + document.domain + ':' + location.port + '/tonalite');
 
-  socket.on('success', function (msg) {
-    updateChannels(msg);
-    updateCues(msg);
-    console.log(msg.message);
-  });
-
   socket.on('update chans', function (msg) {
     updateChannels(msg);
   });
@@ -189,5 +183,10 @@ $(document).ready(function () {
   $('#commandClearBtn').click(function (event) {
     $('#commandInput').val("");
     return false;
+  });
+
+  $('#saveSettingsBtn').click(function (event) {
+    alert("The server must be restarted for the changes to take effect.");
+    socket.emit('save settings', { serverIP: $("#serverIP").val(), serverPort: $("#serverPort").val(), sacnIP: $("#sacnIP").val() });
   });
 });

@@ -122,7 +122,7 @@ async def update_cue(sid, message):
     cues[clickedCue]["time"] = int(message['time'])
     cues[clickedCue]["follow"] = int(message['follow'])
     cues[clickedCue]["values"] = channels[:]
-    await sio.emit('success', {'message': "Cue updated!", 'channels': channels, 'cues': cues, 'selected_cue': clickedCue, 'show': show, 'current_cue': currentCue}, namespace='/tonalite')
+    await sio.emit('update all', {'channels': channels, 'cues': cues, 'selected_cue': clickedCue, 'show': show, 'current_cue': currentCue, 'tonaliteSettings': tonaliteSettings}, namespace='/tonalite')
 
 
 @sio.on('save show', namespace='/tonalite')
@@ -205,7 +205,7 @@ async def save_cue(sid, message):
     cues[clickedCue]["description"] = message['description']
     cues[clickedCue]["time"] = int(message['time'])
     cues[clickedCue]["follow"] = int(message['follow'])
-    await sio.emit('success', {'message': "Cue saved!", 'channels': channels, 'cues': cues, 'selected_cue': clickedCue, 'show': show, 'current_cue': currentCue}, namespace='/tonalite')
+    await sio.emit('update all', {'channels': channels, 'cues': cues, 'selected_cue': clickedCue, 'show': show, 'current_cue': currentCue, 'tonaliteSettings': tonaliteSettings}, namespace='/tonalite')
 
 
 @sio.on('command message', namespace='/tonalite')
@@ -271,6 +271,19 @@ async def command_message(sid, message):
                 sendDMX(channels)
                 await sio.emit('update chans', {'channels': channels}, namespace='/tonalite')
 
+
+@sio.on('save settings', namespace='/tonalite')
+async def save_settings(sid, message):
+    global tonaliteSettings
+    tonaliteSettings["sacnIP"] = message['sacnIP']
+    tonaliteSettings["serverIP"] = message['serverIP']
+    tonaliteSettings["serverPort"] = message['serverPort']
+
+    tonaliteConfig = os.path.join(os.path.expanduser("~"), ".tonaliteConfg")
+    pickle.dump(tonaliteSettings, open(
+        tonaliteConfig, "wb"), pickle.HIGHEST_PROTOCOL)
+    await sio.emit('update all', {'channels': channels, 'cues': cues, 'selected_cue': clickedCue, 'show': show, 'current_cue': currentCue, 'tonaliteSettings': tonaliteSettings}, namespace='/tonalite')
+
 app.router.add_static('/static', 'static')
 app.router.add_get('/', index)
 app.router.add_get('/show', saveshow)
@@ -279,10 +292,10 @@ app.router.add_post('/show', store_show_handler)
 
 def server(app_ip, app_port, sacn_ip):
     global source
-    global sourceusb
+    #global sourceusb
 
     source = DMXSource(universe=1, net_ip=sacn_ip)
-    sourceusb = uDMXDevice()
+    #sourceusb = uDMXDevice()
     webbrowser.open("http://" + app_ip + ":" + app_port)
     web.run_app(app, host=app_ip, port=int(app_port))
 
