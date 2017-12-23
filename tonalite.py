@@ -284,8 +284,8 @@ async def command_message(sid, message):
 
 @sio.on('quit tonalite', namespace='/tonalite')
 async def quit_tonalite(sid, message):
-    sys.exit()
-
+    sys.exit(0)
+    
 
 @sio.on('save settings', namespace='/tonalite')
 async def save_settings(sid, message):

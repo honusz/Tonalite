@@ -192,7 +192,7 @@ $(document).ready(function () {
 
   $('#quitBtn').click(function (event) {
     if (confirm('Are you sure you want to quit? Your current show will not be saved.')) {
-      socket.emit('quit tonalite', "none");
+      socket.emit('quit tonalite', {});
     }
   });
 });
