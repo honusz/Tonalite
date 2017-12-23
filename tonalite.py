@@ -294,7 +294,7 @@ async def save_settings(sid, message):
         tonaliteConfig, "wb"), pickle.HIGHEST_PROTOCOL)
     await sio.emit('update all', {'channels': channels, 'cues': cues, 'selected_cue': clickedCue, 'show': show, 'current_cue': currentCue, 'tonaliteSettings': tonaliteSettings}, namespace='/tonalite')
 
-app.router.add_stat1ic('/static', resourcePath('static'))
+app.router.add_static('/static', resourcePath('static'))
 app.router.add_get('/', index)
 app.router.add_get('/show', saveshow)
 app.router.add_post('/show', store_show_handler)
