@@ -1,4 +1,5 @@
 import datetime
+import os
 import pickle
 import re
 import time
@@ -33,6 +34,11 @@ clickedCue = None
 currentCue = 0
 source = None
 sourceusb = None
+tonaliteSettings = {
+    "serverIP": "127.0.0.1",
+    "serverPort": "9898",
+    "sacnIP": "127.0.0.1"
+}
 
 
 def slugify(value):
@@ -274,12 +280,6 @@ app.router.add_post('/show', store_show_handler)
 def server(app_ip, app_port, sacn_ip):
     global source
     global sourceusb
-    if app_ip == "":
-        app_ip = "127.0.0.1"
-    if app_port == "":
-        app_port = "9898"
-    if sacn_ip == "":
-        sacn_ip = "127.0.0.1"
 
     source = DMXSource(universe=1, net_ip=sacn_ip)
     sourceusb = uDMXDevice()
@@ -288,4 +288,19 @@ def server(app_ip, app_port, sacn_ip):
 
 
 if __name__ == "__main__":
-    server("", "", "")
+    tonaliteConfig = os.path.join(os.path.expanduser("~"), ".tonaliteConfg")
+
+    if not os.path.exists(tonaliteConfig):
+        pickle.dump(tonaliteSettings, open(
+            tonaliteConfig, "wb"), pickle.HIGHEST_PROTOCOL)
+
+    config = pickle.load(open(tonaliteConfig, "rb"))
+    tonaliteSettings["serverIP"] = config["serverIP"]
+    tonaliteSettings["serverPort"] = config["serverPort"]
+    tonaliteSettings["sacnIP"] = config["sacnIP"]
+
+    try:
+        server(tonaliteSettings["serverIP"],
+               tonaliteSettings["serverPort"], tonaliteSettings["sacnIP"])
+    except:
+        server("127.0.0.1", "9898", "127.0.0.1")
