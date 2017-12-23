@@ -13,24 +13,17 @@ Tonalite requires Python 3.6+ and the folowing libraries installed through pip:
 
 ### Required Features
 
-- Save/load show
-- Record and playback cues
-- Change cue time
-- Mobile responsive
+- [x] Save/load show
+- [x] Record and playback cues
+- [x] Change cue time
+- [x] Mobile responsive
 
 ### Wanted Features
 
 - Effects
-- Follow cue
+- [x] Follow cue
 - Submasters
 - Safe channels
-
-### Implimented Features
-
-- Save/load show
-- Record and playback cues
-- Change cue time
-- Follow cue
 
 ### Implimentation Details
 
