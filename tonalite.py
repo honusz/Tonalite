@@ -53,7 +53,7 @@ def sendDMX(chans):
 
 async def generate_fade(start, end, secs=3.0, fps=40):
     global channels
-    for index in range(int(secs * fps)+1):
+    for index in range(int(secs * fps) + 1):
         for channel in range(len(start)):
             a = start[channel] or 0
             b = end[channel] or 0
