@@ -20,10 +20,10 @@ Tonalite requires Python 3.6+ and the folowing libraries installed through pip:
 
 ### Wanted Features
 
-- Effects
+- [ ] Effects
 - [x] Follow cue
-- Submasters
-- Safe channels
+- [ ] Submasters
+- [ ] Safe channels
 
 ### Implimentation Details
 
