@@ -87,17 +87,18 @@ async def store_show_handler(request):
 
     showF = data['show']
 
-    # .filename contains the name of the file in string format.
+    # filename contains the name of the file in string format.
     filename = showF.filename
 
-    # .file contains the actual file data that needs to be stored somewhere.
-    showFile = data['show'].file
+    if ".tonalite" in filename:
+        # showFile contains the actual file data that needs to be stored somewhere.
+        showFile = data['show'].file
 
-    content = pickle.loads(showFile.read())
-    fixtures = content[0]
-    submasters = content[1]
-    cues = content[2]
-    show = content[3]
+        content = pickle.loads(showFile.read())
+        fixtures = content[0]
+        submasters = content[1]
+        cues = content[2]
+        show = content[3]
 
     return web.HTTPFound('/')
 
