@@ -15,7 +15,6 @@ from sACN import DMXSource
 sio = socketio.AsyncServer(async_mode='aiohttp')
 app = web.Application()
 sio.attach(app)
-clients = []
 
 fixtures = []
 submasters = []
@@ -54,7 +53,7 @@ def sendDMX(chans):
 
 async def generate_fade(start, end, secs=3.0, fps=40):
     global channels
-    for index in range(int(secs * fps)):
+    for index in range(int(secs * fps)+1):
         for channel in range(len(start)):
             a = start[channel] or 0
             b = end[channel] or 0
@@ -289,4 +288,4 @@ def server(app_ip, app_port, sacn_ip):
 
 
 if __name__ == "__main__":
-    server("192.168.0.109", "", "")
+    server("", "", "")
