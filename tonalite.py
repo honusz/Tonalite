@@ -15,6 +15,7 @@ from sACN import DMXSource
 sio = socketio.AsyncServer(async_mode='aiohttp')
 app = web.Application()
 sio.attach(app)
+clients = []
 
 fixtures = []
 submasters = []
@@ -114,7 +115,7 @@ async def connect(sid, environ):
 async def cue_info(sid, message):
     global clickedCue
     clickedCue = int(message['cue_id'])
-    await sio.emit('cue settings', {'cues': cues, 'selected_cue': clickedCue, 'name': cues[int(message['cue_id'])]["name"], 'description': cues[int(message['cue_id'])]["description"], "time": cues[int(message['cue_id'])]["time"], "follow": cues[int(message['cue_id'])]["follow"], 'current_cue': currentCue}, namespace='/tonalite')
+    await sio.emit('cue settings', {'cues': cues, 'selected_cue': clickedCue, 'name': cues[int(message['cue_id'])]["name"], 'description': cues[int(message['cue_id'])]["description"], "time": cues[int(message['cue_id'])]["time"], "follow": cues[int(message['cue_id'])]["follow"], 'current_cue': currentCue}, namespace='/tonalite', room=sid)
 
 
 @sio.on('update cue', namespace='/tonalite')
@@ -135,7 +136,7 @@ async def save_show(sid, message):
     show["author"] = message['author']
     show["copyright"] = message['copyright']
     show["last_updated"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    await sio.emit('redirect', {'url': "/show"}, namespace='/tonalite')
+    await sio.emit('redirect', {'url': "/show"}, namespace='/tonalite', room=sid)
 
 
 @sio.on('clear show', namespace='/tonalite')
@@ -296,4 +297,4 @@ def server(app_ip, app_port, sacn_ip):
 
 
 if __name__ == "__main__":
-    server("", "", "")
+    server("192.168.0.109", "", "")
