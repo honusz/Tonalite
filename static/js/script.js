@@ -190,6 +190,12 @@ $(document).ready(function () {
     socket.emit('save settings', { serverIP: $("#serverIP").val(), serverPort: $("#serverPort").val(), sacnIP: $("#sacnIP").val() });
   });
 
+  $('#resetSettingsBtn').click(function (event) {
+    $("#serverIP").val("127.0.0.1");
+    $("#serverPort").val("9898");
+    $("#sacnIP").val("127.0.0.1");
+  });
+
   $('#quitBtn').click(function (event) {
     if (confirm('Are you sure you want to quit? Your current show will not be saved.')) {
       socket.emit('quit tonalite', {});
