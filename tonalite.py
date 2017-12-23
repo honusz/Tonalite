@@ -7,7 +7,6 @@ import webbrowser
 
 import socketio
 from aiohttp import web
-from colour import Color
 from multidict import MultiDict
 
 from pyudmx import uDMXDevice

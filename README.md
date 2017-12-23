@@ -2,30 +2,39 @@
 
 Tonalite is a mobile lighting controller written in Python and JavaScript using SocketIO.
 
-## Required Features
+## Required Tools
+
+Tonalite requires Python 3.6+ and the folowing libraries installed through pip:
+
+- python-socketio
+- aiohttp
+
+## Feature Set
+
+### Required Features
 
 - Save/load show
 - Record and playback cues
 - Change cue time
 - Mobile responsive
 
-## Wanted Features
+### Wanted Features
 
 - Effects
 - Follow cue
 - Submasters
 - Safe channels
 
-## Implimented Features
+### Implimented Features
 
 - Save/load show
 - Record and playback cues
 - Change cue time
 - Follow cue
 
-## Implimentation Details
+### Implimentation Details
 
-### Safe channels
+#### Safe channels
 
 Two lists of channel values. The first is what is used for cues.
 The second is used for safe channels.
