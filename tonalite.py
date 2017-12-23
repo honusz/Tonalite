@@ -2,6 +2,7 @@ import datetime
 import os
 import pickle
 import re
+import sys
 import time
 import unicodedata
 import webbrowser
@@ -10,7 +11,7 @@ import socketio
 from aiohttp import web
 from multidict import MultiDict
 
-from pyudmx import uDMXDevice
+#from pyudmx import uDMXDevice
 from sACN import DMXSource
 
 sio = socketio.AsyncServer(async_mode='aiohttp')
@@ -39,6 +40,15 @@ tonaliteSettings = {
     "serverPort": "9898",
     "sacnIP": "127.0.0.1"
 }
+
+
+def resourcePath(relativePath):
+    try:
+        basePath = sys._MEIPASS
+    except Exception:
+        basePath = os.path.abspath(".")
+
+    return os.path.join(basePath, relativePath)
 
 
 def slugify(value):
@@ -70,7 +80,7 @@ async def generate_fade(start, end, secs=3.0, fps=40):
 
 
 async def index(request):
-    with open('app.html') as f:
+    with open(resourcePath('app.html')) as f:
         return web.Response(text=f.read(), content_type='text/html')
 
 
@@ -284,7 +294,7 @@ async def save_settings(sid, message):
         tonaliteConfig, "wb"), pickle.HIGHEST_PROTOCOL)
     await sio.emit('update all', {'channels': channels, 'cues': cues, 'selected_cue': clickedCue, 'show': show, 'current_cue': currentCue, 'tonaliteSettings': tonaliteSettings}, namespace='/tonalite')
 
-app.router.add_static('/static', 'static')
+app.router.add_static('/static', resourcePath('static'))
 app.router.add_get('/', index)
 app.router.add_get('/show', saveshow)
 app.router.add_post('/show', store_show_handler)

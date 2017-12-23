@@ -8,6 +8,11 @@ Tonalite requires Python 3.6+ and the folowing libraries installed through pip:
 
 - python-socketio
 - aiohttp
+- PyInstaller
+
+### Create Executable
+
+Create the PyInstaller release executable by running the command `python3 -m PyInstaller --onefile tonalite.spec`
 
 ## Feature Set
 
