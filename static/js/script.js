@@ -155,6 +155,10 @@ $(document).ready(function () {
     socket.emit('cue move', { action: "delete" });
   });
 
+  $("#goCue").click(function (event) {
+    socket.emit('command message', { command: "q 9949" });
+  });
+
   $("#nextCue").click(function (event) {
     socket.emit('cue move', { action: "next" });
   });
@@ -165,6 +169,10 @@ $(document).ready(function () {
 
   $("#saveShowBtn").click(function (event) {
     socket.emit('save show', { name: $("#showName").val(), description: $("#showDescription").val(), author: $("#showAuthor").val(), copyright: $("#showCopyright").val() });
+  });
+
+  $("#clearShowBtn").click(function (event) {
+    socket.emit('clear show', "none");
   });
 
   $('#commandClearBtn').click(function (event) {

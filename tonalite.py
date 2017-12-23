@@ -84,15 +84,15 @@ async def store_show_handler(request):
     global show
     data = await request.post()
 
-    mp3 = data['show']
+    showF = data['show']
 
     # .filename contains the name of the file in string format.
-    filename = mp3.filename
+    filename = showF.filename
 
     # .file contains the actual file data that needs to be stored somewhere.
-    mp3_file = data['show'].file
+    showFile = data['show'].file
 
-    content = pickle.loads(mp3_file.read())
+    content = pickle.loads(showFile.read())
     fixtures = content[0]
     submasters = content[1]
     cues = content[2]
@@ -136,6 +136,32 @@ async def save_show(sid, message):
     show["copyright"] = message['copyright']
     show["last_updated"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     await sio.emit('redirect', {'url': "/show"}, namespace='/tonalite')
+
+
+@sio.on('clear show', namespace='/tonalite')
+async def clear_show(sid, message):
+    global fixtures
+    global channels
+    global cues
+    global show
+    global clickedCue
+    global currentCue
+    fixtures = []
+    submasters = []
+    channels = [0] * 48
+    cues = []
+    show = {
+        "name": "",
+        "description": "",
+        "authior": "",
+        "copyright": "",
+        "last_updated": "",
+        "fixtures": [],
+        "cues": []
+    }
+    clickedCue = None
+    currentCue = 0
+    await sio.emit('update all', {'channels': channels, 'cues': cues, 'selected_cue': clickedCue, 'show': show, 'current_cue': currentCue}, namespace='/tonalite')
 
 
 @sio.on('cue move', namespace='/tonalite')
@@ -188,6 +214,8 @@ async def save_cue(sid, message):
 async def command_message(sid, message):
     global channels
     global cues
+    global currentCue
+    global clickedCue
     cmd = message['command'].lower().split()
     if len(cmd) == 2:
         if cmd[0] == "r" and cmd[1] == "q":
@@ -199,6 +227,21 @@ async def command_message(sid, message):
                 "values": channels[:]
             })
             await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
+        elif cmd[0] == "q" and cmd[1].isdigit():
+            setCue = int(cmd[1])
+            if setCue == 9949:
+                setCue = clickedCue + 1
+            if setCue <= len(cues) and setCue >= 1:
+                setCue -= 1
+                await generate_fade(cues[currentCue]["values"],
+                                    cues[setCue]["values"], cues[setCue]["time"])
+                currentCue = setCue
+                while cues[currentCue]["follow"] != 0:
+                    if currentCue != len(cues) - 1:
+                        await sio.sleep(cues[currentCue]["follow"])
+                        currentCue += 1
+                        await generate_fade(cues[currentCue - 1]["values"], cues[currentCue]["values"], cues[currentCue]["time"])
+                await sio.emit('update all', {'channels': channels, 'cues': cues, 'selected_cue': clickedCue, 'show': show, 'current_cue': currentCue}, namespace='/tonalite')
     if len(cmd) == 4:
         if cmd[0] == "c":
             if "+" in cmd[1]:
