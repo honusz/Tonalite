@@ -10,7 +10,6 @@ import webbrowser
 import socketio
 
 from aiohttp import web
-from multidict import MultiDict
 #from pyudmx import uDMXDevice
 from sACN import DMXSource
 
