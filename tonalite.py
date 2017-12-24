@@ -8,9 +8,9 @@ import unicodedata
 import webbrowser
 
 import socketio
+
 from aiohttp import web
 from multidict import MultiDict
-
 #from pyudmx import uDMXDevice
 from sACN import DMXSource
 
@@ -18,9 +18,8 @@ sio = socketio.AsyncServer(async_mode='aiohttp')
 app = web.Application()
 sio.attach(app)
 
-fixtures = []
-submasters = []
 channels = [0] * 48
+outputChannels = [0] * 48
 cues = []
 show = {
     "name": "",
@@ -28,7 +27,6 @@ show = {
     "authior": "",
     "copyright": "",
     "last_updated": "",
-    "fixtures": [],
     "cues": []
 }
 clickedCue = None
@@ -74,6 +72,7 @@ async def generate_fade(start, end, secs=3.0, fps=40):
             a = start[channel] or 0
             b = end[channel] or 0
             channels[channel] = int(a + (((b - a) / (secs * fps)) * index))
+
         sendDMX(channels)
         await sio.emit('update all', {'channels': channels, 'cues': cues, 'selected_cue': clickedCue, 'show': show, 'current_cue': currentCue, 'tonaliteSettings': tonaliteSettings}, namespace='/tonalite')
         time.sleep(secs / (int(secs * fps)))
@@ -86,8 +85,6 @@ async def index(request):
 
 async def store_show_handler(request):
     global cues
-    global fixtures
-    global submasters
     global show
     data = await request.post()
 
@@ -101,8 +98,6 @@ async def store_show_handler(request):
         showFile = data['show'].file
 
         content = pickle.loads(showFile.read())
-        fixtures = content[0]
-        submasters = content[1]
         cues = content[2]
         show = content[3]
 
@@ -110,7 +105,7 @@ async def store_show_handler(request):
 
 
 async def saveshow(request):
-    return web.Response(body=pickle.dumps([fixtures, submasters, cues, show], pickle.HIGHEST_PROTOCOL), headers={'Content-Disposition': 'attachment; filename="' + slugify(show["name"]) + '.tonalite"'}, content_type='application/octet-stream')
+    return web.Response(body=pickle.dumps([cues, show], pickle.HIGHEST_PROTOCOL), headers={'Content-Disposition': 'attachment; filename="' + slugify(show["name"]) + '.tonalite"'}, content_type='application/octet-stream')
 
 
 @sio.on('connect', namespace='/tonalite')
@@ -148,14 +143,11 @@ async def save_show(sid, message):
 
 @sio.on('clear show', namespace='/tonalite')
 async def clear_show(sid, message):
-    global fixtures
     global channels
     global cues
     global show
     global clickedCue
     global currentCue
-    fixtures = []
-    submasters = []
     channels = [0] * 48
     cues = []
     show = {
@@ -164,7 +156,6 @@ async def clear_show(sid, message):
         "authior": "",
         "copyright": "",
         "last_updated": "",
-        "fixtures": [],
         "cues": []
     }
     clickedCue = None
@@ -285,7 +276,7 @@ async def command_message(sid, message):
 @sio.on('quit tonalite', namespace='/tonalite')
 async def quit_tonalite(sid, message):
     sys.exit(0)
-    
+
 
 @sio.on('save settings', namespace='/tonalite')
 async def save_settings(sid, message):
