@@ -173,11 +173,13 @@ $(document).ready(function () {
   });
 
   $("#clearShowBtn").click(function (event) {
-    $("#showName").val("");
-    $("#showDescription").val("");
-    $("#showAuthor").val("");
-    $("#showCopyright").val("");
-    socket.emit('clear show', "none");
+    if (confirm('Are you sure you want clear everything?')) {
+      $("#showName").val("");
+      $("#showDescription").val("");
+      $("#showAuthor").val("");
+      $("#showCopyright").val("");
+      socket.emit('clear show', "none");
+    }
   });
 
   $('#commandClearBtn').click(function (event) {
