@@ -241,7 +241,7 @@ async def command_message(sid, message):
                 setCue = clickedCue + 1
             if setCue <= len(cues) and setCue >= 1:
                 setCue -= 1
-                await generate_fade(cues[currentCue]["values"],
+                await generate_fade(channels,
                                     cues[setCue]["values"], cues[setCue]["time"])
                 currentCue = setCue
                 while cues[currentCue]["follow"] != 0:
