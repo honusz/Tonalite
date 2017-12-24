@@ -30,7 +30,6 @@ If you have [UPX](https://upx.github.io/) installed, the build will be much fast
 - [ ] Effects
 - [x] Follow cue
 - [ ] Submasters
-- [ ] Safe channels
 - [ ] Better cue transitions
 
 ### Implimentation Details
