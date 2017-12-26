@@ -77,6 +77,7 @@ function updateSubs(msg) {
       console.log("hi");
     }
   }
+  $("Submasters").append("<div class=\"col-2 submaster\"><button class=\"btn btn-green sub-btn\" id=\"addSubBtn\"><i class=\"fas fa-plus-octagon\"></i> New Submaster</button></div>")
 }
 
 function settingsDropdown() {
