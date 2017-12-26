@@ -154,11 +154,15 @@ async def save_show(sid, message):
 @sio.on('clear show', namespace='/tonalite')
 async def clear_show(sid, message):
     global channels
+    global outputChannels
+    global submasters
     global cues
     global show
     global clickedCue
     global currentCue
     channels = [0] * 48
+    outputChannels = [None] * 48
+    submasters = []
     cues = []
     show = {
         "name": "",
@@ -306,7 +310,7 @@ async def save_settings(sid, message):
     tonaliteSettings["serverIP"] = message['serverIP']
     tonaliteSettings["serverPort"] = message['serverPort']
 
-    tonaliteConfig = os.path.join(os.path.expanduser("~"), ".tonaliteConfg")
+    tonaliteConfig = os.path.join(os.path.expanduser("~"), ".tonaliteConfig")
     pickle.dump(tonaliteSettings, open(
         tonaliteConfig, "wb"), pickle.HIGHEST_PROTOCOL)
     await sio.emit('update all', {'channels': calculateChans(channels, outputChannels), 'cues': cues, 'selected_cue': clickedCue, 'show': show, 'current_cue': currentCue, 'tonaliteSettings': tonaliteSettings, 'submasters': submasters}, namespace='/tonalite')
@@ -328,7 +332,7 @@ def server(app_ip, app_port, sacn_ip):
 
 
 if __name__ == "__main__":
-    tonaliteConfig = os.path.join(os.path.expanduser("~"), ".tonaliteConf")
+    tonaliteConfig = os.path.join(os.path.expanduser("~"), ".tonaliteConfig")
 
     if not os.path.exists(tonaliteConfig):
         pickle.dump(tonaliteSettings, open(
