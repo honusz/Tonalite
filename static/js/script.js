@@ -167,6 +167,11 @@ $(document).ready(function () {
     return false;
   });
 
+  $('#commandReleaseBtn').click(function (event) {
+    socket.emit('command message', { command: "c rs" });
+    return false;
+  });
+
   $('#recordCueBtn').click(function (event) {
     socket.emit('command message', { command: "r q" });
     return false;
