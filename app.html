@@ -9,10 +9,13 @@
     <title>Tonalite Lighting Control</title>
     <script src="static/js/jquery-3.2.1.min.js"></script>
     <script src="static/js/socket.io.js"></script>
+    <script src="static/js/nouislider.min.js"></script>
+    <script src="static/js/wNumb.js"></script>
     <script src="static/js/script.js"></script>
     <script defer src="static/js/fontawesome.min.js"></script>
     <script defer src="static/js/fa-solid.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">
+    <link href="static/css/nouislider.min.css" rel="stylesheet">
     <link href="static/css/style.css" rel="stylesheet">
   </head>
   <body>
@@ -97,11 +100,8 @@
               <button class="kbtn btn btn-red btn-full" inputVal="q">Cue</button>
             </div>
             <div class="col-2 keyboard-btn">
-              <button class="kbtn btn btn-red btn-full" inputVal="rs">Reset</button>
+              <button class="kbtn btn btn-red btn-full" inputVal="rs">Release</button>
             </div>
-            <!--<div class="col-2 keyboard-btn">
-              <button class="kbtn btn btn-red btn-full" inputVal="s">Submaster</button>
-            </div>-->
             <div class="col-2 keyboard-btn">
               <button class="kbtn btn btn-blue btn-full" inputVal="+">And</button>
             </div>
@@ -156,6 +156,92 @@
           <button class="hidden-item btn btn-green" id="goCue"><i class="fas fa-play"></i> Go</button>
         </div>
     </div>
+    <div class="row content" id="Submasters">
+      <div class="col-1 submaster">
+        <div class="sliders">
+          <div class="slider"></div>
+        </div>
+        <div class="subtitle"><button class="btn btn-yellow">Test Sub</button></div>
+      </div>
+      <div class="col-1 submaster">
+        <div class="sliders">
+          <div class="slider"></div>
+        </div>
+        <div class="subtitle"><button class="btn btn-yellow">Test Sub</button></div>
+      </div>
+      <div class="col-1 submaster">
+        <div class="sliders">
+          <div class="slider"></div>
+        </div>
+        <div class="subtitle"><button class="btn btn-yellow">Test Sub</button></div>
+      </div>
+      <div class="col-1 submaster">
+        <div class="sliders">
+          <div class="slider"></div>
+        </div>
+        <div class="subtitle"><button class="btn btn-yellow">Test Sub</button></div>
+      </div>
+      <div class="col-1 submaster">
+        <div class="sliders">
+          <div class="slider"></div>
+        </div>
+        <div class="subtitle"><button class="btn btn-yellow">Test Sub</button></div>
+      </div>
+      <div class="col-1 submaster">
+        <div class="sliders">
+          <div class="slider"></div>
+        </div>
+        <div class="subtitle"><button class="btn btn-yellow">Test Sub</button></div>
+      </div>
+      <div class="col-1 submaster">
+        <div class="sliders">
+          <div class="slider"></div>
+        </div>
+        <div class="subtitle"><button class="btn btn-yellow">Test Sub</button></div>
+      </div>
+      <div class="col-1 submaster">
+        <div class="sliders">
+          <div class="slider"></div>
+        </div>
+        <div class="subtitle"><button class="btn btn-yellow">Test Sub</button></div>
+      </div>
+      <div class="col-1 submaster">
+        <div class="sliders">
+          <div class="slider"></div>
+        </div>
+        <div class="subtitle"><button class="btn btn-yellow">Test Sub</button></div>
+      </div>
+      <div class="col-1 submaster">
+        <div class="sliders">
+          <div class="slider"></div>
+        </div>
+        <div class="subtitle"><button class="btn btn-yellow">Test Sub</button></div>
+      </div>
+      <div class="col-1 submaster">
+        <div class="sliders">
+          <div class="slider"></div>
+        </div>
+        <div class="subtitle"><button class="btn btn-yellow">Test Sub</button></div>
+      </div>
+      <div class="col-1 submaster">
+        <div class="sliders">
+          <div class="slider"></div>
+        </div>
+        <div class="subtitle"><button class="btn btn-yellow">Test Sub</button></div>
+      </div>
+      <div class="col-1 submaster">
+        <div class="sliders">
+          <div class="slider"></div>
+        </div>
+        <div class="subtitle"><button class="btn btn-yellow">Test Sub</button></div>
+      </div>
+      <div class="col-1 submaster">
+        <div class="sliders">
+          <div class="slider"></div>
+        </div>
+        <div class="subtitle"><button class="btn btn-yellow">Test Sub</button></div>
+      </div>
+    </div>
     <div class="row content" id="Show">
         <div class="col-5 col-sm-12" id="cue-settings">
           <h2>Load Show:</h2>
@@ -183,10 +269,10 @@
     </div>
     <div class="row" id="footer">
         <button class="tab-item col-3" onclick="openTab(event, 'Keyboard')" id="keyboardTabBtn"><i class="fas fa-keyboard"></i> Keyboard</button>
-        <button class="tab-item col-3" onclick="openTab(event, 'Channels')" id="channelsTabBtn"><i class="fas fa-exchange"></i> Channels</button>
-        <button class="tab-item col-3" onclick="openTab(event, 'Cues')" id="cuesTabBtn"><i class="fas fa-list-alt"></i> Cues</button>
-        <!--<button class="tab-item col-3" id="subsTabBtn"><i class="fas fa-sliders-v"></i> Submasters</button>-->
-        <button class="tab-item col-3" onclick="openTab(event, 'Show')" id="showTabBtn"><i class="fas fa-cogs"></i> Show</button>
+        <button class="tab-item col-2" onclick="openTab(event, 'Channels')" id="channelsTabBtn"><i class="fas fa-exchange"></i> Channels</button>
+        <button class="tab-item col-2" onclick="openTab(event, 'Cues')" id="cuesTabBtn"><i class="fas fa-list-alt"></i> Cues</button>
+        <button class="tab-item col-3" onclick="openTab(event, 'Submasters')" id="subsTabBtn"><i class="fas fa-sliders-v"></i> Submasters</button>
+        <button class="tab-item col-2" onclick="openTab(event, 'Show')" id="showTabBtn"><i class="fas fa-cogs"></i> Show</button>
     </div>
   </body>
 </html>

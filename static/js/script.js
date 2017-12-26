@@ -70,12 +70,39 @@ function updateCues(msg) {
   return 0;
 }
 
+function updateSubs(msg) {
+  $("Submasters").empty();
+  if (msg.submasters.length != 0) {
+    for (var i = 0; i < msg.submasters.length; i++) {
+      console.log("hi");
+    }
+  }
+}
+
 function settingsDropdown() {
   document.getElementById("settingsDropdown").classList.toggle("show");
 }
 
 $(document).ready(function () {
   document.getElementById("keyboardTabBtn").click();
+  sliders = document.getElementsByClassName('slider');
+
+  for ( var i = 0; i < sliders.length; i++ ) {
+
+    noUiSlider.create(sliders[i], {
+      start: 0,
+      connect: [true, false],
+      orientation: "vertical",
+      range: {
+        'min': 0,
+        'max': 255
+      },
+      direction: 'rtl',
+      format: wNumb({
+        decimals: 0
+      })
+    });
+  }
 
   for (var i = 0; i <= 47; i++) {
     $("#Channels").append("<div class=\"col-1 channel\"><div class=\"channel-item\"><h2>" + (i + 1) + "</h2><h1 id=\"cval-" + (i + 1) + "\">0</h1></div></div>");
@@ -102,6 +129,7 @@ $(document).ready(function () {
   socket.on('update all', function (msg) {
     updateChannels(msg);
     updateCues(msg);
+    updateSubs(msg);
     if (msg.show.name != "") {
       $("#showName").val(msg.show.name);
       $("#showDescription").val(msg.show.description);
@@ -111,7 +139,7 @@ $(document).ready(function () {
     $("#serverIP").val(msg.tonaliteSettings.serverIP);
     $("#serverPort").val(msg.tonaliteSettings.serverPort);
     $("#sacnIP").val(msg.tonaliteSettings.sacnIP);
-    $("#startWBrowser").prop('checked') = msg.tonaliteSettings.startWBrowser;
+    $("#startWBrowser").prop('checked', msg.tonaliteSettings.startWBrowser);
   });
 
   socket.on('redirect', function (msg) {

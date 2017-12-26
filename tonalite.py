@@ -19,6 +19,7 @@ sio.attach(app)
 
 channels = [0] * 48
 outputChannels = [None] * 48
+submasters = []
 cues = []
 show = {
     "name": "",
@@ -84,7 +85,7 @@ async def generate_fade(start, end, secs=3.0, fps=40):
             channels[channel] = int(a + (((b - a) / (secs * fps)) * index))
 
         sendDMX(calculateChans(channels, outputChannels))
-        await sio.emit('update all', {'channels': calculateChans(channels, outputChannels), 'cues': cues, 'selected_cue': clickedCue, 'show': show, 'current_cue': currentCue, 'tonaliteSettings': tonaliteSettings}, namespace='/tonalite')
+        await sio.emit('update all', {'channels': calculateChans(channels, outputChannels), 'cues': cues, 'selected_cue': clickedCue, 'show': show, 'current_cue': currentCue, 'tonaliteSettings': tonaliteSettings, 'submasters': submasters}, namespace='/tonalite')
         time.sleep(secs / (int(secs * fps)))
 
 
@@ -120,7 +121,7 @@ async def saveshow(request):
 
 @sio.on('connect', namespace='/tonalite')
 async def connect(sid, environ):
-    await sio.emit('update all', {'channels': calculateChans(channels, outputChannels), 'cues': cues, 'selected_cue': clickedCue, 'show': show, 'current_cue': currentCue, 'tonaliteSettings': tonaliteSettings}, namespace='/tonalite')
+    await sio.emit('update all', {'channels': calculateChans(channels, outputChannels), 'cues': cues, 'selected_cue': clickedCue, 'show': show, 'current_cue': currentCue, 'tonaliteSettings': tonaliteSettings, 'submasters': submasters}, namespace='/tonalite')
 
 
 @sio.on('cue info', namespace='/tonalite')
@@ -170,7 +171,7 @@ async def clear_show(sid, message):
     }
     clickedCue = None
     currentCue = 0
-    await sio.emit('update all', {'channels': calculateChans(channels, outputChannels), 'cues': cues, 'selected_cue': clickedCue, 'show': show, 'current_cue': currentCue, 'tonaliteSettings': tonaliteSettings}, namespace='/tonalite')
+    await sio.emit('update all', {'channels': calculateChans(channels, outputChannels), 'cues': cues, 'selected_cue': clickedCue, 'show': show, 'current_cue': currentCue, 'tonaliteSettings': tonaliteSettings, 'submasters': submasters}, namespace='/tonalite')
 
 
 @sio.on('cue move', namespace='/tonalite')
@@ -201,13 +202,13 @@ async def cue_move(sid, message):
                     await sio.sleep(cues[currentCue]["follow"])
                     currentCue += 1
                     await generate_fade(cues[currentCue - 1]["values"], cues[currentCue]["values"], cues[currentCue]["time"])
-        await sio.emit('update all', {'channels': calculateChans(channels, outputChannels), 'cues': cues, 'selected_cue': clickedCue, 'show': show, 'current_cue': currentCue, 'tonaliteSettings': tonaliteSettings}, namespace='/tonalite')
+        await sio.emit('update all', {'channels': calculateChans(channels, outputChannels), 'cues': cues, 'selected_cue': clickedCue, 'show': show, 'current_cue': currentCue, 'tonaliteSettings': tonaliteSettings, 'submasters': submasters}, namespace='/tonalite')
     elif message['action'] == "last":
         if currentCue != 0:
             currentCue -= 1
             await generate_fade(cues[currentCue + 1]["values"],
                                 cues[currentCue]["values"], cues[currentCue]["time"])
-        await sio.emit('update all', {'channels': calculateChans(channels, outputChannels), 'cues': cues, 'selected_cue': clickedCue, 'show': show, 'current_cue': currentCue, 'tonaliteSettings': tonaliteSettings}, namespace='/tonalite')
+        await sio.emit('update all', {'channels': calculateChans(channels, outputChannels), 'cues': cues, 'selected_cue': clickedCue, 'show': show, 'current_cue': currentCue, 'tonaliteSettings': tonaliteSettings, 'submasters': submasters}, namespace='/tonalite')
 
 
 @sio.on('save cue', namespace='/tonalite')
@@ -255,7 +256,7 @@ async def command_message(sid, message):
                         await sio.sleep(cues[currentCue]["follow"])
                         currentCue += 1
                         await generate_fade(cues[currentCue - 1]["values"], cues[currentCue]["values"], cues[currentCue]["time"])
-                await sio.emit('update all', {'channels': calculateChans(channels, outputChannels), 'cues': cues, 'selected_cue': clickedCue, 'show': show, 'current_cue': currentCue, 'tonaliteSettings': tonaliteSettings}, namespace='/tonalite')
+                await sio.emit('update all', {'channels': calculateChans(channels, outputChannels), 'cues': cues, 'selected_cue': clickedCue, 'show': show, 'current_cue': currentCue, 'tonaliteSettings': tonaliteSettings, 'submasters': submasters}, namespace='/tonalite')
     if len(cmd) == 4:
         if cmd[0] == "c":
             if "+" in cmd[1]:
@@ -310,7 +311,7 @@ async def save_settings(sid, message):
     tonaliteConfig = os.path.join(os.path.expanduser("~"), ".tonaliteConfg")
     pickle.dump(tonaliteSettings, open(
         tonaliteConfig, "wb"), pickle.HIGHEST_PROTOCOL)
-    await sio.emit('update all', {'channels': calculateChans(channels, outputChannels), 'cues': cues, 'selected_cue': clickedCue, 'show': show, 'current_cue': currentCue, 'tonaliteSettings': tonaliteSettings}, namespace='/tonalite')
+    await sio.emit('update all', {'channels': calculateChans(channels, outputChannels), 'cues': cues, 'selected_cue': clickedCue, 'show': show, 'current_cue': currentCue, 'tonaliteSettings': tonaliteSettings, 'submasters': submasters}, namespace='/tonalite')
 
 app.router.add_static('/static', resourcePath('static'))
 app.router.add_get('/', index)
@@ -330,7 +331,7 @@ def server(app_ip, app_port, sacn_ip, startBrowser):
 
 
 if __name__ == "__main__":
-    tonaliteConfig = os.path.join(os.path.expanduser("~"), ".tonaliteConfg")
+    tonaliteConfig = os.path.join(os.path.expanduser("~"), ".tonaliteConf")
 
     if not os.path.exists(tonaliteConfig):
         pickle.dump(tonaliteSettings, open(
