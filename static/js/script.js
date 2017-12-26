@@ -139,7 +139,6 @@ $(document).ready(function () {
     $("#serverIP").val(msg.tonaliteSettings.serverIP);
     $("#serverPort").val(msg.tonaliteSettings.serverPort);
     $("#sacnIP").val(msg.tonaliteSettings.sacnIP);
-    $("#startWBrowser").prop('checked', msg.tonaliteSettings.startWBrowser);
   });
 
   socket.on('redirect', function (msg) {
@@ -218,14 +217,13 @@ $(document).ready(function () {
 
   $('#saveSettingsBtn').click(function (event) {
     alert("The server must be restarted for the changes to take effect.");
-    socket.emit('save settings', { serverIP: $("#serverIP").val(), serverPort: $("#serverPort").val(), sacnIP: $("#sacnIP").val(), startWBrowser: $("#startWBrowser").prop('checked') });
+    socket.emit('save settings', { serverIP: $("#serverIP").val(), serverPort: $("#serverPort").val(), sacnIP: $("#sacnIP").val() });
   });
 
   $('#resetSettingsBtn').click(function (event) {
     $("#serverIP").val("127.0.0.1");
     $("#serverPort").val("9898");
     $("#sacnIP").val("127.0.0.1");
-    $("#startWBrowser").prop('checked') = true;
   });
 
   $('#quitBtn').click(function (event) {
