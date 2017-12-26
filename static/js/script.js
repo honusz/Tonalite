@@ -71,13 +71,13 @@ function updateCues(msg) {
 }
 
 function updateSubs(msg) {
-  $("Submasters").empty();
+  $("#Submasters").empty();
   if (msg.submasters.length != 0) {
     for (var i = 0; i < msg.submasters.length; i++) {
-      console.log("hi");
+      $("#Submasters").append("<div class=\"col-1 submaster\"><div class=\"sliders\"><div class=\"slider\"></div></div><div class=\"subtitle\"><button class=\"btn btn-yellow\">"+msg.submasters[i].name+"</button></div></div>")
     }
   }
-  $("Submasters").append("<div class=\"col-2 submaster\"><button class=\"btn btn-green sub-btn\" id=\"addSubBtn\"><i class=\"fas fa-plus-octagon\"></i> New Submaster</button></div>")
+  $("#Submasters").append("<div class=\"col-2 submaster\"><button class=\"btn btn-green sub-btn\" id=\"addSubBtn\"><i class=\"fas fa-plus-octagon\"></i> New Submaster</button></div>")
 }
 
 function settingsDropdown() {
