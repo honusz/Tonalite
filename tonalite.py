@@ -19,7 +19,21 @@ sio.attach(app)
 
 channels = [0] * 48
 outputChannels = [None] * 48
-submasters = []
+submasters = [
+    {
+        "name": "Test Sub",
+        "channels": [
+            {
+                "channel": 1,
+                "value": 255
+            },
+            {
+                "channel": 5,
+                "value": 57
+            }
+        ],
+    }
+]
 cues = []
 show = {
     "name": "",

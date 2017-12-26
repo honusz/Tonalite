@@ -77,6 +77,26 @@ function updateSubs(msg) {
       $("#Submasters").append("<div class=\"col-1 submaster\"><div class=\"sliders\"><div class=\"slider\"></div></div><div class=\"subtitle\"><button class=\"btn btn-yellow sub-btn\">"+msg.submasters[i].name+"</button></div></div>")
     }
   }
+  sliders = $('.sliders');
+  for ( var i = 0; i < sliders.length; i++ ) {
+
+    noUiSlider.create(sliders[i], {
+      start: 0,
+      connect: [true, false],
+      direction: 'rtl',
+      orientation: "vertical",
+      range: {
+        'min': 0,
+        'max': 255
+      },
+      format: wNumb({
+        decimals: 0
+      })
+    });
+    sliders[i].noUiSlider.on('slide', function(values, handle){
+      console.log(this.get());
+    });
+  }
   $("#Submasters").append("<div class=\"col-2 submaster\"><button class=\"btn btn-green\" id=\"addSubBtn\"><i class=\"fas fa-plus-octagon\"></i> New Submaster</button></div>")
 }
 
@@ -86,24 +106,6 @@ function settingsDropdown() {
 
 $(document).ready(function () {
   document.getElementById("keyboardTabBtn").click();
-  sliders = document.getElementsByClassName('slider');
-
-  for (var i = 0; i < sliders.length; i++) {
-
-    noUiSlider.create(sliders[i], {
-      start: 0,
-      connect: [true, false],
-      orientation: "vertical",
-      range: {
-        'min': 0,
-        'max': 255
-      },
-      direction: 'rtl',
-      format: wNumb({
-        decimals: 0
-      })
-    });
-  }
 
   for (var i = 0; i <= 47; i++) {
     $("#Channels").append("<div class=\"col-1 channel\"><div class=\"channel-item\"><h2>" + (i + 1) + "</h2><h1 id=\"cval-" + (i + 1) + "\">0</h1></div></div>");
