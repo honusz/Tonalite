@@ -87,7 +87,7 @@ $(document).ready(function () {
   document.getElementById("keyboardTabBtn").click();
   sliders = document.getElementsByClassName('slider');
 
-  for ( var i = 0; i < sliders.length; i++ ) {
+  for (var i = 0; i < sliders.length; i++) {
 
     noUiSlider.create(sliders[i], {
       start: 0,
