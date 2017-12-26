@@ -36,8 +36,7 @@ sourceusb = None
 tonaliteSettings = {
     "serverIP": "127.0.0.1",
     "serverPort": "9898",
-    "sacnIP": "127.0.0.1",
-    "startWBrowser": True
+    "sacnIP": "127.0.0.1"
 }
 
 
@@ -306,7 +305,6 @@ async def save_settings(sid, message):
     tonaliteSettings["sacnIP"] = message['sacnIP']
     tonaliteSettings["serverIP"] = message['serverIP']
     tonaliteSettings["serverPort"] = message['serverPort']
-    tonaliteSettings["startWBrowser"] = message['startWBrowser']
 
     tonaliteConfig = os.path.join(os.path.expanduser("~"), ".tonaliteConfg")
     pickle.dump(tonaliteSettings, open(
@@ -331,7 +329,7 @@ def server(app_ip, app_port, sacn_ip, startBrowser):
 
 
 if __name__ == "__main__":
-    tonaliteConfig = os.path.join(os.path.expanduser("~"), ".tonaliteConf")
+    tonaliteConfig = os.path.join(os.path.expanduser("~"), ".tonaliteConfig")
 
     if not os.path.exists(tonaliteConfig):
         pickle.dump(tonaliteSettings, open(
@@ -341,10 +339,9 @@ if __name__ == "__main__":
     tonaliteSettings["serverIP"] = config["serverIP"]
     tonaliteSettings["serverPort"] = config["serverPort"]
     tonaliteSettings["sacnIP"] = config["sacnIP"]
-    tonaliteSettings["startWBrowser"] = config["startWBrowser"]
 
     try:
         server(tonaliteSettings["serverIP"],
-               tonaliteSettings["serverPort"], tonaliteSettings["sacnIP"], tonaliteSettings["startWBrowser"])
+               tonaliteSettings["serverPort"], tonaliteSettings["sacnIP"])
     except:
         server("127.0.0.1", "9898", "127.0.0.1", True)
