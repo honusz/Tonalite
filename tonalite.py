@@ -136,7 +136,7 @@ async def update_cue(sid, message):
     cues[clickedCue]["description"] = message['description']
     cues[clickedCue]["time"] = int(message['time'])
     cues[clickedCue]["follow"] = int(message['follow'])
-    cues[clickedCue]["values"] = calculateChans(channels, outputChannels)
+    cues[clickedCue]["values"] = calculateChans([0]*48, outputChannels)
     await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
 
 
@@ -238,7 +238,7 @@ async def command_message(sid, message):
                 "description": "This is a new cue",
                 "time": 3,
                 "follow": 0,
-                "values": calculateChans(channels, outputChannels)
+                "values": calculateChans([0]*48, outputChannels)
             })
             await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
         elif cmd[0] == "c" and cmd[1] == "rs":
