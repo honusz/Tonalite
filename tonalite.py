@@ -32,6 +32,15 @@ submasters = [
                 "value": 57
             }
         ],
+    },
+    {
+        "name": "Test Sub 2",
+        "channels": [
+            {
+                "channel": 2,
+                "value": 255
+            }
+        ],
     }
 ]
 cues = []
