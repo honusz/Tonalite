@@ -188,5 +188,13 @@
         <button class="tab-item col-3" onclick="openTab(event, 'Submasters')" id="subsTabBtn"><i class="fas fa-sliders-h"></i> Submasters</button>
         <button class="tab-item col-2" onclick="openTab(event, 'Show')" id="showTabBtn"><i class="fas fa-cogs"></i> Show</button>
     </div>
+    <div id="subSettingsModal" class="modal">
+      <div class="modal-content">
+        <span class="modal-close"><i class="fas fa-window-close"></i></span>
+        <input type="text" placeholder="Name:" id="subName" required>
+        <br>
+        <input type="number" placeholder="Value:" min="0" max="100" id="subValue">
+      </div>
+    </div>
   </body>
 </html>

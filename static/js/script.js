@@ -76,7 +76,7 @@ function updateSubs(msg) {
   $("#Submasters").empty();
   if (msg.submasters.length != 0) {
     for (var i = 0; i < msg.submasters.length; i++) {
-      $("#Submasters").append("<div class=\"col-1 submaster\"><div class=\"sliders\"><div class=\"slider\" id=\"sub-" + i + "\"></div></div><div class=\"subtitle\"><button class=\"btn btn-yellow sub-btn\">" + msg.submasters[i].name + "</button></div></div>")
+      $("#Submasters").append("<div class=\"col-1 submaster\"><div class=\"sliders\"><div class=\"slider\" id=\"sub-" + i + "\"></div></div><div class=\"subtitle\"><button id=\"sub-btn-"+i+"\" class=\"btn btn-yellow sub-btn\">" + msg.submasters[i].name + "</button></div></div>")
     }
   }
   sliders = $('.slider');
@@ -113,6 +113,12 @@ $(document).ready(function () {
     $("#Channels").append("<div class=\"col-1 channel\"><div class=\"channel-item\"><h2>" + (i + 1) + "</h2><h1 id=\"cval-" + (i + 1) + "\">0</h1></div></div>");
   }
 
+  var modal = document.getElementById('subSettingsModal');
+  var modalCloseBtn = document.getElementsByClassName("modal-close")[0];
+  modalCloseBtn.onclick = function() {
+      modal.style.display = "none";
+  }
+
   socket.on('update chans', function (msg) {
     updateChannels(msg);
   });
@@ -132,6 +138,12 @@ $(document).ready(function () {
     $("#cueDescription").val(msg.description);
     $("#cueTime").val(msg.time);
     $("#cueFollow").val(msg.follow);
+  });
+
+  socket.on('sub settings', function (msg) {
+    $("#subName").val(msg.name);
+    $("#subValue").val(msg.value);
+    modal.style.display = "block";
   });
 
   socket.on('update all', function (msg) {
@@ -167,6 +179,10 @@ $(document).ready(function () {
 
   $("#cues").on("click", "div.cue-item", function () {
     socket.emit('cue info', { cue_id: $(this).attr('cueVal') });
+  });
+
+  $("#Submasters").on("click", "button.sub-btn", function () {
+    socket.emit('sub info', { sub: this.id });
   });
 
   $('#commandSubmitBtn').click(function (event) {

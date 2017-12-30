@@ -160,6 +160,12 @@ async def cue_info(sid, message):
     await sio.emit('cue settings', {'cues': cues, 'selected_cue': clickedCue, 'name': cues[int(message['cue_id'])]["name"], 'description': cues[int(message['cue_id'])]["description"], "time": cues[int(message['cue_id'])]["time"], "follow": cues[int(message['cue_id'])]["follow"], 'current_cue': currentCue}, namespace='/tonalite', room=sid)
 
 
+@sio.on('sub info', namespace='/tonalite')
+async def sub_info(sid, message):
+    clickedSub = int(message['sub'].split("sub-btn-", 1)[1])
+    await sio.emit('sub settings', {'name': submasters[clickedSub]["name"], 'channels': submasters[clickedSub]["channels"], 'value': submasters[clickedSub]["value"]}, namespace='/tonalite', room=sid)
+
+
 @sio.on('update cue', namespace='/tonalite')
 async def update_cue(sid, message):
     cues[clickedCue]["name"] = message['name']
