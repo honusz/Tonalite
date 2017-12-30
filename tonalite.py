@@ -174,7 +174,8 @@ async def update_cue(sid, message):
 @sio.on('update sub val', namespace='/tonalite')
 async def update_sub_val(sid, message):
     global submasters
-    submasters[int(message["sub"].split("sub-", 1)[1])]["value"] = int(message["value"])
+    submasters[int(message["sub"].split("sub-", 1)[1])
+               ]["value"] = int(message["value"])
     sendDMX(calculateChans(channels, outputChannels, submasters))
     await sio.emit('update chans and subs', {'channels': calculateChans(channels, outputChannels, submasters), 'submasters': submasters}, namespace='/tonalite')
 

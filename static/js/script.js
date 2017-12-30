@@ -76,11 +76,11 @@ function updateSubs(msg) {
   $("#Submasters").empty();
   if (msg.submasters.length != 0) {
     for (var i = 0; i < msg.submasters.length; i++) {
-      $("#Submasters").append("<div class=\"col-1 submaster\"><div class=\"sliders\"><div class=\"slider\" id=\"sub-"+i+"\"></div></div><div class=\"subtitle\"><button class=\"btn btn-yellow sub-btn\">"+msg.submasters[i].name+"</button></div></div>")
+      $("#Submasters").append("<div class=\"col-1 submaster\"><div class=\"sliders\"><div class=\"slider\" id=\"sub-" + i + "\"></div></div><div class=\"subtitle\"><button class=\"btn btn-yellow sub-btn\">" + msg.submasters[i].name + "</button></div></div>")
     }
   }
   sliders = $('.slider');
-  for ( var i = 0; i < sliders.length; i++ ) {
+  for (var i = 0; i < sliders.length; i++) {
 
     noUiSlider.create(sliders[i], {
       start: msg.submasters[i].value,
@@ -95,7 +95,7 @@ function updateSubs(msg) {
         decimals: 0
       })
     });
-    sliders[i].noUiSlider.on('set', function(values, handle){
+    sliders[i].noUiSlider.on('set', function (values, handle) {
       socket.emit('update sub val', { sub: this.target.getAttribute('id'), value: this.get() });
     });
   }
