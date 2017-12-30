@@ -200,11 +200,11 @@ $(document).ready(function () {
   });
 
   $("#sub-channels").on("click", "button.sub-chan-save", function () {
-    console.log(this.getAttribute('subChan'));
+    socket.emit('edit sub chan', { action: "save", chan: parseInt(this.getAttribute('subChan')), channel: $('#sub-channel-'+parseInt(this.getAttribute('subChan'))+'-channel').val(), value: $('#sub-channel-'+parseInt(this.getAttribute('subChan'))+'-value').val()});
   });
 
   $("#sub-channels").on("click", "button.sub-chan-delete", function () {
-    console.log(this.getAttribute('subChan'));
+    socket.emit('edit sub chan', { action: "delete", chan: parseInt(this.getAttribute('subChan')) });
   });
 
   $('#commandSubmitBtn').click(function (event) {
