@@ -97,7 +97,7 @@ function updateSubs(msg) {
       console.log(this.get());
     });
   }
-  $("#Submasters").append("<div class=\"col-2 submaster\"><button class=\"btn btn-green\" id=\"addSubBtn\"><i class=\"fas fa-plus-octagon\"></i> New Submaster</button></div>")
+  $("#Submasters").append("<div class=\"col-2 submaster\"><button class=\"btn btn-green\" id=\"addSubBtn\"><i class=\"fas fa-plus-square\"></i> New Submaster</button></div>")
 }
 
 function settingsDropdown() {
