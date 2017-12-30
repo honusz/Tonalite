@@ -180,7 +180,7 @@ $(document).ready(function () {
   });
 
   $('#updateCue').click(function (event) {
-    socket.emit('update cue', { name: $('#cueName').val(), description: $('#cueDescription').val(), time: $('#cueTime').val(), follow: $('#cueFollow').val() });
+    socket.emit('update cue', "nothing");
   });
 
   $('#saveCue').click(function (event) {

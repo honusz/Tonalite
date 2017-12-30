@@ -182,10 +182,6 @@ async def add_sub_chan(sid, message):
 
 @sio.on('update cue', namespace='/tonalite')
 async def update_cue(sid, message):
-    cues[clickedCue]["name"] = message['name']
-    cues[clickedCue]["description"] = message['description']
-    cues[clickedCue]["time"] = int(message['time'])
-    cues[clickedCue]["follow"] = int(message['follow'])
     cues[clickedCue]["values"] = calculateChans(
         [0] * 48, outputChannels, submasters)
     await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
