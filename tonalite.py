@@ -184,6 +184,8 @@ async def edit_sub_chan(sid, message):
     if message["action"] == "save":
         submasters[clickedSub]["channels"][message["chan"]]["channel"] = int(message["channel"])
         submasters[clickedSub]["channels"][message["chan"]]["value"] = int(message["value"])
+    elif message["action"] == "delete":
+        submasters[clickedSub]["channels"].pop(message["chan"])
     await sio.emit('sub settings', {'name': submasters[clickedSub]["name"], 'channels': submasters[clickedSub]["channels"], 'value': submasters[clickedSub]["value"]}, namespace='/tonalite', room=sid)
 
 @sio.on('update cue', namespace='/tonalite')
