@@ -276,6 +276,7 @@ async def save_cue(sid, message):
     cues[clickedCue]["follow"] = int(message['follow'])
     await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
 
+
 @sio.on('save sub', namespace='/tonalite')
 async def save_sub(sid, message):
     submasters[clickedSub]["name"] = message["name"]
