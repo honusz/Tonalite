@@ -28,7 +28,6 @@ If you have [UPX](https://upx.github.io/) installed, the build will be much fast
 - [x] Save/load show
 - [x] Record and playback cues
 - [x] Change cue time
-- [x] Mobile responsive
 
 ### Wanted Features
 
