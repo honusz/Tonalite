@@ -199,12 +199,18 @@
               <input type="text" placeholder="Name:" id="subName" required>
               <br>
               <input type="number" placeholder="Value:" min="0" max="100" id="subValue">
+              <br>
+              <button class="btn btn-green btn-full" id="saveSubBtn">Save Settings</button>
           </div>
           <div class="col-6 col-sm-12">
               <h3>Channels:</h3>
-          </div>
-          <div class="col-12">
-            <button class="btn btn-green btn-full" id="saveSubBtn">Save</button>
+              <div class="row" id="sub-channels">
+                <div class="col-5"><input type="number" placeholder="Channel:" min="1" max="48"></div>
+                <div class="col-5"><input type="number" placeholder="Value:" min="0" max="255"></div>
+                <div class="col-1"><button class="btn btn-green btn-full btn-tall"><i class="fas fa-save"></i></button></div>
+                <div class="col-1"><button class="btn btn-red btn-full btn-tall"><i class="fas fa-trash-alt"></i></button></div>
+              </div>
+              <button class="btn btn-yellow btn-full" id="addSubChanBtn">Add Channel</button>
           </div>
         </div>
       </div>
