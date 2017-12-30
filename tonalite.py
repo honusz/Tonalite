@@ -32,6 +32,7 @@ submasters = [
                 "value": 57
             }
         ],
+        "value": 0
     },
     {
         "name": "Test Sub 2",
@@ -41,6 +42,7 @@ submasters = [
                 "value": 255
             }
         ],
+        "value": 0
     }
 ]
 cues = []

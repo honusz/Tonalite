@@ -74,27 +74,27 @@ function updateSubs(msg) {
   $("#Submasters").empty();
   if (msg.submasters.length != 0) {
     for (var i = 0; i < msg.submasters.length; i++) {
-      $("#Submasters").append("<div class=\"col-1 submaster\"><div class=\"sliders\"><div class=\"slider\"></div></div><div class=\"subtitle\"><button class=\"btn btn-yellow sub-btn\">"+msg.submasters[i].name+"</button></div></div>")
+      $("#Submasters").append("<div class=\"col-1 submaster\"><div class=\"sliders\"><div class=\"slider\" id=\"slider-"+i+"\"></div></div><div class=\"subtitle\"><button class=\"btn btn-yellow sub-btn\">"+msg.submasters[i].name+"</button></div></div>")
     }
   }
-  sliders = $('.sliders');
+  sliders = $('.slider');
   for ( var i = 0; i < sliders.length; i++ ) {
 
     noUiSlider.create(sliders[i], {
-      start: 0,
+      start: msg.submasters[i].value,
       connect: [true, false],
       direction: 'rtl',
       orientation: "vertical",
       range: {
         'min': 0,
-        'max': 255
+        'max': 100
       },
       format: wNumb({
         decimals: 0
       })
     });
     sliders[i].noUiSlider.on('slide', function(values, handle){
-      console.log(this.get());
+      socket.emit('update sub val', { sub: this.target.getAttribute('id'), value: this.get() });
     });
   }
   $("#Submasters").append("<div class=\"col-2 submaster\"><button class=\"btn btn-green\" id=\"addSubBtn\"><i class=\"fas fa-plus-square\"></i> New Submaster</button></div>")
