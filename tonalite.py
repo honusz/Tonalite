@@ -168,6 +168,12 @@ async def sub_info(sid, message):
     await sio.emit('sub settings', {'name': submasters[clickedSub]["name"], 'channels': submasters[clickedSub]["channels"], 'value': submasters[clickedSub]["value"]}, namespace='/tonalite', room=sid)
 
 
+@sio.on('add sub', namespace='/tonalite')
+async def add_sub(sid, message):
+    submasters.append({"name": "New Sub", "channels": [], "value": 0})
+    await sio.emit('update subs', {'submasters': submasters}, namespace='/tonalite')
+
+
 @sio.on('add sub chan', namespace='/tonalite')
 async def add_sub_chan(sid, message):
     submasters[clickedSub]["channels"].append({"channel": 1, "value": 255})

@@ -128,6 +128,10 @@ $(document).ready(function () {
     updateSubs(msg);
   });
 
+  socket.on('update subs', function (msg) {
+    updateSubs(msg);
+  });
+
   socket.on('update cues', function (msg) {
     updateCues(msg);
   });
@@ -189,6 +193,10 @@ $(document).ready(function () {
 
   $("#Submasters").on("click", "button.sub-btn", function () {
     socket.emit('sub info', { sub: this.id });
+  });
+
+  $("#Submasters").on("click", "button#addSubBtn", function () {
+    socket.emit('add sub', "nothing");
   });
 
   $('#commandSubmitBtn').click(function (event) {
