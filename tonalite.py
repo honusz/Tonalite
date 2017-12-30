@@ -55,6 +55,7 @@ show = {
     "cues": []
 }
 clickedCue = None
+clickedSub = None
 currentCue = 0
 source = None
 sourceusb = None
@@ -162,7 +163,14 @@ async def cue_info(sid, message):
 
 @sio.on('sub info', namespace='/tonalite')
 async def sub_info(sid, message):
+    global clickedSub
     clickedSub = int(message['sub'].split("sub-btn-", 1)[1])
+    await sio.emit('sub settings', {'name': submasters[clickedSub]["name"], 'channels': submasters[clickedSub]["channels"], 'value': submasters[clickedSub]["value"]}, namespace='/tonalite', room=sid)
+
+
+@sio.on('add sub chan', namespace='/tonalite')
+async def add_sub_chan(sid, message):
+    submasters[clickedSub]["channels"].append({"channel": 1, "value": 255})
     await sio.emit('sub settings', {'name': submasters[clickedSub]["name"], 'channels': submasters[clickedSub]["channels"], 'value': submasters[clickedSub]["value"]}, namespace='/tonalite', room=sid)
 
 
@@ -267,6 +275,13 @@ async def save_cue(sid, message):
     cues[clickedCue]["time"] = int(message['time'])
     cues[clickedCue]["follow"] = int(message['follow'])
     await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
+
+@sio.on('save sub', namespace='/tonalite')
+async def save_sub(sid, message):
+    submasters[clickedSub]["name"] = message["name"]
+    submasters[clickedSub]["value"] = max(0, min(int(message["value"]), 100))
+    sendDMX(calculateChans(channels, outputChannels, submasters))
+    await sio.emit('update chans and subs', {'channels': calculateChans(channels, outputChannels, submasters), 'submasters': submasters}, namespace='/tonalite')
 
 
 @sio.on('command message', namespace='/tonalite')

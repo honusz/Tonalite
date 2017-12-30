@@ -76,7 +76,7 @@ function updateSubs(msg) {
   $("#Submasters").empty();
   if (msg.submasters.length != 0) {
     for (var i = 0; i < msg.submasters.length; i++) {
-      $("#Submasters").append("<div class=\"col-1 submaster\"><div class=\"sliders\"><div class=\"slider\" id=\"sub-" + i + "\"></div></div><div class=\"subtitle\"><button id=\"sub-btn-"+i+"\" class=\"btn btn-yellow sub-btn\">" + msg.submasters[i].name + "</button></div></div>")
+      $("#Submasters").append("<div class=\"col-1 submaster\"><div class=\"sliders\"><div class=\"slider\" id=\"sub-" + i + "\"></div></div><div class=\"subtitle\"><button id=\"sub-btn-" + i + "\" class=\"btn btn-yellow sub-btn\">" + msg.submasters[i].name + "</button></div></div>")
     }
   }
   sliders = $('.slider');
@@ -115,8 +115,8 @@ $(document).ready(function () {
 
   var modal = document.getElementById('subSettingsModal');
   var modalCloseBtn = document.getElementsByClassName("modal-close")[0];
-  modalCloseBtn.onclick = function() {
-      modal.style.display = "none";
+  modalCloseBtn.onclick = function () {
+    modal.style.display = "none";
   }
 
   socket.on('update chans', function (msg) {
@@ -143,6 +143,12 @@ $(document).ready(function () {
   socket.on('sub settings', function (msg) {
     $("#subName").val(msg.name);
     $("#subValue").val(msg.value);
+    $("#sub-channels").empty();
+    if (msg.channels.length != 0) {
+      for (var i = 0; i < msg.channels.length; i++) {
+        $("#sub-channels").append("<div class=\"col-5\"><input type=\"number\" placeholder=\"Channel:\" value=\"" + msg.channels[i].channel + "\" id=\"sub-channel-" + i + "-channel\" min=\"1\" max=\"48\"></div><div class=\"col-5\"><input type=\"number\" placeholder=\"Value:\" value=\"" + msg.channels[i].value + "\" id=\"sub-channel-" + i + "-value\" min=\"0\" max=\"255\"></div><div class=\"col-1\"><button class=\"btn btn-green btn-full btn-tall sub-chan-save\" subChan=\"" + i + "\"><i class=\"fas fa-save\"></i></button></div><div class=\"col-1\"><button class=\"btn btn-red btn-full btn-tall sub-chan-delete\" subChan=\"" + i + "\"><i class=\"fas fa-trash-alt\"></i></button></div>")
+      }
+    }
     modal.style.display = "block";
   });
 
@@ -227,6 +233,14 @@ $(document).ready(function () {
 
   $("#saveShowBtn").click(function (event) {
     socket.emit('save show', { name: $("#showName").val(), description: $("#showDescription").val(), author: $("#showAuthor").val(), copyright: $("#showCopyright").val() });
+  });
+
+  $("#saveSubSettingsBtn").click(function (event) {
+    socket.emit('save sub', { name: $("#subName").val(), value: $("#subValue").val() });
+  });
+
+  $("#addSubChanBtn").click(function (event) {
+    socket.emit('add sub chan', "nothing");
   });
 
   $("#clearShowBtn").click(function (event) {
