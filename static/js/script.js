@@ -199,6 +199,14 @@ $(document).ready(function () {
     socket.emit('add sub', "nothing");
   });
 
+  $("#sub-channels").on("click", "button.sub-chan-save", function () {
+    console.log(this.getAttribute('subChan'));
+  });
+
+  $("#sub-channels").on("click", "button.sub-chan-delete", function () {
+    console.log(this.getAttribute('subChan'));
+  });
+
   $('#commandSubmitBtn').click(function (event) {
     socket.emit('command message', { command: $('#commandInput').val() });
     $('#commandInput').val("");
