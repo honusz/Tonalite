@@ -1,3 +1,5 @@
+var socket = io.connect('http://' + document.domain + ':' + location.port + '/tonalite');
+
 function openTab(evt, tabName) {
   var i, tabcontent, tablinks;
 
@@ -74,7 +76,7 @@ function updateSubs(msg) {
   $("#Submasters").empty();
   if (msg.submasters.length != 0) {
     for (var i = 0; i < msg.submasters.length; i++) {
-      $("#Submasters").append("<div class=\"col-1 submaster\"><div class=\"sliders\"><div class=\"slider\" id=\"slider-"+i+"\"></div></div><div class=\"subtitle\"><button class=\"btn btn-yellow sub-btn\">"+msg.submasters[i].name+"</button></div></div>")
+      $("#Submasters").append("<div class=\"col-1 submaster\"><div class=\"sliders\"><div class=\"slider\" id=\"sub-"+i+"\"></div></div><div class=\"subtitle\"><button class=\"btn btn-yellow sub-btn\">"+msg.submasters[i].name+"</button></div></div>")
     }
   }
   sliders = $('.slider');
@@ -111,10 +113,13 @@ $(document).ready(function () {
     $("#Channels").append("<div class=\"col-1 channel\"><div class=\"channel-item\"><h2>" + (i + 1) + "</h2><h1 id=\"cval-" + (i + 1) + "\">0</h1></div></div>");
   }
 
-  var socket = io.connect('http://' + document.domain + ':' + location.port + '/tonalite');
-
   socket.on('update chans', function (msg) {
     updateChannels(msg);
+  });
+
+  socket.on('update chans and subs', function (msg) {
+    updateChannels(msg);
+    updateSubs(msg);
   });
 
   socket.on('update cues', function (msg) {

@@ -99,9 +99,9 @@ def calculateChans(chans, outputChans, submasters):
             oChans[i] = chans[i]
     for i in range(len(submasters)):
         for chan in range(len(submasters[i]["channels"])):
-            if (submasters[i]["value"] / 100 * submasters[i]["channels"][chan]["value"]) > oChans[submasters[i]["channels"][chan]["channel"] - 1]:
-                oChans[submasters[i]["channels"][chan]["channel"] -
-                       1] = submasters[i]["value"] / 100 * submasters[i]["channels"][chan]["value"]
+            if int(submasters[i]["value"] / 100 * submasters[i]["channels"][chan]["value"]) > oChans[int(submasters[i]["channels"][chan]["channel"]) - 1]:
+                oChans[int(submasters[i]["channels"][chan]["channel"]) -
+                       1] = int(submasters[i]["value"] / 100 * submasters[i]["channels"][chan]["value"])
     return oChans
 
 
@@ -169,6 +169,14 @@ async def update_cue(sid, message):
     cues[clickedCue]["values"] = calculateChans(
         [0] * 48, outputChannels, submasters)
     await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
+
+
+@sio.on('update sub val', namespace='/tonalite')
+async def update_sub_val(sid, message):
+    global submasters
+    submasters[int(message["sub"].split("sub-", 1)[1])-1]["value"] = int(message["value"])
+    sendDMX(calculateChans(channels, outputChannels, submasters))
+    await sio.emit('update chans and subs', {'channels': calculateChans(channels, outputChannels, submasters), 'submasters': submasters}, namespace='/tonalite')
 
 
 @sio.on('save show', namespace='/tonalite')
