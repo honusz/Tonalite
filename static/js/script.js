@@ -171,6 +171,17 @@ $(document).ready(function () {
     $("#sacnIP").val(msg.tonaliteSettings.sacnIP);
   });
 
+  socket.on('update chans and cues', function (msg) {
+    updateChannels(msg);
+    updateCues(msg);
+  });
+
+  socket.on('update settings', function (msg) {
+    $("#serverIP").val(msg.tonaliteSettings.serverIP);
+    $("#serverPort").val(msg.tonaliteSettings.serverPort);
+    $("#sacnIP").val(msg.tonaliteSettings.sacnIP);
+  });
+
   socket.on('redirect', function (msg) {
     window.location = 'http://' + document.domain + ':' + location.port + msg.url
   });
