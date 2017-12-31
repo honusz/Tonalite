@@ -4,7 +4,7 @@ Tonalite is a mobile lighting controller written in Python and JavaScript using 
 
 ## Required Tools
 
-Tonalite requires Python 3.6+, SASS, and the folowing ibraries:
+Tonalite requires Python 3.6+, SASS, and the folowing libraries:
 
 - python-socketio
 - aiohttp
