@@ -127,6 +127,7 @@ async def index(request):
 async def store_show_handler(request):
     global cues
     global show
+    global submasters
     data = await request.post()
 
     showF = data['show']
@@ -141,12 +142,13 @@ async def store_show_handler(request):
         content = pickle.loads(showFile.read())
         cues = content[0]
         show = content[1]
+        submasters = content[2]
 
     return web.HTTPFound('/')
 
 
 async def saveshow(request):
-    return web.Response(body=pickle.dumps([cues, show], pickle.HIGHEST_PROTOCOL), headers={'Content-Disposition': 'attachment; filename="' + slugify(show["name"]) + '.tonalite"'}, content_type='application/octet-stream')
+    return web.Response(body=pickle.dumps([cues, show, submasters], pickle.HIGHEST_PROTOCOL), headers={'Content-Disposition': 'attachment; filename="' + slugify(show["name"]) + '.tonalite"'}, content_type='application/octet-stream')
 
 
 @sio.on('connect', namespace='/tonalite')
