@@ -94,6 +94,16 @@ async def generate_fade(start, end, secs=3.0, fps=40):
         time.sleep(secs / (int(secs * fps)))
 
 
+def setSubChans():
+    channels = []
+
+    for i in range(len(outputChannels)):
+        if outputChannels[i] != None:
+            channels.append({"channel": i + 1, "value": outputChannels[i]})
+
+    return channels
+
+
 async def index(request):
     with open(resourcePath('app.html')) as f:
         return web.Response(text=f.read(), content_type='text/html')
@@ -147,7 +157,8 @@ async def sub_info(sid, message):
 
 @sio.on('add sub', namespace='/tonalite')
 async def add_sub(sid, message):
-    submasters.append({"name": "New Sub", "channels": [], "value": 0})
+    submasters.append(
+        {"name": "New Sub", "channels": setSubChans(), "value": 0})
     await sio.emit('update subs', {'submasters': submasters}, namespace='/tonalite')
 
 
