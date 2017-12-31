@@ -10,7 +10,7 @@ import webbrowser
 import socketio
 from aiohttp import web
 
-#from pyudmx import uDMXDevice
+from pyudmx import uDMXDevice
 from sACN import DMXSource
 
 sio = socketio.AsyncServer(async_mode='aiohttp')
