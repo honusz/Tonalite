@@ -199,8 +199,13 @@ $(document).ready(function () {
     socket.emit('add sub', "nothing");
   });
 
+  $('#deleteSubBtn').click(function (event) {
+    modal.style.display = "none";
+    socket.emit('remove sub', "nothing");
+  });
+
   $("#sub-channels").on("click", "button.sub-chan-save", function () {
-    socket.emit('edit sub chan', { action: "save", chan: parseInt(this.getAttribute('subChan')), channel: $('#sub-channel-'+parseInt(this.getAttribute('subChan'))+'-channel').val(), value: $('#sub-channel-'+parseInt(this.getAttribute('subChan'))+'-value').val()});
+    socket.emit('edit sub chan', { action: "save", chan: parseInt(this.getAttribute('subChan')), channel: $('#sub-channel-' + parseInt(this.getAttribute('subChan')) + '-channel').val(), value: $('#sub-channel-' + parseInt(this.getAttribute('subChan')) + '-value').val() });
   });
 
   $("#sub-channels").on("click", "button.sub-chan-delete", function () {

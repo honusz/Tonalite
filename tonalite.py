@@ -176,19 +176,29 @@ async def add_sub(sid, message):
     await sio.emit('update subs', {'submasters': submasters}, namespace='/tonalite')
 
 
+@sio.on('remove sub', namespace='/tonalite')
+async def remove_sub(sid, message):
+    submasters.pop(clickedSub)
+    await sio.emit('update subs', {'submasters': submasters}, namespace='/tonalite')
+
+
 @sio.on('add sub chan', namespace='/tonalite')
 async def add_sub_chan(sid, message):
     submasters[clickedSub]["channels"].append({"channel": 1, "value": 255})
     await sio.emit('sub settings', {'name': submasters[clickedSub]["name"], 'channels': submasters[clickedSub]["channels"], 'value': submasters[clickedSub]["value"]}, namespace='/tonalite', room=sid)
 
+
 @sio.on('edit sub chan', namespace='/tonalite')
 async def edit_sub_chan(sid, message):
     if message["action"] == "save":
-        submasters[clickedSub]["channels"][message["chan"]]["channel"] = int(message["channel"])
-        submasters[clickedSub]["channels"][message["chan"]]["value"] = int(message["value"])
+        submasters[clickedSub]["channels"][message["chan"]
+                                           ]["channel"] = int(message["channel"])
+        submasters[clickedSub]["channels"][message["chan"]
+                                           ]["value"] = int(message["value"])
     elif message["action"] == "delete":
         submasters[clickedSub]["channels"].pop(message["chan"])
     await sio.emit('sub settings', {'name': submasters[clickedSub]["name"], 'channels': submasters[clickedSub]["channels"], 'value': submasters[clickedSub]["value"]}, namespace='/tonalite', room=sid)
+
 
 @sio.on('update cue', namespace='/tonalite')
 async def update_cue(sid, message):
