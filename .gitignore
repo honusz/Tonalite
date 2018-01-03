@@ -102,3 +102,4 @@ ENV/
 .vscode/*
 
 .sass-cache/*
+static/.sass-cache/*

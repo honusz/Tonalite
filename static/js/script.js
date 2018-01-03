@@ -259,6 +259,10 @@ $(document).ready(function () {
     socket.emit('cue move', { action: "next" });
   });
 
+  $("#releaseCues").click(function (event) {
+    socket.emit('cue move', { action: "release" });
+  });
+
   $("#lastCue").click(function (event) {
     socket.emit('cue move', { action: "last" });
   });

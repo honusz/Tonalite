@@ -243,6 +243,7 @@ async def clear_show(sid, message):
 async def cue_move(sid, message):
     global clickedCue
     global currentCue
+    global channels
     if message['action'] == "up":
         if not clickedCue == 0:
             cues.insert(clickedCue - 1, cues.pop(clickedCue))
@@ -273,6 +274,11 @@ async def cue_move(sid, message):
             currentCue -= 1
             await generate_fade(cues[currentCue + 1]["values"],
                                 cues[currentCue]["values"], cues[currentCue]["time"])
+        await sio.emit('update chans and cues', {'channels': calculateChans(channels, outputChannels, submasters), 'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
+    elif message['action'] == "release":
+        currentCue = 0
+        channels = [0] * 48
+        sendDMX(calculateChans(channels, outputChannels, submasters))
         await sio.emit('update chans and cues', {'channels': calculateChans(channels, outputChannels, submasters), 'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
 
 
