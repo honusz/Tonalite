@@ -2,6 +2,7 @@ import datetime
 import os
 import pickle
 import re
+import signal
 import sys
 import time
 import unicodedata
@@ -10,7 +11,6 @@ import webbrowser
 import socketio
 from aiohttp import web
 
-from pyudmx import uDMXDevice
 from sACN import DMXSource
 
 sio = socketio.AsyncServer(async_mode='aiohttp')
@@ -370,7 +370,7 @@ async def command_message(sid, message):
 
 @sio.on('quit tonalite', namespace='/tonalite')
 async def quit_tonalite(sid, message):
-    sys.exit(0)
+    os.kill(os.getpid(), signal.SIGINT)
 
 
 @sio.on('save settings', namespace='/tonalite')
