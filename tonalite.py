@@ -105,7 +105,7 @@ def setSubChans():
 
 
 async def index(request):
-    with open(resourcePath('app.html')) as f:
+    with open(resourcePath('app.min.html')) as f:
         return web.Response(text=f.read(), content_type='text/html')
 
 
