@@ -31,7 +31,7 @@ show = {
 }
 clickedCue = None
 clickedSub = None
-currentCue = 0
+currentCue = None
 source = None
 sourceusb = None
 tonaliteSettings = {
@@ -235,7 +235,7 @@ async def clear_show(sid, message):
         "cues": []
     }
     clickedCue = None
-    currentCue = 0
+    currentCue = None
     await sio.emit('update all', {'channels': calculateChans(channels, outputChannels, submasters), 'cues': cues, 'selected_cue': clickedCue, 'show': show, 'current_cue': currentCue, 'tonaliteSettings': tonaliteSettings, 'submasters': submasters}, namespace='/tonalite')
 
 
@@ -259,10 +259,19 @@ async def cue_move(sid, message):
         clickedCue = None
         await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
     elif message['action'] == "next":
-        if currentCue != len(cues) - 1:
-            currentCue += 1
-            await generate_fade(cues[currentCue - 1]["values"],
-                                cues[currentCue]["values"], cues[currentCue]["time"])
+        if currentCue != None:
+            if currentCue != len(cues) - 1:
+                currentCue += 1
+                await generate_fade(cues[currentCue - 1]["values"],
+                                    cues[currentCue]["values"], cues[currentCue]["time"])
+                while cues[currentCue]["follow"] != 0:
+                    if currentCue != len(cues) - 1:
+                        await sio.sleep(cues[currentCue]["follow"])
+                        currentCue += 1
+                        await generate_fade(cues[currentCue - 1]["values"], cues[currentCue]["values"], cues[currentCue]["time"])
+        else:
+            currentCue = 0
+            await generate_fade([0]*48, cues[currentCue]["values"], cues[currentCue]["time"])
             while cues[currentCue]["follow"] != 0:
                 if currentCue != len(cues) - 1:
                     await sio.sleep(cues[currentCue]["follow"])
@@ -270,13 +279,14 @@ async def cue_move(sid, message):
                     await generate_fade(cues[currentCue - 1]["values"], cues[currentCue]["values"], cues[currentCue]["time"])
         await sio.emit('update chans and cues', {'channels': calculateChans(channels, outputChannels, submasters), 'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
     elif message['action'] == "last":
-        if currentCue != 0:
-            currentCue -= 1
-            await generate_fade(cues[currentCue + 1]["values"],
-                                cues[currentCue]["values"], cues[currentCue]["time"])
-        await sio.emit('update chans and cues', {'channels': calculateChans(channels, outputChannels, submasters), 'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
+        if currentCue != None:
+            if currentCue != 0:
+                currentCue -= 1
+                await generate_fade(cues[currentCue + 1]["values"],
+                                    cues[currentCue]["values"], cues[currentCue]["time"])
+            await sio.emit('update chans and cues', {'channels': calculateChans(channels, outputChannels, submasters), 'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
     elif message['action'] == "release":
-        currentCue = 0
+        currentCue = None
         channels = [0] * 48
         sendDMX(calculateChans(channels, outputChannels, submasters))
         await sio.emit('update chans and cues', {'channels': calculateChans(channels, outputChannels, submasters), 'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
