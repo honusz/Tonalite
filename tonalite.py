@@ -65,13 +65,13 @@ def send_dmx(chans):
 def calculate_chans(chans, output_chans, isubmasters):
     """Calculate the output channel values from the current cue, submasters, and channel settings"""
     o_chans = [0] * 48
-    for i, elem in enumerate(chans):
+    for i, _ in enumerate(chans):
         if output_chans[i] != None:
             o_chans[i] = output_chans[i]
         else:
             o_chans[i] = chans[i]
-    for i, elem in enumerate(isubmasters):
-        for chan, elem in enumerate(isubmasters[i]["channels"]):
+    for i, _ in enumerate(isubmasters):
+        for chan, _ in enumerate(isubmasters[i]["channels"]):
             if int(isubmasters[i]["value"] / 100 * isubmasters[i]["channels"][chan]["value"]) > o_chans[int(isubmasters[i]["channels"][chan]["channel"]) - 1]:
                 o_chans[int(isubmasters[i]["channels"][chan]["channel"]) - 1] = int(isubmasters[i]["value"] / 100 * isubmasters[i]["channels"][chan]["value"])
     return o_chans
@@ -81,7 +81,7 @@ async def generate_fade(start, end, secs=3.0, fps=40):
     """Calculate the fade between two cues"""
     global channels
     for i in range(int(secs * fps) + 1):
-        for channel, elem in enumerate(start):
+        for channel, _ in enumerate(start):
             s_chan = start[channel] or 0
             e_chan = end[channel] or 0
             channels[channel] = int(s_chan + (((e_chan - s_chan) / (secs * fps)) * i))
@@ -95,7 +95,7 @@ def set_sub_chans():
     """Create submaster channels based on what was set by the user"""
     temp_channels = []
 
-    for i, elem in enumerate(outputChannels):
+    for i, _ in enumerate(outputChannels):
         if outputChannels[i] != None:
             temp_channels.append({"channel": i + 1, "value": outputChannels[i]})
 
