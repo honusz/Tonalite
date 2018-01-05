@@ -32,7 +32,7 @@ function updateChannels(msg) {
       $("#cval-" + (i + 1)).addClass('red-text');
     }
     $("#cval-" + (i + 1)).text(msg.channels[i]);
-  };
+  }
   return 0;
 }
 
@@ -83,11 +83,11 @@ function updateSubs(msg) {
       $("#Submasters").append("<div class=\"col-1 submaster\"><div class=\"sliders\"><div class=\"slider\" id=\"sub-" + i + "\"></div></div><div class=\"subtitle\"><button id=\"sub-btn-" + i + "\" class=\"btn btn-yellow sub-btn\">" + msg.submasters[i].name + "</button></div></div>")
     }
   }
-  sliders = $('.slider');
-  for (var i = 0; i < sliders.length; i++) {
+  var sliders = $('.slider');
+  for (var s = 0; s < sliders.length; s++) {
 
-    noUiSlider.create(sliders[i], {
-      start: msg.submasters[i].value,
+    noUiSlider.create(sliders[s], {
+      start: msg.submasters[s].value,
       connect: [true, false],
       direction: 'rtl',
       orientation: "vertical",
@@ -99,7 +99,7 @@ function updateSubs(msg) {
         decimals: 0
       })
     });
-    sliders[i].noUiSlider.on('set', function (values, handle) {
+    sliders[s].noUiSlider.on('set', function () {
       socket.emit('update sub val', { sub: this.target.getAttribute('id'), value: this.get() });
     });
   }
@@ -190,15 +190,15 @@ $(document).ready(function () {
     window.location = 'http://' + document.domain + ':' + location.port + msg.url
   });
 
-  $('.kbtn').click(function (event) {
+  $('.kbtn').click(function () {
     $('#commandInput').val($('#commandInput').val() + $(this).attr('inputVal'));
   });
 
-  $('#updateCue').click(function (event) {
+  $('#updateCue').click(function () {
     socket.emit('update cue', "nothing");
   });
 
-  $('#saveCue').click(function (event) {
+  $('#saveCue').click(function () {
     socket.emit('save cue', { name: $('#cueName').val(), description: $('#cueDescription').val(), time: $('#cueTime').val(), follow: $('#cueFollow').val() });
   });
 
@@ -214,7 +214,7 @@ $(document).ready(function () {
     socket.emit('add sub', "nothing");
   });
 
-  $('#deleteSubBtn').click(function (event) {
+  $('#deleteSubBtn').click(function () {
     modal.style.display = "none";
     socket.emit('remove sub', "nothing");
   });
@@ -227,63 +227,63 @@ $(document).ready(function () {
     socket.emit('edit sub chan', { action: "delete", chan: parseInt(this.getAttribute('subChan')) });
   });
 
-  $('#commandSubmitBtn').click(function (event) {
+  $('#commandSubmitBtn').click(function () {
     socket.emit('command message', { command: $('#commandInput').val() });
     $('#commandInput').val("");
     return false;
   });
 
-  $('#commandReleaseBtn').click(function (event) {
+  $('#commandReleaseBtn').click(function () {
     socket.emit('command message', { command: "c rs" });
     return false;
   });
 
-  $('#recordCueBtn').click(function (event) {
+  $('#recordCueBtn').click(function () {
     socket.emit('command message', { command: "r q" });
     return false;
   });
 
-  $("#cueUpBtn").click(function (event) {
+  $("#cueUpBtn").click(function () {
     socket.emit('cue move', { action: "up" });
   });
 
-  $("#cueDownBtn").click(function (event) {
+  $("#cueDownBtn").click(function () {
     socket.emit('cue move', { action: "down" });
   });
 
-  $("#deleteCue").click(function (event) {
+  $("#deleteCue").click(function () {
     socket.emit('cue move', { action: "delete" });
   });
 
-  $("#goCue").click(function (event) {
+  $("#goCue").click(function () {
     socket.emit('command message', { command: "q 9949" });
   });
 
-  $("#nextCue").click(function (event) {
+  $("#nextCue").click(function () {
     socket.emit('cue move', { action: "next" });
   });
 
-  $("#releaseCues").click(function (event) {
+  $("#releaseCues").click(function () {
     socket.emit('cue move', { action: "release" });
   });
 
-  $("#lastCue").click(function (event) {
+  $("#lastCue").click(function () {
     socket.emit('cue move', { action: "last" });
   });
 
-  $("#saveShowBtn").click(function (event) {
+  $("#saveShowBtn").click(function () {
     socket.emit('save show', { name: $("#showName").val(), description: $("#showDescription").val(), author: $("#showAuthor").val(), copyright: $("#showCopyright").val() });
   });
 
-  $("#saveSubSettingsBtn").click(function (event) {
+  $("#saveSubSettingsBtn").click(function () {
     socket.emit('save sub', { name: $("#subName").val(), value: $("#subValue").val() });
   });
 
-  $("#addSubChanBtn").click(function (event) {
+  $("#addSubChanBtn").click(function () {
     socket.emit('add sub chan', "nothing");
   });
 
-  $("#clearShowBtn").click(function (event) {
+  $("#clearShowBtn").click(function () {
     if (confirm('Are you sure you want clear everything?')) {
       $("#showName").val("");
       $("#showDescription").val("");
@@ -293,25 +293,19 @@ $(document).ready(function () {
     }
   });
 
-  $('#commandClearBtn').click(function (event) {
+  $('#commandClearBtn').click(function () {
     $('#commandInput').val("");
     return false;
   });
 
-  $('#saveSettingsBtn').click(function (event) {
+  $('#saveSettingsBtn').click(function () {
     alert("The server must be restarted for the changes to take effect.");
     socket.emit('save settings', { serverIP: $("#serverIP").val(), serverPort: $("#serverPort").val(), sacnIP: $("#sacnIP").val() });
   });
 
-  $('#resetSettingsBtn').click(function (event) {
+  $('#resetSettingsBtn').click(function () {
     $("#serverIP").val("127.0.0.1");
     $("#serverPort").val("9898");
     $("#sacnIP").val("127.0.0.1");
-  });
-
-  $('#quitBtn').click(function (event) {
-    if (confirm('Are you sure you want to quit? Your current show will not be saved.')) {
-      socket.emit('quit tonalite', {});
-    }
   });
 });

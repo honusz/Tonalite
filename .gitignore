@@ -103,3 +103,5 @@ ENV/
 
 .sass-cache/*
 static/.sass-cache/*
+
+.eslintrc.json
