@@ -162,7 +162,7 @@ $(document).ready(function () {
         $("#sub-channels").append("<div class=\"col-5\"><input type=\"number\" placeholder=\"Channel:\" value=\"" + msg.channels[i].channel + "\" id=\"sub-channel-" + i + "-channel\" min=\"1\" max=\"48\"></div><div class=\"col-5\"><input type=\"number\" placeholder=\"Value:\" value=\"" + msg.channels[i].value + "\" id=\"sub-channel-" + i + "-value\" min=\"0\" max=\"255\"></div><div class=\"col-1\"><button class=\"btn btn-green btn-full btn-tall sub-chan-save\" subChan=\"" + i + "\"><i class=\"fas fa-save\"></i></button></div><div class=\"col-1\"><button class=\"btn btn-red btn-full btn-tall sub-chan-delete\" subChan=\"" + i + "\"><i class=\"fas fa-trash-alt\"></i></button></div>")
       }
     }
-    modal.style.display = "block";
+    subModal.style.display = "block";
   });
 
   socket.on('update all', function (msg) {
@@ -226,7 +226,7 @@ $(document).ready(function () {
   });
 
   $('#deleteSubBtn').click(function () {
-    modal.style.display = "none";
+    subModal.style.display = "none";
     socket.emit('remove sub', "nothing");
   });
 
@@ -306,6 +306,11 @@ $(document).ready(function () {
 
   $('#commandClearBtn').click(function () {
     $('#commandInput').val("");
+    return false;
+  });
+
+  $('#usersBtn').click(function () {
+    subModal.style.display = "block";
     return false;
   });
 

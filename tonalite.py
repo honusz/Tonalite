@@ -130,7 +130,7 @@ async def store_show_handler(request):
         show = content[1]
         submasters = content[2]
 
-    return web.HTTPFound('/app')
+    return web.HTTPFound('/')
 
 
 async def saveshow(request):
