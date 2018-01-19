@@ -35,7 +35,10 @@ source = None
 tonaliteSettings = {
     "serverIP": "127.0.0.1",
     "serverPort": "9898",
-    "sacnIP": "127.0.0.1"
+    "sacnIP": "127.0.0.1",
+    "users": {
+        "johnroper100": "pass"
+    }
 }
 
 
@@ -85,11 +88,23 @@ def set_sub_chans():
 
     return temp_channels
 
-
 async def index(request):
     """Load the app file"""
-    with open(resource_path('app.min.html')) as w_f:
+    with open(resource_path('index.min.html')) as w_f:
         return web.Response(text=w_f.read(), content_type='text/html')
+
+async def app_index(request):
+    """Load the app file"""
+    data = await request.post()
+    iuser = data['user']
+    ipass = data['password']
+
+    if iuser in tonaliteSettings["users"]:
+        if ipass == tonaliteSettings["users"][iuser]:
+            with open(resource_path('app.min.html')) as w_f:
+                return web.Response(text=w_f.read(), content_type='text/html')
+
+    return web.HTTPFound('/')
 
 
 async def store_show_handler(request):
@@ -383,6 +398,7 @@ async def save_settings(sid, message):
     await sio.emit('update settings', {'tonaliteSettings': tonaliteSettings}, namespace='/tonalite')
 
 app.router.add_static('/static', resource_path('static'))
+app.router.add_post('/app', app_index)
 app.router.add_get('/', index)
 app.router.add_get('/show', saveshow)
 app.router.add_post('/show', store_show_handler)
