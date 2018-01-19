@@ -9,6 +9,7 @@ Tonalite requires Python 3.6+, SASS, and the folowing libraries:
 - python-socketio
 - aiohttp
 - PyInstaller
+- passlib
 
 ### Run Tonalite
 

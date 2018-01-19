@@ -6,11 +6,13 @@ import sys
 import time
 import unicodedata
 import webbrowser
+
 import socketio
 from aiohttp import web
+from passlib.hash import pbkdf2_sha256
 
-from sACN import DMXSource
 from channelman import calculate_chans
+from sACN import DMXSource
 
 sio = socketio.AsyncServer(async_mode='aiohttp')
 app = web.Application()
@@ -37,7 +39,7 @@ tonaliteSettings = {
     "serverPort": "9898",
     "sacnIP": "127.0.0.1",
     "users": {
-        "johnroper100": "pass"
+        "johnroper100": "$pbkdf2-sha256$29000$m9M6J2TsPWcMwZjTOsc4xw$/P8LRnfCSFChJRCX3Jc1QRUWaolcGdKRt/ezpzE7fs4"
     }
 }
 
@@ -100,7 +102,7 @@ async def app_index(request):
     ipass = data['password']
 
     if iuser in tonaliteSettings["users"]:
-        if ipass == tonaliteSettings["users"][iuser]:
+        if pbkdf2_sha256.verify(ipass, tonaliteSettings["users"][iuser]):
             with open(resource_path('app.min.html')) as w_f:
                 return web.Response(text=w_f.read(), content_type='text/html')
 
