@@ -116,10 +116,16 @@ $(document).ready(function () {
     $("#Channels").append("<div class=\"col-1 channel\"><div class=\"channel-item\"><h2>" + (i + 1) + "</h2><h1 id=\"cval-" + (i + 1) + "\">0</h1></div></div>");
   }
 
-  var modal = document.getElementById('subSettingsModal');
-  var modalCloseBtn = document.getElementsByClassName("modal-close")[0];
-  modalCloseBtn.onclick = function () {
-    modal.style.display = "none";
+  var subModal = document.getElementById('subSettingsModal');
+  var subModalCloseBtn = document.getElementsByClassName("sub-modal-close")[0];
+  subModalCloseBtn.onclick = function () {
+    subModal.style.display = "none";
+  }
+
+  var userModal = document.getElementById('usersModal');
+  var userModalCloseBtn = document.getElementsByClassName("user-modal-close")[0];
+  userModalCloseBtn.onclick = function () {
+    userModal.style.display = "none";
   }
 
   socket.on('update chans', function (msg) {
@@ -172,6 +178,12 @@ $(document).ready(function () {
     $("#serverIP").val(msg.tonaliteSettings.serverIP);
     $("#serverPort").val(msg.tonaliteSettings.serverPort);
     $("#sacnIP").val(msg.tonaliteSettings.sacnIP);
+    $("#users").empty();
+    if (msg.tonaliteSettings.users.length != 0) {
+      for (var i = 0; i < msg.tonaliteSettings.users.length; i++) {
+        $("#users").append("<div class=\"col-5\"><input type=\"text\" placeholder=\"User:\" value=\"" + msg.tonaliteSettings.users[i] + "\" ></div><div class=\"col-1\"><button class=\"btn btn-red btn-full btn-tall user-delete\" user=\"" + msg.tonaliteSettings.users[i] + "\"><i class=\"fas fa-trash-alt\"></i></button></div>")
+      }
+    }
   });
 
   socket.on('update chans and cues', function (msg) {
