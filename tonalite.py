@@ -51,7 +51,6 @@ def resource_path(relative_path):
 
 def slugify(value):
     """Generate a url or filename worthy string from input text"""
-    value = str(value)
     value = unicodedata.normalize('NFKC', value)
     value = re.sub(r'[^\w\s-]', '', value).strip().lower()
     return re.sub(r'[-\s]+', '-', value)
