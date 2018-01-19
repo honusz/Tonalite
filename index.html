@@ -8,12 +8,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tonalite Lighting Control - Login</title>
     <script src="static/js/jquery-3.2.1.min.js"></script>
+    <link href="static/css/style.css" rel="stylesheet">
   </head>
     <body>
+        <div class="row">
         <form action="/app" method="POST">
-            <input type="text" name="user" id="user">
-            <input type="text" name="password" id="password">
-            <input type="submit" value="Submit">
+            <div class="col-5"><input type="text" name="user" id="user" placeholder="Username"></div>
+            <div class="col-5"><input type="text" name="password" id="password" placeholder="Password"></div>
+            <div class="col-2"><button class="btn btn-green btn-tall btn-full" type="submit">Login</button></div>
         </form>
+        </div>
     </body>
 </html>
