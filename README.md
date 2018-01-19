@@ -1,4 +1,4 @@
-# Tonalite
+# Tonalite [![StyleCI](https://styleci.io/repos/98052564/shield?branch=master)](https://styleci.io/repos/98052564)
 
 Tonalite is a mobile lighting controller written in Python and JavaScript using SocketIO.
 
