@@ -6,7 +6,6 @@ import sys
 import time
 import unicodedata
 import webbrowser
-
 import socketio
 from aiohttp import web
 
@@ -200,12 +199,11 @@ async def update_cue(sid, message):
 
 @sio.on('update sub val', namespace='/tonalite')
 async def update_sub_val(sid, message):
-    """Handler for when a submaster is moved - update the show channel values"""
+    """Handler for when a submaster is set - update the show channel values"""
     global submasters
     submasters[int(message["sub"].split("sub-", 1)[1])]["value"] = int(message["value"])
     send_dmx(calculate_chans(channels, outputChannels, submasters))
     await sio.emit('update chans and subs', {'channels': calculate_chans(channels, outputChannels, submasters), 'submasters': submasters}, namespace='/tonalite')
-
 
 @sio.on('save show', namespace='/tonalite')
 async def save_show(sid, message):

@@ -99,7 +99,7 @@ function updateSubs(msg) {
         decimals: 0
       })
     });
-    sliders[s].noUiSlider.on('set', function () {
+    sliders[s].noUiSlider.on('slide', function () {
       socket.emit('update sub val', { sub: this.target.getAttribute('id'), value: this.get() });
     });
   }
