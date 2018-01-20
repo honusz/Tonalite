@@ -23,15 +23,10 @@ If you have [UPX](https://upx.github.io/) installed, the build will be much fast
 
 ## Feature Set
 
-### Required Features
-
 - [x] Save/load show
 - [x] Record and playback cues
 - [x] Change cue time
-
-### Wanted Features
-
-- [ ] Effects
 - [x] Follow cue
 - [x] Submasters
 - [x] Security and login
+- [ ] Effects
