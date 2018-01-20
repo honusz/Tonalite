@@ -38,9 +38,9 @@ tonaliteSettings = {
     "serverIP": "127.0.0.1",
     "serverPort": "9898",
     "sacnIP": "127.0.0.1",
-    "users": {
-        "johnroper100": "$pbkdf2-sha256$29000$m9M6J2TsPWcMwZjTOsc4xw$/P8LRnfCSFChJRCX3Jc1QRUWaolcGdKRt/ezpzE7fs4"
-    }
+    "users": [
+        ("admin", "$pbkdf2-sha256$29000$OMe4VwrBmHMO4TxH6L1Xag$YDlHIuACixZPkNm8GjP24Jfk88o/fVufek/1NF/sOrg")
+    ]
 }
 
 
@@ -101,10 +101,11 @@ async def app_index(request):
     iuser = data['user']
     ipass = data['password']
 
-    if iuser in tonaliteSettings["users"]:
-        if pbkdf2_sha256.verify(ipass, tonaliteSettings["users"][iuser]):
-            with open(resource_path('app.min.html')) as w_f:
-                return web.Response(text=w_f.read(), content_type='text/html')
+    for use, _ in enumerate(tonaliteSettings["users"]):
+        if tonaliteSettings["users"][use][0] == iuser:
+            if pbkdf2_sha256.verify(ipass, tonaliteSettings["users"][use][1]):
+                with open(resource_path('app.min.html')) as w_f:
+                    return web.Response(text=w_f.read(), content_type='text/html')
 
     return web.HTTPFound('/')
 
@@ -180,6 +181,14 @@ async def add_sub_chan(sid, message):
     submasters[clickedSub]["channels"].append({"channel": 1, "value": 255})
     await sio.emit('sub settings', {'name': submasters[clickedSub]["name"], 'channels': submasters[clickedSub]["channels"], 'value': submasters[clickedSub]["value"]}, namespace='/tonalite', room=sid)
 
+@sio.on('edit users', namespace='/tonalite')
+async def edit_users(sid, message):
+    """Edit the users"""
+    if message["action"] == "delete":
+        tonaliteSettings["users"].pop(message["user"])
+    elif message["action"] == "new":
+        tonaliteSettings["users"].append((message["user"], pbkdf2_sha256.hash(message["password"])))
+    await sio.emit('update all', {'channels': calculate_chans(channels, outputChannels, submasters), 'cues': cues, 'selected_cue': clickedCue, 'show': show, 'current_cue': currentCue, 'tonaliteSettings': tonaliteSettings, 'submasters': submasters}, namespace='/tonalite')
 
 @sio.on('edit sub chan', namespace='/tonalite')
 async def edit_sub_chan(sid, message):
