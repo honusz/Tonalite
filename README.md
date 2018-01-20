@@ -17,7 +17,7 @@ To run Tonalite, use the command `python3 tonalite.py`
 
 ### Create Executable
 
-Create the PyInstaller release executable by running the command `python3 -m PyInstaller --onefile tonalite.spec`
+Create the PyInstaller release executable by running the command `python3 -m PyInstaller tonalite.spec`
 
 If you have [UPX](https://upx.github.io/) installed, the build will be much faster and smaller.
 
