@@ -11,11 +11,11 @@ Tonalite requires Python 3.6+, SASS, and the folowing libraries:
 - PyInstaller
 - passlib
 
-### Run Tonalite
+## Run Tonalite
 
 To run Tonalite, use the command `python3 tonalite.py`
 
-### Create Executable
+## Create Executable
 
 Create the PyInstaller release executable by running the command `python3 -m PyInstaller tonalite.spec`
 
