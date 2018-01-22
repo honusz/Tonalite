@@ -198,6 +198,7 @@ async def edit_sub_chan(sid, message):
         submasters[clickedSub]["channels"][message["chan"]]["value"] = int(message["value"])
     elif message["action"] == "delete":
         submasters[clickedSub]["channels"].pop(message["chan"])
+    send_dmx(calculate_chans(channels, outputChannels, submasters))
     await sio.emit('sub settings', {'name': submasters[clickedSub]["name"], 'channels': submasters[clickedSub]["channels"], 'value': submasters[clickedSub]["value"]}, namespace='/tonalite', room=sid)
 
 
