@@ -60,12 +60,6 @@ def slugify(value):
     value = re.sub(r'[^\w\s-]', '', value).strip().lower()
     return re.sub(r'[-\s]+', '-', value)
 
-
-def send_dmx(chans):
-    """Send the dmx channel values"""
-    source.send_data(chans)
-
-
 async def generate_fade(start, end, secs=3.0, fps=40):
     """Calculate the fade between two cues"""
     global channels
@@ -75,7 +69,7 @@ async def generate_fade(start, end, secs=3.0, fps=40):
             e_chan = end[channel] or 0
             channels[channel] = int(s_chan + (((e_chan - s_chan) / (secs * fps)) * i))
 
-        send_dmx(calculate_chans(channels, outputChannels, submasters))
+        source.send_data(calculate_chans(channels, outputChannels, submasters))
         await sio.emit('update chans and cues', {'channels': calculate_chans(channels, outputChannels, submasters), 'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
         time.sleep(secs / (int(secs * fps)))
 
@@ -198,7 +192,7 @@ async def edit_sub_chan(sid, message):
         submasters[clickedSub]["channels"][message["chan"]]["value"] = int(message["value"])
     elif message["action"] == "delete":
         submasters[clickedSub]["channels"].pop(message["chan"])
-    send_dmx(calculate_chans(channels, outputChannels, submasters))
+    source.send_data(calculate_chans(channels, outputChannels, submasters))
     await sio.emit('sub settings', {'name': submasters[clickedSub]["name"], 'channels': submasters[clickedSub]["channels"], 'value': submasters[clickedSub]["value"]}, namespace='/tonalite', room=sid)
 
 
@@ -214,7 +208,7 @@ async def update_sub_val(sid, message):
     """Handler for when a submaster is set - update the show channel values"""
     global submasters
     submasters[int(message["sub"].split("sub-", 1)[1])]["value"] = int(message["value"])
-    send_dmx(calculate_chans(channels, outputChannels, submasters))
+    source.send_data(calculate_chans(channels, outputChannels, submasters))
     await sio.emit('update chans and subs', {'channels': calculate_chans(channels, outputChannels, submasters), 'submasters': submasters}, namespace='/tonalite')
 
 @sio.on('save show', namespace='/tonalite')
@@ -304,7 +298,7 @@ async def cue_move(sid, message):
     elif message['action'] == "release":
         currentCue = None
         channels = [0] * 48
-        send_dmx(calculate_chans(channels, outputChannels, submasters))
+        source.send_data(calculate_chans(channels, outputChannels, submasters))
         await sio.emit('update chans and cues', {'channels': calculate_chans(channels, outputChannels, submasters), 'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
 
 
@@ -322,7 +316,7 @@ async def save_cue(sid, message):
 async def save_sub(sid, message):
     submasters[clickedSub]["name"] = message["name"]
     submasters[clickedSub]["value"] = max(0, min(int(message["value"]), 100))
-    send_dmx(calculate_chans(channels, outputChannels, submasters))
+    source.send_data(calculate_chans(channels, outputChannels, submasters))
     await sio.emit('update chans and subs', {'channels': calculate_chans(channels, outputChannels, submasters), 'submasters': submasters}, namespace='/tonalite')
 
 
@@ -346,7 +340,7 @@ async def command_message(sid, message):
             await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
         elif cmd[0] == "c" and cmd[1] == "rs":
             outputChannels = [None] * 48
-            send_dmx(calculate_chans(channels, outputChannels, submasters))
+            source.send_data(calculate_chans(channels, outputChannels, submasters))
             await sio.emit('update chans', {'channels': calculate_chans(channels, outputChannels, submasters)}, namespace='/tonalite')
         elif cmd[0] == "q" and cmd[1].isdigit():
             setCue = int(cmd[1])
@@ -394,7 +388,7 @@ async def command_message(sid, message):
                     else:
                         value = 0
                     outputChannels[int(chn) - 1] = value
-                send_dmx(calculate_chans(channels, outputChannels, submasters))
+                source.send_data(calculate_chans(channels, outputChannels, submasters))
                 await sio.emit('update chans', {'channels': calculate_chans(channels, outputChannels, submasters)}, namespace='/tonalite')
 
 
