@@ -41,17 +41,17 @@ function updateCues(msg) {
   if (msg.cues.length != 0) {
     if (msg.current_cue != null) {
       if (msg.current_cue != 0) {
-        $("#cues-display").append("<div class=\"cue-item no-hover\"><h4>Previous: <span class=\"cue-name\">" + msg.cues[msg.current_cue - 1].name + "</span></h4><span class=\"cue-description\">" + msg.cues[msg.current_cue - 1].description + "</span></div>");
+        $("#cues-display").append("<div class=\"cue-item no-hover disable-selection\"><h4>Previous: <span class=\"cue-name\">" + msg.cues[msg.current_cue - 1].name + "</span></h4><span class=\"cue-description\">" + msg.cues[msg.current_cue - 1].description + "</span></div>");
       }
-      $("#cues-display").append("<div class=\"cue-item no-hover background-green\"><h4>Current: <span class=\"cue-name\">" + msg.cues[msg.current_cue].name + "</span></h4><span class=\"cue-description\">" + msg.cues[msg.current_cue].description + "</span></div>");
+      $("#cues-display").append("<div class=\"cue-item no-hover background-green disable-selection\"><h4>Current: <span class=\"cue-name\">" + msg.cues[msg.current_cue].name + "</span></h4><span class=\"cue-description\">" + msg.cues[msg.current_cue].description + "</span></div>");
       if (msg.current_cue != msg.cues.length - 1 && msg.cues.length > 1) {
         $("#cues-display").append("<div class=\"cue-item no-hover\"><h4>Next: <span class=\"cue-name\">" + msg.cues[msg.current_cue + 1].name + "</span></h4><span class=\"cue-description\">" + msg.cues[msg.current_cue + 1].description + "</span></div>");
       }
     } else {
-      $("#cues-display").append("<div class=\"cue-item no-hover\"><h4>Next: <span class=\"cue-name\">" + msg.cues[0].name + "</span></h4><span class=\"cue-description\">" + msg.cues[0].description + "</span></div>");
+      $("#cues-display").append("<div class=\"cue-item no-hover disable-selection\"><h4>Next: <span class=\"cue-name\">" + msg.cues[0].name + "</span></h4><span class=\"cue-description\">" + msg.cues[0].description + "</span></div>");
     }
     for (var i = 0; i < msg.cues.length; i++) {
-      $("#cues").append("<div class=\"cue-item\" cueVal=\"" + i + "\"><h4><span class=\"cue-name\">" + msg.cues[i].name + "</span></h4><span class=\"cue-description\">" + msg.cues[i].description + "</span></div>");
+      $("#cues").append("<div class=\"cue-item disable-selection\" cueVal=\"" + i + "\"><h4><span class=\"cue-name\">" + msg.cues[i].name + "</span></h4><span class=\"cue-description\">" + msg.cues[i].description + "</span></div>");
       if (msg.selected_cue != null) {
         if (msg.selected_cue == i) {
           $("div[cueVal=" + i + "]").addClass("background-green");
@@ -81,7 +81,7 @@ function updateSubs(msg) {
   $("#Submasters").empty();
   if (msg.submasters.length != 0) {
     for (var i = 0; i < msg.submasters.length; i++) {
-      $("#Submasters").append("<div class=\"col-1 submaster\"><div class=\"sliders\"><div class=\"slider\" id=\"sub-" + i + "\"></div></div><div class=\"subtitle\"><button id=\"sub-btn-" + i + "\" class=\"btn btn-yellow sub-btn\">" + msg.submasters[i].name + "</button></div></div>");
+      $("#Submasters").append("<div class=\"col-1 submaster\"><div class=\"sliders\"><div class=\"slider\" id=\"sub-" + i + "\"></div></div><div class=\"subtitle\"><button id=\"sub-btn-" + i + "\" class=\"btn btn-yellow sub-btn disable-selection\">" + msg.submasters[i].name + "</button></div></div>");
     }
   }
   var sliders = $('.slider');
@@ -105,7 +105,7 @@ function updateSubs(msg) {
     });
   }
   $(".sub-btn").succinct({ size: 12 });
-  $("#Submasters").append("<div class=\"col-2 submaster\"><button class=\"btn btn-green\" id=\"addSubBtn\"><i class=\"fas fa-plus-square\"></i> New Submaster</button></div>");
+  $("#Submasters").append("<div class=\"col-2 submaster\"><button class=\"btn btn-green disable-selection\" id=\"addSubBtn\"><i class=\"fas fa-plus-square\"></i> New Submaster</button></div>");
 }
 
 function settingsDropdown() {
@@ -116,7 +116,7 @@ $(document).ready(function () {
   document.getElementById("keyboardTabBtn").click();
 
   for (var i = 0; i <= 47; i++) {
-    $("#Channels").append("<div class=\"col-1 channel\"><div class=\"channel-item\"><h2>" + (i + 1) + "</h2><h1 id=\"cval-" + (i + 1) + "\">0</h1></div></div>");
+    $("#Channels").append("<div class=\"col-1 channel disable-selection\"><div class=\"channel-item\"><h2>" + (i + 1) + "</h2><h1 id=\"cval-" + (i + 1) + "\">0</h1></div></div>");
   }
 
   var subModal = document.getElementById('subSettingsModal');
@@ -320,7 +320,7 @@ $(document).ready(function () {
     return false;
   });
 
-  $('#commandInput').keypress(function(e) {
+  $('#commandInput').keypress(function (e) {
     var keycode = (e.keyCode ? e.keyCode : e.which);
     if (keycode == '13') {
       socket.emit('command message', { command: $('#commandInput').val() });
