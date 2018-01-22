@@ -8,6 +8,8 @@ def calculate_chans(chans, output_chans, isubmasters):
             o_chans[i] = chans[i]
             for i, _ in enumerate(isubmasters):
                 for chan, _ in enumerate(isubmasters[i]["channels"]):
-                    if int(isubmasters[i]["value"] / 100 * isubmasters[i]["channels"][chan]["value"]) > o_chans[int(isubmasters[i]["channels"][chan]["channel"]) - 1]:
-                        o_chans[int(isubmasters[i]["channels"][chan]["channel"]) - 1] = int(isubmasters[i]["value"] / 100 * isubmasters[i]["channels"][chan]["value"])
+                    subChanValue = int(isubmasters[i]["value"] / 100 * isubmasters[i]["channels"][chan]["value"])
+                    outChanValue = o_chans[int(isubmasters[i]["channels"][chan]["channel"]) - 1]
+                    if subChanValue > outChanValue:
+                        o_chans[int(isubmasters[i]["channels"][chan]["channel"]) - 1] = subChanValue
     return o_chans
