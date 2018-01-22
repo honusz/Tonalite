@@ -102,6 +102,7 @@ function updateSubs(msg) {
       socket.emit('update sub val', { sub: this.target.getAttribute('id'), value: this.get() });
     });
   }
+  $(".sub-btn").succinct({size: 12});
   $("#Submasters").append("<div class=\"col-2 submaster\"><button class=\"btn btn-green\" id=\"addSubBtn\"><i class=\"fas fa-plus-square\"></i> New Submaster</button></div>")
 }
 
