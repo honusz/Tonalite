@@ -320,6 +320,15 @@ $(document).ready(function () {
     return false;
   });
 
+  $('#commandInput').keypress(function(e) {
+    var keycode = (e.keyCode ? e.keyCode : e.which);
+    if (keycode == '13') {
+      socket.emit('command message', { command: $('#commandInput').val() });
+      $('#commandInput').val("");
+      return false;
+    }
+  });
+
   $('#usersBtn').click(function () {
     userModal.style.display = "block";
     return false;
