@@ -1,6 +1,8 @@
 # Tonalite v1.0.0
 
-Tonalite is a mobile E.131 lighting controller written in Python and JavaScript using SocketIO. It's current configuration is 48 channels so as to keep overhead low, but this can be increased if needed. This project uses the Semantic Versioning 2.0.0 system.
+Tonalite is a mobile E.131 lighting controller written in Python and JavaScript using SocketIO. It's current configuration is 48 channels so as to keep overhead low, but this can be increased if needed.
+
+This project uses the Semantic Versioning 2.0.0 system.
 
 ## Required Tools
 
