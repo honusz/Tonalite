@@ -449,6 +449,7 @@ if __name__ == "__main__":
     tonaliteSettings["serverPort"] = config["serverPort"]
     tonaliteSettings["sacnIP"] = config["sacnIP"]
 
+    print("Tonalite Lighting Control v1.0.0")
     try:
         server(tonaliteSettings["serverIP"],
                tonaliteSettings["serverPort"], tonaliteSettings["sacnIP"])
