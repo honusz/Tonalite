@@ -322,8 +322,8 @@ $(document).ready(function () {
     return false;
   });
 
-  $('#saveSettingsBtn').click(function () {
-    alert("The server must be restarted for the changes to take effect.");
+  $('.saveSettingsBtn').click(function () {
+    alert("The server must be restarted for IP changes to take effect.");
     socket.emit('save settings', { serverIP: $("#serverIP").val(), serverPort: $("#serverPort").val(), sacnIP: $("#sacnIP").val() });
   });
 
