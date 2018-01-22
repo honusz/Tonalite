@@ -41,17 +41,17 @@ function updateCues(msg) {
   if (msg.cues.length != 0) {
     if (msg.current_cue != null) {
       if (msg.current_cue != 0) {
-        $("#cues-display").append("<div class=\"cue-item no-hover\"><h4>Previous: " + msg.cues[msg.current_cue - 1].name + "</h4>" + msg.cues[msg.current_cue - 1].description + "</div>");
+        $("#cues-display").append("<div class=\"cue-item no-hover\"><h4>Previous: <span class=\"cue-name\">" + msg.cues[msg.current_cue - 1].name + "</span></h4><span class=\"cue-description\">" + msg.cues[msg.current_cue - 1].description + "</span></div>");
       }
-      $("#cues-display").append("<div class=\"cue-item no-hover background-green\"><h4>Current: " + msg.cues[msg.current_cue].name + "</h4>" + msg.cues[msg.current_cue].description + "</div>");
+      $("#cues-display").append("<div class=\"cue-item no-hover background-green\"><h4>Current: <span class=\"cue-name\">" + msg.cues[msg.current_cue].name + "</span></h4><span class=\"cue-description\">" + msg.cues[msg.current_cue].description + "</span></div>");
       if (msg.current_cue != msg.cues.length - 1 && msg.cues.length > 1) {
-        $("#cues-display").append("<div class=\"cue-item no-hover\"><h4>Next: " + msg.cues[msg.current_cue + 1].name + "</h4>" + msg.cues[msg.current_cue + 1].description + "</div>");
+        $("#cues-display").append("<div class=\"cue-item no-hover\"><h4>Next: <span class=\"cue-name\">" + msg.cues[msg.current_cue + 1].name + "</span></h4><span class=\"cue-description\">" + msg.cues[msg.current_cue + 1].description + "</span></div>");
       }
     } else {
-      $("#cues-display").append("<div class=\"cue-item no-hover\"><h4>Next: " + msg.cues[0].name + "</h4>" + msg.cues[0].description + "</div>");
+      $("#cues-display").append("<div class=\"cue-item no-hover\"><h4>Next: <span class=\"cue-name\">" + msg.cues[0].name + "</span></h4><span class=\"cue-description\">" + msg.cues[0].description + "</span></div>");
     }
     for (var i = 0; i < msg.cues.length; i++) {
-      $("#cues").append("<div class=\"cue-item\" cueVal=\"" + i + "\"><h4>" + msg.cues[i].name + "</h4>" + msg.cues[i].description + "</div>");
+      $("#cues").append("<div class=\"cue-item\" cueVal=\"" + i + "\"><h4><span class=\"cue-name\">" + msg.cues[i].name + "</span></h4><span class=\"cue-description\">" + msg.cues[i].description + "</span></div>");
       if (msg.selected_cue != null) {
         if (msg.selected_cue == i) {
           $("div[cueVal=" + i + "]").addClass("background-green");
@@ -59,6 +59,8 @@ function updateCues(msg) {
       }
     }
   }
+  $(".cue-name").succinct({ size: 20 });
+  $(".cue-description").succinct({ size: 70 });
   if (msg.selected_cue == null) {
     $("#cueName").val("");
     $("#cueDescription").val("");
