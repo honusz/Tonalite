@@ -1,5 +1,7 @@
 # Logging Into Tonalite
 
+![Login page](../images/login.png)
+
 The Tonalite login page is the first thing any user will encounter when trying to access the control interface. This protects your system from unwanted operators who may mess up the lighting.
 
 ## Default Login
