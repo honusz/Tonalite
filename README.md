@@ -22,7 +22,7 @@ To run Tonalite, use the command `python3 tonalite.py`
 
 Build channelman and create the PyInstaller release executable by running the command `build.bat`
 
-If you have [UPX](https://upx.github.io/) installed, the output will be much faster and smaller.
+If you have [UPX](https://upx.github.io/) installed, the output will be much faster and smaller. Please note that it is currently disabled due to a Windows build bug.
 
 ## Feature Set
 
