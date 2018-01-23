@@ -30,7 +30,7 @@ function updateChannels(msg) {
       }
       $("#cval-" + (i + 1)).addClass('red-text');
     }
-    $("#cval-" + (i + 1)).text(Math.round((msg.channels[i]/255)*100));
+    $("#cval-" + (i + 1)).text(Math.round((msg.channels[i] / 255) * 100));
   }
   return 0;
 }
