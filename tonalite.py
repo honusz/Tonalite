@@ -83,7 +83,7 @@ def set_sub_chans():
     for i, _ in enumerate(outputChannels):
         if outputChannels[i] != None:
             temp_channels.append(
-                {"channel": i + 1, "value": outputChannels[i]})
+                {"channel": i + 1, "value": int((outputChannels[i]/255)*100)})
 
     return temp_channels
 
@@ -178,7 +178,7 @@ async def remove_sub(sid, message):
 @sio.on('add sub chan', namespace='/tonalite')
 async def add_sub_chan(sid, message):
     """Add a control channel to the current submaster"""
-    submasters[clickedSub]["channels"].append({"channel": 1, "value": 255})
+    submasters[clickedSub]["channels"].append({"channel": 1, "value": 100})
     await sio.emit('sub settings', {'name': submasters[clickedSub]["name"], 'channels': submasters[clickedSub]["channels"], 'value': submasters[clickedSub]["value"]}, namespace='/tonalite', room=sid)
 
 
@@ -389,7 +389,7 @@ async def command_message(sid, message):
                 value = cmd[3]
                 for chn in schans:
                     if value != "d" and value != "b":
-                        value = max(0, min(int((255/100) * int(value)), 255))
+                        value = int((255/100) * (max(0, min(int(value), 100))))
                     elif value == "d":
                         if outputChannels[int(chn) - 1] != None:
                             value = max(

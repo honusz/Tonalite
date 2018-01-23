@@ -30,7 +30,7 @@ function updateChannels(msg) {
       }
       $("#cval-" + (i + 1)).addClass('red-text');
     }
-    $("#cval-" + (i + 1)).text(parseInt((msg.channels[i]/255)*100));
+    $("#cval-" + (i + 1)).text(Math.round((msg.channels[i]/255)*100));
   }
   return 0;
 }
@@ -162,7 +162,7 @@ $(document).ready(function () {
     $("#sub-channels").empty();
     if (msg.channels.length != 0) {
       for (var i = 0; i < msg.channels.length; i++) {
-        $("#sub-channels").append("<div class=\"col-5\"><input type=\"number\" placeholder=\"Channel:\" value=\"" + msg.channels[i].channel + "\" id=\"sub-channel-" + i + "-channel\" min=\"1\" max=\"48\"></div><div class=\"col-5\"><input type=\"number\" placeholder=\"Value:\" value=\"" + msg.channels[i].value + "\" id=\"sub-channel-" + i + "-value\" min=\"0\" max=\"255\"></div><div class=\"col-1\"><button class=\"btn btn-green btn-full btn-tall sub-chan-save\" subChan=\"" + i + "\"><i class=\"fas fa-save\"></i></button></div><div class=\"col-1\"><button class=\"btn btn-red btn-full btn-tall sub-chan-delete\" subChan=\"" + i + "\"><i class=\"fas fa-trash-alt\"></i></button></div>");
+        $("#sub-channels").append("<div class=\"col-5\"><input type=\"number\" placeholder=\"Channel:\" value=\"" + msg.channels[i].channel + "\" id=\"sub-channel-" + i + "-channel\" min=\"1\" max=\"48\"></div><div class=\"col-5\"><input type=\"number\" placeholder=\"Value:\" value=\"" + msg.channels[i].value + "\" id=\"sub-channel-" + i + "-value\" min=\"0\" max=\"100\"></div><div class=\"col-1\"><button class=\"btn btn-green btn-full btn-tall sub-chan-save\" subChan=\"" + i + "\"><i class=\"fas fa-save\"></i></button></div><div class=\"col-1\"><button class=\"btn btn-red btn-full btn-tall sub-chan-delete\" subChan=\"" + i + "\"><i class=\"fas fa-trash-alt\"></i></button></div>");
       }
     }
     subModal.style.display = "block";
@@ -234,15 +234,15 @@ $(document).ready(function () {
   });
 
   $("#sub-channels").on("click", "button.sub-chan-save", function () {
-    socket.emit('edit sub chan', { action: "save", chan: parseInt(this.getAttribute('subChan')), channel: $('#sub-channel-' + parseInt(this.getAttribute('subChan')) + '-channel').val(), value: $('#sub-channel-' + parseInt(this.getAttribute('subChan')) + '-value').val() });
+    socket.emit('edit sub chan', { action: "save", chan: Math.round(this.getAttribute('subChan')), channel: $('#sub-channel-' + Math.round(this.getAttribute('subChan')) + '-channel').val(), value: $('#sub-channel-' + Math.round(this.getAttribute('subChan')) + '-value').val() });
   });
 
   $("#sub-channels").on("click", "button.sub-chan-delete", function () {
-    socket.emit('edit sub chan', { action: "delete", chan: parseInt(this.getAttribute('subChan')) });
+    socket.emit('edit sub chan', { action: "delete", chan: Math.round(this.getAttribute('subChan')) });
   });
 
   $("#users").on("click", "button.user-delete", function () {
-    socket.emit('edit users', { action: "delete", user: parseInt(this.getAttribute('user')) });
+    socket.emit('edit users', { action: "delete", user: Math.round(this.getAttribute('user')) });
   });
 
   $('#addUserBtn').click(function () {
