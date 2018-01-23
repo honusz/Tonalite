@@ -12,6 +12,7 @@ Tonalite requires Python 3.6+, SASS, and the folowing libraries:
 - aiohttp
 - PyInstaller
 - passlib
+- cython
 
 ## Run Tonalite
 
@@ -19,7 +20,7 @@ To run Tonalite, use the command `python3 tonalite.py`
 
 ## Create Executable
 
-Create the PyInstaller release executable by running the command `python3 -m PyInstaller tonalite.spec`
+Build channelman and create the PyInstaller release executable by running the command `build.bat`
 
 If you have [UPX](https://upx.github.io/) installed, the output will be much faster and smaller.
 
