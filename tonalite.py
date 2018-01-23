@@ -389,7 +389,7 @@ async def command_message(sid, message):
                 value = cmd[3]
                 for chn in schans:
                     if value != "d" and value != "b":
-                        value = max(0, min(int(value), 255))
+                        value = max(0, min(int((255/100) * int(value)), 255))
                     elif value == "d":
                         if outputChannels[int(chn) - 1] != None:
                             value = max(
