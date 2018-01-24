@@ -68,8 +68,7 @@ async def generate_fade(start, end, secs=3.0, fps=40):
         for channel, _ in enumerate(start):
             s_chan = start[channel] or 0
             e_chan = end[channel] or 0
-            channels[channel] = int(
-                s_chan + (((e_chan - s_chan) / (secs * fps)) * i))
+            channels[channel] = int(s_chan + (((e_chan - s_chan) / (secs * fps)) * i))
 
         source.send_data(calculate_chans(channels, outputChannels, submasters))
         await sio.emit('update chans and cues', {'channels': calculate_chans(channels, outputChannels, submasters), 'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
@@ -219,8 +218,7 @@ async def update_cue(sid, message):
 async def update_sub_val(sid, message):
     """Handler for when a submaster is set - update the show channel values"""
     global submasters
-    submasters[int(message["sub"].split("sub-", 1)[1])
-               ]["value"] = int(message["value"])
+    submasters[int(message["sub"].split("sub-", 1)[1])]["value"] = int(message["value"])
     source.send_data(calculate_chans(channels, outputChannels, submasters))
     await sio.emit('update chans and subs', {'channels': calculate_chans(channels, outputChannels, submasters), 'submasters': submasters}, namespace='/tonalite')
 
