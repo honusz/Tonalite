@@ -1,6 +1,6 @@
 # Supported Hardware
 
-Tonalite supports any E1.31 to DMX 512 network interface. Below is a table with supported interfaces.
+Tonalite supports any E1.31 to DMX 512 network interface. Below is a table with some example supported interfaces listed. In theory, any E1.31 interface should work with Tonalite but thse are the most common and easily found.
 
 | Interface                                                    | Manufacturer  |
 |:------------------------------------------------------------:|:-------------:|
