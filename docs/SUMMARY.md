@@ -6,6 +6,7 @@
     * [Login](installation/login.md)
     * [Configure E1.31 (sACN)](installation/configure_sacn.md)
     * [Configure Server](installation/configure_server.md)
+* [Channels](channels/README.md)
 * [Interface](interface/README.md)
     * [Keyboard](interface/keyboard/README.md)
         * [Manual Input](interface/keyboard/manual_input.md)
