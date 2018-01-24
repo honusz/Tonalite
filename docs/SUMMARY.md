@@ -2,6 +2,7 @@
 
 * [Introduction](README.md)
     * [Supported Hardware](supported_hardware.md)
+    * [Supported Software](supported_software.md)
 * [Installation](installation/README.md)
     * [Login](installation/login.md)
     * [Configure E1.31 (sACN)](installation/configure_sacn.md)
