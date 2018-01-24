@@ -5,4 +5,3 @@ To install Tonalite, download `tonalite-*version*.zip` and unpack it to somewher
 ### Starting the Application
 
 To start Tonalite, run `tonalite-*version*/Tonalite.exe`. Once you have done this, a web browser window will open with the Tonalite login screen.
-
