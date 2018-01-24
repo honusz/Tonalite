@@ -8,4 +8,4 @@ By default, this is set to the local IP of your computer, `127.0.0.1`, but you w
 
 ### Reset
 
-If you set a custom value for the E1.31 (sACN) IP and can't remember what the default value was, just press the yellow *Reset* button and the default value will be entered. Then, simply press the green *Save* button to use that value.
+If you set a custom value for the *E1.31 (sACN) IP* and can't remember what the default value was, just press the yellow *Reset* button and the default value will be entered. Then, simply press the green *Save* button to use that value.
