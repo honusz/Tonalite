@@ -1,5 +1,5 @@
 {
-    "plugins": ["autocover"],
+    "plugins": ["autocover", "-sharing"],
     "pluginsConfig": {
         "fontSettings": {
             "theme": "night"
