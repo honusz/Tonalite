@@ -8,6 +8,6 @@ For each channel there is a box, also known as a tombstone, that displays the *C
 
 ![Channel tombstone](../images/channel_tombstone.png)
 
-The *Channel Value* is red if the value has not been updated in the last action (setting a channel value, going from cue to cue, or moving a submaster). It is green if the value changed in the last action.
+The *Channel Value* is **red** if the value has not been updated in the last action (setting a channel value, going from cue to cue, or moving a submaster, etc.). It is **green** if the value changed in the last action.
 
 ![Channel tombstone changed](../images/channel_tombstone_changed.png)
