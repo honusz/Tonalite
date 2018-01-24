@@ -1,4 +1,4 @@
-# Welcome to the Tonalite Documentation!
+# Welcome to the Tonalite v1.0.0 Documentation!
 
 This book will show you how to get started using Tonalite to create great lighting quickly and easily.
 

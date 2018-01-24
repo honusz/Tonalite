@@ -109,3 +109,7 @@ static/.sass-cache/*
 .eslintrc.json
 
 docs/_book/
+
+docs/node_modules/
+
+node_modules/
