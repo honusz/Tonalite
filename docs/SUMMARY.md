@@ -9,3 +9,4 @@
 * [Channels](channels/README.md)
     * [Setting Channel Values](channels/setting_channel_values.md)
     * [Special Channel Buttons](channels/special_channel_buttons.md)
+* [Cues](cues/README.md)
