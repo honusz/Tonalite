@@ -4,7 +4,7 @@ Channels form the building-blocks of Tonalite. Their values are what get outputt
 
 ![Channels UI tab](../images/channels.png)
 
-For each channel there is a box, also known as a tombstone, that displays the *Channel Number* and the *Channel Value*. The *Channel Number* is the smaller number on top, while the *Channel Value* is the larger, colored number on the bottom.
+For each channel there is a box, also known as a tombstone, that displays the *Channel Number* and the *Channel Value*. The *Channel Number* is the smaller number on top, while the *Channel Value* is the larger, colored number on the bottom. Each channel can have a value from `0` to `100`. This value is a percentage of the output of the light which is actually `0` to `255`. 
 
 ![Channel tombstone](../images/channel_tombstone.png)
 
