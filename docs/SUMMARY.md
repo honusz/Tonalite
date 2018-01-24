@@ -1,9 +1,11 @@
 # Summary
 
 * [Introduction](README.md)
+    * [Supported Hardware](supported_hardware.md)
 * [Installation](installation/README.md)
     * [Login](installation/login.md)
-    * [Supported Hardware](installation/supported_hardware.md)
+    * [Configure E1.31 (sACN)](installation/configure_sacn.md)
+    * [Configure Server](installation/configure_server.md)
 * [Interface](interface/README.md)
     * [Keyboard](interface/keyboard/README.md)
         * [Manual Input](interface/keyboard/manual_input.md)

@@ -6,10 +6,10 @@ The Tonalite login page is the first thing any user will encounter when trying t
 
 ## Default Login
 
-By default, Tonalite has one user. The default username and password are
+By default, Tonalite has one user. The default username and password are:
 
 Username: `admin`
 
 Password: `password`
 
-These can be changed after you login the first time, or you can leave them as they are if security is not an issue for your system.
+These can be changed after you login the first time, or you can leave them as-is if security is not an issue for your system.
