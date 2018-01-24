@@ -184,7 +184,7 @@ $(window).bind("load", function() {
     $("#users").empty();
     if (msg.tonaliteSettings.users.length != 0) {
       for (var i = 0; i < msg.tonaliteSettings.users.length; i++) {
-        $("#users").append("<div class=\"col-11\"><input type=\"text\" placeholder=\"User:\" value=\"" + msg.tonaliteSettings.users[i][0] + "\" ></div><div class=\"col-1\"><button class=\"btn btn-red btn-full btn-tall user-delete\" user=\"" + i + "\"><i class=\"fas fa-trash-alt\"></i></button></div>")
+        $("#users").append("<div class=\"col-11\"><input type=\"text\" placeholder=\"User:\" value=\"" + msg.tonaliteSettings.users[i][0] + "\" ></div><div class=\"col-1\"><button class=\"btn btn-red btn-full btn-tall user-delete\" user=\"" + i + "\"><i class=\"fas fa-trash-alt\"></i></button></div>");
       }
     }
   });
