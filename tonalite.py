@@ -282,6 +282,10 @@ async def cue_move(sid, message):
         cues.pop(clickedCue)
         clickedCue = None
         await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
+    elif message['action'] == "duplicate":
+        cues.insert(len(cues), cues[clickedCue])
+        clickedCue = None
+        await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
     elif message['action'] == "next":
         if currentCue != None:
             if currentCue != len(cues) - 1:

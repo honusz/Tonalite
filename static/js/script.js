@@ -289,6 +289,10 @@ $(window).bind("load", function() {
     socket.emit('cue move', { action: "delete" });
   });
 
+  $("#duplicateCue").click(function () {
+    socket.emit('cue move', { action: "duplicate" });
+  });
+
   $("#goCue").click(function () {
     socket.emit('command message', { command: "q 9949" });
   });
