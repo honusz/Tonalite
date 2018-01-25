@@ -68,11 +68,11 @@ function updateCues(msg) {
     $("#cueFollow").val("");
   }
   if (msg.cues.length != 0) {
-    if ($(".hidden-item").hasClass("hidden")) {
-      $(".hidden-item").removeClass('hidden');
+    if ($(".hidden-item").css('display') == "none") {
+      $(".hidden-item").css('display', 'inline-block');
     }
   } else {
-    $(".hidden-item").addClass('hidden');
+    $(".hidden-item").css('display', 'none');
   }
   return 0;
 }
@@ -112,7 +112,7 @@ function settingsDropdown() {
   document.getElementById("settingsDropdown").classList.toggle("show");
 }
 
-$(window).bind("load", function() {
+$(window).bind("load", function () {
   document.getElementById("keyboardTabBtn").click();
 
   for (var i = 0; i <= 47; i++) {
