@@ -11,3 +11,6 @@
     * [Setting Channel Values](channels/setting_channel_values.md)
     * [Special Channel Buttons](channels/special_channel_buttons.md)
 * [Cues](cues/README.md)
+    * [Recording Cues](cues/recording_cues.md)
+    * [Editing Cues](cues/editing_cues.md)
+    * [Moving Cues](cues/moving_cues.md)

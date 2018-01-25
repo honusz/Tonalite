@@ -1,6 +1,6 @@
-# Using Tonalite Channels
+# Using Channels
 
-Channels form the building-blocks of Tonalite. Their values are what get outputted to the lights over the network. You can view the current channel values by going to the *Channels* tab in the interface.
+Channels form the building-blocks of Tonalite. Their values are what get outputted over the network to control the lights. You can view the current channel values by going to the *Channels* tab in the interface.
 
 ![Channels UI tab](../images/channels.png)
 
