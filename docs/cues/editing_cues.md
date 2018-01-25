@@ -2,7 +2,7 @@
 
 Once you have recorded one or more cues, you will see that each as an entry on the lefty side of the *Cues* tab above the *Record New* button. You will also see that two other buttons have appeared: *˄* and *˅*. To edit a cue, click on it's name in the list, it will turn green, and you will see the text boxes to the right of the cues list full with values.
 
-![Cues UI tab with selected cue](../images/cues.png)
+![Cues UI tab with selected cue](../images/cue_selected.png)
 
 ## Name
 
@@ -27,6 +27,10 @@ The *Save Settings* button saves all the changes you have made to the selected c
 ## Update Channels
 
 The *Update Channels* button replaces the selected cue's channel vales with those that are currently set from the *Keyboard* tab.
+
+## Duplicate
+
+The *Duplicate* button duplicates the selected cue and places the copy at the end of the cue list.
 
 ## Delete
 
