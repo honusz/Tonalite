@@ -6,6 +6,8 @@ Tonalite is a mobile E.131 lighting controller written in Python and JavaScript 
 
 This project uses the Semantic Versioning 2.0.0 system.
 
+Please help me out by [donating some money](https://www.paypal.me/johnroper) to support this project.
+
 ## Required Tools
 
 Tonalite requires Python 3.6+, SASS, and the folowing libraries:
