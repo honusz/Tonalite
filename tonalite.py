@@ -92,6 +92,8 @@ async def index(request):
     with open(resource_path('index.min.html')) as w_f:
         return web.Response(text=w_f.read(), content_type='text/html')
 
+async def app_index_get(request):
+    return web.HTTPFound('/')
 
 async def app_index(request):
     """Load the app file"""
@@ -423,6 +425,7 @@ async def save_settings(sid, message):
     await sio.emit('update settings', {'tonaliteSettings': tonaliteSettings}, namespace='/tonalite')
 
 app.router.add_static('/static', resource_path('static'))
+app.router.add_get('/app', app_index_get)
 app.router.add_post('/app', app_index)
 app.router.add_get('/', index)
 app.router.add_get('/show', saveshow)
