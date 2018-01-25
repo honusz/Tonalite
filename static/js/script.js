@@ -131,6 +131,18 @@ $(window).bind("load", function() {
     userModal.style.display = "none";
   }
 
+  var disconnectModal = document.getElementById('disconnectModal');
+
+  socket.on('connect', function (error) {
+    if (disconnectModal.style.display == "block") {
+      disconnectModal.style.display = "none";
+    }
+  });
+
+  socket.on('connect_error', function (error) {
+    disconnectModal.style.display = "block";
+  });
+
   socket.on('update chans', function (msg) {
     updateChannels(msg);
   });
