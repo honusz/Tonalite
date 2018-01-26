@@ -31,14 +31,14 @@ function updateChannels(msg) {
     if ($("#cval-" + (i + 1)).hasClass("purple-text")) {
       $("#cval-" + (i + 1)).removeClass('purple-text');
     }
-    if ($("#cval-" + (i + 1)).text() < Math.round((msg.channels[i] / 255) * 100)) {
+    if ($("#cval-" + (i + 1)).attr('cvalue') < msg.channels[i]) {
       $("#cval-" + (i + 1)).addClass('green-text');
-    } else if ($("#cval-" + (i + 1)).text() > Math.round((msg.channels[i] / 255) * 100)) {
+    } else if ($("#cval-" + (i + 1)).attr('cvalue') > msg.channels[i]) {
       $("#cval-" + (i + 1)).addClass('purple-text');
-    } else {
+    } else if ($("#cval-" + (i + 1)).attr('cvalue') == msg.channels[i]) {
       $("#cval-" + (i + 1)).addClass('red-text');
     }
-    $("#cval-" + (i + 1)).text(Math.round((msg.channels[i] / 255) * 100));
+    $("#cval-" + (i + 1)).text(Math.round((msg.channels[i] / 255) * 100)).attr('cvalue', msg.channels[i]);
   }
   return 0;
 }
@@ -124,7 +124,7 @@ $(window).bind("load", function () {
   document.getElementById("keyboardTabBtn").click();
 
   for (var i = 0; i <= 47; i++) {
-    $("#Channels").append("<div class=\"col-1 channel disable-selection\"><div class=\"channel-item\"><h2>" + (i + 1) + "</h2><h1 id=\"cval-" + (i + 1) + "\">0</h1></div></div>");
+    $("#Channels").append("<div class=\"col-1 channel disable-selection\"><div class=\"channel-item\"><h2>" + (i + 1) + "</h2><h1 id=\"cval-" + (i + 1) + "\" cvalue=\"0\">0</h1></div></div>");
   }
 
   var subModal = document.getElementById('subSettingsModal');
