@@ -306,13 +306,13 @@ async def cue_move(sid, message):
                     await sio.sleep(cues[currentCue]["follow"])
                     currentCue += 1
                     await generate_fade(cues[currentCue - 1]["values"], cues[currentCue]["values"], cues[currentCue]["time"])
-        await sio.emit('update chans and cues', {'channels': calculate_chans(channels, outputChannels, submasters), 'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
+        await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
     elif message['action'] == "last":
         if currentCue != None:
             if currentCue != 0:
                 currentCue -= 1
                 await generate_fade(cues[currentCue + 1]["values"], cues[currentCue]["values"], cues[currentCue]["time"])
-            await sio.emit('update chans and cues', {'channels': calculate_chans(channels, outputChannels, submasters), 'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
+            await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
     elif message['action'] == "release":
         currentCue = None
         channels = [0] * 48
@@ -374,7 +374,7 @@ async def command_message(sid, message):
                         await sio.sleep(cues[currentCue]["follow"])
                         currentCue += 1
                         await generate_fade(cues[currentCue - 1]["values"], cues[currentCue]["values"], cues[currentCue]["time"])
-                await sio.emit('update chans and cues', {'channels': calculate_chans(channels, outputChannels, submasters), 'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
+                await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
     if len(cmd) == 4:
         if cmd[0] == "c":
             if "+" in cmd[1]:
