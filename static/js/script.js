@@ -22,13 +22,14 @@ function openTab(evt, tabName) {
 
 function updateChannels(msg) {
   for (var i = 0; i <= 47; i++) {
-    if ($("#cval-" + (i + 1)).attr('cvalue') != msg.channels[i]) {
+    if (msg.channels[i] != $("#cval-" + (i + 1)).attr('cvalue')) {
       if ($("#cval-" + (i + 1)).hasClass("red-text")) {
         $("#cval-" + (i + 1)).removeClass('red-text').addClass('green-text');
       }
     } else {
       if ($("#cval-" + (i + 1)).hasClass("green-text")) {
         $("#cval-" + (i + 1)).removeClass('green-text').addClass('red-text');
+      }
     }
     $("#cval-" + (i + 1)).text(Math.round((msg.channels[i] / 255) * 100)).attr('cvalue', msg.channels[i]);
   }
