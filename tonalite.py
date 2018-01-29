@@ -71,7 +71,7 @@ async def generate_fade(start, end, secs=3.0, fps=40):
             channels[channel] = int(s_chan + (((e_chan - s_chan) / (secs * fps)) * i))
 
         source.send_data(calculate_chans(channels, outputChannels, submasters))
-        await sio.emit('update chans and cues', {'channels': calculate_chans(channels, outputChannels, submasters), 'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
+        await sio.emit('update chans', {'channels': calculate_chans(channels, outputChannels, submasters)}, namespace='/tonalite')
         time.sleep(secs / int(secs * fps))
 
 
@@ -292,25 +292,30 @@ async def cue_move(sid, message):
         if currentCue != None:
             if currentCue != len(cues) - 1:
                 currentCue += 1
+                await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
                 await generate_fade(cues[currentCue - 1]["values"], cues[currentCue]["values"], cues[currentCue]["time"])
                 while cues[currentCue]["follow"] != 0:
                     if currentCue != len(cues) - 1:
                         await sio.sleep(cues[currentCue]["follow"])
                         currentCue += 1
+                        await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
                         await generate_fade(cues[currentCue - 1]["values"], cues[currentCue]["values"], cues[currentCue]["time"])
         else:
             currentCue = 0
+            await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
             await generate_fade([0] * 48, cues[currentCue]["values"], cues[currentCue]["time"])
             while cues[currentCue]["follow"] != 0:
                 if currentCue != len(cues) - 1:
                     await sio.sleep(cues[currentCue]["follow"])
                     currentCue += 1
+                    await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
                     await generate_fade(cues[currentCue - 1]["values"], cues[currentCue]["values"], cues[currentCue]["time"])
         await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
     elif message['action'] == "last":
         if currentCue != None:
             if currentCue != 0:
                 currentCue -= 1
+                await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
                 await generate_fade(cues[currentCue + 1]["values"], cues[currentCue]["values"], cues[currentCue]["time"])
             await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
     elif message['action'] == "release":
@@ -367,12 +372,14 @@ async def command_message(sid, message):
                 setCue = clickedCue + 1
             if setCue <= len(cues) and setCue >= 1:
                 setCue -= 1
+                await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
                 await generate_fade(channels, cues[setCue]["values"], cues[setCue]["time"])
                 currentCue = setCue
                 while cues[currentCue]["follow"] != 0:
                     if currentCue != len(cues) - 1:
                         await sio.sleep(cues[currentCue]["follow"])
                         currentCue += 1
+                        await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
                         await generate_fade(cues[currentCue - 1]["values"], cues[currentCue]["values"], cues[currentCue]["time"])
                 await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
     if len(cmd) == 4:
