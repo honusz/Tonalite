@@ -25,24 +25,21 @@ function updateChannels(msg) {
     if (msg.channels[i] > $("#cval-" + (i + 1)).attr('cvalue')) {
       if ($("#cval-" + (i + 1)).hasClass("purple-text")) {
         $("#cval-" + (i + 1)).removeClass('purple-text');
-      }
-      if ($("#cval-" + (i + 1)).hasClass("red-text")) {
+      } else {
         $("#cval-" + (i + 1)).removeClass('red-text');
       }
       $("#cval-" + (i + 1)).addClass('green-text');
     } else if (msg.channels[i] < $("#cval-" + (i + 1)).attr('cvalue')) {
       if ($("#cval-" + (i + 1)).hasClass("green-text")) {
         $("#cval-" + (i + 1)).removeClass('green-text');
-      }
-      if ($("#cval-" + (i + 1)).hasClass("red-text")) {
+      } else {
         $("#cval-" + (i + 1)).removeClass('red-text');
       }
       $("#cval-" + (i + 1)).addClass('purple-text');
     } else {
       if ($("#cval-" + (i + 1)).hasClass("green-text")) {
         $("#cval-" + (i + 1)).removeClass('green-text');
-      }
-      if ($("#cval-" + (i + 1)).hasClass("purple-text")) {
+      } else {
         $("#cval-" + (i + 1)).removeClass('purple-text');
       }
       $("#cval-" + (i + 1)).addClass('red-text');
