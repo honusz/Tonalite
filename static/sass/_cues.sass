@@ -1,8 +1,11 @@
 #cue-list, #cue-settings, #show-load-settings, #show-save-settings
-    margin-left: 1em
+    margin-left: 2.85em
     margin-top: 1em
     padding: 1em
     background-color: $bg-light-color
+
+#cue-settings, #show-save-settings
+    margin-left: 1em
 
 
 @media (max-width: 768px)
@@ -19,6 +22,13 @@
     max-height: 50vh
     overflow-y: auto
 
+#cue-display
+    max-height: 70vh
+    overflow-y: auto
+    
+    .btn
+        margin-bottom: 1em
+
 #cue-settings
     h1
         font-weight: 400
@@ -31,7 +41,7 @@
 .cue-item
     width: 100%
     background-color: darken($text-dark-color, 25%)
-    margin-bottom: 1em
+    margin-bottom: 0.49em
     padding: 1em
     color: $text-dark-color
 
