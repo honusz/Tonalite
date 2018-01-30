@@ -232,6 +232,7 @@ $(window).bind("load", function () {
 
   $('.kbtn').click(function () {
     $('#commandInput').val($('#commandInput').val() + $(this).attr('inputVal'));
+    $('#commandInput').focus();
   });
 
   $('#updateCue').click(function () {
