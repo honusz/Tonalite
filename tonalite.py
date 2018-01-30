@@ -330,8 +330,8 @@ async def save_cue(sid, message):
     """Save the current cue settings"""
     cues[clickedCue]["name"] = message['name']
     cues[clickedCue]["description"] = message['description']
-    cues[clickedCue]["time"] = int(message['time'])
-    cues[clickedCue]["follow"] = int(message['follow'])
+    cues[clickedCue]["time"] = float(message['time'])
+    cues[clickedCue]["follow"] = float(message['follow'])
     await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
 
 
