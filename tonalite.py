@@ -413,7 +413,8 @@ async def command_message(sid, message):
                             outputChannels[int(chn) - 1] = 10
                     else:
                         value = 0
-                    outputChannels[int(chn) - 1] = value
+                    if len(outputChannels) >= int(chn):
+                        outputChannels[int(chn) - 1] = value
                 source.send_data(calculate_chans(
                     channels, outputChannels, submasters))
                 await sio.emit('update chans', {'channels': calculate_chans(channels, outputChannels, submasters)}, namespace='/tonalite')
