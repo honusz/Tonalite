@@ -22,14 +22,30 @@ function openTab(evt, tabName) {
 
 function updateChannels(msg) {
   for (var i = 0; i <= 47; i++) {
-    if (msg.channels[i] == $("#cval-" + (i + 1)).attr('cvalue')) {
-      if ($("#cval-" + (i + 1)).hasClass("green-text")) {
-        $("#cval-" + (i + 1)).removeClass('green-text').addClass('red-text');
+    if (msg.channels[i] > $("#cval-" + (i + 1)).attr('cvalue')) {
+      if ($("#cval-" + (i + 1)).hasClass("purple-text")) {
+        $("#cval-" + (i + 1)).removeClass('purple-text');
       }
-    } else {
       if ($("#cval-" + (i + 1)).hasClass("red-text")) {
-        $("#cval-" + (i + 1)).removeClass('red-text').addClass('green-text');
+        $("#cval-" + (i + 1)).removeClass('red-text');
       }
+      $("#cval-" + (i + 1)).addClass('green-text');
+    } else if (msg.channels[i] < $("#cval-" + (i + 1)).attr('cvalue')) {
+      if ($("#cval-" + (i + 1)).hasClass("green-text")) {
+        $("#cval-" + (i + 1)).removeClass('green-text');
+      }
+      if ($("#cval-" + (i + 1)).hasClass("red-text")) {
+        $("#cval-" + (i + 1)).removeClass('red-text');
+      }
+      $("#cval-" + (i + 1)).addClass('purple-text');
+    } else {
+      if ($("#cval-" + (i + 1)).hasClass("green-text")) {
+        $("#cval-" + (i + 1)).removeClass('green-text');
+      }
+      if ($("#cval-" + (i + 1)).hasClass("purple-text")) {
+        $("#cval-" + (i + 1)).removeClass('purple-text');
+      }
+      $("#cval-" + (i + 1)).addClass('red-text');
     }
     $("#cval-" + (i + 1)).text(Math.round((msg.channels[i] / 255) * 100)).attr('cvalue', msg.channels[i]);
   }
