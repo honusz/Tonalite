@@ -851,6 +851,14 @@ static PyObject* __Pyx_PyInt_SubtractObjC(PyObject *op1, PyObject *op2, long int
     (inplace ? PyNumber_InPlaceSubtract(op1, op2) : PyNumber_Subtract(op1, op2))
 #endif
 
+/* PyFloatBinop.proto */
+#if !CYTHON_COMPILING_IN_PYPY
+static PyObject* __Pyx_PyFloat_DivideObjC(PyObject *op1, PyObject *op2, double floatval, int inplace);
+#else
+#define __Pyx_PyFloat_DivideObjC(op1, op2, floatval, inplace)\
+    ((inplace ? __Pyx_PyNumber_InPlaceDivide(op1, op2) : __Pyx_PyNumber_Divide(op1, op2)))
+    #endif
+
 /* PyThreadStateGet.proto */
 #if CYTHON_FAST_THREAD_STATE
 #define __Pyx_PyThreadState_declare  PyThreadState *__pyx_tstate;
@@ -955,12 +963,12 @@ static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_test[] = "__test__";
 static const char __pyx_k_chans[] = "chans";
 static const char __pyx_k_value[] = "value";
-static const char __pyx_k_calval[] = "calval";
 static const char __pyx_k_channel[] = "channel";
 static const char __pyx_k_o_chans[] = "o_chans";
 static const char __pyx_k_channels[] = "channels";
 static const char __pyx_k_enumerate[] = "enumerate";
 static const char __pyx_k_channelman[] = "channelman";
+static const char __pyx_k_grandmaster[] = "grandmaster";
 static const char __pyx_k_isubmasters[] = "isubmasters";
 static const char __pyx_k_outChanValue[] = "outChanValue";
 static const char __pyx_k_output_chans[] = "output_chans";
@@ -970,7 +978,6 @@ static const char __pyx_k_calculate_chans[] = "calculate_chans";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
 static PyObject *__pyx_n_s_;
 static PyObject *__pyx_n_s_calculate_chans;
-static PyObject *__pyx_n_s_calval;
 static PyObject *__pyx_n_s_chan;
 static PyObject *__pyx_n_s_channel;
 static PyObject *__pyx_n_s_channelman;
@@ -979,6 +986,7 @@ static PyObject *__pyx_n_s_channels;
 static PyObject *__pyx_n_s_chans;
 static PyObject *__pyx_n_s_cline_in_traceback;
 static PyObject *__pyx_n_s_enumerate;
+static PyObject *__pyx_n_s_grandmaster;
 static PyObject *__pyx_n_s_i;
 static PyObject *__pyx_n_s_isubmasters;
 static PyObject *__pyx_n_s_main;
@@ -988,14 +996,16 @@ static PyObject *__pyx_n_s_output_chans;
 static PyObject *__pyx_n_s_subChanValue;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_n_s_value;
-static PyObject *__pyx_pf_10channelman_calculate_chans(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_chans, PyObject *__pyx_v_output_chans, PyObject *__pyx_v_isubmasters); /* proto */
+static PyObject *__pyx_pf_10channelman_calculate_chans(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_chans, PyObject *__pyx_v_output_chans, PyObject *__pyx_v_isubmasters, PyObject *__pyx_v_grandmaster); /* proto */
+static PyObject *__pyx_float_100_0;
 static PyObject *__pyx_int_0;
 static PyObject *__pyx_int_1;
+static PyObject *__pyx_int_2;
 static PyObject *__pyx_tuple__2;
 static PyObject *__pyx_codeobj__3;
 
 /* "channelman.pyx":1
- * def calculate_chans(chans, output_chans, isubmasters):             # <<<<<<<<<<<<<<
+ * def calculate_chans(chans, output_chans, isubmasters, grandmaster):             # <<<<<<<<<<<<<<
  *     """Calculate the output channel values from the current cue, submasters, and channel settings"""
  *     o_chans = [0] * 48
  */
@@ -1008,16 +1018,19 @@ static PyObject *__pyx_pw_10channelman_1calculate_chans(PyObject *__pyx_self, Py
   PyObject *__pyx_v_chans = 0;
   PyObject *__pyx_v_output_chans = 0;
   PyObject *__pyx_v_isubmasters = 0;
+  PyObject *__pyx_v_grandmaster = 0;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("calculate_chans (wrapper)", 0);
   {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_chans,&__pyx_n_s_output_chans,&__pyx_n_s_isubmasters,0};
-    PyObject* values[3] = {0,0,0};
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_chans,&__pyx_n_s_output_chans,&__pyx_n_s_isubmasters,&__pyx_n_s_grandmaster,0};
+    PyObject* values[4] = {0,0,0,0};
     if (unlikely(__pyx_kwds)) {
       Py_ssize_t kw_args;
       const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
       switch (pos_args) {
+        case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
+        CYTHON_FALLTHROUGH;
         case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
         CYTHON_FALLTHROUGH;
         case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
@@ -1036,50 +1049,57 @@ static PyObject *__pyx_pw_10channelman_1calculate_chans(PyObject *__pyx_self, Py
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_output_chans)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("calculate_chans", 1, 3, 3, 1); __PYX_ERR(0, 1, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("calculate_chans", 1, 4, 4, 1); __PYX_ERR(0, 1, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_isubmasters)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("calculate_chans", 1, 3, 3, 2); __PYX_ERR(0, 1, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("calculate_chans", 1, 4, 4, 2); __PYX_ERR(0, 1, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  3:
+        if (likely((values[3] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_grandmaster)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("calculate_chans", 1, 4, 4, 3); __PYX_ERR(0, 1, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
         if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "calculate_chans") < 0)) __PYX_ERR(0, 1, __pyx_L3_error)
       }
-    } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
+    } else if (PyTuple_GET_SIZE(__pyx_args) != 4) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
       values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
       values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+      values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
     }
     __pyx_v_chans = values[0];
     __pyx_v_output_chans = values[1];
     __pyx_v_isubmasters = values[2];
+    __pyx_v_grandmaster = values[3];
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("calculate_chans", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 1, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("calculate_chans", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 1, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("channelman.calculate_chans", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_10channelman_calculate_chans(__pyx_self, __pyx_v_chans, __pyx_v_output_chans, __pyx_v_isubmasters);
+  __pyx_r = __pyx_pf_10channelman_calculate_chans(__pyx_self, __pyx_v_chans, __pyx_v_output_chans, __pyx_v_isubmasters, __pyx_v_grandmaster);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_10channelman_calculate_chans(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_chans, PyObject *__pyx_v_output_chans, PyObject *__pyx_v_isubmasters) {
+static PyObject *__pyx_pf_10channelman_calculate_chans(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_chans, PyObject *__pyx_v_output_chans, PyObject *__pyx_v_isubmasters, PyObject *__pyx_v_grandmaster) {
   PyObject *__pyx_v_o_chans = NULL;
   PyObject *__pyx_v_i = NULL;
   CYTHON_UNUSED PyObject *__pyx_v__ = NULL;
   PyObject *__pyx_v_chan = NULL;
-  PyObject *__pyx_v_calval = NULL;
   PyObject *__pyx_v_subChanValue = NULL;
   PyObject *__pyx_v_outChanValue = NULL;
   PyObject *__pyx_r = NULL;
@@ -1099,11 +1119,10 @@ static PyObject *__pyx_pf_10channelman_calculate_chans(CYTHON_UNUSED PyObject *_
   Py_ssize_t __pyx_t_13;
   PyObject *(*__pyx_t_14)(PyObject *);
   PyObject *__pyx_t_15 = NULL;
-  PyObject *__pyx_t_16 = NULL;
   __Pyx_RefNannySetupContext("calculate_chans", 0);
 
   /* "channelman.pyx":3
- * def calculate_chans(chans, output_chans, isubmasters):
+ * def calculate_chans(chans, output_chans, isubmasters, grandmaster):
  *     """Calculate the output channel values from the current cue, submasters, and channel settings"""
  *     o_chans = [0] * 48             # <<<<<<<<<<<<<<
  *     for i, _ in enumerate(chans):
@@ -1234,7 +1253,7 @@ static PyObject *__pyx_pf_10channelman_calculate_chans(CYTHON_UNUSED PyObject *_
  *             o_chans[i] = chans[i]
  *             for i, _ in enumerate(isubmasters):             # <<<<<<<<<<<<<<
  *                 for chan, _ in enumerate(isubmasters[i]["channels"]):
- *                     calval = (255/100.0) * isubmasters[i]["value"]
+ *                     subChanValue = int((255/100) * isubmasters[i]["value"])
  */
       __Pyx_INCREF(__pyx_int_0);
       __pyx_t_6 = __pyx_int_0;
@@ -1291,8 +1310,8 @@ static PyObject *__pyx_pf_10channelman_calculate_chans(CYTHON_UNUSED PyObject *_
  *             o_chans[i] = chans[i]
  *             for i, _ in enumerate(isubmasters):
  *                 for chan, _ in enumerate(isubmasters[i]["channels"]):             # <<<<<<<<<<<<<<
- *                     calval = (255/100.0) * isubmasters[i]["value"]
- *                     subChanValue = int(calval)
+ *                     subChanValue = int((255/100) * isubmasters[i]["value"])
+ *                     outChanValue = o_chans[int(isubmasters[i]["channels"][chan]["channel"]) - 1]
  */
         __Pyx_INCREF(__pyx_int_0);
         __pyx_t_10 = __pyx_int_0;
@@ -1354,110 +1373,99 @@ static PyObject *__pyx_pf_10channelman_calculate_chans(CYTHON_UNUSED PyObject *_
           /* "channelman.pyx":11
  *             for i, _ in enumerate(isubmasters):
  *                 for chan, _ in enumerate(isubmasters[i]["channels"]):
- *                     calval = (255/100.0) * isubmasters[i]["value"]             # <<<<<<<<<<<<<<
- *                     subChanValue = int(calval)
+ *                     subChanValue = int((255/100) * isubmasters[i]["value"])             # <<<<<<<<<<<<<<
  *                     outChanValue = o_chans[int(isubmasters[i]["channels"][chan]["channel"]) - 1]
+ *                     if subChanValue > outChanValue:
  */
-          __pyx_t_12 = PyFloat_FromDouble((255.0 / 100.0)); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 11, __pyx_L1_error)
+          __pyx_t_12 = PyObject_GetItem(__pyx_v_isubmasters, __pyx_v_i); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 11, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_12);
-          __pyx_t_15 = PyObject_GetItem(__pyx_v_isubmasters, __pyx_v_i); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 11, __pyx_L1_error)
-          __Pyx_GOTREF(__pyx_t_15);
-          __pyx_t_16 = PyObject_GetItem(__pyx_t_15, __pyx_n_s_value); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 11, __pyx_L1_error)
-          __Pyx_GOTREF(__pyx_t_16);
-          __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-          __pyx_t_15 = PyNumber_Multiply(__pyx_t_12, __pyx_t_16); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 11, __pyx_L1_error)
+          __pyx_t_15 = PyObject_GetItem(__pyx_t_12, __pyx_n_s_value); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 11, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_15);
           __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-          __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-          __Pyx_XDECREF_SET(__pyx_v_calval, __pyx_t_15);
+          __pyx_t_12 = PyNumber_Multiply(__pyx_int_2, __pyx_t_15); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 11, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_12);
+          __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
+          __pyx_t_15 = __Pyx_PyNumber_Int(__pyx_t_12); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 11, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_15);
+          __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+          __Pyx_XDECREF_SET(__pyx_v_subChanValue, __pyx_t_15);
           __pyx_t_15 = 0;
 
           /* "channelman.pyx":12
  *                 for chan, _ in enumerate(isubmasters[i]["channels"]):
- *                     calval = (255/100.0) * isubmasters[i]["value"]
- *                     subChanValue = int(calval)             # <<<<<<<<<<<<<<
- *                     outChanValue = o_chans[int(isubmasters[i]["channels"][chan]["channel"]) - 1]
- *                     if subChanValue > outChanValue:
- */
-          __pyx_t_15 = __Pyx_PyNumber_Int(__pyx_v_calval); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 12, __pyx_L1_error)
-          __Pyx_GOTREF(__pyx_t_15);
-          __Pyx_XDECREF_SET(__pyx_v_subChanValue, __pyx_t_15);
-          __pyx_t_15 = 0;
-
-          /* "channelman.pyx":13
- *                     calval = (255/100.0) * isubmasters[i]["value"]
- *                     subChanValue = int(calval)
+ *                     subChanValue = int((255/100) * isubmasters[i]["value"])
  *                     outChanValue = o_chans[int(isubmasters[i]["channels"][chan]["channel"]) - 1]             # <<<<<<<<<<<<<<
  *                     if subChanValue > outChanValue:
  *                         o_chans[int(isubmasters[i]["channels"][chan]["channel"]) - 1] = subChanValue
  */
-          __pyx_t_15 = PyObject_GetItem(__pyx_v_isubmasters, __pyx_v_i); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 13, __pyx_L1_error)
+          __pyx_t_15 = PyObject_GetItem(__pyx_v_isubmasters, __pyx_v_i); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 12, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_15);
-          __pyx_t_16 = PyObject_GetItem(__pyx_t_15, __pyx_n_s_channels); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 13, __pyx_L1_error)
-          __Pyx_GOTREF(__pyx_t_16);
+          __pyx_t_12 = PyObject_GetItem(__pyx_t_15, __pyx_n_s_channels); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 12, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_12);
           __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-          __pyx_t_15 = PyObject_GetItem(__pyx_t_16, __pyx_v_chan); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 13, __pyx_L1_error)
+          __pyx_t_15 = PyObject_GetItem(__pyx_t_12, __pyx_v_chan); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 12, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_15);
-          __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-          __pyx_t_16 = PyObject_GetItem(__pyx_t_15, __pyx_n_s_channel); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 13, __pyx_L1_error)
-          __Pyx_GOTREF(__pyx_t_16);
+          __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+          __pyx_t_12 = PyObject_GetItem(__pyx_t_15, __pyx_n_s_channel); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 12, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_12);
           __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-          __pyx_t_15 = __Pyx_PyNumber_Int(__pyx_t_16); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 13, __pyx_L1_error)
+          __pyx_t_15 = __Pyx_PyNumber_Int(__pyx_t_12); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 12, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_15);
-          __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-          __pyx_t_16 = __Pyx_PyInt_SubtractObjC(__pyx_t_15, __pyx_int_1, 1, 0); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 13, __pyx_L1_error)
-          __Pyx_GOTREF(__pyx_t_16);
+          __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+          __pyx_t_12 = __Pyx_PyInt_SubtractObjC(__pyx_t_15, __pyx_int_1, 1, 0); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 12, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_12);
           __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-          __pyx_t_15 = PyObject_GetItem(__pyx_v_o_chans, __pyx_t_16); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 13, __pyx_L1_error)
+          __pyx_t_15 = PyObject_GetItem(__pyx_v_o_chans, __pyx_t_12); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 12, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_15);
-          __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
+          __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
           __Pyx_XDECREF_SET(__pyx_v_outChanValue, __pyx_t_15);
           __pyx_t_15 = 0;
 
-          /* "channelman.pyx":14
- *                     subChanValue = int(calval)
+          /* "channelman.pyx":13
+ *                     subChanValue = int((255/100) * isubmasters[i]["value"])
  *                     outChanValue = o_chans[int(isubmasters[i]["channels"][chan]["channel"]) - 1]
  *                     if subChanValue > outChanValue:             # <<<<<<<<<<<<<<
  *                         o_chans[int(isubmasters[i]["channels"][chan]["channel"]) - 1] = subChanValue
- *     return o_chans
+ *     for i, _ in enumerate(o_chans):
  */
-          __pyx_t_15 = PyObject_RichCompare(__pyx_v_subChanValue, __pyx_v_outChanValue, Py_GT); __Pyx_XGOTREF(__pyx_t_15); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 14, __pyx_L1_error)
-          __pyx_t_7 = __Pyx_PyObject_IsTrue(__pyx_t_15); if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(0, 14, __pyx_L1_error)
+          __pyx_t_15 = PyObject_RichCompare(__pyx_v_subChanValue, __pyx_v_outChanValue, Py_GT); __Pyx_XGOTREF(__pyx_t_15); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 13, __pyx_L1_error)
+          __pyx_t_7 = __Pyx_PyObject_IsTrue(__pyx_t_15); if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(0, 13, __pyx_L1_error)
           __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
           if (__pyx_t_7) {
 
-            /* "channelman.pyx":15
+            /* "channelman.pyx":14
  *                     outChanValue = o_chans[int(isubmasters[i]["channels"][chan]["channel"]) - 1]
  *                     if subChanValue > outChanValue:
  *                         o_chans[int(isubmasters[i]["channels"][chan]["channel"]) - 1] = subChanValue             # <<<<<<<<<<<<<<
- *     return o_chans
+ *     for i, _ in enumerate(o_chans):
+ *         o_chans[i] = int((o_chans[i]/100.0) * grandmaster)
  */
-            __pyx_t_15 = PyObject_GetItem(__pyx_v_isubmasters, __pyx_v_i); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 15, __pyx_L1_error)
+            __pyx_t_15 = PyObject_GetItem(__pyx_v_isubmasters, __pyx_v_i); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 14, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_15);
-            __pyx_t_16 = PyObject_GetItem(__pyx_t_15, __pyx_n_s_channels); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 15, __pyx_L1_error)
-            __Pyx_GOTREF(__pyx_t_16);
+            __pyx_t_12 = PyObject_GetItem(__pyx_t_15, __pyx_n_s_channels); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 14, __pyx_L1_error)
+            __Pyx_GOTREF(__pyx_t_12);
             __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-            __pyx_t_15 = PyObject_GetItem(__pyx_t_16, __pyx_v_chan); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 15, __pyx_L1_error)
+            __pyx_t_15 = PyObject_GetItem(__pyx_t_12, __pyx_v_chan); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 14, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_15);
-            __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-            __pyx_t_16 = PyObject_GetItem(__pyx_t_15, __pyx_n_s_channel); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 15, __pyx_L1_error)
-            __Pyx_GOTREF(__pyx_t_16);
+            __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+            __pyx_t_12 = PyObject_GetItem(__pyx_t_15, __pyx_n_s_channel); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 14, __pyx_L1_error)
+            __Pyx_GOTREF(__pyx_t_12);
             __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-            __pyx_t_15 = __Pyx_PyNumber_Int(__pyx_t_16); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 15, __pyx_L1_error)
+            __pyx_t_15 = __Pyx_PyNumber_Int(__pyx_t_12); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 14, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_15);
-            __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-            __pyx_t_16 = __Pyx_PyInt_SubtractObjC(__pyx_t_15, __pyx_int_1, 1, 0); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 15, __pyx_L1_error)
-            __Pyx_GOTREF(__pyx_t_16);
+            __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+            __pyx_t_12 = __Pyx_PyInt_SubtractObjC(__pyx_t_15, __pyx_int_1, 1, 0); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 14, __pyx_L1_error)
+            __Pyx_GOTREF(__pyx_t_12);
             __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-            if (unlikely(PyObject_SetItem(__pyx_v_o_chans, __pyx_t_16, __pyx_v_subChanValue) < 0)) __PYX_ERR(0, 15, __pyx_L1_error)
-            __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
+            if (unlikely(PyObject_SetItem(__pyx_v_o_chans, __pyx_t_12, __pyx_v_subChanValue) < 0)) __PYX_ERR(0, 14, __pyx_L1_error)
+            __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
 
-            /* "channelman.pyx":14
- *                     subChanValue = int(calval)
+            /* "channelman.pyx":13
+ *                     subChanValue = int((255/100) * isubmasters[i]["value"])
  *                     outChanValue = o_chans[int(isubmasters[i]["channels"][chan]["channel"]) - 1]
  *                     if subChanValue > outChanValue:             # <<<<<<<<<<<<<<
  *                         o_chans[int(isubmasters[i]["channels"][chan]["channel"]) - 1] = subChanValue
- *     return o_chans
+ *     for i, _ in enumerate(o_chans):
  */
           }
 
@@ -1465,8 +1473,8 @@ static PyObject *__pyx_pf_10channelman_calculate_chans(CYTHON_UNUSED PyObject *_
  *             o_chans[i] = chans[i]
  *             for i, _ in enumerate(isubmasters):
  *                 for chan, _ in enumerate(isubmasters[i]["channels"]):             # <<<<<<<<<<<<<<
- *                     calval = (255/100.0) * isubmasters[i]["value"]
- *                     subChanValue = int(calval)
+ *                     subChanValue = int((255/100) * isubmasters[i]["value"])
+ *                     outChanValue = o_chans[int(isubmasters[i]["channels"][chan]["channel"]) - 1]
  */
         }
         __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
@@ -1477,7 +1485,7 @@ static PyObject *__pyx_pf_10channelman_calculate_chans(CYTHON_UNUSED PyObject *_
  *             o_chans[i] = chans[i]
  *             for i, _ in enumerate(isubmasters):             # <<<<<<<<<<<<<<
  *                 for chan, _ in enumerate(isubmasters[i]["channels"]):
- *                     calval = (255/100.0) * isubmasters[i]["value"]
+ *                     subChanValue = int((255/100) * isubmasters[i]["value"])
  */
       }
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -1496,9 +1504,68 @@ static PyObject *__pyx_pf_10channelman_calculate_chans(CYTHON_UNUSED PyObject *_
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "channelman.pyx":16
+  /* "channelman.pyx":15
  *                     if subChanValue > outChanValue:
  *                         o_chans[int(isubmasters[i]["channels"][chan]["channel"]) - 1] = subChanValue
+ *     for i, _ in enumerate(o_chans):             # <<<<<<<<<<<<<<
+ *         o_chans[i] = int((o_chans[i]/100.0) * grandmaster)
+ *     return o_chans
+ */
+  __Pyx_INCREF(__pyx_int_0);
+  __pyx_t_1 = __pyx_int_0;
+  __pyx_t_2 = __pyx_v_o_chans; __Pyx_INCREF(__pyx_t_2); __pyx_t_3 = 0;
+  for (;;) {
+    if (__pyx_t_3 >= PyList_GET_SIZE(__pyx_t_2)) break;
+    #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+    __pyx_t_6 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_6); __pyx_t_3++; if (unlikely(0 < 0)) __PYX_ERR(0, 15, __pyx_L1_error)
+    #else
+    __pyx_t_6 = PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 15, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_6);
+    #endif
+    __Pyx_XDECREF_SET(__pyx_v__, __pyx_t_6);
+    __pyx_t_6 = 0;
+    __Pyx_INCREF(__pyx_t_1);
+    __Pyx_XDECREF_SET(__pyx_v_i, __pyx_t_1);
+    __pyx_t_6 = __Pyx_PyInt_AddObjC(__pyx_t_1, __pyx_int_1, 1, 0); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 15, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_6);
+    __Pyx_DECREF(__pyx_t_1);
+    __pyx_t_1 = __pyx_t_6;
+    __pyx_t_6 = 0;
+
+    /* "channelman.pyx":16
+ *                         o_chans[int(isubmasters[i]["channels"][chan]["channel"]) - 1] = subChanValue
+ *     for i, _ in enumerate(o_chans):
+ *         o_chans[i] = int((o_chans[i]/100.0) * grandmaster)             # <<<<<<<<<<<<<<
+ *     return o_chans
+ */
+    __pyx_t_6 = PyObject_GetItem(__pyx_v_o_chans, __pyx_v_i); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 16, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_6);
+    __pyx_t_5 = __Pyx_PyFloat_DivideObjC(__pyx_t_6, __pyx_float_100_0, 100.0, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 16, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+    __pyx_t_6 = PyNumber_Multiply(__pyx_t_5, __pyx_v_grandmaster); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 16, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_6);
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __pyx_t_5 = __Pyx_PyNumber_Int(__pyx_t_6); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 16, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+    if (unlikely(PyObject_SetItem(__pyx_v_o_chans, __pyx_v_i, __pyx_t_5) < 0)) __PYX_ERR(0, 16, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+
+    /* "channelman.pyx":15
+ *                     if subChanValue > outChanValue:
+ *                         o_chans[int(isubmasters[i]["channels"][chan]["channel"]) - 1] = subChanValue
+ *     for i, _ in enumerate(o_chans):             # <<<<<<<<<<<<<<
+ *         o_chans[i] = int((o_chans[i]/100.0) * grandmaster)
+ *     return o_chans
+ */
+  }
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+  /* "channelman.pyx":17
+ *     for i, _ in enumerate(o_chans):
+ *         o_chans[i] = int((o_chans[i]/100.0) * grandmaster)
  *     return o_chans             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
@@ -1507,7 +1574,7 @@ static PyObject *__pyx_pf_10channelman_calculate_chans(CYTHON_UNUSED PyObject *_
   goto __pyx_L0;
 
   /* "channelman.pyx":1
- * def calculate_chans(chans, output_chans, isubmasters):             # <<<<<<<<<<<<<<
+ * def calculate_chans(chans, output_chans, isubmasters, grandmaster):             # <<<<<<<<<<<<<<
  *     """Calculate the output channel values from the current cue, submasters, and channel settings"""
  *     o_chans = [0] * 48
  */
@@ -1522,7 +1589,6 @@ static PyObject *__pyx_pf_10channelman_calculate_chans(CYTHON_UNUSED PyObject *_
   __Pyx_XDECREF(__pyx_t_11);
   __Pyx_XDECREF(__pyx_t_12);
   __Pyx_XDECREF(__pyx_t_15);
-  __Pyx_XDECREF(__pyx_t_16);
   __Pyx_AddTraceback("channelman.calculate_chans", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
@@ -1530,7 +1596,6 @@ static PyObject *__pyx_pf_10channelman_calculate_chans(CYTHON_UNUSED PyObject *_
   __Pyx_XDECREF(__pyx_v_i);
   __Pyx_XDECREF(__pyx_v__);
   __Pyx_XDECREF(__pyx_v_chan);
-  __Pyx_XDECREF(__pyx_v_calval);
   __Pyx_XDECREF(__pyx_v_subChanValue);
   __Pyx_XDECREF(__pyx_v_outChanValue);
   __Pyx_XGIVEREF(__pyx_r);
@@ -1577,7 +1642,6 @@ static struct PyModuleDef __pyx_moduledef = {
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_, __pyx_k_, sizeof(__pyx_k_), 0, 0, 1, 1},
   {&__pyx_n_s_calculate_chans, __pyx_k_calculate_chans, sizeof(__pyx_k_calculate_chans), 0, 0, 1, 1},
-  {&__pyx_n_s_calval, __pyx_k_calval, sizeof(__pyx_k_calval), 0, 0, 1, 1},
   {&__pyx_n_s_chan, __pyx_k_chan, sizeof(__pyx_k_chan), 0, 0, 1, 1},
   {&__pyx_n_s_channel, __pyx_k_channel, sizeof(__pyx_k_channel), 0, 0, 1, 1},
   {&__pyx_n_s_channelman, __pyx_k_channelman, sizeof(__pyx_k_channelman), 0, 0, 1, 1},
@@ -1586,6 +1650,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_chans, __pyx_k_chans, sizeof(__pyx_k_chans), 0, 0, 1, 1},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
   {&__pyx_n_s_enumerate, __pyx_k_enumerate, sizeof(__pyx_k_enumerate), 0, 0, 1, 1},
+  {&__pyx_n_s_grandmaster, __pyx_k_grandmaster, sizeof(__pyx_k_grandmaster), 0, 0, 1, 1},
   {&__pyx_n_s_i, __pyx_k_i, sizeof(__pyx_k_i), 0, 0, 1, 1},
   {&__pyx_n_s_isubmasters, __pyx_k_isubmasters, sizeof(__pyx_k_isubmasters), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
@@ -1609,14 +1674,14 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
   /* "channelman.pyx":1
- * def calculate_chans(chans, output_chans, isubmasters):             # <<<<<<<<<<<<<<
+ * def calculate_chans(chans, output_chans, isubmasters, grandmaster):             # <<<<<<<<<<<<<<
  *     """Calculate the output channel values from the current cue, submasters, and channel settings"""
  *     o_chans = [0] * 48
  */
-  __pyx_tuple__2 = PyTuple_Pack(10, __pyx_n_s_chans, __pyx_n_s_output_chans, __pyx_n_s_isubmasters, __pyx_n_s_o_chans, __pyx_n_s_i, __pyx_n_s_, __pyx_n_s_chan, __pyx_n_s_calval, __pyx_n_s_subChanValue, __pyx_n_s_outChanValue); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __pyx_tuple__2 = PyTuple_Pack(10, __pyx_n_s_chans, __pyx_n_s_output_chans, __pyx_n_s_isubmasters, __pyx_n_s_grandmaster, __pyx_n_s_o_chans, __pyx_n_s_i, __pyx_n_s_, __pyx_n_s_chan, __pyx_n_s_subChanValue, __pyx_n_s_outChanValue); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__2);
   __Pyx_GIVEREF(__pyx_tuple__2);
-  __pyx_codeobj__3 = (PyObject*)__Pyx_PyCode_New(3, 0, 10, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__2, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_channelman_pyx, __pyx_n_s_calculate_chans, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__3)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __pyx_codeobj__3 = (PyObject*)__Pyx_PyCode_New(4, 0, 10, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__2, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_channelman_pyx, __pyx_n_s_calculate_chans, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__3)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -1626,8 +1691,10 @@ static int __Pyx_InitCachedConstants(void) {
 
 static int __Pyx_InitGlobals(void) {
   if (__Pyx_InitStrings(__pyx_string_tab) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  __pyx_float_100_0 = PyFloat_FromDouble(100.0); if (unlikely(!__pyx_float_100_0)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_0 = PyInt_FromLong(0); if (unlikely(!__pyx_int_0)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_1 = PyInt_FromLong(1); if (unlikely(!__pyx_int_1)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __pyx_int_2 = PyInt_FromLong(2); if (unlikely(!__pyx_int_2)) __PYX_ERR(0, 1, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -1779,7 +1846,7 @@ static int __pyx_pymod_exec_channelman(PyObject *__pyx_pyinit_module)
   #endif
 
   /* "channelman.pyx":1
- * def calculate_chans(chans, output_chans, isubmasters):             # <<<<<<<<<<<<<<
+ * def calculate_chans(chans, output_chans, isubmasters, grandmaster):             # <<<<<<<<<<<<<<
  *     """Calculate the output channel values from the current cue, submasters, and channel settings"""
  *     o_chans = [0] * 48
  */
@@ -2222,8 +2289,76 @@ static PyObject* __Pyx_PyInt_SubtractObjC(PyObject *op1, PyObject *op2, CYTHON_U
 }
 #endif
 
+/* PyFloatBinop */
+#if !CYTHON_COMPILING_IN_PYPY
+static PyObject* __Pyx_PyFloat_DivideObjC(PyObject *op1, PyObject *op2, double floatval, CYTHON_UNUSED int inplace) {
+    const double b = floatval;
+    double a, result;
+    if (likely(PyFloat_CheckExact(op1))) {
+        a = PyFloat_AS_DOUBLE(op1);
+    } else
+    #if PY_MAJOR_VERSION < 3
+    if (likely(PyInt_CheckExact(op1))) {
+        a = (double) PyInt_AS_LONG(op1);
+    } else
+    #endif
+    if (likely(PyLong_CheckExact(op1))) {
+        #if CYTHON_USE_PYLONG_INTERNALS
+        const digit* digits = ((PyLongObject*)op1)->ob_digit;
+        const Py_ssize_t size = Py_SIZE(op1);
+        switch (size) {
+            case  0: a = 0.0; break;
+            case -1: a = -(double) digits[0]; break;
+            case  1: a = (double) digits[0]; break;
+            case -2:
+            case 2:
+                if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT && ((8 * sizeof(unsigned long) < 53) || (1 * PyLong_SHIFT < 53))) {
+                    a = (double) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
+                    if ((8 * sizeof(unsigned long) < 53) || (2 * PyLong_SHIFT < 53) || (a < (double) ((PY_LONG_LONG)1 << 53))) {
+                        if (size == -2)
+                            a = -a;
+                        break;
+                    }
+                }
+            case -3:
+            case 3:
+                if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT && ((8 * sizeof(unsigned long) < 53) || (2 * PyLong_SHIFT < 53))) {
+                    a = (double) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
+                    if ((8 * sizeof(unsigned long) < 53) || (3 * PyLong_SHIFT < 53) || (a < (double) ((PY_LONG_LONG)1 << 53))) {
+                        if (size == -3)
+                            a = -a;
+                        break;
+                    }
+                }
+            case -4:
+            case 4:
+                if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT && ((8 * sizeof(unsigned long) < 53) || (3 * PyLong_SHIFT < 53))) {
+                    a = (double) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
+                    if ((8 * sizeof(unsigned long) < 53) || (4 * PyLong_SHIFT < 53) || (a < (double) ((PY_LONG_LONG)1 << 53))) {
+                        if (size == -4)
+                            a = -a;
+                        break;
+                    }
+                }
+            default:
+        #else
+        {
+        #endif
+            a = PyLong_AsDouble(op1);
+            if (unlikely(a == -1.0 && PyErr_Occurred())) return NULL;
+        }
+    } else {
+        return (inplace ? __Pyx_PyNumber_InPlaceDivide(op1, op2) : __Pyx_PyNumber_Divide(op1, op2));
+    }
+        PyFPE_START_PROTECT("divide", return NULL)
+        result = a / b;
+        PyFPE_END_PROTECT(result)
+        return PyFloat_FromDouble(result);
+}
+#endif
+
 /* PyErrFetchRestore */
-#if CYTHON_FAST_THREAD_STATE
+  #if CYTHON_FAST_THREAD_STATE
 static CYTHON_INLINE void __Pyx_ErrRestoreInState(PyThreadState *tstate, PyObject *type, PyObject *value, PyObject *tb) {
     PyObject *tmp_type, *tmp_value, *tmp_tb;
     tmp_type = tstate->curexc_type;
@@ -2247,7 +2382,7 @@ static CYTHON_INLINE void __Pyx_ErrFetchInState(PyThreadState *tstate, PyObject 
 #endif
 
 /* CLineInTraceback */
-#ifndef CYTHON_CLINE_IN_TRACEBACK
+  #ifndef CYTHON_CLINE_IN_TRACEBACK
 static int __Pyx_CLineForTraceback(CYTHON_UNUSED PyThreadState *tstate, int c_line) {
     PyObject *use_cline;
     PyObject *ptype, *pvalue, *ptraceback;
@@ -2284,7 +2419,7 @@ static int __Pyx_CLineForTraceback(CYTHON_UNUSED PyThreadState *tstate, int c_li
 #endif
 
 /* CodeObjectCache */
-static int __pyx_bisect_code_objects(__Pyx_CodeObjectCacheEntry* entries, int count, int code_line) {
+  static int __pyx_bisect_code_objects(__Pyx_CodeObjectCacheEntry* entries, int count, int code_line) {
     int start = 0, mid = 0, end = count - 1;
     if (end >= 0 && code_line > entries[end].code_line) {
         return count;
@@ -2364,7 +2499,7 @@ static void __pyx_insert_code_object(int code_line, PyCodeObject* code_object) {
 }
 
 /* AddTraceback */
-#include "compile.h"
+  #include "compile.h"
 #include "frameobject.h"
 #include "traceback.h"
 static PyCodeObject* __Pyx_CreateCodeObjectForTraceback(
@@ -2449,7 +2584,7 @@ bad:
 }
 
 /* CIntToPy */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
+  static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
     const long neg_one = (long) -1, const_zero = (long) 0;
     const int is_unsigned = neg_one > const_zero;
     if (is_unsigned) {
@@ -2480,7 +2615,7 @@ static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
 }
 
 /* CIntFromPyVerify */
-#define __PYX_VERIFY_RETURN_INT(target_type, func_type, func_value)\
+  #define __PYX_VERIFY_RETURN_INT(target_type, func_type, func_value)\
     __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 0)
 #define __PYX_VERIFY_RETURN_INT_EXC(target_type, func_type, func_value)\
     __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 1)
@@ -2502,7 +2637,7 @@ static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
     }
 
 /* CIntFromPy */
-static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *x) {
+  static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *x) {
     const long neg_one = (long) -1, const_zero = (long) 0;
     const int is_unsigned = neg_one > const_zero;
 #if PY_MAJOR_VERSION < 3
@@ -2691,7 +2826,7 @@ raise_neg_overflow:
 }
 
 /* CIntFromPy */
-static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *x) {
+  static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *x) {
     const int neg_one = (int) -1, const_zero = (int) 0;
     const int is_unsigned = neg_one > const_zero;
 #if PY_MAJOR_VERSION < 3
@@ -2880,7 +3015,7 @@ raise_neg_overflow:
 }
 
 /* FastTypeChecks */
-#if CYTHON_COMPILING_IN_CPYTHON
+  #if CYTHON_COMPILING_IN_CPYTHON
 static int __Pyx_InBases(PyTypeObject *a, PyTypeObject *b) {
     while (a) {
         a = a->tp_base;
@@ -2952,7 +3087,7 @@ static CYTHON_INLINE int __Pyx_PyErr_GivenExceptionMatches2(PyObject *err, PyObj
 #endif
 
 /* CheckBinaryVersion */
-static int __Pyx_check_binary_version(void) {
+  static int __Pyx_check_binary_version(void) {
     char ctversion[4], rtversion[4];
     PyOS_snprintf(ctversion, 4, "%d.%d", PY_MAJOR_VERSION, PY_MINOR_VERSION);
     PyOS_snprintf(rtversion, 4, "%s", Py_GetVersion());
@@ -2968,7 +3103,7 @@ static int __Pyx_check_binary_version(void) {
 }
 
 /* InitStrings */
-static int __Pyx_InitStrings(__Pyx_StringTabEntry *t) {
+  static int __Pyx_InitStrings(__Pyx_StringTabEntry *t) {
     while (t->p) {
         #if PY_MAJOR_VERSION < 3
         if (t->is_unicode) {

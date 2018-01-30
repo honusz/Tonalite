@@ -129,6 +129,26 @@ function settingsDropdown() {
 $(window).bind("load", function () {
   document.getElementById("keyboardTabBtn").click();
 
+  var grandmaster = document.getElementById('grandmaster');
+  noUiSlider.create(grandmaster, {
+    start: 100,
+    connect: [true, false],
+    range: {
+      'min': 0,
+      'max': 100
+    },
+    format: wNumb({
+      decimals: 0
+    })
+  });
+  grandmaster.noUiSlider.on('slide', function () {
+    socket.emit('update grand val', { value: grandmaster.noUiSlider.get() });
+  });
+
+  function updateGrandmaster(msg) {
+    grandmaster.noUiSlider.set(msg.grandmaster);
+  }
+
   for (var i = 0; i <= 47; i++) {
     $("#Channels").append("<div class=\"col-1 channel disable-selection\"><div class=\"channel-item\"><h2>" + (i + 1) + "</h2><h1 id=\"cval-" + (i + 1) + "\" cvalue=\"0\" class=\"red-text\">0</h1></div></div>");
   }
@@ -198,6 +218,7 @@ $(window).bind("load", function () {
     updateChannels(msg);
     updateCues(msg);
     updateSubs(msg);
+    updateGrandmaster(msg);
     if (msg.show.name != "") {
       $("#showName").val(msg.show.name);
       $("#showDescription").val(msg.show.description);
@@ -213,6 +234,11 @@ $(window).bind("load", function () {
         $("#users").append("<div class=\"col-11\"><input type=\"text\" placeholder=\"User:\" value=\"" + msg.tonaliteSettings.users[i][0] + "\" ></div><div class=\"col-1\"><button class=\"btn btn-red btn-full btn-tall user-delete\" user=\"" + i + "\"><i class=\"fas fa-trash-alt\"></i></button></div>");
       }
     }
+  });
+
+  socket.on('set grand val', function (msg) {
+    updateChannels(msg);
+    updateGrandmaster(msg);
   });
 
   socket.on('update chans and cues', function (msg) {

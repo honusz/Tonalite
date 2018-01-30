@@ -18,6 +18,7 @@ sio = socketio.AsyncServer(async_mode='aiohttp')
 app = web.Application()
 sio.attach(app)
 
+grandmaster = 100
 channels = [0] * 48
 outputChannels = [None] * 48
 submasters = []
@@ -70,8 +71,8 @@ async def generate_fade(start, end, secs=3.0, fps=40):
             e_chan = end[channel] or 0
             channels[channel] = int(s_chan + (((e_chan - s_chan) / (secs * fps)) * i))
 
-        source.send_data(calculate_chans(channels, outputChannels, submasters))
-        await sio.emit('update chans', {'channels': calculate_chans(channels, outputChannels, submasters)}, namespace='/tonalite')
+        source.send_data(calculate_chans(channels, outputChannels, submasters, grandmaster))
+        await sio.emit('update chans', {'channels': calculate_chans(channels, outputChannels, submasters, grandmaster)}, namespace='/tonalite')
         time.sleep(secs / int(secs * fps))
 
 
@@ -142,7 +143,7 @@ async def saveshow(request):
 @sio.on('connect', namespace='/tonalite')
 async def connect(sid, environ):
     """On client connection - give all current show values"""
-    await sio.emit('update all', {'channels': calculate_chans(channels, outputChannels, submasters), 'cues': cues, 'selected_cue': clickedCue, 'show': show, 'current_cue': currentCue, 'tonaliteSettings': tonaliteSettings, 'submasters': submasters}, namespace='/tonalite')
+    await sio.emit('update all', {'channels': calculate_chans(channels, outputChannels, submasters, grandmaster), 'cues': cues, 'selected_cue': clickedCue, 'show': show, 'current_cue': currentCue, 'tonaliteSettings': tonaliteSettings, 'submasters': submasters, 'grandmaster': grandmaster}, namespace='/tonalite')
 
 
 @sio.on('cue info', namespace='/tonalite')
@@ -191,7 +192,7 @@ async def edit_users(sid, message):
     elif message["action"] == "new":
         tonaliteSettings["users"].append(
             (message["user"], pbkdf2_sha256.hash(message["password"])))
-    await sio.emit('update all', {'channels': calculate_chans(channels, outputChannels, submasters), 'cues': cues, 'selected_cue': clickedCue, 'show': show, 'current_cue': currentCue, 'tonaliteSettings': tonaliteSettings, 'submasters': submasters}, namespace='/tonalite')
+    await sio.emit('update all', {'channels': calculate_chans(channels, outputChannels, submasters, grandmaster), 'cues': cues, 'selected_cue': clickedCue, 'show': show, 'current_cue': currentCue, 'tonaliteSettings': tonaliteSettings, 'submasters': submasters, 'grandmaster': grandmaster}, namespace='/tonalite')
 
 
 @sio.on('edit sub chan', namespace='/tonalite')
@@ -204,15 +205,14 @@ async def edit_sub_chan(sid, message):
                                            ]["value"] = int(message["value"])
     elif message["action"] == "delete":
         submasters[clickedSub]["channels"].pop(message["chan"])
-    source.send_data(calculate_chans(channels, outputChannels, submasters))
+    source.send_data(calculate_chans(channels, outputChannels, submasters, grandmaster))
     await sio.emit('sub settings', {'name': submasters[clickedSub]["name"], 'channels': submasters[clickedSub]["channels"], 'value': submasters[clickedSub]["value"]}, namespace='/tonalite', room=sid)
 
 
 @sio.on('update cue', namespace='/tonalite')
 async def update_cue(sid, message):
     """Update the channel values for the current cue"""
-    cues[clickedCue]["values"] = calculate_chans(
-        [0] * 48, outputChannels, submasters)
+    cues[clickedCue]["values"] = calculate_chans([0] * 48, outputChannels, submasters, grandmaster)
     await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
 
 
@@ -221,9 +221,17 @@ async def update_sub_val(sid, message):
     """Handler for when a submaster is set - update the show channel values"""
     global submasters
     submasters[int(message["sub"].split("sub-", 1)[1])]["value"] = int(message["value"])
-    source.send_data(calculate_chans(channels, outputChannels, submasters))
-    await sio.emit('update chans and subs', {'channels': calculate_chans(channels, outputChannels, submasters), 'submasters': submasters}, namespace='/tonalite')
+    source.send_data(calculate_chans(channels, outputChannels, submasters, grandmaster))
+    await sio.emit('update chans and subs', {'channels': calculate_chans(channels, outputChannels, submasters, grandmaster), 'submasters': submasters}, namespace='/tonalite')
 
+@sio.on('update grand val', namespace='/tonalite')
+async def update_grand_val(sid, message):
+    """Handler for when the grandmaster is set - update the show channel values"""
+    global grandmaster
+    grandmaster = int(message["value"])
+    source.send_data(calculate_chans(channels, outputChannels, submasters, grandmaster))
+    await sio.emit('set grand val', {'channels': calculate_chans(channels, outputChannels, submasters, grandmaster), 'grandmaster': grandmaster}, namespace='/tonalite', skip_sid=sid)
+    await sio.emit('update chans', {'channels': calculate_chans(channels, outputChannels, submasters, grandmaster)}, namespace='/tonalite', room=sid)
 
 @sio.on('save show', namespace='/tonalite')
 async def save_show(sid, message):
@@ -261,7 +269,7 @@ async def clear_show(sid, message):
     }
     clickedCue = None
     currentCue = None
-    await sio.emit('update all', {'channels': calculate_chans(channels, outputChannels, submasters), 'cues': cues, 'selected_cue': clickedCue, 'show': show, 'current_cue': currentCue, 'tonaliteSettings': tonaliteSettings, 'submasters': submasters}, namespace='/tonalite')
+    await sio.emit('update all', {'channels': calculate_chans(channels, outputChannels, submasters, grandmaster), 'cues': cues, 'selected_cue': clickedCue, 'show': show, 'current_cue': currentCue, 'tonaliteSettings': tonaliteSettings, 'submasters': submasters, 'grandmaster': grandmaster}, namespace='/tonalite')
 
 
 @sio.on('cue move', namespace='/tonalite')
@@ -321,8 +329,8 @@ async def cue_move(sid, message):
     elif message['action'] == "release":
         currentCue = None
         channels = [0] * 48
-        source.send_data(calculate_chans(channels, outputChannels, submasters))
-        await sio.emit('update chans and cues', {'channels': calculate_chans(channels, outputChannels, submasters), 'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
+        source.send_data(calculate_chans(channels, outputChannels, submasters, grandmaster))
+        await sio.emit('update chans and cues', {'channels': calculate_chans(channels, outputChannels, submasters, grandmaster), 'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
 
 
 @sio.on('save cue', namespace='/tonalite')
@@ -339,8 +347,8 @@ async def save_cue(sid, message):
 async def save_sub(sid, message):
     submasters[clickedSub]["name"] = message["name"]
     submasters[clickedSub]["value"] = max(0, min(int(message["value"]), 100))
-    source.send_data(calculate_chans(channels, outputChannels, submasters))
-    await sio.emit('update chans and subs', {'channels': calculate_chans(channels, outputChannels, submasters), 'submasters': submasters}, namespace='/tonalite')
+    source.send_data(calculate_chans(channels, outputChannels, submasters, grandmaster))
+    await sio.emit('update chans and subs', {'channels': calculate_chans(channels, outputChannels, submasters, grandmaster), 'submasters': submasters}, namespace='/tonalite')
 
 
 @sio.on('command message', namespace='/tonalite')
@@ -358,14 +366,14 @@ async def command_message(sid, message):
                 "description": "This is a new cue",
                 "time": 3,
                 "follow": 0,
-                "values": calculate_chans([0] * 48, outputChannels, submasters)
+                "values": calculate_chans([0] * 48, outputChannels, submasters, grandmaster)
             })
             await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
         elif cmd[0] == "c" and cmd[1] == "rs":
             outputChannels = [None] * 48
             source.send_data(calculate_chans(
-                channels, outputChannels, submasters))
-            await sio.emit('update chans', {'channels': calculate_chans(channels, outputChannels, submasters)}, namespace='/tonalite')
+                channels, outputChannels, submasters, grandmaster))
+            await sio.emit('update chans', {'channels': calculate_chans(channels, outputChannels, submasters, grandmaster)}, namespace='/tonalite')
         elif cmd[0] == "q" and cmd[1].isdigit():
             setCue = int(cmd[1])
             if setCue == 9949:
@@ -416,8 +424,8 @@ async def command_message(sid, message):
                     if len(outputChannels) >= int(chn):
                         outputChannels[int(chn) - 1] = value
                 source.send_data(calculate_chans(
-                    channels, outputChannels, submasters))
-                await sio.emit('update chans', {'channels': calculate_chans(channels, outputChannels, submasters)}, namespace='/tonalite')
+                    channels, outputChannels, submasters, grandmaster))
+                await sio.emit('update chans', {'channels': calculate_chans(channels, outputChannels, submasters, grandmaster)}, namespace='/tonalite')
 
 
 @sio.on('save settings', namespace='/tonalite')
