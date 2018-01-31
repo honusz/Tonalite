@@ -10,3 +10,7 @@ test_script:
   - "%PYTHON%\\python.exe tests.py"
 on_success:
   - "%PYTHON%\\python.exe -m PyInstaller tonalite.spec"
+  - "7z a Tonalite-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\\dist\\tonalite\\*"
+  artifacts:
+    - path: Tonalite-$(appveyor_build_version).zip
+      name: Tonalite-$(appveyor_build_version)
