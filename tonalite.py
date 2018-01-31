@@ -413,18 +413,18 @@ async def command_message(sid, message):
                         if outputChannels[int(chn) - 1] != None:
                             value = max(0, min(channels[int(chn) - 1] - 25, 255))
                         else:
-                            outputChannels[int(chn) - 1] = 0
+                            value = 0
                     elif value == "b":
                         if outputChannels[int(chn) - 1] != None:
                             value = max(0, min(channels[int(chn) - 1] + 25, 255))
                         else:
-                            outputChannels[int(chn) - 1] = 10
+                            value = 25
                     else:
                         value = 0
                     if len(outputChannels) >= int(chn):
                         outputChannels[int(chn) - 1] = value
-                source.send_data(calculate_chans(
-                    channels, outputChannels, submasters, grandmaster))
+                    value = cmd[3]
+                source.send_data(calculate_chans(channels, outputChannels, submasters, grandmaster))
                 await sio.emit('update chans', {'channels': calculate_chans(channels, outputChannels, submasters, grandmaster)}, namespace='/tonalite')
 
 

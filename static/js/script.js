@@ -129,6 +129,12 @@ function settingsDropdown() {
 $(window).bind("load", function () {
   document.getElementById("keyboardTabBtn").click();
 
+  var keyListener = new window.keypress.Listener();
+
+  keyListener.simple_combo("ctrl r", function() {
+    socket.emit('command message', { command: "c rs" });
+  });
+
   var grandmaster = document.getElementById('grandmaster');
   noUiSlider.create(grandmaster, {
     start: 100,
@@ -305,17 +311,14 @@ $(window).bind("load", function () {
   $('#commandSubmitBtn').click(function () {
     socket.emit('command message', { command: $('#commandInput').val() });
     $('#commandInput').val("");
-    return false;
   });
 
   $('#commandReleaseBtn').click(function () {
     socket.emit('command message', { command: "c rs" });
-    return false;
   });
 
   $('#recordCueBtn').click(function () {
     socket.emit('command message', { command: "r q" });
-    return false;
   });
 
   $("#cueUpBtn").click(function () {
@@ -374,7 +377,6 @@ $(window).bind("load", function () {
 
   $('#commandClearBtn').click(function () {
     $('#commandInput').val("");
-    return false;
   });
 
   $('#commandInput').keypress(function (e) {
@@ -382,13 +384,11 @@ $(window).bind("load", function () {
     if (keycode == '13') {
       socket.emit('command message', { command: $('#commandInput').val() });
       $('#commandInput').val("");
-      return false;
     }
   });
 
   $('#usersBtn').click(function () {
     userModal.style.display = "block";
-    return false;
   });
 
   $('.saveSettingsBtn').click(function () {
