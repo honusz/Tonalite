@@ -3,8 +3,8 @@ environment:
   matrix:
     - PYTHON: "C:\\Python36-x64"
 artifacts:
-  - path: Tonalite-$(appveyor_build_version).zip
-    name: Tonalite-$(appveyor_build_version)
+  - path: Tonalite-$(appveyor_build_version)-Win64.zip
+    name: Tonalite-$(appveyor_build_version)-Win64
 install:
   - "%PYTHON%\\python.exe -m pip install python-socketio aiohttp PyInstaller passlib cython"
 test_script:
@@ -12,5 +12,5 @@ test_script:
 build_script:
   - "cd src_channelman && %PYTHON%\\python.exe setup.py build_ext --inplace && copy channelman.cp36-win_amd64.pyd ..\\channelman.pyd && cd ../"
   - "%PYTHON%\\python.exe -m PyInstaller tonalite.spec"
-  - "7z a Tonalite-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\\dist\\tonalite\\*"
+  - "7z a Tonalite-%APPVEYOR_BUILD_VERSION%-Win64.zip %APPVEYOR_BUILD_FOLDER%\\dist\\tonalite\\*"
   
