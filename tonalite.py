@@ -366,7 +366,7 @@ async def command_message(sid, message):
                 "description": "This is a new cue",
                 "time": 3,
                 "follow": 0,
-                "values": calculate_chans([0] * 48, outputChannels, submasters, grandmaster)
+                "values": calculate_chans([0] * 48, outputChannels, [], 100)
             })
             await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
         elif cmd[0] == "c" and cmd[1] == "rs":
