@@ -33,7 +33,6 @@ If you have [UPX](https://upx.github.io/) installed, the output will be much fas
 
 - [x] Save/load show
 - [x] Record and playback cues
-- [x] Change cue time
 - [x] Follow cue
 - [x] Submasters
 - [x] Security and login
