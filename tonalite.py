@@ -448,11 +448,12 @@ app.router.add_get('/show', saveshow)
 app.router.add_post('/show', store_show_handler)
 
 
-def server(app_ip, app_port, sacn_ip):
+def server(app_ip, app_port, sacn_ip, runBrowser=True):
     global source
 
     source = DMXSource(universe=1, net_ip=sacn_ip)
-    webbrowser.open("http://" + app_ip + ":" + app_port)
+    if runBrowser:
+        webbrowser.open("http://" + app_ip + ":" + app_port)
     web.run_app(app, host=app_ip, port=int(app_port))
 
 
