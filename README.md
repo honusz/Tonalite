@@ -1,4 +1,4 @@
-# Tonalite v1.0.0
+# Tonalite v1.0.0 [![Build status](https://ci.appveyor.com/api/projects/status/hsbnkhd9bt0u9631?svg=true)](https://ci.appveyor.com/project/johnroper100/tonalite)
 
 ![Tonalite keyboard interface](docs/images/keyboard.png)
 
