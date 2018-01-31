@@ -135,8 +135,8 @@ $(window).bind("load", function () {
     socket.emit('command message', { command: "c rs" });
   });
 
-  keyListener.simple_combo("alt r", function() {
-    socket.emit('command message', { command: "c rs" });
+  keyListener.simple_combo("alt c", function() {
+    socket.emit('command message', { command: "r q" });
   });
 
   keyListener.simple_combo("alt n", function() {
