@@ -17,6 +17,7 @@ Tonalite requires Python 3.6+, SASS, and the folowing libraries:
 - PyInstaller
 - passlib
 - cython
+- socketIO-client (needed for testing)
 
 ## Run Tonalite
 

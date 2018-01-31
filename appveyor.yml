@@ -6,7 +6,7 @@ artifacts:
   - path: Tonalite-$(appveyor_build_version)-Win64.zip
     name: Tonalite-$(appveyor_build_version)-Win64
 install:
-  - "%PYTHON%\\python.exe -m pip install python-socketio aiohttp PyInstaller passlib cython"
+  - "%PYTHON%\\python.exe -m pip install python-socketio aiohttp PyInstaller passlib cython socketIO-client"
 test_script:
   - "%PYTHON%\\python.exe tests.py"
 build_script:
