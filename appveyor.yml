@@ -8,8 +8,9 @@ artifacts:
 install:
   - "%PYTHON%\\python.exe -m pip install python-socketio aiohttp PyInstaller passlib cython"
 test_script:
-  - "cd src_channelman && %PYTHON%\\python.exe setup.py build_ext --inplace && copy channelman.cp36-win_amd64.pyd ..\\channelman.pyd && cd ../"
   - "%PYTHON%\\python.exe tests.py"
 build_script:
+  - "cd src_channelman && %PYTHON%\\python.exe setup.py build_ext --inplace && copy channelman.cp36-win_amd64.pyd ..\\channelman.pyd && cd ../"
   - "%PYTHON%\\python.exe -m PyInstaller tonalite.spec"
   - "7z a Tonalite-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\\dist\\tonalite\\*"
+  
