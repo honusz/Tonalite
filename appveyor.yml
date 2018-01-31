@@ -3,6 +3,7 @@ environment:
     - PYTHON: "C:\\Python36-x64"
 install:
   - "%PYTHON%\\python.exe -m pip install python-socketio aiohttp PyInstaller passlib cython"
-build:
+build: off
+test_script:
   - "cd src_channelman && %PYTHON%\\python.exe setup.py build_ext --inplace && copy channelman.cp36-win_amd64.pyd ..\\channelman.pyd && cd ../"
   - "%PYTHON%\\python.exe -m PyInstaller tonalite.spec"
