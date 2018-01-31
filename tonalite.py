@@ -1,4 +1,5 @@
 import datetime
+import math
 import os
 import pickle
 import re
@@ -83,7 +84,7 @@ def set_sub_chans():
     for i, _ in enumerate(outputChannels):
         if outputChannels[i] != None:
             temp_channels.append(
-                {"channel": i + 1, "value": int((outputChannels[i]/255)*100)})
+                {"channel": i + 1, "value": math.ceil((outputChannels[i] / 255) * 100)})
 
     return temp_channels
 
