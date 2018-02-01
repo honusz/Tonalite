@@ -152,7 +152,7 @@ async def cue_info(sid, message):
     """Give the info for the clicked cue"""
     global clickedCue
     clickedCue = int(message['cue_id'])
-    await sio.emit('cue settings', {'cues': cues, 'selected_cue': clickedCue, 'name': cues[int(message['cue_id'])]["name"], 'description': cues[int(message['cue_id'])]["description"], "time": cues[int(message['cue_id'])]["time"], "follow": cues[int(message['cue_id'])]["follow"], 'current_cue': currentCue}, namespace='/tonalite', room=sid)
+    await sio.emit('cue settings', {'cues': cues, 'selected_cue': clickedCue, 'name': cues[clickedCue]["name"], 'description': cues[clickedCue]["description"], "time": cues[clickedCue]["time"], "follow": cues[clickedCue]["follow"], 'current_cue': currentCue}, namespace='/tonalite', room=sid)
 
 
 @sio.on('sub info', namespace='/tonalite')
@@ -200,10 +200,9 @@ async def edit_users(sid, message):
 async def edit_sub_chan(sid, message):
     """Edit the current control channel on the current submaster"""
     if message["action"] == "save":
-        submasters[clickedSub]["channels"][message["chan"]
-                                           ]["channel"] = int(message["channel"])
-        submasters[clickedSub]["channels"][message["chan"]
-                                           ]["value"] = int(message["value"])
+        if message["channel"] != '' and message["value"] != '':
+            submasters[clickedSub]["channels"][message["chan"]]["channel"] = int(message["channel"])
+            submasters[clickedSub]["channels"][message["chan"]]["value"] = int(message["value"])
     elif message["action"] == "delete":
         submasters[clickedSub]["channels"].pop(message["chan"])
     source.send_data(calculate_chans(channels, outputChannels, submasters, grandmaster))
@@ -213,8 +212,9 @@ async def edit_sub_chan(sid, message):
 @sio.on('update cue', namespace='/tonalite')
 async def update_cue(sid, message):
     """Update the channel values for the current cue"""
-    cues[clickedCue]["values"] = calculate_chans([0] * 48, outputChannels, submasters, grandmaster)
-    await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
+    if clickedCue != None:
+        cues[clickedCue]["values"] = calculate_chans([0] * 48, outputChannels, submasters, grandmaster)
+        await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
 
 
 @sio.on('update sub val', namespace='/tonalite')
@@ -238,12 +238,13 @@ async def update_grand_val(sid, message):
 async def save_show(sid, message):
     """Save the current show settings and redirect to the show download"""
     global show
-    show["name"] = message['name']
-    show["description"] = message['description']
-    show["author"] = message['author']
-    show["copyright"] = message['copyright']
-    show["last_updated"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    await sio.emit('redirect', {'url': "/show"}, namespace='/tonalite', room=sid)
+    if message['name'] != '':
+        show["name"] = message['name']
+        show["description"] = message['description']
+        show["author"] = message['author']
+        show["copyright"] = message['copyright']
+        show["last_updated"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        await sio.emit('redirect', {'url': "/show"}, namespace='/tonalite', room=sid)
 
 
 @sio.on('clear show', namespace='/tonalite')
@@ -280,23 +281,27 @@ async def cue_move(sid, message):
     global currentCue
     global channels
     if message['action'] == "up":
-        if clickedCue != 0:
-            cues.insert(clickedCue - 1, cues.pop(clickedCue))
-            clickedCue -= 1
-        await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
+        if clickedCue != None:
+            if clickedCue != 0:
+                cues.insert(clickedCue - 1, cues.pop(clickedCue))
+                clickedCue -= 1
+            await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
     elif message['action'] == "down":
-        if not clickedCue == len(cues):
-            cues.insert(clickedCue + 1, cues.pop(clickedCue))
-            clickedCue += 1
-        await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
+        if clickedCue != None:
+            if not clickedCue == len(cues):
+                cues.insert(clickedCue + 1, cues.pop(clickedCue))
+                clickedCue += 1
+            await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
     elif message['action'] == "delete":
-        cues.pop(clickedCue)
-        clickedCue = None
-        await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
+        if clickedCue != None:
+            cues.pop(clickedCue)
+            clickedCue = None
+            await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
     elif message['action'] == "duplicate":
-        cues.insert(len(cues), cues[clickedCue])
-        clickedCue = None
-        await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
+        if clickedCue != None:
+            cues.insert(len(cues), cues[clickedCue])
+            clickedCue = None
+            await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
     elif message['action'] == "next":
         if currentCue != None:
             if currentCue != len(cues) - 1:
@@ -337,18 +342,23 @@ async def cue_move(sid, message):
 @sio.on('save cue', namespace='/tonalite')
 async def save_cue(sid, message):
     """Save the current cue settings"""
-    cues[clickedCue]["name"] = message['name']
-    cues[clickedCue]["description"] = message['description']
-    cues[clickedCue]["time"] = float(message['time'])
-    cues[clickedCue]["follow"] = float(message['follow'])
-    await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
+    if clickedCue != None:
+        if message['name'] != '' and message['time'] != '' and message['follow'] != '':
+            cues[clickedCue]["name"] = message['name']
+            cues[clickedCue]["description"] = message['description']
+            cues[clickedCue]["time"] = float(message['time'])
+            cues[clickedCue]["follow"] = float(message['follow'])
+        await sio.emit('cue settings', {'cues': cues, 'selected_cue': clickedCue, 'name': cues[clickedCue]["name"], 'description': cues[clickedCue]["description"], "time": cues[clickedCue]["time"], "follow": cues[clickedCue]["follow"], 'current_cue': currentCue}, namespace='/tonalite', room=sid)
+        await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
 
 
 @sio.on('save sub', namespace='/tonalite')
 async def save_sub(sid, message):
-    submasters[clickedSub]["name"] = message["name"]
-    submasters[clickedSub]["value"] = max(0, min(int(message["value"]), 100))
-    source.send_data(calculate_chans(channels, outputChannels, submasters, grandmaster))
+    if message["name"] != '' and message["value"] != '':
+        submasters[clickedSub]["name"] = message["name"]
+        submasters[clickedSub]["value"] = max(0, min(int(message["value"]), 100))
+        source.send_data(calculate_chans(channels, outputChannels, submasters, grandmaster))
+    await sio.emit('sub settings', {'name': submasters[clickedSub]["name"], 'channels': submasters[clickedSub]["channels"], 'value': submasters[clickedSub]["value"]}, namespace='/tonalite', room=sid)
     await sio.emit('update chans and subs', {'channels': calculate_chans(channels, outputChannels, submasters, grandmaster), 'submasters': submasters}, namespace='/tonalite')
 
 
@@ -372,25 +382,25 @@ async def command_message(sid, message):
             await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
         elif cmd[0] == "c" and cmd[1] == "rs":
             outputChannels = [None] * 48
-            source.send_data(calculate_chans(
-                channels, outputChannels, submasters, grandmaster))
+            source.send_data(calculate_chans(channels, outputChannels, submasters, grandmaster))
             await sio.emit('update chans', {'channels': calculate_chans(channels, outputChannels, submasters, grandmaster)}, namespace='/tonalite')
         elif cmd[0] == "q" and cmd[1].isdigit():
-            setCue = int(cmd[1])
-            if setCue == 9949:
-                setCue = clickedCue + 1
-            if setCue <= len(cues) and setCue >= 1:
-                setCue -= 1
-                await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
-                await generate_fade(channels, cues[setCue]["values"], cues[setCue]["time"])
-                currentCue = setCue
-                while cues[currentCue]["follow"] != 0:
-                    if currentCue != len(cues) - 1:
-                        await sio.sleep(cues[currentCue]["follow"])
-                        currentCue += 1
-                        await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
-                        await generate_fade(cues[currentCue - 1]["values"], cues[currentCue]["values"], cues[currentCue]["time"])
-                await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
+            if clickedCue != None:
+                setCue = int(cmd[1])
+                if setCue == 9949:
+                    setCue = clickedCue + 1
+                if setCue <= len(cues) and setCue >= 1:
+                    setCue -= 1
+                    await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
+                    await generate_fade(channels, cues[setCue]["values"], cues[setCue]["time"])
+                    currentCue = setCue
+                    while cues[currentCue]["follow"] != 0:
+                        if currentCue != len(cues) - 1:
+                            await sio.sleep(cues[currentCue]["follow"])
+                            currentCue += 1
+                            await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
+                            await generate_fade(cues[currentCue - 1]["values"], cues[currentCue]["values"], cues[currentCue]["time"])
+                    await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
     if len(cmd) == 4:
         if cmd[0] == "c":
             if "+" in cmd[1]:
@@ -432,13 +442,13 @@ async def command_message(sid, message):
 @sio.on('save settings', namespace='/tonalite')
 async def save_settings(sid, message):
     global tonaliteSettings
-    tonaliteSettings["sacnIP"] = message['sacnIP']
-    tonaliteSettings["serverIP"] = message['serverIP']
-    tonaliteSettings["serverPort"] = message['serverPort']
+    if message['sacnIP'] != '' and message['serverIP'] != '' and message['serverPort'] != '':
+        tonaliteSettings["sacnIP"] = message['sacnIP']
+        tonaliteSettings["serverIP"] = message['serverIP']
+        tonaliteSettings["serverPort"] = message['serverPort']
 
-    tonaliteConfig = os.path.join(os.path.expanduser("~"), ".tonaliteConfig")
-    pickle.dump(tonaliteSettings, open(
-        tonaliteConfig, "wb"), pickle.HIGHEST_PROTOCOL)
+        tonaliteConfig = os.path.join(os.path.expanduser("~"), ".tonaliteConfig")
+        pickle.dump(tonaliteSettings, open(tonaliteConfig, "wb"), pickle.HIGHEST_PROTOCOL)
     await sio.emit('update settings', {'tonaliteSettings': tonaliteSettings}, namespace='/tonalite')
 
 app.router.add_static('/static', resource_path('static'))
