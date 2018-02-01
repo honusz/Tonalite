@@ -17,3 +17,5 @@
 * [Submasters](submasters/README.md)
     * [Creating Submasters](submasters/creating_submasters.md)
     * [Editing Submasters](submasters/editing_submasters.md)
+    * [Submaster Channels](submasters/channels/README.md)
+        * [Adding Channels](submasters/channels/adding_submaster_channels.md)
