@@ -19,3 +19,4 @@
     * [Editing Submasters](submasters/editing_submasters.md)
     * [Submaster Channels](submasters/channels/README.md)
         * [Adding Channels](submasters/channels/adding_submaster_channels.md)
+        * [Editing Channels](submasters/channels/editing_submaster_channels.md)
