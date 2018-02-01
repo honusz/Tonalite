@@ -14,3 +14,6 @@
     * [Recording Cues](cues/recording_cues.md)
     * [Editing Cues](cues/editing_cues.md)
     * [Moving Cues](cues/moving_cues.md)
+* [Submasters](submasters/README.md)
+    * [Creating Submasters](submasters/creating_submasters.md)
+    * [Editing Submasters](submasters/editing_submasters.md)
