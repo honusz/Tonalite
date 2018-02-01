@@ -10,7 +10,7 @@ Please help me out by [donating some money](https://www.paypal.me/johnroper) to 
 
 ## Required Tools
 
-Tonalite requires Python 3.6+, SASS, and the folowing libraries:
+Tonalite requires Python 3.6+, SASS, GitBook (optional, for documentation) and the folowing libraries:
 
 - python-socketio
 - aiohttp
