@@ -204,7 +204,7 @@ async def edit_sub_chan(sid, message):
             submasters[clickedSub]["channels"][message["chan"]]["channel"] = int(message["channel"])
             submasters[clickedSub]["channels"][message["chan"]]["value"] = int(message["value"])
         else:
-            await sio.emit('alert', {'alertType': "error", 'alert': "The channel name or value is empty!"}, namespace='/tonalite', room=sid)
+            await sio.emit('alert', {'alertType': "warning", 'alert': "The channel Name or Value is empty!"}, namespace='/tonalite', room=sid)
     elif message["action"] == "delete":
         submasters[clickedSub]["channels"].pop(message["chan"])
     source.send_data(calculate_chans(channels, outputChannels, submasters, grandmaster))
@@ -217,7 +217,8 @@ async def update_cue(sid, message):
     if clickedCue != None:
         cues[clickedCue]["values"] = calculate_chans([0] * 48, outputChannels, submasters, grandmaster)
         await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
-
+    else:
+        await sio.emit('alert', {'alertType': "error", 'alert': "You must click a cue first!"}, namespace='/tonalite', room=sid)
 
 @sio.on('update sub val', namespace='/tonalite')
 async def update_sub_val(sid, message):
@@ -247,6 +248,8 @@ async def save_show(sid, message):
         show["copyright"] = message['copyright']
         show["last_updated"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         await sio.emit('redirect', {'url': "/show"}, namespace='/tonalite', room=sid)
+    else:
+        await sio.emit('alert', {'alertType': "warning", 'alert': "The show Name is empty!"}, namespace='/tonalite', room=sid)
 
 
 @sio.on('clear show', namespace='/tonalite')
@@ -288,22 +291,30 @@ async def cue_move(sid, message):
                 cues.insert(clickedCue - 1, cues.pop(clickedCue))
                 clickedCue -= 1
             await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
+        else:
+            await sio.emit('alert', {'alertType': "error", 'alert': "You must click a cue first!"}, namespace='/tonalite', room=sid)
     elif message['action'] == "down":
         if clickedCue != None:
             if not clickedCue == len(cues):
                 cues.insert(clickedCue + 1, cues.pop(clickedCue))
                 clickedCue += 1
             await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
+        else:
+            await sio.emit('alert', {'alertType': "error", 'alert': "You must click a cue first!"}, namespace='/tonalite', room=sid)
     elif message['action'] == "delete":
         if clickedCue != None:
             cues.pop(clickedCue)
             clickedCue = None
             await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
+        else:
+            await sio.emit('alert', {'alertType': "error", 'alert': "You must click a cue first!"}, namespace='/tonalite', room=sid)
     elif message['action'] == "duplicate":
         if clickedCue != None:
             cues.insert(len(cues), cues[clickedCue])
             clickedCue = None
             await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
+        else:
+            await sio.emit('alert', {'alertType': "error", 'alert': "You must click a cue first!"}, namespace='/tonalite', room=sid)
     elif message['action'] == "next":
         if currentCue != None:
             if currentCue != len(cues) - 1:
@@ -350,9 +361,12 @@ async def save_cue(sid, message):
             cues[clickedCue]["description"] = message['description']
             cues[clickedCue]["time"] = float(message['time'])
             cues[clickedCue]["follow"] = float(message['follow'])
+        else:
+            await sio.emit('alert', {'alertType': "warning", 'alert': "The cue Name, Time, or Follow is empty!"}, namespace='/tonalite', room=sid)
         await sio.emit('cue settings', {'cues': cues, 'selected_cue': clickedCue, 'name': cues[clickedCue]["name"], 'description': cues[clickedCue]["description"], "time": cues[clickedCue]["time"], "follow": cues[clickedCue]["follow"], 'current_cue': currentCue}, namespace='/tonalite', room=sid)
         await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
-
+    else:
+        await sio.emit('alert', {'alertType': "error", 'alert': "You must click a cue first!"}, namespace='/tonalite', room=sid)
 
 @sio.on('save sub', namespace='/tonalite')
 async def save_sub(sid, message):
@@ -360,6 +374,8 @@ async def save_sub(sid, message):
         submasters[clickedSub]["name"] = message["name"]
         submasters[clickedSub]["value"] = max(0, min(int(message["value"]), 100))
         source.send_data(calculate_chans(channels, outputChannels, submasters, grandmaster))
+    else:
+        await sio.emit('alert', {'alertType': "warning", 'alert': "The submaster Name or Value is empty!"}, namespace='/tonalite', room=sid)
     await sio.emit('sub settings', {'name': submasters[clickedSub]["name"], 'channels': submasters[clickedSub]["channels"], 'value': submasters[clickedSub]["value"]}, namespace='/tonalite', room=sid)
     await sio.emit('update chans and subs', {'channels': calculate_chans(channels, outputChannels, submasters, grandmaster), 'submasters': submasters}, namespace='/tonalite')
 
@@ -403,6 +419,8 @@ async def command_message(sid, message):
                             await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
                             await generate_fade(cues[currentCue - 1]["values"], cues[currentCue]["values"], cues[currentCue]["time"])
                     await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
+            else:
+                await sio.emit('alert', {'alertType': "error", 'alert': "You must click a cue first!"}, namespace='/tonalite', room=sid)
     if len(cmd) == 4:
         if cmd[0] == "c":
             if "+" in cmd[1]:
@@ -451,6 +469,8 @@ async def save_settings(sid, message):
 
         tonaliteConfig = os.path.join(os.path.expanduser("~"), ".tonaliteConfig")
         pickle.dump(tonaliteSettings, open(tonaliteConfig, "wb"), pickle.HIGHEST_PROTOCOL)
+    else:
+        await sio.emit('alert', {'alertType': "warning", 'alert': "The Server IP, Server Port, or sACN IP is empty!"}, namespace='/tonalite', room=sid)
     await sio.emit('update settings', {'tonaliteSettings': tonaliteSettings}, namespace='/tonalite')
 
 app.router.add_static('/static', resource_path('static'))
