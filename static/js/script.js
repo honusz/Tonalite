@@ -195,6 +195,26 @@ $(window).bind("load", function () {
     disconnectModal.style.display = "block";
   });
 
+  toastr.options = {
+    "closeButton": false,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "positionClass": "toast-bottom-right",
+    "timeOut": "2500"
+  }
+
+  socket.on('alert', function (msg) {
+    if (msg.alertType == "error") {
+      toastr.error(msg.alert);
+    } else if (msg.alertType == "warning") {
+      toastr.warning(msg.alert);
+    } else if (msg.alertType == "info") {
+      toastr.info(msg.alert);
+    } else if (msg.alertType == "success") {
+      toastr.success(msg.alert);
+    }
+  });
+
   socket.on('update chans', function (msg) {
     updateChannels(msg);
   });

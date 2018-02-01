@@ -203,6 +203,8 @@ async def edit_sub_chan(sid, message):
         if message["channel"] != '' and message["value"] != '':
             submasters[clickedSub]["channels"][message["chan"]]["channel"] = int(message["channel"])
             submasters[clickedSub]["channels"][message["chan"]]["value"] = int(message["value"])
+        else:
+            await sio.emit('alert', {'alertType': "error", 'alert': "The channel name or value is empty!"}, namespace='/tonalite', room=sid)
     elif message["action"] == "delete":
         submasters[clickedSub]["channels"].pop(message["chan"])
     source.send_data(calculate_chans(channels, outputChannels, submasters, grandmaster))
