@@ -296,7 +296,9 @@ $(window).bind("load", function () {
 
   $('.kbtn').click(function () {
     $('#commandInput').val($('#commandInput').val() + $(this).attr('inputVal'));
-    $('#commandInput').focus();
+    if (!isMobile.any) {
+      $('#commandInput').focus();
+    }
   });
 
   $('#updateCue').click(function () {
