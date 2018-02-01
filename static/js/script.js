@@ -131,19 +131,19 @@ $(window).bind("load", function () {
 
   var keyListener = new window.keypress.Listener();
 
-  keyListener.simple_combo("alt r", function() {
+  keyListener.simple_combo("alt r", function () {
     socket.emit('command message', { command: "c rs" });
   });
 
-  keyListener.simple_combo("alt c", function() {
+  keyListener.simple_combo("alt c", function () {
     socket.emit('command message', { command: "r q" });
   });
 
-  keyListener.simple_combo("alt n", function() {
+  keyListener.simple_combo("alt n", function () {
     socket.emit('cue move', { action: "next" });
   });
 
-  keyListener.simple_combo("alt l", function() {
+  keyListener.simple_combo("alt l", function () {
     socket.emit('cue move', { action: "last" });
   });
 
