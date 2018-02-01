@@ -40,9 +40,7 @@ tonaliteSettings = {
     "serverIP": "127.0.0.1",
     "serverPort": "9898",
     "sacnIP": "127.0.0.1",
-    "users": [
-        ("admin", "$pbkdf2-sha256$29000$OMe4VwrBmHMO4TxH6L1Xag$YDlHIuACixZPkNm8GjP24Jfk88o/fVufek/1NF/sOrg")
-    ]
+    "users": [("admin", "$pbkdf2-sha256$29000$OMe4VwrBmHMO4TxH6L1Xag$YDlHIuACixZPkNm8GjP24Jfk88o/fVufek/1NF/sOrg")]
 }
 
 
@@ -50,7 +48,7 @@ def resource_path(relative_path):
     """Get the correct path to the resources when using either PyInstaller or the cli"""
     try:
         base_path = sys._MEIPASS
-    except Exception:
+    except:
         base_path = os.path.abspath(".")
 
     return os.path.join(base_path, relative_path)
@@ -467,8 +465,8 @@ async def save_settings(sid, message):
         tonaliteSettings["serverIP"] = message['serverIP']
         tonaliteSettings["serverPort"] = message['serverPort']
 
-        tonaliteConfig = os.path.join(os.path.expanduser("~"), ".tonaliteConfig")
-        pickle.dump(tonaliteSettings, open(tonaliteConfig, "wb"), pickle.HIGHEST_PROTOCOL)
+        tonaliteConfigFile = os.path.join(os.path.expanduser("~"), ".tonaliteConfig")
+        pickle.dump(tonaliteSettings, open(tonaliteConfigFile, "wb"), pickle.HIGHEST_PROTOCOL)
     else:
         await sio.emit('alert', {'alertType': "warning", 'alert': "The Server IP, Server Port, or sACN IP is empty!"}, namespace='/tonalite', room=sid)
     await sio.emit('update settings', {'tonaliteSettings': tonaliteSettings}, namespace='/tonalite')
@@ -494,8 +492,7 @@ if __name__ == "__main__":
     tonaliteConfig = os.path.join(os.path.expanduser("~"), ".tonaliteConfig")
 
     if not os.path.exists(tonaliteConfig):
-        pickle.dump(tonaliteSettings, open(
-            tonaliteConfig, "wb"), pickle.HIGHEST_PROTOCOL)
+        pickle.dump(tonaliteSettings, open(tonaliteConfig, "wb"), pickle.HIGHEST_PROTOCOL)
 
     config = pickle.load(open(tonaliteConfig, "rb"))
     tonaliteSettings["serverIP"] = config["serverIP"]
@@ -504,7 +501,6 @@ if __name__ == "__main__":
 
     print("Tonalite Lighting Control v1.0.0")
     try:
-        server(tonaliteSettings["serverIP"],
-               tonaliteSettings["serverPort"], tonaliteSettings["sacnIP"])
+        server(tonaliteSettings["serverIP"], tonaliteSettings["serverPort"], tonaliteSettings["sacnIP"])
     except:
         server("127.0.0.1", "9898", "127.0.0.1")
