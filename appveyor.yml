@@ -5,6 +5,8 @@ environment:
 artifacts:
   - path: Tonalite-$(appveyor_build_version)-Win64.zip
     name: Tonalite-$(appveyor_build_version)-Win64
+  - path: docs/Tonalite-v1.0.0-Documentation.pdf
+    name: Tonalite-v1.0.0-Documentation-$(appveyor_build_version).pdf
 install:
   - "%PYTHON%\\python.exe -m pip install python-socketio aiohttp PyInstaller passlib cython socketIO-client"
 test_script:
