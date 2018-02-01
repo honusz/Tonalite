@@ -1,20 +1,15 @@
 image: Visual Studio 2017
 environment:
-  nodejs_version: "9"
   matrix:
     - PYTHON: "C:\\Python36-x64"
 artifacts:
   - path: Tonalite-$(appveyor_build_version)-Win64.zip
     name: Tonalite-$(appveyor_build_version)-Win64
-  - path: Tonalite-v1.0.0-Documentation-%APPVEYOR_BUILD_VERSION%.pdf
-    name: Tonalite-v1.0.0-Documentation-%APPVEYOR_BUILD_VERSION%
 install:
-  - "npm install -g gitbook-cli"
   - "%PYTHON%\\python.exe -m pip install python-socketio aiohttp PyInstaller passlib cython socketIO-client"
 test_script:
   - "%PYTHON%\\python.exe tests.py"
 build_script:
-  - "cd docs && gitbook pdf . ..\\Tonalite-v1.0.0-Documentation-%APPVEYOR_BUILD_VERSION%.pdf && cd ..\\"
   - "cd src_channelman && %PYTHON%\\python.exe setup.py build_ext --inplace && copy channelman.cp36-win_amd64.pyd ..\\channelman.pyd && cd ../"
   - "%PYTHON%\\python.exe -m PyInstaller tonalite.spec"
   - "7z a Tonalite-%APPVEYOR_BUILD_VERSION%-Win64.zip %APPVEYOR_BUILD_FOLDER%\\dist\\tonalite\\*"
