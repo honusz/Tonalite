@@ -141,12 +141,20 @@ $(window).bind("load", function () {
     socket.emit('command message', { command: "r q" });
   });
 
+  keyListener.simple_combo("alt s", function () {
+    socket.emit('add sub', "nothing");
+  });
+
   keyListener.simple_combo("alt n", function () {
     socket.emit('cue move', { action: "next" });
   });
 
   keyListener.simple_combo("alt l", function () {
     socket.emit('cue move', { action: "last" });
+  });
+
+  keyListener.simple_combo("ctrl alt r", function () {
+    socket.emit('cue move', { action: "release" });
   });
 
   var grandmaster = document.getElementById('grandmaster');
