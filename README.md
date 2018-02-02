@@ -1,4 +1,4 @@
-# Tonalite v1.0.0 [![Build status](https://ci.appveyor.com/api/projects/status/hsbnkhd9bt0u9631?svg=true)](https://ci.appveyor.com/project/johnroper100/tonalite)
+# Tonalite v1.0.0 [![Build status](https://ci.appveyor.com/api/projects/status/hsbnkhd9bt0u9631?svg=true)](https://ci.appveyor.com/project/johnroper100/tonalite) [![Build Status](https://travis-ci.org/johnroper100/Tonalite.svg?branch=master)](https://travis-ci.org/johnroper100/Tonalite) [![StyleCI](https://styleci.io/repos/98052564/shield?branch=master)](https://styleci.io/repos/98052564)
 
 ![Tonalite Keyboard Interface](docs/images/keyboard.png)
 
