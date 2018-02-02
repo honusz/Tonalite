@@ -99,7 +99,7 @@ function updateSubs(msg) {
     }
   }
   if (!document.getElementById("addSubBtn")) {
-    $("#Submasters").append("<div class=\"col-2 submaster\"><button class=\"btn btn-green disable-selection\" id=\"addSubBtn\"><i class=\"fas fa-plus-square\"></i> New Submaster</button></div>");
+    $("#Submasters").append("<div class=\"col-2 submaster\"><button class=\"btn btn-green btn-tall disable-selection\" id=\"addSubBtn\"><i class=\"fas fa-plus-square\"></i> New Submaster</button></div>");
   }
   var sliders = $('.slider');
   for (var s = 0; s < sliders.length; s++) {
