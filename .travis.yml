@@ -1,0 +1,11 @@
+language: python
+python:
+  - "3.6"
+install:
+  - pip install python-socketio aiohttp PyInstaller passlib cython socketIO-client
+script:
+  - python tests.py
+  - cd src_channelman
+  - python setup.py build_ext --inplace
+  - tree
+  - cd ../
