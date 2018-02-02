@@ -129,6 +129,9 @@ function settingsDropdown() {
 }
 
 $(window).bind("load", function () {
+  var currentTabIndex = 0;
+  var tabList = ["keyboardTabBtn", "channelsTabBtn", "cuesTabBtn", "subsTabBtn", "showTabBtn"];
+
   document.getElementById("keyboardTabBtn").click();
 
   var keyListener = new window.keypress.Listener();
@@ -155,6 +158,24 @@ $(window).bind("load", function () {
 
   keyListener.simple_combo("ctrl alt r", function () {
     socket.emit('cue move', { action: "release" });
+  });
+
+  keyListener.simple_combo("alt left", function () {
+    if (currentTabIndex <= 0) {
+      currentTabIndex = 4;
+    } else {
+      currentTabIndex -= 1;
+    }
+    document.getElementById(tabList[currentTabIndex]).click();
+  });
+
+  keyListener.simple_combo("alt right", function () {
+    if (currentTabIndex >= 4) {
+      currentTabIndex = 0;
+    } else {
+      currentTabIndex += 1;
+    }
+    document.getElementById(tabList[currentTabIndex]).click();
   });
 
   var grandmaster = document.getElementById('grandmaster');
