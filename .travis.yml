@@ -32,3 +32,7 @@ after_success:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then zip -r Tonalite-v1.0.0-Linux.zip dist/tonalite ; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then curl --ftp-create-dirs -T Tonalite-v1.0.0-OSX.zip Tonalite -u $FTP_USER:$FTP_PASSWORD ftp://jmroper.com/public_html/tonalite-builds/          ; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then curl --ftp-create-dirs -T Tonalite-v1.0.0-Linux.zip Tonalite -u $FTP_USER:$FTP_PASSWORD ftp://jmroper.com/public_html/tonalite-builds/          ; fi
+
+notifications:
+  email: false
+  
