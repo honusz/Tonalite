@@ -10,4 +10,5 @@ script:
   - cd src_channelman
   - python setup.py build_ext --inplace
   - ls
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cp channelman.cpython-36m-x86_64-linux-gnu.so ../channelman.so ; fi
   - cd ../
