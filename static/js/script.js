@@ -50,6 +50,13 @@ function updateChannels(msg) {
 }
 
 function updateCues(msg) {
+  if (msg.cues.length != 0) {
+    if ($(".hidden-item").css('display') == "none") {
+      $(".hidden-item").css('display', 'inline-block');
+    }
+  } else {
+    $(".hidden-item").css('display', 'none');
+  }
   $("#cues").empty();
   $("#cues-display").empty();
   if (msg.cues.length != 0) {
@@ -80,13 +87,6 @@ function updateCues(msg) {
     $("#cueDescription").val("");
     $("#cueTime").val("");
     $("#cueFollow").val("");
-  }
-  if (msg.cues.length != 0) {
-    if ($(".hidden-item").css('display') == "none") {
-      $(".hidden-item").css('display', 'inline-block');
-    }
-  } else {
-    $(".hidden-item").css('display', 'none');
   }
   return 0;
 }

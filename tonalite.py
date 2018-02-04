@@ -1,3 +1,4 @@
+import copy
 import datetime
 import math
 import os
@@ -308,7 +309,7 @@ async def cue_move(sid, message):
             await sio.emit('alert', {'alertType': "error", 'alert': "You must click a cue first!"}, namespace='/tonalite', room=sid)
     elif message['action'] == "duplicate":
         if clickedCue != None:
-            cues.insert(len(cues), cues[clickedCue])
+            cues.insert(len(cues), copy.copy(cues[clickedCue]))
             clickedCue = None
             await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
         else:
