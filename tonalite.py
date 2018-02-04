@@ -208,6 +208,7 @@ async def edit_sub_chan(sid, message):
         submasters[clickedSub]["channels"].pop(message["chan"])
     source.send_data(calculate_chans(channels, outputChannels, submasters, grandmaster))
     await sio.emit('sub settings', {'name': submasters[clickedSub]["name"], 'channels': submasters[clickedSub]["channels"], 'value': submasters[clickedSub]["value"]}, namespace='/tonalite', room=sid)
+    await sio.emit('update chans and subs', {'channels': calculate_chans(channels, outputChannels, submasters, grandmaster), 'submasters': submasters}, namespace='/tonalite')
 
 
 @sio.on('update cue', namespace='/tonalite')
