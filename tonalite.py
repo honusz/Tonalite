@@ -216,6 +216,7 @@ async def update_cue(sid, message):
     if clickedCue != None:
         cues[clickedCue]["values"] = calculate_chans([0] * 48, outputChannels, submasters, grandmaster)
         await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
+        await sio.emit('alert', {'alertType': "info", 'alert': "Cue channels updated!"}, namespace='/tonalite', room=sid)
     else:
         await sio.emit('alert', {'alertType': "error", 'alert': "You must click a cue first!"}, namespace='/tonalite', room=sid)
 
