@@ -51,11 +51,11 @@ function updateChannels(msg) {
 
 function updateCues(msg) {
   if (msg.cues.length != 0) {
-    if ($(".hidden-item").css('display') == "none") {
-      $(".hidden-item").css('display', 'inline-block');
+    if ($(".hidden-item").hasClass("hide")) {
+      $(".hidden-item").removeClass("hide");
     }
   } else {
-    $(".hidden-item").css('display', 'none');
+    $(".hidden-item").addClass("hide");
   }
   $("#cues").empty();
   $("#cues-display").empty();
