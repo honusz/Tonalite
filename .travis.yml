@@ -26,6 +26,7 @@ script:
   - python3 tests.py
   - python3 -m PyInstaller tonalite-lin.spec
 after_success:
+  - rm -rf dist/tonalite/static/sass
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then zip -r Tonalite-Latest-Linux64.zip dist/tonalite ; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then curl --ftp-create-dirs -T Tonalite-Latest-Linux64.zip -u $FTP_USER:$FTP_PASSWORD ftp://jmroper.com/public_html/tonalite-builds/ ; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then zip -r Tonalite-Latest-OSX64.zip dist/tonalite ; fi
