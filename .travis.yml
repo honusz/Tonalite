@@ -21,7 +21,7 @@ script:
   - python3 setup.py build_ext --inplace
   - ls
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cp channelman.cpython-36m-x86_64-linux-gnu.so ../channelman.so ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cp channelman.cpython-36m-x86_64-osx-gnu.so ../channelman.so ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cp channelman.cpython-36m-darwin.so ../channelman.so ; fi
   - cd ../
   - python3 tests.py
   - python3 -m PyInstaller tonalite-lin.spec
