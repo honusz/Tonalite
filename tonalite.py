@@ -73,7 +73,7 @@ async def generate_fade(start, end, secs=3.0, fps=40):
 
         source.send_data(calculate_chans(channels, outputChannels, submasters, grandmaster))
         await sio.emit('update chans', {'channels': calculate_chans(channels, outputChannels, submasters, grandmaster)}, namespace='/tonalite')
-        time.sleep(secs / int(secs * fps))
+        time.sleep(secs / (secs * fps))
 
 
 def set_sub_chans(echannels):
