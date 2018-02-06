@@ -76,16 +76,15 @@ async def generate_fade(start, end, secs=3.0, fps=40):
         time.sleep(secs / int(secs * fps))
 
 
-def set_sub_chans():
+def set_sub_chans(echannels):
     """Create submaster channels based on what was set by the user"""
-    temp_channels = []
 
     for i, _ in enumerate(outputChannels):
         if outputChannels[i] != None:
-            temp_channels.append(
-                {"channel": i + 1, "value": math.ceil((outputChannels[i] / 255) * 100)})
+            if not any(c["channel"] == i + 1 for c in echannels):
+                echannels.append({"channel": i + 1, "value": math.ceil((outputChannels[i] / 255) * 100)})
 
-    return temp_channels
+    return echannels
 
 
 async def index(request):
@@ -165,8 +164,7 @@ async def sub_info(sid, message):
 @sio.on('add sub', namespace='/tonalite')
 async def add_sub(sid, message):
     """Create a new submaster with default values"""
-    submasters.append(
-        {"name": "New Sub", "channels": set_sub_chans(), "value": 0})
+    submasters.append({"name": "New Sub", "channels": [], "value": 0})
     await sio.emit('update subs', {'submasters': submasters}, namespace='/tonalite')
 
 
@@ -180,7 +178,10 @@ async def remove_sub(sid, message):
 @sio.on('add sub chan', namespace='/tonalite')
 async def add_sub_chan(sid, message):
     """Add a control channel to the current submaster"""
-    submasters[clickedSub]["channels"].append({"channel": 1, "value": 100})
+    if message == "multiple":
+        submasters[clickedSub]["channels"] = set_sub_chans(submasters[clickedSub]["channels"])
+    else:
+        submasters[clickedSub]["channels"].append({"channel": 1, "value": 100})
     await sio.emit('sub settings', {'name': submasters[clickedSub]["name"], 'channels': submasters[clickedSub]["channels"], 'value': submasters[clickedSub]["value"]}, namespace='/tonalite', room=sid)
 
 
