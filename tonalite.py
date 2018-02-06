@@ -445,12 +445,12 @@ async def command_message(sid, message):
                         value = int((255/100) * (max(0, min(int(value), 100))))
                     elif value == "d":
                         if outputChannels[int(chn) - 1] != None:
-                            value = max(0, min(channels[int(chn) - 1] - 25, 255))
+                            value = max(0, min(outputChannels[int(chn) - 1] - 25, 255))
                         else:
                             value = 0
                     elif value == "b":
                         if outputChannels[int(chn) - 1] != None:
-                            value = max(0, min(channels[int(chn) - 1] + 25, 255))
+                            value = max(0, min(outputChannels[int(chn) - 1] + 25, 255))
                         else:
                             value = 25
                     else:
