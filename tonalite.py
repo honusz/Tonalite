@@ -215,7 +215,7 @@ async def edit_sub_chan(sid, message):
 async def update_cue(sid, message):
     """Update the channel values for the current cue"""
     if clickedCue != None:
-        cues[clickedCue]["values"] = calculate_chans([0] * 48, outputChannels, submasters, grandmaster)
+        cues[clickedCue]["values"] = calculate_chans([0] * 48, outputChannels, [], 100)
         await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
         await sio.emit('alert', {'alertType': "info", 'alert': "Cue channels updated!"}, namespace='/tonalite', room=sid)
     else:
