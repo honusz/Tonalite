@@ -367,6 +367,7 @@ async def save_cue(sid, message):
             await sio.emit('alert', {'alertType': "warning", 'alert': "The cue Name, Time, or Follow is empty!"}, namespace='/tonalite', room=sid)
         await sio.emit('cue settings', {'cues': cues, 'selected_cue': clickedCue, 'name': cues[clickedCue]["name"], 'description': cues[clickedCue]["description"], "time": cues[clickedCue]["time"], "follow": cues[clickedCue]["follow"], 'current_cue': currentCue}, namespace='/tonalite', room=sid)
         await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
+        await sio.emit('alert', {'alertType': "info", 'alert': "Cue settings saved!"}, namespace='/tonalite', room=sid)
     else:
         await sio.emit('alert', {'alertType': "error", 'alert': "You must click a cue first!"}, namespace='/tonalite', room=sid)
 
