@@ -19,9 +19,12 @@
       <div class="header-item header-btn col-1 dropdown">
         <button onclick="settingsDropdown()" class="btn btn-small btn-yellow dropbtn"><i class="fas fa-cog"></i></button>
         <div id="settingsDropdown" class="dropdown-content">
+          <label for="serverIP">Server IP:</label>
           <input type="text" placeholder="Server IP" id="serverIP" value="127.0.0.1">
+          <label for="serverPort">Server Port:</label>
           <input type="number" value="9898" placeholder="Server Port" id="serverPort">
-          <input type="text" placeholder="sACN IP" id="sacnIP" value="127.0.0.1">
+          <label for="sacnIP">E1.31 (sACN) IP:</label>
+          <input type="text" placeholder="E1.31 IP" id="sacnIP" value="127.0.0.1">
           <button class="btn btn-yellow btn-full disable-selection" id="resetSettingsBtn">Reset</button>
           <br>
           <button class="btn btn-green btn-full disable-selection saveSettingsBtn">Save</button>
