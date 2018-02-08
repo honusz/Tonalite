@@ -98,6 +98,9 @@ function updateSubs(msg) {
       $("#Submasters").append("<div class=\"col-1 submaster\"><div class=\"sliders\"><div class=\"slider\" id=\"sub-" + i + "\"></div></div><div class=\"subtitle\"><button id=\"sub-btn-" + i + "\" class=\"btn btn-yellow sub-btn disable-selection\">" + msg.submasters[i].name + "</button></div></div>");
     }
   }
+  if (!document.getElementById("addSubBtn")) {
+    $("#Submasters").append("<div class=\"col-2 submaster\"><button class=\"btn btn-green btn-tall disable-selection\" id=\"addSubBtn\"><i class=\"fas fa-plus-square\"></i> New Submaster</button></div>");
+  }
   var sliders = $('.slider');
   for (var s = 0; s < sliders.length; s++) {
 
@@ -250,16 +253,10 @@ $(window).bind("load", function () {
   socket.on('update chans and subs', function (msg) {
     updateChannels(msg);
     updateSubs(msg);
-    if (!document.getElementById("addSubBtn")) {
-      $("#Submasters").append("<div class=\"col-2 submaster\"><button class=\"btn btn-green btn-tall disable-selection\" id=\"addSubBtn\"><i class=\"fas fa-plus-square\"></i> New Submaster</button></div>");
-    }
   });
 
   socket.on('update subs', function (msg) {
     updateSubs(msg);
-    if (!document.getElementById("addSubBtn")) {
-      $("#Submasters").append("<div class=\"col-2 submaster\"><button class=\"btn btn-green btn-tall disable-selection\" id=\"addSubBtn\"><i class=\"fas fa-plus-square\"></i> New Submaster</button></div>");
-    }
   });
 
   socket.on('update cues', function (msg) {
@@ -290,9 +287,6 @@ $(window).bind("load", function () {
     updateChannels(msg);
     updateCues(msg);
     updateSubs(msg);
-    if (!document.getElementById("addSubBtn")) {
-      $("#Submasters").append("<div class=\"col-2 submaster\"><button class=\"btn btn-green btn-tall disable-selection\" id=\"addSubBtn\"><i class=\"fas fa-plus-square\"></i> New Submaster</button></div>");
-    }
     updateGrandmaster(msg);
     if (msg.show.name != "") {
       $("#showName").val(msg.show.name);
