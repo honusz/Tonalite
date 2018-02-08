@@ -6,12 +6,18 @@ def calculate_chans(chans, output_chans, isubmasters, grandmaster):
             o_chans[i] = output_chans[i]
         else:
             o_chans[i] = chans[i]
+            
             for i, _ in enumerate(isubmasters):
                 for chan, _ in enumerate(isubmasters[i]["channels"]):
-                    subChanValue = int((255/100) * isubmasters[i]["value"])
+                    # Get what the output value will be
                     outChanValue = o_chans[int(isubmasters[i]["channels"][chan]["channel"]) - 1]
+                    # Convert the sub chan value to 0-255
+                    subChanValue = 2.55 * isubmasters[i]["channels"][chan]["value"]
+                    # Get the percentage of the sub chan value from the submaster
+                    subChanValue = int((subChanValue/100) * isubmasters[i]["value"])
                     if subChanValue > outChanValue:
                         o_chans[int(isubmasters[i]["channels"][chan]["channel"]) - 1] = subChanValue
+
     for i, _ in enumerate(o_chans):
         o_chans[i] = int((o_chans[i]/100.0) * grandmaster)
     return o_chans

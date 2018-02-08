@@ -73,19 +73,18 @@ async def generate_fade(start, end, secs=3.0, fps=40):
 
         source.send_data(calculate_chans(channels, outputChannels, submasters, grandmaster))
         await sio.emit('update chans', {'channels': calculate_chans(channels, outputChannels, submasters, grandmaster)}, namespace='/tonalite')
-        time.sleep(secs / int(secs * fps))
+        time.sleep(secs / (secs * fps))
 
 
-def set_sub_chans():
+def set_sub_chans(echannels):
     """Create submaster channels based on what was set by the user"""
-    temp_channels = []
 
     for i, _ in enumerate(outputChannels):
         if outputChannels[i] != None:
-            temp_channels.append(
-                {"channel": i + 1, "value": math.ceil((outputChannels[i] / 255) * 100)})
+            if not any(c["channel"] == i + 1 for c in echannels):
+                echannels.append({"channel": i + 1, "value": math.ceil((outputChannels[i] / 255) * 100)})
 
-    return temp_channels
+    return echannels
 
 
 async def index(request):
@@ -165,8 +164,7 @@ async def sub_info(sid, message):
 @sio.on('add sub', namespace='/tonalite')
 async def add_sub(sid, message):
     """Create a new submaster with default values"""
-    submasters.append(
-        {"name": "New Sub", "channels": set_sub_chans(), "value": 0})
+    submasters.append({"name": "New Sub", "channels": [], "value": 0})
     await sio.emit('update subs', {'submasters': submasters}, namespace='/tonalite')
 
 
@@ -180,7 +178,10 @@ async def remove_sub(sid, message):
 @sio.on('add sub chan', namespace='/tonalite')
 async def add_sub_chan(sid, message):
     """Add a control channel to the current submaster"""
-    submasters[clickedSub]["channels"].append({"channel": 1, "value": 100})
+    if message == "multiple":
+        submasters[clickedSub]["channels"] = set_sub_chans(submasters[clickedSub]["channels"])
+    else:
+        submasters[clickedSub]["channels"].append({"channel": 1, "value": 100})
     await sio.emit('sub settings', {'name': submasters[clickedSub]["name"], 'channels': submasters[clickedSub]["channels"], 'value': submasters[clickedSub]["value"]}, namespace='/tonalite', room=sid)
 
 
@@ -208,13 +209,14 @@ async def edit_sub_chan(sid, message):
         submasters[clickedSub]["channels"].pop(message["chan"])
     source.send_data(calculate_chans(channels, outputChannels, submasters, grandmaster))
     await sio.emit('sub settings', {'name': submasters[clickedSub]["name"], 'channels': submasters[clickedSub]["channels"], 'value': submasters[clickedSub]["value"]}, namespace='/tonalite', room=sid)
+    await sio.emit('update chans and subs', {'channels': calculate_chans(channels, outputChannels, submasters, grandmaster), 'submasters': submasters}, namespace='/tonalite')
 
 
 @sio.on('update cue', namespace='/tonalite')
 async def update_cue(sid, message):
     """Update the channel values for the current cue"""
     if clickedCue != None:
-        cues[clickedCue]["values"] = calculate_chans([0] * 48, outputChannels, submasters, grandmaster)
+        cues[clickedCue]["values"] = calculate_chans([0] * 48, outputChannels, [], 100)
         await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
         await sio.emit('alert', {'alertType': "info", 'alert': "Cue channels updated!"}, namespace='/tonalite', room=sid)
     else:
@@ -365,6 +367,7 @@ async def save_cue(sid, message):
             await sio.emit('alert', {'alertType': "warning", 'alert': "The cue Name, Time, or Follow is empty!"}, namespace='/tonalite', room=sid)
         await sio.emit('cue settings', {'cues': cues, 'selected_cue': clickedCue, 'name': cues[clickedCue]["name"], 'description': cues[clickedCue]["description"], "time": cues[clickedCue]["time"], "follow": cues[clickedCue]["follow"], 'current_cue': currentCue}, namespace='/tonalite', room=sid)
         await sio.emit('update cues', {'cues': cues, 'selected_cue': clickedCue, 'current_cue': currentCue}, namespace='/tonalite')
+        await sio.emit('alert', {'alertType': "info", 'alert': "Cue settings saved!"}, namespace='/tonalite', room=sid)
     else:
         await sio.emit('alert', {'alertType': "error", 'alert': "You must click a cue first!"}, namespace='/tonalite', room=sid)
 
@@ -442,12 +445,12 @@ async def command_message(sid, message):
                         value = int((255/100) * (max(0, min(int(value), 100))))
                     elif value == "d":
                         if outputChannels[int(chn) - 1] != None:
-                            value = max(0, min(channels[int(chn) - 1] - 25, 255))
+                            value = max(0, min(outputChannels[int(chn) - 1] - 25, 255))
                         else:
                             value = 0
                     elif value == "b":
                         if outputChannels[int(chn) - 1] != None:
-                            value = max(0, min(channels[int(chn) - 1] + 25, 255))
+                            value = max(0, min(outputChannels[int(chn) - 1] + 25, 255))
                         else:
                             value = 25
                     else:

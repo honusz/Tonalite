@@ -280,7 +280,7 @@ $(window).bind("load", function () {
     $("#sub-channels").empty();
     if (msg.channels.length != 0) {
       for (var i = 0; i < msg.channels.length; i++) {
-        $("#sub-channels").append("<div class=\"col-5\"><input type=\"number\" placeholder=\"Channel:\" value=\"" + msg.channels[i].channel + "\" id=\"sub-channel-" + i + "-channel\" min=\"1\" max=\"48\"></div><div class=\"col-5\"><input type=\"number\" placeholder=\"Value:\" value=\"" + msg.channels[i].value + "\" id=\"sub-channel-" + i + "-value\" min=\"0\" max=\"100\"></div><div class=\"col-1\"><button class=\"btn btn-green btn-full btn-tall sub-chan-save\" subChan=\"" + i + "\"><i class=\"fas fa-save\"></i></button></div><div class=\"col-1\"><button class=\"btn btn-red btn-full btn-tall sub-chan-delete\" subChan=\"" + i + "\"><i class=\"fas fa-trash-alt\"></i></button></div>");
+        $("#sub-channels").append("<div class=\"row\"><div class=\"col-5 col-md-4\"><input type=\"number\" placeholder=\"Channel:\" value=\"" + msg.channels[i].channel + "\" id=\"sub-channel-" + i + "-channel\" min=\"1\" max=\"48\"></div><div class=\"col-5 col-md-4\"><input type=\"number\" placeholder=\"Value:\" value=\"" + msg.channels[i].value + "\" id=\"sub-channel-" + i + "-value\" min=\"0\" max=\"100\"></div><div class=\"col-1 col-md-2\"><button class=\"btn btn-green btn-full btn-tall sub-chan-save\" subChan=\"" + i + "\"><i class=\"fas fa-save\"></i></button></div><div class=\"col-1 col-md-2\"><button class=\"btn btn-red btn-full btn-tall sub-chan-delete\" subChan=\"" + i + "\"><i class=\"fas fa-trash-alt\"></i></button></div></div>");
       }
     }
     subModal.style.display = "block";
@@ -433,7 +433,11 @@ $(window).bind("load", function () {
   });
 
   $("#addSubChanBtn").click(function () {
-    socket.emit('add sub chan', "nothing");
+    socket.emit('add sub chan', "");
+  });
+
+  $("#addSubChansBtn").click(function () {
+    socket.emit('add sub chan', "multiple");
   });
 
   $("#clearShowBtn").click(function () {

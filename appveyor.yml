@@ -14,5 +14,6 @@ test_script:
 build_script:
   - "cd src_channelman && %PYTHON%\\python.exe setup.py build_ext --inplace && copy channelman.cp36-win_amd64.pyd ..\\channelman.pyd && cd ../"
   - "%PYTHON%\\python.exe -m PyInstaller tonalite-win.spec"
+  - "rmdir %APPVEYOR_BUILD_FOLDER%\\dist\\tonalite\\static\\sass /s /Q"
   - "7z a Tonalite-%APPVEYOR_BUILD_VERSION%-Win64.zip %APPVEYOR_BUILD_FOLDER%\\dist\\tonalite\\*"
   

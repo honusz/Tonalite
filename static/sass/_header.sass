@@ -19,13 +19,17 @@
 .dropdown-content
     display: none
     position: absolute
-    background-color: $bg-light-color
+    background-color: lighten($bg-light-color, 7.5%)
     min-width: 10em
     margin-left: 1.45em
     z-index: 1
 
     input
         margin-bottom: 0.25em
+
+@media only screen and (max-width: 768px)
+    .dropdown-content
+        margin-left: 0
 
 .show
     display: block

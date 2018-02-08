@@ -19,9 +19,12 @@
       <div class="header-item header-btn col-1 dropdown">
         <button onclick="settingsDropdown()" class="btn btn-small btn-yellow dropbtn"><i class="fas fa-cog"></i></button>
         <div id="settingsDropdown" class="dropdown-content">
+          <label for="serverIP">Server IP:</label>
           <input type="text" placeholder="Server IP" id="serverIP" value="127.0.0.1">
+          <label for="serverPort">Server Port:</label>
           <input type="number" value="9898" placeholder="Server Port" id="serverPort">
-          <input type="text" placeholder="sACN IP" id="sacnIP" value="127.0.0.1">
+          <label for="sacnIP">E1.31 (sACN) IP:</label>
+          <input type="text" placeholder="E1.31 IP" id="sacnIP" value="127.0.0.1">
           <button class="btn btn-yellow btn-full disable-selection" id="resetSettingsBtn">Reset</button>
           <br>
           <button class="btn btn-green btn-full disable-selection saveSettingsBtn">Save</button>
@@ -80,46 +83,46 @@
             <div class="col-4 keyboard-btn">
               <button class="kbtn btn btn-yellow btn-full btn-tall disable-selection" inputVal="9">9</button>
             </div>
-            <div class="col-2 keyboard-btn">
+            <div class="col-2 col-md-4 keyboard-btn">
               <button class="kbtn btn btn-red btn-full btn-tall disable-selection" inputVal="c ">Channel</button>
             </div>
-            <div class="col-2 keyboard-btn">
+            <div class="col-2 col-md-4 keyboard-btn">
               <button class="kbtn btn btn-red btn-full btn-tall disable-selection" inputVal="r ">Record</button>
             </div>
             <div class="col-4 keyboard-btn">
               <button class="kbtn btn btn-yellow btn-full btn-tall disable-selection" inputVal="0">0</button>
             </div>
-            <div class="col-2 keyboard-btn">
+            <div class="col-2 col-md-4 keyboard-btn">
               <button class="kbtn btn btn-blue btn-full btn-tall disable-selection" inputVal=" a ">At</button>
             </div>
-            <div class="col-2 keyboard-btn">
+            <div class="col-2 col-md-4 keyboard-btn">
               <button class="kbtn btn btn-blue btn-full btn-tall disable-selection" inputVal="100">Full</button>
             </div>
             <div class="col-4 keyboard-btn">
               <button class="kbtn btn btn-red btn-full btn-tall disable-selection" inputVal="q">Cue</button>
             </div>
-            <div class="col-2 keyboard-btn">
+            <div class="col-2 col-md-4 keyboard-btn">
               <button class="kbtn btn btn-blue btn-full btn-tall disable-selection" inputVal="+">And</button>
             </div>
-            <div class="col-2 keyboard-btn">
+            <div class="col-2 col-md-4 keyboard-btn">
               <button class="kbtn btn btn-blue btn-full btn-tall disable-selection" inputVal="-">Through</button>
             </div>
-            <div class="col-2 keyboard-btn">
+            <div class="col-2 col-md-4 keyboard-btn">
               <button class="kbtn btn btn-blue btn-full btn-tall disable-selection" inputVal="d">Dim</button>
             </div>
-            <div class="col-2 keyboard-btn">
+            <div class="col-2 col-md-4 keyboard-btn">
               <button class="kbtn btn btn-blue btn-full btn-tall disable-selection" inputVal="b">Bright</button>
             </div>
-            <div class="col-6 keyboard-btn">
+            <div class="col-6 col-md-8 keyboard-btn">
               <input type="text" placeholder="Command:" id="commandInput">
             </div>
-            <div class="col-2 keyboard-btn btn-tall">
+            <div class="col-2 col-md-4 keyboard-btn btn-tall">
               <button class="btn btn-green btn-full btn-tall disable-selection" id="commandSubmitBtn">Go</button>
             </div>
-            <div class="col-2 keyboard-btn btn-tall">
+            <div class="col-2 col-md-4 keyboard-btn btn-tall">
               <button class="btn btn-yellow btn-full btn-tall disable-selection" id="commandClearBtn">Clear</button>
             </div>
-            <div class="col-2 keyboard-btn btn-tall">
+            <div class="col-2 col-md-4 keyboard-btn btn-tall">
               <button class="btn btn-red btn-full btn-tall disable-selection" id="commandReleaseBtn">Release</button>
             </div>
           </div>
@@ -183,11 +186,11 @@
         </div>
     </div>
     <div class="row" id="footer">
-        <button class="tab-item col-3 disable-selection" onclick="openTab(event, 'Keyboard')" id="keyboardTabBtn"><i class="fas fa-keyboard icon-hidden"></i> Keyboard</button>
-        <button class="tab-item col-2 disable-selection" onclick="openTab(event, 'Channels')" id="channelsTabBtn"><i class="fas fa-exchange-alt icon-hidden"></i> Channels</button>
-        <button class="tab-item col-2 disable-selection" onclick="openTab(event, 'Cues')" id="cuesTabBtn"><i class="fas fa-list-alt icon-hidden"></i> Cues</button>
-        <button class="tab-item col-3 disable-selection" onclick="openTab(event, 'Submasters')" id="subsTabBtn"><i class="fas fa-sliders-h icon-hidden"></i> Submasters</button>
-        <button class="tab-item col-2 disable-selection" onclick="openTab(event, 'Show')" id="showTabBtn"><i class="fas fa-cogs icon-hidden"></i> Show</button>
+        <button class="tab-item col-3 disable-selection" onclick="openTab(event, 'Keyboard')" id="keyboardTabBtn"><i class="fas fa-keyboard"></i> <span class="text-hidden">Keyboard</span></button>
+        <button class="tab-item col-2 disable-selection" onclick="openTab(event, 'Channels')" id="channelsTabBtn"><i class="fas fa-exchange-alt"></i> <span class="text-hidden">Channels</span></button>
+        <button class="tab-item col-2 disable-selection" onclick="openTab(event, 'Cues')" id="cuesTabBtn"><i class="fas fa-list-alt"></i> <span class="text-hidden">Cues</span></button>
+        <button class="tab-item col-3 disable-selection" onclick="openTab(event, 'Submasters')" id="subsTabBtn"><i class="fas fa-sliders-h"></i> <span class="text-hidden">Submasters</span></button>
+        <button class="tab-item col-2 disable-selection" onclick="openTab(event, 'Show')" id="showTabBtn"><i class="fas fa-cogs"></i> <span class="text-hidden">Show</span></button>
     </div>
     <div id="subSettingsModal" class="modal">
       <div class="modal-content">
@@ -207,7 +210,14 @@
           <div class="col-6 col-md-12 sub-chan-settings">
               <h3 class="disable-selection">Channels:</h3>
               <div class="row" id="sub-channels"></div>
-              <button class="btn btn-yellow btn-full disable-selection" id="addSubChanBtn">Add Channel</button>
+              <div class="row">
+                <div class="col-6 col-md-12">
+                  <button class="btn btn-yellow btn-full disable-selection" id="addSubChanBtn">Add Channel</button>
+                </div>
+                <div class="col-6 col-md-12">
+                  <button class="btn btn-purple btn-full disable-selection" id="addSubChansBtn">Add Channels From Keyboard</button>
+                </div>
+              </div>
           </div>
         </div>
       </div>
@@ -239,13 +249,13 @@
       </div>
     </div>
     <script src="static/js/jquery-3.2.1.min.js"></script>
-    <script src="static/js/socket.io.js"></script>
-    <script src="static/js/nouislider.min.js"></script>
-    <script src="static/js/wNumb.js"></script>
+    <script src="static/js/nouislider.min.js" async></script>
+    <script src="static/js/wNumb.js" async></script>
     <script src="static/js/jQuery.succinct.min.js"></script>
-    <script src="static/js/keypress-2.1.4.min.js"></script>
-    <script src="static/js/toastr.min.js"></script>
-    <script src="static/js/isMobile.min.js"></script>
-    <script src="static/js/script.min.js"></script>
+    <script src="static/js/keypress-2.1.4.min.js" async></script>
+    <script src="static/js/toastr.min.js" async></script>
+    <script src="static/js/isMobile.min.js" async></script>
+    <script src="static/js/socket.io.js" defer></script>
+    <script src="static/js/script.min.js" defer></script>
   </body>
 </html>
