@@ -98,7 +98,7 @@ function updateSubs(msg) {
       $("#Submasters").append("<div class=\"col-1 submaster\"><div class=\"sliders\"><div class=\"slider\" id=\"sub-" + i + "\"></div></div><div class=\"subtitle\"><button id=\"sub-btn-" + i + "\" class=\"btn btn-yellow sub-btn disable-selection\">" + msg.submasters[i].name + "</button></div></div>");
     }
   }
-  if (!document.getElementById("addSubBtn")) {
+  while (!$('#addSubBtn').length > 0) {
     $("#Submasters").append("<div class=\"col-2 submaster\"><button class=\"btn btn-green btn-tall disable-selection\" id=\"addSubBtn\"><i class=\"fas fa-plus-square\"></i> New Submaster</button></div>");
   }
   var sliders = $('.slider');
