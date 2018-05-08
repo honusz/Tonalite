@@ -30,6 +30,8 @@
 *.exe
 *.out
 *.app
+tonalite
+src/.json.hpp.swp
 
 #CMake
 CMakeCache.txt
