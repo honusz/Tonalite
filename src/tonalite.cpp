@@ -2,9 +2,12 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <iostream>
 #include <err.h>
 #include "e131.hpp"
 #include "json.hpp"
+
+using namespace std;
 
 int main() {
   int sockfd;
@@ -33,6 +36,7 @@ int main() {
     level++;
     if (e131_send(sockfd, &packet, &dest) < 0)
       err(EXIT_FAILURE, "e131_send");
+    cout << "Frame" << endl;
     //e131_pkt_dump(stderr, &packet);
     packet.frame.seq_number++;
     usleep(250000);
