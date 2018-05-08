@@ -21,7 +21,7 @@ int main() {
     err(EXIT_FAILURE, "e131_set_option");
 
   // set remote system destination as multicast address
-  if (e131_multicast_dest(&dest, "239.255.0.1", E131_DEFAULT_PORT) < 0)
+  if (e131_multicast_dest("239.255.0.1", 1, E131_DEFAULT_PORT) < 0)
     err(EXIT_FAILURE, "e131_multicast_dest");
 
   // loop to send cycling levels for each slot
