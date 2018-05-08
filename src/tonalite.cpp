@@ -16,13 +16,13 @@ int main() {
 
   // initialize the new E1.31 packet in universe 1 with 24 slots in preview mode
   e131_pkt_init(&packet, 1, 24);
-  memcpy(&packet.frame.source_name, "E1.31 Test Client", 18);
+  memcpy(&packet.frame.source_name, "Tonalite Client", 18);
   if (e131_set_option(&packet, E131_OPT_PREVIEW, true) < 0)
     err(EXIT_FAILURE, "e131_set_option");
 
-  // set remote system destination as unicast address
-  if (e131_unicast_dest(&dest, "127.0.0.1", E131_DEFAULT_PORT) < 0)
-    err(EXIT_FAILURE, "e131_unicast_dest");
+  // set remote system destination as multicast address
+  if (e131_multicast_dest(&dest, "239.255.0.1", E131_DEFAULT_PORT) < 0)
+    err(EXIT_FAILURE, "e131_multicast_dest");
 
   // loop to send cycling levels for each slot
   uint8_t level = 0;
