@@ -3,7 +3,8 @@
 #include <unistd.h>
 #include <string.h>
 #include <err.h>
-#include "e131.h"
+#include "e131.hpp"
+#include "json.hpp"
 
 int main() {
   int sockfd;
