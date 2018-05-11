@@ -1,5 +1,9 @@
 language: cpp
 
+addons:
+  apt:
+    update: true
+
 matrix:
   include:
     - os: linux
