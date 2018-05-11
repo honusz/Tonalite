@@ -12,6 +12,7 @@
 #include "uWebSockets/src/uWS.h"
 
 using namespace std;
+using namespace uWS;
 
 struct channel {
   int id;
@@ -103,7 +104,23 @@ int runTest() {
 
 int main() {
   runTest();
-  pthread_t threads[2];
+  //runDMX();
+  Hub h;
+    std::string response = "Hello!";
+
+    h.onMessage([](WebSocket<SERVER> *ws, char *message, size_t length, OpCode opCode) {
+        ws->send(message, length, opCode);
+    });
+
+    h.onHttpRequest([&](HttpResponse *res, HttpRequest req, char *data, size_t length,
+                        size_t remainingBytes) {
+        res->end(response.data(), response.length());
+    });
+
+    if (h.listen(3000)) {
+        h.run();
+    }
+  /*pthread_t threads[2];
   int rc;
   int rc2;
   rc = pthread_create(&threads[0], NULL, PrintHello, (void *)0);
@@ -118,5 +135,5 @@ int main() {
          cout << "Error:unable to create thread," << rc2 << endl;
          exit(-1);
       }
-   pthread_exit(NULL);
+   pthread_exit(NULL);*/
 }
