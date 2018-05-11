@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5.1)
 set (CMAKE_CXX_STANDARD 11)
 project (tonalite)
-add_executable(tonalite src/tonalite.cpp src/e131.cpp src/utilities.cpp src/ws/Extensions.cpp src/ws/Group.cpp src/ws/Networking.cpp src/ws/Hub.cpp src/ws/Node.cpp src/ws/WebSocket.cpp src/ws/HTTPSocket.cpp src/ws/Socket.cpp src/ws/Epoll.cpp src/ws/Room.cpp)
+add_executable(tonalite src/tonalite.cpp src/e131.cpp src/utilities.cpp src/uWebSockets/src/Extensions.cpp src/uWebSockets/src/Group.cpp src/uWebSockets/src/Networking.cpp src/uWebSockets/src/Hub.cpp src/uWebSockets/src/Node.cpp src/uWebSockets/src/WebSocket.cpp src/uWebSockets/src/HTTPSocket.cpp src/uWebSockets/src/Socket.cpp src/uWebSockets/src/Epoll.cpp src/uWebSockets/src/Room.cpp)
 target_link_libraries(tonalite ssl crypto)
 find_package( ZLIB REQUIRED )
 if ( ZLIB_FOUND )
