@@ -1,4 +1,4 @@
-# Tonalite 2.0
+# Tonalite 2.0 [![Build Status](https://travis-ci.com/johnroper100/tonalite2.0.svg?token=J2xpoTVMPM4kTrogdYRc&branch=master)](https://travis-ci.com/johnroper100/tonalite2.0)
 
 ## Build Steps
 
