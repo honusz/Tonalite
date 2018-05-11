@@ -32,6 +32,8 @@ struct fixture {
 
 int main() {
   vector <fixture> fixtures;
+
+  /* Start E1.31 testing */
   int sockfd;
   e131_packet_t packet;
   e131_addr_t dest;
