@@ -3,10 +3,13 @@
 #include <unistd.h>
 #include <string>
 #include <iostream>
+#include <cstdlib>
+#include <pthread.h>
 #include <err.h>
 #include "e131.hpp"
 #include "json.hpp"
 #include "utitities.hpp"
+#include "uWebSockets/src/uWS.h"
 
 using namespace std;
 
@@ -40,7 +43,7 @@ struct cue {
   vector <fixture> fixtures;
 };
 
-int main() {
+int runDMX() {
   vector <fixture> fixtures;
   vector <cue> cues;
 
@@ -76,4 +79,44 @@ int main() {
     packet.frame.seq_number++;
     usleep(250000);
   }
+};
+
+void *PrintHello(void *threadid) {
+   long tid;
+   tid = (long)threadid;
+   cout << "Hello World! Thread ID, " << tid << endl;
+   pthread_exit(NULL);
+}
+
+void *PrintHello2(void *threadid) {
+   long tid;
+   tid = (long)threadid;
+  for (;;) {
+    cout << "Hello World 2! Thread ID, " << tid << endl;
+  }
+   pthread_exit(NULL);
+}
+
+int runTest() {
+  cout << "hi" << endl;
+};
+
+int main() {
+  runTest();
+  pthread_t threads[2];
+  int rc;
+  int rc2;
+  rc = pthread_create(&threads[0], NULL, PrintHello, (void *)0);
+      
+      if (rc) {
+         cout << "Error:unable to create thread," << rc << endl;
+         exit(-1);
+      }
+   rc2 = pthread_create(&threads[1], NULL, PrintHello2, (void *)1);
+      
+      if (rc2) {
+         cout << "Error:unable to create thread," << rc2 << endl;
+         exit(-1);
+      }
+   pthread_exit(NULL);
 }
