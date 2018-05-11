@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string>
 #include <string.h>
 #include <iostream>
 #include <err.h>
@@ -9,7 +10,28 @@
 
 using namespace std;
 
+struct channel {
+  int id;
+  string type;
+  int max;
+  int min;
+  int displayMax;
+  int displayMin;
+  int defaultVal;
+  int dmxAddress;
+  int value;
+};
+
+struct fixture {
+  int id;
+  int startDMXAddress;
+  string name;
+  string shortName;
+  vector <channel> channels;
+};
+
 int main() {
+  vector <fixture> fixtures;
   int sockfd;
   e131_packet_t packet;
   e131_addr_t dest;
