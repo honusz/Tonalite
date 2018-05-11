@@ -6,6 +6,7 @@
 #include <err.h>
 #include "e131.hpp"
 #include "json.hpp"
+#include "utitities.hpp"
 
 using namespace std;
 
@@ -41,6 +42,7 @@ struct cue {
 
 int main() {
   vector <fixture> fixtures;
+  vector <cue> cues;
 
   /* Start E1.31 testing */
   int sockfd;
