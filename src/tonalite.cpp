@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string>
-#include <string.h>
 #include <iostream>
 #include <err.h>
 #include "e131.hpp"
@@ -24,10 +23,20 @@ struct channel {
 
 struct fixture {
   int id;
-  int startDMXAddress;
   string name;
   string shortName;
+  string manufacturer;
+  int startDMXAddress;
   vector <channel> channels;
+};
+
+struct cue {
+  int id;
+  string name;
+  string description;
+  bool active;
+  int time;
+  vector <fixture> fixtures;
 };
 
 int main() {
