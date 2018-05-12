@@ -88,37 +88,11 @@ int runDMX()
   }
 };
 
-void *PrintHello(void *threadid)
+void *serverLoop(void *threadid)
 {
   long tid;
   tid = (long)threadid;
-  cout << "Hello World! Thread ID, " << tid << endl;
-  pthread_exit(NULL);
-}
 
-void *PrintHello2(void *threadid)
-{
-  long tid;
-  tid = (long)threadid;
-  for (;;)
-  {
-    cout << "Hello World 2! Thread ID, " << tid << endl;
-  }
-  pthread_exit(NULL);
-}
-
-int runTest()
-{
-  cout << "hi" << endl;
-};
-
-const char *find_embedded_file(const char *file_name, size_t *size);
-
-int main()
-{
-  runTest();
-
-  //runDMX();
   Hub h;
   string response = "<!DOCTYPE html><html><head><title>hi</title></head><body><h1>hello world!</h1></body></html>";
 
@@ -135,20 +109,34 @@ int main()
   {
     h.run();
   }
-  /*pthread_t threads[2];
+
+  pthread_exit(NULL);
+}
+
+void *startDMX(void *threadid)
+{
+  long tid;
+  tid = (long)threadid;
+  runDMX();
+  pthread_exit(NULL);
+}
+
+int main()
+{
+  pthread_t threads[2];
   int rc;
   int rc2;
-  rc = pthread_create(&threads[0], NULL, PrintHello, (void *)0);
-      
-      if (rc) {
-         cout << "Error:unable to create thread," << rc << endl;
-         exit(-1);
-      }
-   rc2 = pthread_create(&threads[1], NULL, PrintHello2, (void *)1);
-      
-      if (rc2) {
-         cout << "Error:unable to create thread," << rc2 << endl;
-         exit(-1);
-      }
-   pthread_exit(NULL);*/
+  rc = pthread_create(&threads[0], NULL, serverLoop, (void *)0);
+  if (rc)
+  {
+    cout << "Error:unable to create thread," << rc << endl;
+    exit(-1);
+  }
+  rc2 = pthread_create(&threads[1], NULL, startDMX, (void *)1);
+  if (rc2)
+  {
+    cout << "Error:unable to create thread," << rc2 << endl;
+    exit(-1);
+  }
+  pthread_exit(NULL);
 }
