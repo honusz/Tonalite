@@ -1,5 +1,13 @@
 {
     "files.associations": {
-        "*.ipp": "cpp"
+        "*.ipp": "cpp",
+        "array": "cpp",
+        "slist": "cpp",
+        "initializer_list": "cpp",
+        "string_view": "cpp",
+        "utility": "cpp",
+        "valarray": "cpp",
+        "system_error": "cpp",
+        "*.tcc": "cpp"
     }
 }

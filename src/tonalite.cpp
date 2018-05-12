@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stddef.h>
 #include <unistd.h>
 #include <string>
 #include <iostream>
@@ -14,7 +15,8 @@
 using namespace std;
 using namespace uWS;
 
-struct channel {
+struct channel
+{
   int id;
   string type;
   int max;
@@ -26,27 +28,30 @@ struct channel {
   int value;
 };
 
-struct fixture {
+struct fixture
+{
   int id;
   string name;
   string shortName;
   string manufacturer;
   int startDMXAddress;
-  vector <channel> channels;
+  vector<channel> channels;
 };
 
-struct cue {
+struct cue
+{
   int id;
   string name;
   string description;
   bool active;
   int time;
-  vector <fixture> fixtures;
+  vector<fixture> fixtures;
 };
 
-int runDMX() {
-  vector <fixture> fixtures;
-  vector <cue> cues;
+int runDMX()
+{
+  vector<fixture> fixtures;
+  vector<cue> cues;
 
   /* Start E1.31 testing */
   int sockfd;
@@ -69,8 +74,9 @@ int runDMX() {
 
   // loop to send cycling levels for each slot
   uint8_t level = 0;
-  for (;;) {
-    for (size_t pos=0; pos<24; pos++)
+  for (;;)
+  {
+    for (size_t pos = 0; pos < 24; pos++)
       packet.dmp.prop_val[pos + 1] = level;
     level++;
     if (e131_send(sockfd, &packet, &dest) < 0)
@@ -82,44 +88,53 @@ int runDMX() {
   }
 };
 
-void *PrintHello(void *threadid) {
-   long tid;
-   tid = (long)threadid;
-   cout << "Hello World! Thread ID, " << tid << endl;
-   pthread_exit(NULL);
+void *PrintHello(void *threadid)
+{
+  long tid;
+  tid = (long)threadid;
+  cout << "Hello World! Thread ID, " << tid << endl;
+  pthread_exit(NULL);
 }
 
-void *PrintHello2(void *threadid) {
-   long tid;
-   tid = (long)threadid;
-  for (;;) {
+void *PrintHello2(void *threadid)
+{
+  long tid;
+  tid = (long)threadid;
+  for (;;)
+  {
     cout << "Hello World 2! Thread ID, " << tid << endl;
   }
-   pthread_exit(NULL);
+  pthread_exit(NULL);
 }
 
-int runTest() {
+int runTest()
+{
   cout << "hi" << endl;
 };
 
-int main() {
+const char *find_embedded_file(const char *file_name, size_t *size);
+
+int main()
+{
   runTest();
+
   //runDMX();
   Hub h;
-    std::string response = "Hello!";
+  std::string response = "Hello!";
 
-    h.onMessage([](WebSocket<SERVER> *ws, char *message, size_t length, OpCode opCode) {
-        ws->send(message, length, opCode);
-    });
+  h.onMessage([](WebSocket<SERVER> *ws, char *message, size_t length, OpCode opCode) {
+    ws->send(message, length, opCode);
+  });
 
-    h.onHttpRequest([&](HttpResponse *res, HttpRequest req, char *data, size_t length,
-                        size_t remainingBytes) {
-        res->end(response.data(), response.length());
-    });
+  h.onHttpRequest([&](HttpResponse *res, HttpRequest req, char *data, size_t length,
+                      size_t remainingBytes) {
+    res->end(response.data(), response.length());
+  });
 
-    if (h.listen(3000)) {
-        h.run();
-    }
+  if (h.listen(3000))
+  {
+    h.run();
+  }
   /*pthread_t threads[2];
   int rc;
   int rc2;
