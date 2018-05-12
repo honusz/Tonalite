@@ -120,7 +120,7 @@ int main()
 
   //runDMX();
   Hub h;
-  std::string response = "Hello!";
+  string response = "<!DOCTYPE html><html><head><title>hi</title></head><body><h1>hello world!</h1></body></html>";
 
   h.onMessage([](WebSocket<SERVER> *ws, char *message, size_t length, OpCode opCode) {
     ws->send(message, length, opCode);
