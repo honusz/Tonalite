@@ -86,8 +86,9 @@ int processMessage(WebSocket<SERVER> *ws, char *message, size_t length)
   string str(messageString);
   json j = json::parse(str);
 
-  if (j["type"] == "getFixtureProfiles") {
-    cout << "Getting fixture profiles" << endl;
+  if (j["msg"] == "addFixture") {
+    fixture newFixture;
+    fixtures.push_back(newFixture);
   }
   return 0;
 };
