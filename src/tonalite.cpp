@@ -15,6 +15,7 @@
 
 using namespace std;
 using namespace uWS;
+using json = nlohmann::json;
 
 vector<fixture> fixtures;
 vector<cue> cues;
@@ -82,7 +83,8 @@ int processMessage(char *message, size_t length)
   {
     messageString[i] = message[i];
   }
-  cout << "Message: " << messageString << endl;
+  string str(messageString);
+  json j = json::parse(str);
   return 0;
 };
 
