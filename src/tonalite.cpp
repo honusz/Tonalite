@@ -75,7 +75,7 @@ int calculateEffects()
   return 0;
 };
 
-int processMessage(char *message, size_t length)
+int processMessage(WebSocket<SERVER> *ws, char *message, size_t length)
 {
   // Process the message recieved from a websockets client
   char messageString[length];
@@ -85,6 +85,10 @@ int processMessage(char *message, size_t length)
   }
   string str(messageString);
   json j = json::parse(str);
+
+  if (j["type"] == "getFixtureProfiles") {
+    cout << "Getting fixture profiles" << endl;
+  }
   return 0;
 };
 
@@ -98,7 +102,7 @@ void *serverLoop(void *threadid)
 
   // Setup websocket server
   h.onMessage([](WebSocket<SERVER> *ws, char *message, size_t length, OpCode opCode) {
-    processMessage(message, length);
+    processMessage(ws, message, length);
   });
 
   // Setup http (webpage) server
