@@ -83,7 +83,7 @@ int processMessage(char *message, size_t length)
   {
     messageString[i] = message[i];
   }
-  string str(messageString, messageString);
+  string str(messageString);
   json j = json::parse(str);
   return 0;
 };
