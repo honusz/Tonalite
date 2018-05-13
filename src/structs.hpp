@@ -13,7 +13,7 @@ struct channel
   int min;
   int displayMax;
   int displayMin;
-  int defaultVal;
+  int defaultValue;
   int dmxAddress;
   int value;
 };

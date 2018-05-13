@@ -22,9 +22,21 @@ int sockfd;
 e131_packet_t packet;
 e131_addr_t dest;
 
+vector<fixture> resetFixtureValues()
+{
+  for (fixture f : fixtures)
+  {
+    for (channel c : f.channels)
+    {
+      c.value = c.defaultValue;
+    }
+  }
+  return fixtures;
+};
+
 int resetDMXValues()
 {
-  for (size_t pos=0; pos<512; pos++)
+  for (size_t pos = 0; pos < 512; pos++)
     packet.dmp.prop_val[pos + 1] = 0;
   return 0;
 }
