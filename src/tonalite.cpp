@@ -38,7 +38,7 @@ vector<fixture> resetChannelValues()
 
 int resetDMXValues()
 {
-  // Reset the dmx values to 0 on each frame befroe effects/fixture values added
+  // Reset the dmx values to 0 on each frame before effects/fixture values added
   for (size_t pos = 0; pos < 512; pos++)
     packet.dmp.prop_val[pos + 1] = 0;
   return 0;
