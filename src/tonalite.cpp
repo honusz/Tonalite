@@ -74,6 +74,18 @@ int calculateEffects()
   return 0;
 };
 
+int processMessage(char *message, size_t length)
+{
+  // Process the message recieved from a websockets client
+  char messageString[length];
+  for (int i = 0; i < length; i++)
+  {
+    messageString[i] = message[i];
+  }
+  cout << "Message: " << messageString << endl;
+  return 0;
+};
+
 void *serverLoop(void *threadid)
 {
   long tid;
@@ -84,13 +96,7 @@ void *serverLoop(void *threadid)
 
   // Setup websocket server
   h.onMessage([](WebSocket<SERVER> *ws, char *message, size_t length, OpCode opCode) {
-    ws->send(message, length, opCode);
-    char messageString[length];
-    for (int i = 0; i < length; i++)
-    {
-      messageString[i] = message[i];
-    }
-    cout << "Message: " << messageString << endl;
+    processMessage(message, length);
   });
 
   // Setup http (webpage) server
@@ -134,7 +140,7 @@ void *startDMX(void *threadid)
     calculateFixtures(true);
     if (e131_send(sockfd, &packet, &dest) < 0)
       err(EXIT_FAILURE, "e131_send");
-    cout << "Frame" << endl;
+    //cout << "Frame" << endl;
     //e131_pkt_dump(stderr, &packet);
     packet.frame.seq_number++;
     usleep(250000);
