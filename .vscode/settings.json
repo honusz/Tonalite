@@ -9,6 +9,8 @@
         "valarray": "cpp",
         "system_error": "cpp",
         "*.tcc": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "ostream": "cpp",
+        "typeinfo": "cpp"
     }
 }

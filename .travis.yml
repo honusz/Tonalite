@@ -23,6 +23,8 @@ compiler:
   - gcc
 
 before_script:
-  - cmake .
+  - mkdir build
+  - cd build
+  - cmake ../
 
 script: make
