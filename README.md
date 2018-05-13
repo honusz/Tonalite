@@ -3,5 +3,7 @@
 ## Build Steps
 
 1. `sudo apt install cmake build-essential`
-2. `cmake .`
-3. `make`
+2. `mkdir build && cd build`
+3. `cmake ../`
+4. `make`
+5. `./tonalite`
