@@ -22,6 +22,13 @@ int sockfd;
 e131_packet_t packet;
 e131_addr_t dest;
 
+int resetDMXValues()
+{
+  for (size_t pos=0; pos<512; pos++)
+    packet.dmp.prop_val[pos + 1] = 0;
+  return 0;
+}
+
 void *serverLoop(void *threadid)
 {
   long tid;
@@ -68,6 +75,7 @@ void *startDMX(void *threadid)
 
   for (;;)
   {
+    resetDMXValues();
     if (e131_send(sockfd, &packet, &dest) < 0)
       err(EXIT_FAILURE, "e131_send");
     cout << "Frame" << endl;
