@@ -85,6 +85,12 @@ void *serverLoop(void *threadid)
   // Setup websocket server
   h.onMessage([](WebSocket<SERVER> *ws, char *message, size_t length, OpCode opCode) {
     ws->send(message, length, opCode);
+    char messageString[length];
+    for (int i = 0; i < length; i++)
+    {
+      messageString[i] = message[i];
+    }
+    cout << "Message: " << messageString << endl;
   });
 
   // Setup http (webpage) server
