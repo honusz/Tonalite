@@ -151,6 +151,7 @@ void *startDMX(void *threadid)
 
 int main()
 {
+  cout << "Tonalite 2.0 running! Press Ctrl + C to quit." << endl;
   pthread_t threads[2];
   int rc;
   int rc2;
