@@ -22,12 +22,14 @@ int sockfd;
 e131_packet_t packet;
 e131_addr_t dest;
 
-vector<fixture> resetFixtureValues()
+vector<fixture> resetChannelValues()
 {
+  // Reset all the channels in all fixtures to their defaults
   for (fixture f : fixtures)
   {
     for (channel c : f.channels)
     {
+      c.active = false;
       c.value = c.defaultValue;
     }
   }
@@ -36,10 +38,41 @@ vector<fixture> resetFixtureValues()
 
 int resetDMXValues()
 {
+  // Reset the dmx values to 0 on each frame befroe effects/fixture values added
   for (size_t pos = 0; pos < 512; pos++)
     packet.dmp.prop_val[pos + 1] = 0;
   return 0;
-}
+};
+
+int calculateFixtures(bool hasActive)
+{
+  // Set the dmx output values to the values for each channel
+  // If hasActive is true, only update the dmx values for channels that are active ie. should overwrite other things
+  for (fixture f : fixtures)
+  {
+    for (channel c : f.channels)
+    {
+      if (hasActive == true)
+      {
+        if (c.active == true)
+        {
+          packet.dmp.prop_val[f.startDMXAddress + c.dmxAddress] = mapRange(c.value, c.displayMin, c.displayMax, c.min, c.max);
+        }
+      }
+      else
+      {
+        packet.dmp.prop_val[f.startDMXAddress + c.dmxAddress] = mapRange(c.value, c.displayMin, c.displayMax, c.min, c.max);
+      }
+    }
+  }
+  return 0;
+};
+
+int calculateEffects()
+{
+  // Calcuate the running effects
+  return 0;
+};
 
 void *serverLoop(void *threadid)
 {
@@ -49,10 +82,12 @@ void *serverLoop(void *threadid)
   Hub h;
   string response = "<!DOCTYPE html><html><head><title>hi</title></head><body><h1>hello world!</h1></body></html>";
 
+  // Setup websocket server
   h.onMessage([](WebSocket<SERVER> *ws, char *message, size_t length, OpCode opCode) {
     ws->send(message, length, opCode);
   });
 
+  // Setup http (webpage) server
   h.onHttpRequest([&](HttpResponse *res, HttpRequest req, char *data, size_t length,
                       size_t remainingBytes) {
     res->end(response.data(), response.length());
@@ -64,7 +99,7 @@ void *serverLoop(void *threadid)
   }
 
   pthread_exit(NULL);
-}
+};
 
 void *startDMX(void *threadid)
 {
@@ -88,6 +123,9 @@ void *startDMX(void *threadid)
   for (;;)
   {
     resetDMXValues();
+    calculateFixtures(false);
+    calculateEffects();
+    calculateFixtures(true);
     if (e131_send(sockfd, &packet, &dest) < 0)
       err(EXIT_FAILURE, "e131_send");
     cout << "Frame" << endl;
@@ -104,17 +142,22 @@ int main()
   pthread_t threads[2];
   int rc;
   int rc2;
+
+  // Start HTTP and websocket server
   rc = pthread_create(&threads[0], NULL, serverLoop, (void *)0);
   if (rc)
   {
     cout << "Error:unable to create thread," << rc << endl;
     exit(-1);
   }
+
+  // Start dmx server
   rc2 = pthread_create(&threads[1], NULL, startDMX, (void *)1);
   if (rc2)
   {
     cout << "Error:unable to create thread," << rc2 << endl;
     exit(-1);
   }
+
   pthread_exit(NULL);
-}
+};

@@ -16,6 +16,7 @@ struct channel
   int defaultValue;
   int dmxAddress;
   int value;
+  bool active;
 };
 
 struct fixture
