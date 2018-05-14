@@ -86,7 +86,8 @@ int processMessage(WebSocket<SERVER> *ws, char *message, size_t length)
   string str(messageString);
   json j = json::parse(str);
 
-  if (j["msg"] == "addFixture") {
+  if (j["msg"] == "addFixture")
+  {
     fixture newFixture;
     newFixture.id = randomString();
     fixtures.push_back(newFixture);
