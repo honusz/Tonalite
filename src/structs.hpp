@@ -7,7 +7,7 @@ using namespace std;
 
 struct channel
 {
-  int id;
+  string id;
   string type;
   int max;
   int min;
@@ -21,7 +21,7 @@ struct channel
 
 struct fixture
 {
-  int id;
+  string id;
   string name;
   string shortName;
   string manufacturer;
@@ -31,7 +31,7 @@ struct fixture
 
 struct cue
 {
-  int id;
+  string id;
   string name;
   string description;
   bool active;

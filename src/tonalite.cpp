@@ -88,6 +88,7 @@ int processMessage(WebSocket<SERVER> *ws, char *message, size_t length)
 
   if (j["msg"] == "addFixture") {
     fixture newFixture;
+    newFixture.id = randomString();
     fixtures.push_back(newFixture);
   }
   return 0;
