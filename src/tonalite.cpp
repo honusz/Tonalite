@@ -84,6 +84,14 @@ int processMessage(string message)
     fixture newFixture;
     newFixture.id = randomString();
     fixtures.push_back(newFixture);
+  } else if (j["msg"] == "getFixtureProfiles") {
+  	// Return the list of file in the fixtures folder
+  } else if (j["msg"] == "removeFixture") {
+	// Remove the selected fixture
+  } else if (j["msg"] == "getFixtureSettings") {
+	// Return the settings for the selected fixture
+  } else {
+  	cout << "That message type is not known!" << endl;
   }
   return 0;
 };
