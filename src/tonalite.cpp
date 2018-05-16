@@ -75,16 +75,9 @@ int calculateEffects()
   return 0;
 };
 
-int processMessage(WebSocket<SERVER> *ws, char *message, size_t length)
+int processMessage(string message)
 {
-  // Process the message recieved from a websockets client
-  char messageString[length];
-  for (int i = 0; i < length; i++)
-  {
-    messageString[i] = message[i];
-  }
-  string str(messageString);
-  json j = json::parse(str);
+  json j = json::parse(message);
 
   if (j["msg"] == "addFixture")
   {
@@ -105,7 +98,10 @@ void *serverLoop(void *threadid)
 
   // Setup websocket server
   h.onMessage([](WebSocket<SERVER> *ws, char *message, size_t length, OpCode opCode) {
-    processMessage(ws, message, length);
+    string receivedMessage(message, length);
+		cout << receivedMessage << endl;
+		ws->send("Reponse from server", OpCode::BINARY);
+    processMessage(receivedMessage);
   });
 
   // Setup http (webpage) server
