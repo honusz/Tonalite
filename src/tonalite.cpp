@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <string>
 #include <iostream>
+#include <fstream>
 #include <cstdlib>
 #include <pthread.h>
 #include <err.h>
@@ -81,6 +82,9 @@ int processMessage(string message)
 
   if (j["msg"] == "addFixture")
   {
+    ifstream i("./fixtures/"+j["fixture"].dump()+".json");
+    json f;
+    i >> f;
     fixture newFixture;
     newFixture.id = randomString();
     fixtures.push_back(newFixture);

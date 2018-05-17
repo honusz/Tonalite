@@ -1,0 +1,13 @@
+{
+    "name": "Generic Dimmer",
+    "shortName": "Dimmer",
+    "manufacturer": "Generic",
+    "channels": [
+        {
+            "hi": "be"
+        },
+        {
+            "test": "hi"
+        }
+    ]
+}
