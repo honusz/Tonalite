@@ -9,6 +9,7 @@ struct channel
 {
   string id;
   string type;
+  string name;
   int max;
   int min;
   int displayMax;
@@ -16,6 +17,7 @@ struct channel
   int defaultValue;
   int dmxAddress;
   int value;
+  int displayValue;
   bool active;
 };
 

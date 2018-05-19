@@ -12,7 +12,7 @@
 #include "uWebSockets/src/uWS.h"
 #include "json.hpp"
 #include "structs.hpp"
-#include "utitities.hpp"
+#include "utilities.hpp"
 
 using namespace std;
 using namespace uWS;
@@ -23,6 +23,22 @@ vector<cue> cues;
 int sockfd;
 e131_packet_t packet;
 e131_addr_t dest;
+
+template<class UnaryFunction>
+void recursive_iterate(const json& j, UnaryFunction f)
+{
+    for(auto it = j.begin(); it != j.end(); ++it)
+    {
+        if (it->is_structured())
+        {
+            recursive_iterate(*it, f);
+        }
+        else
+        {
+            f(it);
+        }
+    }
+}
 
 vector<fixture> resetChannelValues()
 {
@@ -82,11 +98,27 @@ int processMessage(string message)
 
   if (j["msg"] == "addFixture")
   {
-    ifstream i("./fixtures/"+j["fixture"].dump()+".json");
+    // Import the fixture spec from file
+    string fixtureName = j["fixture"].dump();
+    fixtureName.erase(remove(fixtureName.begin(), fixtureName.end(), '\"' ), fixtureName.end());
+    ifstream i("../fixtures/"+fixtureName+".json");
     json f;
     i >> f;
+
+    // Create a new fixture from the fixture spec and save it to the fixtures list
     fixture newFixture;
     newFixture.id = randomString();
+    newFixture.name = f["name"];
+    newFixture.shortName = f["shortName"];
+    newFixture.manufacturer = f["manufacturer"];
+    newFixture.startDMXAddress = j["startDMXAddress"];
+    channel newChannel;
+    for (auto& x : json::iterator_wrapper(f["channels"]))
+    {
+        newChannel.id = randomString();
+        //newChannel.type = x.value()["type"];
+        cout << "key: " << x.key() << ", value: " << x.value() << '\n';
+    }
     fixtures.push_back(newFixture);
   } else if (j["msg"] == "getFixtureProfiles") {
   	// Return the list of file in the fixtures folder

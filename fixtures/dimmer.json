@@ -4,10 +4,16 @@
     "manufacturer": "Generic",
     "channels": [
         {
-            "hi": "be"
-        },
-        {
-            "test": "hi"
+            "type": "intensity",
+            "name": "Intensity",
+            "max": 255,
+            "min": 0,
+            "displayMax": 100,
+            "displayMin": 0,
+            "default": 0,
+            "dmxAddress": 0,
+            "value": 0,
+            "displayValue": 0
         }
     ]
 }
