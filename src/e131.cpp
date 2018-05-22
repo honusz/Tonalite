@@ -27,7 +27,7 @@
 #include <netdb.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
-#include "e131.h"
+#include "e131.hpp"
 
 /* E1.31 Public Constants */
 const uint16_t E131_DEFAULT_PORT = 5568;
