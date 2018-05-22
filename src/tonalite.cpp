@@ -24,20 +24,20 @@ int sockfd;
 e131_packet_t packet;
 e131_addr_t dest;
 
-template<class UnaryFunction>
-void recursive_iterate(const json& j, UnaryFunction f)
+template <class UnaryFunction>
+void recursive_iterate(const json &j, UnaryFunction f)
 {
-    for(auto it = j.begin(); it != j.end(); ++it)
+  for (auto it = j.begin(); it != j.end(); ++it)
+  {
+    if (it->is_structured())
     {
-        if (it->is_structured())
-        {
-            recursive_iterate(*it, f);
-        }
-        else
-        {
-            f(it);
-        }
+      recursive_iterate(*it, f);
     }
+    else
+    {
+      f(it);
+    }
+  }
 }
 
 vector<fixture> resetChannelValues()
@@ -100,8 +100,8 @@ int processMessage(string message)
   {
     // Import the fixture spec from file
     string fixtureName = j["fixture"].dump();
-    fixtureName.erase(remove(fixtureName.begin(), fixtureName.end(), '\"' ), fixtureName.end());
-    ifstream i("../fixtures/"+fixtureName+".json");
+    fixtureName.erase(remove(fixtureName.begin(), fixtureName.end(), '\"'), fixtureName.end());
+    ifstream i("../fixtures/" + fixtureName + ".json");
     json f;
     i >> f;
 
@@ -113,32 +113,40 @@ int processMessage(string message)
     newFixture.manufacturer = f["manufacturer"];
     newFixture.startDMXAddress = j["startDMXAddress"];
     channel newChannel;
-    for (auto& x : json::iterator_wrapper(f["channels"]))
+    for (auto &x : json::iterator_wrapper(f["channels"]))
     {
-        newChannel.id = randomString();
-        newChannel.type = x.value()["type"];
-        newChannel.name = x.value()["name"];
-        newChannel.max = x.value()["max"];
-        newChannel.min = x.value()["min"];
-        newChannel.displayMax = x.value()["displayMax"];
-        newChannel.displayMin = x.value()["displayMin"];
-        newChannel.defaultValue = x.value()["defaultValue"];
-        newChannel.dmxAddress = newFixture.startDMXAddress + stoi(x.key());
-        newChannel.value = newChannel.defaultValue;
-        newChannel.defaultDisplayValue = x.value()["defaultDisplayValue"];
-        newChannel.displayValue = newChannel.defaultDisplayValue;
-        newChannel.active = false;
-        newFixture.channels.push_back(newChannel);
+      newChannel.id = randomString();
+      newChannel.type = x.value()["type"];
+      newChannel.name = x.value()["name"];
+      newChannel.max = x.value()["max"];
+      newChannel.min = x.value()["min"];
+      newChannel.displayMax = x.value()["displayMax"];
+      newChannel.displayMin = x.value()["displayMin"];
+      newChannel.defaultValue = x.value()["defaultValue"];
+      newChannel.dmxAddress = newFixture.startDMXAddress + stoi(x.key());
+      newChannel.value = newChannel.defaultValue;
+      newChannel.defaultDisplayValue = x.value()["defaultDisplayValue"];
+      newChannel.displayValue = newChannel.defaultDisplayValue;
+      newChannel.active = false;
+      newFixture.channels.push_back(newChannel);
     }
     fixtures.push_back(newFixture);
-  } else if (j["msg"] == "getFixtureProfiles") {
-  	// Return the list of file in the fixtures folder
-  } else if (j["msg"] == "removeFixture") {
-	// Remove the selected fixture
-  } else if (j["msg"] == "getFixtureSettings") {
-	// Return the settings for the selected fixture
-  } else {
-  	cout << "That message type is not known!" << endl;
+  }
+  else if (j["msg"] == "getFixtureProfiles")
+  {
+    // Return the list of file in the fixtures folder
+  }
+  else if (j["msg"] == "removeFixture")
+  {
+    // Remove the selected fixture
+  }
+  else if (j["msg"] == "getFixtureSettings")
+  {
+    // Return the settings for the selected fixture
+  }
+  else
+  {
+    cout << "That message type is not known!" << endl;
   }
   return 0;
 };
@@ -154,8 +162,8 @@ void *serverLoop(void *threadid)
   // Setup websocket server
   h.onMessage([](WebSocket<SERVER> *ws, char *message, size_t length, OpCode opCode) {
     string receivedMessage(message, length);
-		cout << receivedMessage << endl;
-		ws->send("Reponse from server", OpCode::BINARY);
+    cout << receivedMessage << endl;
+    ws->send("Reponse from server", OpCode::BINARY);
     processMessage(receivedMessage);
   });
 
