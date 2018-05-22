@@ -116,8 +116,21 @@ int processMessage(string message)
     for (auto& x : json::iterator_wrapper(f["channels"]))
     {
         newChannel.id = randomString();
-        //newChannel.type = x.value()["type"];
+        newChannel.type = x.value()["type"];
+        newChannel.name = x.value()["name"];
+        newChannel.max = x.value()["max"];
+        newChannel.min = x.value()["min"];
+        newChannel.displayMax = x.value()["displayMax"];
+        newChannel.displayMin = x.value()["displayMin"];
+        newChannel.defaultValue = x.value()["defaultValue"];
+        newChannel.dmxAddress = newFixture.startDMXAddress + stoi(x.key());
+        cout << newChannel.dmxAddress << endl;
+        newChannel.value = newChannel.defaultValue;
+        newChannel.defaultDisplayValue = x.value()["defaultDisplayValue"];
+        newChannel.displayValue = newChannel.defaultDisplayValue;
+        newChannel.active = false;
         cout << "key: " << x.key() << ", value: " << x.value() << '\n';
+        newFixture.channels.push_back(newChannel);
     }
     fixtures.push_back(newFixture);
   } else if (j["msg"] == "getFixtureProfiles") {

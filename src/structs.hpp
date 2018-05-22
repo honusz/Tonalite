@@ -18,6 +18,7 @@ struct channel
   int dmxAddress;
   int value;
   int displayValue;
+  int defaultDisplayValue;
   bool active;
 };
 

@@ -10,10 +10,11 @@
             "min": 0,
             "displayMax": 100,
             "displayMin": 0,
-            "default": 0,
+            "defaultValue": 0,
             "dmxAddress": 0,
             "value": 0,
-            "displayValue": 0
+            "displayValue": 0,
+            "defaultDisplayValue": 0
         }
     ]
 }
