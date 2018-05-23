@@ -92,7 +92,7 @@ int calculateEffects()
   return 0;
 };
 
-int processMessage(string message)
+int processMessage(string message, WebSocket<SERVER> *ws, OpCode opCode)
 {
   json j = json::parse(message);
 
@@ -113,7 +113,7 @@ int processMessage(string message)
     newFixture.manufacturer = f["manufacturer"];
     newFixture.startDMXAddress = j["startDMXAddress"];
     channel newChannel;
-    for (auto &x : json::iterator_wrapper(f["channels"]))
+    for (auto x : f["channels"].items())
     {
       newChannel.id = randomString();
       newChannel.type = x.value()["type"];
@@ -131,6 +131,9 @@ int processMessage(string message)
       newFixture.channels.push_back(newChannel);
     }
     fixtures.push_back(newFixture);
+    //json message = { 1, 2 };
+    //auto newmsg = message.insert(message.begin, fixtures);
+    //ws->send("Reponse from server", opCode);
   }
   else if (j["msg"] == "getFixtureProfiles")
   {
@@ -164,7 +167,7 @@ void *serverLoop(void *threadid)
     string receivedMessage(message, length);
     cout << receivedMessage << endl;
     ws->send("Reponse from server", OpCode::BINARY);
-    processMessage(receivedMessage);
+    processMessage(receivedMessage, ws, opCode);
   });
 
   // Setup http (webpage) server
