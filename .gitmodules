@@ -1,3 +1,0 @@
-[submodule "src/uWebSockets"]
-	path = src/uWebSockets
-	url = https://github.com/uNetworking/uWebSockets.git
