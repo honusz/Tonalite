@@ -7,7 +7,8 @@
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-linux": "pkg . -t node9-linux-x64"
+    "build-linux": "pkg . -t node9-linux-x64",
+    "build-win": "pkg . -t node9-win-x64"
   },
   "repository": {
     "type": "git",
