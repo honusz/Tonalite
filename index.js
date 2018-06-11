@@ -12,13 +12,13 @@ Tasks:
 - Add Fixture - Done
 - Remove Fixture - Done
 - Get Fixture Settings - Done
-- Edit Fixture Settings
+- Edit Fixture Settings - Done
 - Get Fixture Channels - Done
-- Edit Fixture Channel
+- Change Fixture Channel Value
 - Reset Fixtures - Done
 - Add Fixture To Group
 - Get All Channels In A Group
-- Edit Group Channels
+- Change Group Channel Value
 - Get Group Settings
 - Edit Group Settings
 - Record Cue - Done
@@ -158,6 +158,15 @@ io.on('connection', function (socket) {
 
     socket.on('getFixtureSettings', function (msg) {
         io.sockets.emit('fixtureSettings', fixtures[fixtures.map(el => el.id).indexOf(msg.id)]);
+    });
+
+    socket.on('editFixtureSettings', function (msg) {
+        var fixture = fixtures[fixtures.map(el => el.id).indexOf(msg.id)];
+        fixture.name = msg.name;
+        fixture.shortName = msg.shortName;
+        fixture.manfacturer = msg.manufacturer;
+        fixture.startDMXAddress = msg.startDMXAddress;
+        io.sockets.emit('fixtureSettings', fixture);
     });
 
     socket.on('getFixtureChannels', function (msg) {
