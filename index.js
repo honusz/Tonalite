@@ -24,7 +24,7 @@ Tasks:
 - Record Cue - Done
 - Get Cue Settings - Done
 - Update Cue
-- Edit Cue Settings
+- Edit Cue Settings - Done
 - Move Cue Up
 - Move Cue Down
 - Remove Cue - Done
@@ -192,6 +192,13 @@ io.on('connection', function (socket) {
 
     socket.on('getCueSettings', function (msg) {
         io.sockets.emit('cueSettings', cues[cues.map(el => el.id).indexOf(msg.id)]);
+    });
+
+    socket.on('editCueSettings', function (msg) {
+        var cue = cues[cues.map(el => el.id).indexOf(msg.id)];
+        cue.time = msg.time;
+        cue.step = (msg.time * 40) + 1;
+        io.sockets.emit('cueSettings', cue);
     });
 
     socket.on('removeCue', function (msg) {
