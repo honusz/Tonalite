@@ -5,6 +5,30 @@ var io = require('socket.io')(http);
 var e131 = require('e131');
 var fs = require('fs');
 
+/*
+Tasks:
+- Get Fixtures - Done
+- Get Fixture Profiles - Done
+- Add Fixture - Done
+- Remove Fixture
+- Get Fixture Props
+- Change Fixture Props
+- Reset Fixtures - Done
+- Add Fixture To Group
+- Get All Props In A Group
+- Change Group Props
+- Record Cue - Done
+- Get Cue Details - Done
+- Update Cue
+- Edit Cue Settings
+- Move Cue Up
+- Move Cue Down
+- Delete Cue
+- Go To Next Cue
+- Go To Last Cue
+- Go To Specific Cue
+*/
+
 var client = new e131.Client(1);
 var packet = client.createPacket(512);
 var slotsData = packet.getSlotsData();
@@ -129,7 +153,7 @@ io.on('connection', function (socket) {
         io.sockets.emit('fixtures', fixtures);
     });
 
-    socket.on('addCue', function (msg) {
+    socket.on('recordCue', function (msg) {
         var newCue = {
             id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
             type: "cue",
