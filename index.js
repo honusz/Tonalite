@@ -10,7 +10,7 @@ Tasks:
 - Get Fixtures - Done
 - Get Fixture Profiles - Done
 - Add Fixture - Done
-- Remove Fixture
+- Remove Fixture - Done
 - Get Fixture Props
 - Change Fixture Props
 - Reset Fixtures - Done
@@ -88,7 +88,7 @@ function calculateStack() {
             slotsData = calculateCue(s);
             s.step -= 1;
             if (s.step <= 0) {
-                stack.splice(stack[stack.map(el=>el.id).indexOf(s.id)]);
+                stack.splice(stack[stack.map(el => el.id).indexOf(s.id)], 1);
             }
         }
     }
@@ -148,6 +148,10 @@ io.on('connection', function (socket) {
         io.sockets.emit('fixtures', fixtures);
     });
 
+    socket.on('removeFixture', function (msg) {
+        fixtures.splice(fixtures[fixtures.map(el => el.id).indexOf(msg.id)], 1);
+    });
+
     socket.on('resetFixtures', function (msg) {
         resetFixtures();
         io.sockets.emit('fixtures', fixtures);
@@ -164,8 +168,8 @@ io.on('connection', function (socket) {
         cues.push(newCue);
         io.sockets.emit('cues', cues);
     });
-    
+
     socket.on('getCueDetails', function (msg) {
-        io.sockets.emit('cueDetails', cues[cues.map(el=>el.id).indexOf(msg.id)]);
-    });  
+        io.sockets.emit('cueDetails', cues[cues.map(el => el.id).indexOf(msg.id)]);
+    });
 });
