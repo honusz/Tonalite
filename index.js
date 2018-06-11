@@ -62,7 +62,7 @@ function calculateStack() {
             slotsData = calculateCue(s);
             s.step -= 1;
             if (s.step <= 0) {
-                // remove the cue from the stack
+                stack.splice(stack[stack.map(el=>el.id).indexOf(s.id)]);
             }
         }
     }
@@ -87,6 +87,7 @@ function dmxLoop() {
     console.log("frame");
 };
 
+console.log("Tonalite v2.0 - Wireless Lighting Control");
 setInterval(dmxLoop, 250);
 
 io.on('connection', function (socket) {
@@ -113,6 +114,11 @@ io.on('connection', function (socket) {
         io.sockets.emit('fixtures', fixtures);
     });
 
+    socket.on('resetFixtures', function (msg) {
+        resetFixtures();
+        io.sockets.emit('fixtures', fixtures);
+    });
+
     socket.on('addCue', function (msg) {
         var newCue = {
             id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
@@ -124,4 +130,8 @@ io.on('connection', function (socket) {
         cues.push(newCue);
         io.sockets.emit('cues', cues);
     });
+    
+    socket.on('getCueDetails', function (msg) {
+        io.sockets.emit('cueDetails', cues[cues.map(el=>el.id).indexOf(msg.id)]);
+    });  
 });
