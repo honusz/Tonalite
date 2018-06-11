@@ -23,7 +23,7 @@ Tasks:
 - Edit Cue Settings
 - Move Cue Up
 - Move Cue Down
-- Delete Cue
+- Remove Cue - Done
 - Go To Next Cue
 - Go To Last Cue
 - Go To Specific Cue
@@ -172,4 +172,8 @@ io.on('connection', function (socket) {
     socket.on('getCueDetails', function (msg) {
         io.sockets.emit('cueDetails', cues[cues.map(el => el.id).indexOf(msg.id)]);
     });
+
+    socket.on('removeCue', function (msg) {
+        cues.splice(cues[cues.map(el => el.id).indexOf(msg.id)], 1);
+    })
 });
