@@ -11,14 +11,18 @@ Tasks:
 - Get Fixture Profiles - Done
 - Add Fixture - Done
 - Remove Fixture - Done
-- Get Fixture Props
-- Change Fixture Props
+- Get Fixture Settings - Done
+- Edit Fixture Settings
+- Get Fixture Channels - Done
+- Edit Fixture Channel
 - Reset Fixtures - Done
 - Add Fixture To Group
-- Get All Props In A Group
-- Change Group Props
+- Get All Channels In A Group
+- Edit Group Channels
+- Get Group Settings
+- Edit Group Settings
 - Record Cue - Done
-- Get Cue Details - Done
+- Get Cue Settings - Done
 - Update Cue
 - Edit Cue Settings
 - Move Cue Up
@@ -152,6 +156,14 @@ io.on('connection', function (socket) {
         fixtures.splice(fixtures[fixtures.map(el => el.id).indexOf(msg.id)], 1);
     });
 
+    socket.on('getFixtureSettings', function (msg) {
+        io.sockets.emit('fixtureSettings', fixtures[fixtures.map(el => el.id).indexOf(msg.id)]);
+    });
+
+    socket.on('getFixtureChannels', function (msg) {
+        io.sockets.emit('fixtureChannels', fixtures[fixtures.map(el => el.id).indexOf(msg.id)].channels);
+    });
+
     socket.on('resetFixtures', function (msg) {
         resetFixtures();
         io.sockets.emit('fixtures', fixtures);
@@ -169,8 +181,8 @@ io.on('connection', function (socket) {
         io.sockets.emit('cues', cues);
     });
 
-    socket.on('getCueDetails', function (msg) {
-        io.sockets.emit('cueDetails', cues[cues.map(el => el.id).indexOf(msg.id)]);
+    socket.on('getCueSettings', function (msg) {
+        io.sockets.emit('cueSettings', cues[cues.map(el => el.id).indexOf(msg.id)]);
     });
 
     socket.on('removeCue', function (msg) {
