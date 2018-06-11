@@ -23,7 +23,7 @@ Tasks:
 - Edit Group Settings
 - Record Cue - Done
 - Get Cue Settings - Done
-- Update Cue
+- Update Cue - Done
 - Edit Cue Settings - Done
 - Move Cue Up
 - Move Cue Down
@@ -188,6 +188,12 @@ io.on('connection', function (socket) {
         };
         cues.push(newCue);
         io.sockets.emit('cues', cues);
+    });
+
+    socket.on('updateCue', function (msg) {
+        var cue = cues[cues.map(el => el.id).indexOf(msg.id)];
+        cue.channels = getFixtureValues();
+        io.sockets.emit('cueSettings', cue);
     });
 
     socket.on('getCueSettings', function (msg) {
