@@ -9,16 +9,16 @@ var slotsData = packet.getSlotsData();
 
 var fixtures = [];
 var cues = [];
-var effects = [];
+var stack = [];
 
 function mapRange(num, inMin, inMax, outMin, outMax) {
     return (num - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
 };
 
 function resetDMXValues() {
-    for (var i = 0; i < slotsData.length; ++i) {
+    slotsData.forEach(function (value, i) {
         slotsData[i] = 0;
-    }
+    });
 };
 
 function calculateFixtures(hasActive) {
@@ -35,8 +35,37 @@ function calculateFixtures(hasActive) {
     }
 };
 
-function calculateEffects() {
-    return 0;
+function getFixtureValues() {
+    var values = new Array(512).fill(0);
+    for (fixture in fixtures) {
+        for (channel in fixture.channels) {
+            values[fixture.startDMXAddress + channel.dmxAddress] = mapRange(channel.value, channel.displayMin, channel.displayMax, channel.min, channel.max);
+        }
+    }
+    return values;
+};
+
+function calculateCue(cue) {
+    var outputChannels = new Array(512).fill(0);
+    var startChannels = getFixtureValues();
+    startChannels.forEach(function (value, i) {
+        var startChannel = startChannels[i];
+        var endChannel = cue.channels[i];
+        outputChannels[i] = startChannel + (((endChannel - startChannel) / (cue.time * 40)) * cue.step);
+    });
+    return outputChannels;
+}
+
+function calculateStack() {
+    for (var s in stack) {
+        if (s.type == "cue") {
+            slotsData = calculateCue(s);
+            s.step -= 1;
+            if (s.step <= 0) {
+                // remove the cue from the stack
+            }
+        }
+    }
 };
 
 function resetFixtures(fixtures) {
@@ -52,7 +81,7 @@ function resetFixtures(fixtures) {
 function dmxLoop() {
     resetDMXValues();
     calculateFixtures(false);
-    calculateEffects();
+    calculateStack();
     calculateFixtures(true);
     client.send(packet);
     console.log("frame");
@@ -82,5 +111,17 @@ io.on('connection', function (socket) {
         fixture.id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
         fixtures.push(JSON.parse(JSON.stringify(fixture)));
         io.sockets.emit('fixtures', fixtures);
+    });
+
+    socket.on('addCue', function (msg) {
+        var newCue = {
+            id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
+            type: "cue",
+            time: 3,
+            step: (3 * 40) + 1,
+            channels: getFixtureValues()
+        };
+        cues.push(newCue);
+        io.sockets.emit('cues', cues);
     });
 });
