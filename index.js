@@ -167,7 +167,7 @@ io.on('connection', function (socket) {
         fixture.manfacturer = msg.manufacturer;
         fixture.startDMXAddress = msg.startDMXAddress;
         socket.emit('fixtureSettings', fixture);
-        socket.emit('message', {type: "info", content: "Fixture settings have been updated!"});
+        socket.emit('message', { type: "info", content: "Fixture settings have been updated!" });
     });
 
     socket.on('getFixtureChannels', function (msg) {
@@ -177,7 +177,7 @@ io.on('connection', function (socket) {
     socket.on('resetFixtures', function (msg) {
         resetFixtures();
         socket.emit('fixtures', fixtures);
-        socket.emit('message', {type: "info", content: "Fixture settings have been reset!"});
+        socket.emit('message', { type: "info", content: "Fixture settings have been reset!" });
     });
 
     socket.on('recordCue', function (msg) {
@@ -196,7 +196,7 @@ io.on('connection', function (socket) {
         var cue = cues[cues.map(el => el.id).indexOf(msg.id)];
         cue.channels = getFixtureValues();
         socket.emit('cueSettings', cue);
-        socket.emit('message', {type: "info", content: "Cue channel values have been updated!"});
+        socket.emit('message', { type: "info", content: "Cue channel values have been updated!" });
     });
 
     socket.on('getCueSettings', function (msg) {
@@ -208,7 +208,7 @@ io.on('connection', function (socket) {
         cue.time = msg.time;
         cue.step = (msg.time * 40) + 1;
         socket.emit('cueSettings', cue);
-        socket.emit('message', {type: "info", content: "Cue settings have been updated!"});
+        socket.emit('message', { type: "info", content: "Cue settings have been updated!" });
     });
 
     socket.on('removeCue', function (msg) {
