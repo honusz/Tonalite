@@ -149,7 +149,7 @@ io.on('connection', function (socket) {
         // Assign a random id for easy access to this fixture
         fixture.id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
         fixtures.push(JSON.parse(JSON.stringify(fixture)));
-        io.sockets.emit('fixtures', fixtures);
+        socket.emit('fixtures', fixtures);
     });
 
     socket.on('removeFixture', function (msg) {
@@ -157,7 +157,7 @@ io.on('connection', function (socket) {
     });
 
     socket.on('getFixtureSettings', function (msg) {
-        io.sockets.emit('fixtureSettings', fixtures[fixtures.map(el => el.id).indexOf(msg.id)]);
+        socket.emit('fixtureSettings', fixtures[fixtures.map(el => el.id).indexOf(msg.id)]);
     });
 
     socket.on('editFixtureSettings', function (msg) {
@@ -166,16 +166,18 @@ io.on('connection', function (socket) {
         fixture.shortName = msg.shortName;
         fixture.manfacturer = msg.manufacturer;
         fixture.startDMXAddress = msg.startDMXAddress;
-        io.sockets.emit('fixtureSettings', fixture);
+        socket.emit('fixtureSettings', fixture);
+        socket.emit('message', {type: "info", content: "Fixture settings have been updated!"});
     });
 
     socket.on('getFixtureChannels', function (msg) {
-        io.sockets.emit('fixtureChannels', fixtures[fixtures.map(el => el.id).indexOf(msg.id)].channels);
+        socket.emit('fixtureChannels', fixtures[fixtures.map(el => el.id).indexOf(msg.id)].channels);
     });
 
     socket.on('resetFixtures', function (msg) {
         resetFixtures();
-        io.sockets.emit('fixtures', fixtures);
+        socket.emit('fixtures', fixtures);
+        socket.emit('message', {type: "info", content: "Fixture settings have been reset!"});
     });
 
     socket.on('recordCue', function (msg) {
@@ -187,27 +189,30 @@ io.on('connection', function (socket) {
             channels: getFixtureValues()
         };
         cues.push(newCue);
-        io.sockets.emit('cues', cues);
+        socket.emit('cues', cues);
     });
 
     socket.on('updateCue', function (msg) {
         var cue = cues[cues.map(el => el.id).indexOf(msg.id)];
         cue.channels = getFixtureValues();
-        io.sockets.emit('cueSettings', cue);
+        socket.emit('cueSettings', cue);
+        socket.emit('message', {type: "info", content: "Cue channel values have been updated!"});
     });
 
     socket.on('getCueSettings', function (msg) {
-        io.sockets.emit('cueSettings', cues[cues.map(el => el.id).indexOf(msg.id)]);
+        socket.emit('cueSettings', cues[cues.map(el => el.id).indexOf(msg.id)]);
     });
 
     socket.on('editCueSettings', function (msg) {
         var cue = cues[cues.map(el => el.id).indexOf(msg.id)];
         cue.time = msg.time;
         cue.step = (msg.time * 40) + 1;
-        io.sockets.emit('cueSettings', cue);
+        socket.emit('cueSettings', cue);
+        socket.emit('message', {type: "info", content: "Cue settings have been updated!"});
     });
 
     socket.on('removeCue', function (msg) {
         cues.splice(cues[cues.map(el => el.id).indexOf(msg.id)], 1);
+        socket.emit('cues', cues);
     })
 });
