@@ -14,13 +14,8 @@ Tasks:
 - Get Fixture Settings - Done
 - Edit Fixture Settings - Done
 - Get Fixture Channels - Done
-- Change Fixture Channel Value
+- Change Fixture Channel Value - Done
 - Reset Fixtures - Done
-- Add Fixture To Group
-- Get All Channels In A Group
-- Change Group Channel Value
-- Get Group Settings
-- Edit Group Settings
 - Record Cue - Done
 - Get Cue Settings - Done
 - Update Cue - Done
@@ -31,6 +26,11 @@ Tasks:
 - Go To Next Cue
 - Go To Last Cue
 - Go To Specific Cue
+- Add Fixture To Group
+- Get All Channels In A Group
+- Change Group Channel Value
+- Get Group Settings
+- Edit Group Settings
 */
 
 var client = new e131.Client(1);
@@ -178,6 +178,13 @@ io.on('connection', function (socket) {
         resetFixtures();
         socket.emit('fixtures', fixtures);
         socket.emit('message', { type: "info", content: "Fixture settings have been reset!" });
+    });
+
+    socket.on('changeFixtureChannelValue', function (msg) {
+        var fixture = fixtures[fixtures.map(el => el.id).indexOf(msg.id)];
+        var channel = fixture.channels[fixture.channels.map(el => el.id).indexOf(msg.cid)];
+        channel.value = msg.value;
+        socket.emit('fixtureChannels', fixture.channels);
     });
 
     socket.on('recordCue', function (msg) {

@@ -12,8 +12,6 @@
             "displayMin": 0,
             "value": 0,
             "defaultValue": 0,
-            "displayValue": 0,
-            "defaultDisplayValue": 0,
             "dmxAddress": 0
         }
     ]
