@@ -1,7 +1,9 @@
 var app = require('express')();
+var express = require('express');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var e131 = require('e131');
+var fs = require('fs');
 
 var client = new e131.Client(1);
 var packet = client.createPacket(512);
@@ -68,7 +70,7 @@ function calculateStack() {
     }
 };
 
-function resetFixtures(fixtures) {
+function resetFixtures() {
     var newFixtures = JSON.parse(JSON.stringify(fixtures));
     for (var f in newFixtures) {
         for (var c in newFixtures[f].channels) {
@@ -88,6 +90,14 @@ function dmxLoop() {
 };
 
 console.log("Tonalite v2.0 - Wireless Lighting Control");
+app.use('/static', express.static(__dirname + '/static'));
+
+app.get('/', function (req, res) {
+    res.sendFile(__dirname + '/index.min.html');
+});
+http.listen(3000, function () {
+    console.log('Tonalite listening on *:3000');
+});
 setInterval(dmxLoop, 250);
 
 io.on('connection', function (socket) {
