@@ -3,6 +3,7 @@ var express = require('express');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var e131 = require('e131');
+var uDMX = require('udmx');
 var fs = require('fs');
 
 /*
@@ -33,10 +34,13 @@ Tasks:
 - Edit Group Settings
 */
 
+var dmx = new uDMX();
+dmx.connect();
 var client = new e131.Client(1);
 var packet = client.createPacket(512);
 var slotsData = packet.getSlotsData();
 
+var channels = slotsData;
 var fixtures = [];
 var cues = [];
 var stack = [];
@@ -46,8 +50,8 @@ function mapRange(num, inMin, inMax, outMin, outMax) {
 };
 
 function resetDMXValues() {
-    slotsData.forEach(function (value, i) {
-        slotsData[i] = 0;
+    channels.forEach(function (value, i) {
+        channels[i] = 0;
     });
 };
 
@@ -56,10 +60,10 @@ function calculateFixtures(hasActive) {
         for (channel in fixture.channels) {
             if (hasActive == true) {
                 if (channel.active == true) {
-                    slotsData[fixture.startDMXAddress + channel.dmxAddress] = mapRange(channel.value, channel.displayMin, channel.displayMax, channel.min, channel.max);
+                    channels[fixture.startDMXAddress + channel.dmxAddress] = mapRange(channel.value, channel.displayMin, channel.displayMax, channel.min, channel.max);
                 }
             } else {
-                slotsData[fixture.startDMXAddress + channel.dmxAddress] = mapRange(channel.value, channel.displayMin, channel.displayMax, channel.min, channel.max);
+                channels[fixture.startDMXAddress + channel.dmxAddress] = mapRange(channel.value, channel.displayMin, channel.displayMax, channel.min, channel.max);
             }
         }
     }
@@ -89,7 +93,7 @@ function calculateCue(cue) {
 function calculateStack() {
     for (var s in stack) {
         if (s.type == "cue") {
-            slotsData = calculateCue(s);
+            channels = calculateCue(s);
             s.step -= 1;
             if (s.step <= 0) {
                 stack.splice(stack[stack.map(el => el.id).indexOf(s.id)], 1);
