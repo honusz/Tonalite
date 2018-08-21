@@ -117,6 +117,7 @@ function dmxLoop() {
     calculateFixtures(false);
     calculateStack();
     calculateFixtures(true);
+    slotsData = channels;
     client.send(packet);
     console.log("frame");
 };
