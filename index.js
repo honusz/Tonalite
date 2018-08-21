@@ -6,6 +6,9 @@ var e131 = require('e131');
 var uDMX = require('udmx');
 var fs = require('fs');
 
+// 0 = e1.31, 1 = udmx
+var OUTPUT = 1;
+
 /*
 Tasks:
 - Get Fixtures - Done
@@ -34,13 +37,17 @@ Tasks:
 - Edit Group Settings
 */
 
-var dmx = new uDMX();
-dmx.connect();
-var client = new e131.Client(1);
-var packet = client.createPacket(512);
-var slotsData = packet.getSlotsData();
+if (OUTPUT == 1) {
+    var dmx = new uDMX();
+    dmx.connect();
+    var channels = new Array(512).fill(0);
+} else {
+    var client = new e131.Client(1);
+    var packet = client.createPacket(512);
+    var slotsData = packet.getSlotsData();
+    var channels = slotsData;
+}
 
-var channels = slotsData;
 var fixtures = [];
 var cues = [];
 var stack = [];
@@ -117,8 +124,14 @@ function dmxLoop() {
     calculateFixtures(false);
     calculateStack();
     calculateFixtures(true);
-    slotsData = channels;
-    client.send(packet);
+    if (OUTPUT == 1) {
+        channels.forEach(function (value, i) {
+            dmx.set(i, value);
+        });
+    } else {
+        slotsData = channels;
+        client.send(packet);
+    }
     console.log("frame");
 };
 
