@@ -7,7 +7,7 @@ var uDMX = require('udmx');
 var fs = require('fs');
 
 // 0 = e1.31, 1 = udmx
-var OUTPUT = 1;
+var OUTPUT = 0;
 
 /*
 Tasks:
