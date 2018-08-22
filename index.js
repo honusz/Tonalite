@@ -51,7 +51,7 @@ if (OUTPUT == 1) {
 var fixtures = [];
 var cues = [];
 var stack = [];
-var currentCue = NULL;
+var currentCue = -1;
 
 function mapRange(num, inMin, inMax, outMin, outMax) {
     return (num - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
@@ -151,7 +151,7 @@ io.on('connection', function (socket) {
     console.log('a user connected');
     socket.emit('fixtures', fixtures);
 
-    socket.on('getFixtureProfiles', function (msg) {
+    socket.on('getFixtureProfiles', function () {
         var fixturesList = [];
         fs.readdir("./fixtures", (err, files) => {
             files.forEach(file => {
@@ -193,7 +193,7 @@ io.on('connection', function (socket) {
         socket.emit('fixtureChannels', fixtures[fixtures.map(el => el.id).indexOf(msg.id)].channels);
     });
 
-    socket.on('resetFixtures', function (msg) {
+    socket.on('resetFixtures', function () {
         resetFixtures();
         socket.emit('fixtures', fixtures);
         socket.emit('message', { type: "info", content: "Fixture settings have been reset!" });
@@ -206,7 +206,7 @@ io.on('connection', function (socket) {
         socket.emit('fixtureChannels', fixture.channels);
     });
 
-    socket.on('recordCue', function (msg) {
+    socket.on('recordCue', function () {
         var newCue = {
             id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
             type: "cue",
