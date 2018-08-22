@@ -1,0 +1,9 @@
+.fixtureItem {
+    width: 100%;
+    background-color: red;
+    border-radius: 5px;
+    padding-top: 20%;
+    padding-left: 10%;
+    padding-bottom: 5%;
+    margin-bottom: 1rem;
+}
