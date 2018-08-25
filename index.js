@@ -127,7 +127,7 @@ function dmxLoop() {
     calculateFixtures(true);
     if (OUTPUT == 1) {
         channels.forEach(function (value, i) {
-            dmx.set(i+1, value);
+            dmx.set(i + 1, value);
         });
     } else {
         slotsData = channels;
