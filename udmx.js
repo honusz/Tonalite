@@ -31,7 +31,7 @@ DMX.prototype.connect = function() {
 DMX.prototype.set = function(channel, value) {
     var self = this;
     return new Promise((resolve, reject) => {
-        this.dev.controlTransfer(0x40, 0x0002, value, channel-1, Buffer.alloc(1), function(err, result) {
+        this.dev.controlTransfer(0x40, 0x0002, value, channel-1, Buffer.alloc(1), 0, function(err, result) {
             if(err) {
                 console.log(err);
             } else {
