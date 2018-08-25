@@ -35,63 +35,68 @@
         </ul>
       </div>
     </nav>
-
-    <div class="container">
-      <div class="row">
-        <div class="col-4">
-          <div class="fixtureItem">
-            <p>Upper stage light</p>
+    <div id="fixtures" class="tabcontent">
+      <div class="container">
+        <div class="row">
+          <div class="col-4">
+            <div class="fixtureItem">
+              <p>Upper stage light</p>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="fixtureItem">
+              <p>Upper stage light</p>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="fixtureItem">
+              <p>Upper stage light</p>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="fixtureItem">
+              <p>Upper stage light</p>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="fixtureItem">
+              <p>Upper stage light</p>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="fixtureItem">
+              <p>Upper stage light</p>
+            </div>
           </div>
         </div>
-        <div class="col-4">
-          <div class="fixtureItem">
-            <p>Upper stage light</p>
+        <div class="row">
+          <div class="col-6">
+            <button class="btn btn-success btn-block" onclick="addFixtureModal()">Add Fixture</button>
           </div>
-        </div>
-        <div class="col-4">
-          <div class="fixtureItem">
-            <p>Upper stage light</p>
-          </div>
-        </div>
-        <div class="col-4">
-          <div class="fixtureItem">
-            <p>Upper stage light</p>
-          </div>
-        </div>
-        <div class="col-4">
-          <div class="fixtureItem">
-            <p>Upper stage light</p>
-          </div>
-        </div>
-        <div class="col-4">
-          <div class="fixtureItem">
-            <p>Upper stage light</p>
+          <div class="col-6">
+            <button class="btn btn-danger btn-block" onclick="resetFixtures()">Reset Fixtures</button>
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-6">
-          <button class="btn btn-success btn-block" onclick="addFixtureModal()">Add Fixture</button>
-        </div>
-        <div class="col-6">
-          <button class="btn btn-danger btn-block" onclick="resetFixtures()">Reset Fixtures</button>
+      <div id="fixtureProfilesModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-body">
+              <ul class="list-group">
+                <li class="list-group-item">Cras justo odio</li>
+                <li class="list-group-item">Dapibus ac facilisis in</li>
+                <li class="list-group-item">Morbi leo risus</li>
+                <li class="list-group-item">Porta ac consectetur ac</li>
+                <li class="list-group-item">Vestibulum at eros</li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <div id="fixtureProfilesModal" class="modal" tabindex="-1" role="dialog">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-body">
-            <ul class="list-group">
-              <li class="list-group-item">Cras justo odio</li>
-              <li class="list-group-item">Dapibus ac facilisis in</li>
-              <li class="list-group-item">Morbi leo risus</li>
-              <li class="list-group-item">Porta ac consectetur ac</li>
-              <li class="list-group-item">Vestibulum at eros</li>
-            </ul>
-          </div>
-        </div>
-      </div>
+    <div class="tab">
+      <button class="tablinks" onclick="openTab(event, 'fixtures')">Fixtures</button>
+      <button class="tablinks" onclick="openTab(event, 'cues')">Cues</button>
     </div>
 
     <!-- Optional JavaScript -->
