@@ -30,7 +30,7 @@ function addFixtureModal() {
     $('#fixtureProfilesModal').modal("show");
 }
 function addFixture(fixture) {
-    socket.emit('addFixture', {fixtureName: fixture, startDMXAddress: 0});
+    socket.emit('addFixture', {fixtureName: fixture, startDMXAddress: parseInt($('#newFixtureStartDMXAddress').val())});
     $('#fixtureProfilesModal').modal("hide");
 }
 function openTab(evt, tabName) {
