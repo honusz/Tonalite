@@ -2,15 +2,21 @@ var socket = io('http://' + document.domain + ':' + location.port);
 
 socket.on('fixtures', function (fixtures) {
     console.log(fixtures);
+    $("#fixturesList").empty();
+    fixtures.forEach(function (value, i) {
+        $("#fixturesList").append("<div class=\"col-4\">iv class=\"fixtureItem\"><p>" + fixtures[i].shortName + "</p></div></div>");
+    });
 });
 
 socket.on('message', function (msg) {
-    console.log(msg.type+': '+msg.content);
+    console.log(msg.type + ': ' + msg.content);
 });
 
-socket.on('fixtureProfiles', function (msg) {
+socket.on('fixtureProfiles', function (profiles) {
     $("#fixtureProfilesList").empty();
-    $("#fixtureProfilesList").append("<li class=\"list-group-item\">"+msg[0]+"</li>");
+    profiles.forEach(function (value, i) {
+        $("#fixtureProfilesList").append("<li class=\"list-group-item fixtureProfileItem\">" + titleCase(profiles[i]) + "</li>");
+    });
 });
 
 function resetFixtures() {
@@ -40,4 +46,9 @@ function openTab(evt, tabName) {
     // Show the current tab, and add an "active" class to the button that opened the tab
     document.getElementById(tabName).style.display = "block";
     evt.currentTarget.className += " active";
+}
+function titleCase(str) {
+    return str.toLowerCase().split(' ').map(function (word) {
+        return (word.charAt(0).toUpperCase() + word.slice(1));
+    }).join(' ');
 }
