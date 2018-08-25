@@ -3,7 +3,7 @@ var express = require('express');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var e131 = require('e131');
-var uDMX = require('udmx');
+var uDMX = require('./udmx');
 var fs = require('fs');
 
 // 0 = e1.31, 1 = udmx
