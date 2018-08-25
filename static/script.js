@@ -8,13 +8,18 @@ socket.on('message', function (msg) {
     console.log(msg.type+': '+msg.content);
 });
 
+socket.on('fixtureProfiles', function (msg) {
+    $("#fixtureProfilesList").empty();
+    $("#fixtureProfilesList").append("<li class=\"list-group-item\">"+msg[0]+"</li>");
+});
+
 function resetFixtures() {
     socket.emit('resetFixtures');
 };
 
 function addFixtureModal() {
     socket.emit('getFixtureProfiles');
-    $('#fixtureProfileModal').modal();
+    $('#fixtureProfilesModal').modal();
 }
 function openTab(evt, tabName) {
     // Declare all variables

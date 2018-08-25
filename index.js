@@ -133,7 +133,7 @@ function dmxLoop() {
         slotsData = channels;
         client.send(packet);
     }
-    console.log("frame");
+    //console.log("frame");
 };
 
 console.log("Tonalite v2.0 - Wireless Lighting Control");
