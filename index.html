@@ -55,7 +55,7 @@
           <div class="modal-content">
             <div class="modal-body">
               <div class="form-group">
-                <label class="dark" for="newFixtureStartDMXAddress">DMX Address:</label>
+                <label class="dark" for="newFixtureStartDMXAddress">Starting DMX Address:</label>
                 <input type="number" class="form-control" max="512" min="1" id="newFixtureStartDMXAddress" placeholder="DMX Address" value="1">
               </div>
               <ul class="list-group" id="fixtureProfilesList"></ul>
@@ -100,6 +100,26 @@
           </div>
           <div class="col-3">
             <button id="fixtureChannelsDeleteBtn" class="btn btn-danger btn-block">Delete Fixture</button>
+          </div>
+        </div>
+        <div class="row" id="fixtureSettings">
+          <div class="col-12">
+              <div class="form-group">
+                  <label for="fixtureNameInput"> Name:</label>
+                  <input class="form-control" type="text" id="fixtureNameInput" placeholder="Full Fixture Name">
+              </div>
+          </div>
+          <div class="col-12">
+              <div class="form-group">
+                  <label for="fixtureShortNameInput">Short Name:</label>
+                  <input class="form-control" type="text" id="fixtureShortNameInput" placeholder="Short Fixture Name">
+              </div>
+          </div>
+          <div class="col-12">
+              <div class="form-group">
+                  <label for="fixtureDMXAddressInput">Starting DMX Address:</label>
+                  <input class="form-control" type="number" id="fixtureDMXAddressInput" placeholder="Fixture Starting DMX Address">
+              </div>
           </div>
         </div>
       </div>
