@@ -173,8 +173,8 @@ io.on('connection', function (socket) {
 
     socket.on('removeFixture', function (msg) {
         fixtures.splice(fixtures[fixtures.map(el => el.id).indexOf(msg.id)], 1);
-        io.emit('fixtures', fixtures);
         socket.emit('message', { type: "info", content: "Fixture has been removed!" });
+        io.emit('fixtures', fixtures);
     });
 
     socket.on('getFixtureSettings', function (msg) {

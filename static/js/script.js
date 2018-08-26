@@ -2,12 +2,13 @@ var socket = io('http://' + document.domain + ':' + location.port);
 document.getElementById("fixturesTab").click();
 
 socket.on('fixtures', function (fixtures) {
-    console.log(fixtures);
+    $("#fixturesList").empty();
     if (fixtures.length != 0) {
-        $("#fixturesList").empty();
         fixtures.forEach(function (value, i) {
             $("#fixturesList").append("<div class=\"col-4\"><div class=\"fixtureItem\" onclick=\"viewFixtureChannels('" + fixtures[i].id + "')\"><p>" + fixtures[i].shortName + "</p></div></div>");
         });
+    } else {
+        $("#fixturesList").append("<div class=\"col-12\"><h5>There are no fixtures in this show!</h5></div>")
     }
 });
 
@@ -34,6 +35,7 @@ socket.on('fixtureChannels', function (msg) {
 socket.on('fixtureSettings', function (fixture) {
     $("#fixtureSettingsName").text(fixture.name);
     $("#fixtureChannelsBackBtn").on("click", function(){ viewFixtureChannels(fixture.id); });
+    $("#fixtureChannelsDeleteBtn").on("click", function(){ removeFixture(fixture.id); });
 });
 
 function resetFixtures() {
@@ -62,6 +64,13 @@ function viewFixtureSettings(fixtureID) {
 
 function updateFixtureChannelValue(self, fixtureID, channelID) {
     socket.emit('changeFixtureChannelValue', {id: fixtureID, cid: channelID, value: parseInt(self.value)})
+}
+
+function removeFixture(fixtureID) {
+    if (confirm("Are you sure you want to delete this fixture?")) {
+        socket.emit('removeFixture', { id: fixtureID });
+        openTab('fixtures');
+    }
 }
 
 function openTab(tabName) {

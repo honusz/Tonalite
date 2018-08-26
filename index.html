@@ -48,11 +48,7 @@
             <button class="btn btn-danger btn-block" onclick="resetFixtures()">Reset Fixtures</button>
           </div>
         </div>
-        <div class="row" id="fixturesList">
-          <div class="col-12">
-            <h5>There are no fixtures in this show!</h5>
-          </div>
-        </div>
+        <div class="row" id="fixturesList"></div>
       </div>
       <div id="fixtureProfilesModal" class="modal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
@@ -100,10 +96,10 @@
               <h5 id="fixtureSettingsName">Fixture name</h5>
           </div>
           <div class="col-3">
-            <button class="btn btn-success btn-block" onclick="">Save Settings</button>
+            <button id="fixtureChannelsSaveBtn" class="btn btn-success btn-block">Save Settings</button>
           </div>
           <div class="col-3">
-            <button class="btn btn-danger btn-block" onclick="">Delete Fixture</button>
+            <button id="fixtureChannelsDeleteBtn" class="btn btn-danger btn-block">Delete Fixture</button>
           </div>
         </div>
       </div>
