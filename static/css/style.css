@@ -31,3 +31,7 @@ body {
 .topBtns {
     margin-bottom: 1rem;
 }
+
+.list-group-item {
+    color: #343A40;
+}
