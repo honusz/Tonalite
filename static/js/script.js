@@ -3,7 +3,7 @@ document.getElementById("fixturesTab").click();
 
 socket.on('fixtures', function (fixtures) {
     $("#fixturesList").empty();
-    console.log(fixtures);
+    //console.log(fixtures);
     if (fixtures.length != 0) {
         fixtures.forEach(function (value, i) {
             $("#fixturesList").append("<div class=\"col-4\"><div class=\"fixtureItem\" onclick=\"viewFixtureChannels('" + fixtures[i].id + "')\"><p>" + fixtures[i].shortName + "</p></div></div>");
