@@ -140,7 +140,7 @@ console.log("Tonalite v2.0 - Wireless Lighting Control");
 app.use('/static', express.static(__dirname + '/static'));
 
 app.get('/', function (req, res) {
-    res.sendFile(__dirname + '/index.min.html');
+    res.sendFile(__dirname + '/index.html');
 });
 http.listen(3000, '192.168.0.105', function () {
     console.log('Tonalite listening on *:3000');
@@ -193,7 +193,7 @@ io.on('connection', function (socket) {
 
     socket.on('getFixtureChannels', function (msg) {
         var fixture = fixtures[fixtures.map(el => el.id).indexOf(msg.id)];
-        socket.emit('fixtureChannels', {id: fixture.id, name: fixture.name, channels: fixture.channels});
+        socket.emit('fixtureChannels', { id: fixture.id, name: fixture.name, channels: fixture.channels });
     });
 
     socket.on('resetFixtures', function () {
@@ -204,9 +204,9 @@ io.on('connection', function (socket) {
 
     socket.on('changeFixtureChannelValue', function (msg) {
         var fixture = fixtures[fixtures.map(el => el.id).indexOf(msg.id)];
-        var channel = fixture.channels[fixture.channels.map(el => el.id).indexOf(msg.cid)];
+        var channel = fixture.channels[msg.cid];
         channel.value = msg.value;
-        socket.emit('fixtureChannels', fixture.channels);
+        socket.emit('fixtureChannels', { id: fixture.id, name: fixture.name, channels: fixture.channels });
     });
 
     socket.on('recordCue', function () {
