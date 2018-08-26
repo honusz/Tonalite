@@ -192,7 +192,8 @@ io.on('connection', function (socket) {
     });
 
     socket.on('getFixtureChannels', function (msg) {
-        socket.emit('fixtureChannels', fixtures[fixtures.map(el => el.id).indexOf(msg.id)].channels);
+        var fixture = fixtures[fixtures.map(el => el.id).indexOf(msg.id)];
+        socket.emit('fixtureChannels', {id: fixture.id, name: fixture.name, channels: fixture.channels});
     });
 
     socket.on('resetFixtures', function () {

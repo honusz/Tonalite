@@ -22,9 +22,10 @@ socket.on('fixtureProfiles', function (profiles) {
     });
 });
 
-socket.on('fixtureChannels', function (channels) {
+socket.on('fixtureChannels', function (msg) {
     $("#fixtureChannels").empty();
-    channels.forEach(function (channel, i) {
+    $("#fixtureName").text(msg.name);
+    msg.channels.forEach(function (channel, i) {
         $("#fixtureChannels").append("<label for=\""+channel.type+"\">"+channel.name+"</label><input type=\"range\" class=\"custom-range\" id=\""+channel.type+"\" max=\""+channel.displayMax+"\" min=\""+channel.displayMin+"\" value=\""+channel.value+"\">");
     });
 });
