@@ -142,7 +142,7 @@ app.use('/static', express.static(__dirname + '/static'));
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.min.html');
 });
-http.listen(3000, function () {
+http.listen(3000, '192.168.0.105', function () {
     console.log('Tonalite listening on *:3000');
 });
 setInterval(dmxLoop, 250);
@@ -168,11 +168,13 @@ io.on('connection', function (socket) {
         // Assign a random id for easy access to this fixture
         fixture.id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
         fixtures.push(JSON.parse(JSON.stringify(fixture)));
-        socket.emit('fixtures', fixtures);
+        io.emit('fixtures', fixtures);
     });
 
     socket.on('removeFixture', function (msg) {
         fixtures.splice(fixtures[fixtures.map(el => el.id).indexOf(msg.id)], 1);
+        io.emit('fixtures', fixtures);
+        socket.emit('message', { type: "info", content: "Fixture has been removed!" });
     });
 
     socket.on('getFixtureSettings', function (msg) {
@@ -195,7 +197,7 @@ io.on('connection', function (socket) {
 
     socket.on('resetFixtures', function () {
         resetFixtures();
-        socket.emit('fixtures', fixtures);
+        io.emit('fixtures', fixtures);
         socket.emit('message', { type: "info", content: "Fixture settings have been reset!" });
     });
 
