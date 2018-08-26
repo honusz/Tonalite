@@ -1,7 +1,7 @@
 {
   "name": "tonalite2.0",
   "version": "1.0.0",
-  "description": "Lighting control system",
+  "description": "Wireless lighting control system",
   "main": "index.js",
   "bin": "index.js",
   "scripts": {
@@ -16,11 +16,11 @@
     "url": "git+https://github.com/johnroper100/tonalite2.0.git"
   },
   "author": "John Roper",
-  "license": "ISC",
+  "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/johnroper100/tonalite2.0/issues"
+    "url": "https://github.com/johnroper100/tonalite/issues"
   },
-  "homepage": "https://github.com/johnroper100/tonalite2.0#readme",
+  "homepage": "https://github.com/johnroper100/tonalite#readme",
   "dependencies": {
     "e131": "^1.1.1",
     "express": "^4.16.3",
