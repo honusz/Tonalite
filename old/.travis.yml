@@ -1,0 +1,36 @@
+language: python
+matrix:
+  include:
+    - os: linux
+      sudo: required
+      python: 3.6
+      env: TOXENV=py36
+    - os: osx
+      language: generic
+      env: TOXENV=py36
+env:
+  global:
+    - secure: bHb9YdO/CYMAvoDuaBN+bUYIfW+x4xJ2Z3kJEVIJkXKVPPJbcjRW45K8vq4DvvAXo4v7EXPGOaM4pi67obaeKQd3I2IsaTNjKLRWLXPJZNTjW7AHk9GiKSewyt+9koKsTxnQXnRQB9ZFYiTMp0kMZ4g9SXXjrSxQJv8McvjC7tC3po+zO129wARb+SjzM5kCSq81VlMPzZjQq9OW2omA/BWtu87gWUTEhB+pp/5TNcM398RP4Z34D15dQTIMi7hsnG7OVlPFpbdvtXVMcovnetIsRtcyqDWO6t0qWFFjTjfa+iMUYneM6IbR31wadD9rYFL4tXY6TKD9YQWDV0gd9vn9bqwoolEbjMblAz6rnZeS5rHjyMPnJWSa5XwwSDjUBts8QxrXbGmo7y3C/7Bd+UjBUKdyW3cUehkvWVFl69YW6CQgvPPp2Zs1HVH9RCrIMDTGVGhc/f28IVDGz+ywWaNpmnLmcYxb3aRY3QU/etla9gV44UoSPM/Ptquj8LxHOMdx0hG660/BKjwSOiP2WWOMfRHxy7Q4od7VKIj7eBD8ExmesMUBsnFxRxN+d+1kJRo7D3WgZG9xpQwR4z9rsD38R+l8aV1P+HFHZBFJPJs0X0iZLfVvW16PIVr1Wjudz0VU7PxaoDLPBepuVN8U6lHtkJgbYdnt8rLrxFviQ0c=
+    - secure: Jt/EuEpGI+5MzfeMStYr6+wF3F9jYld4oGSxsw61h09PUXh8Z6pIKo864EaDa94q8rOWPH18dkLAQl+i1LJu5zigxdmsRPbNGQkI0ESYIPHeECCckSdYyQN00NlEzLJa2GsE0JW5ukzT/Z7BBFuQHNtgu9PYtXu011wVCWQYPB7sOyGBBfsAgPs1a15BnxJg7tbuW7zo/jQs+GTgdCyAsJCHupH0IIlWizyZuNAcIfRqs3a1KmgRmkW6G++dwKDYSygTpEpfsNLyvia4KuM4jmy99prPj+D17lRmr7JB7nnux3bi/Gj73LqAY8LuW5wd1Utpg8o9IlQw8vtGPY6FrHe1R8GG/3o/T0stjk8WA7kMta2O0KpdKexALYLKIqQlZUrFDw8fkr3z3nV+smy6mr5g4ppgiZQL71CrFfyt6LLqKDcdSibDHR6Fjkql3xi/W6I77kp1rxuG18MHkskUM4XsRdBWxqI7TU1eAm/30WjzSO+0Wyc/hE7E1gTE/utQPKr0V+rYtvGUk2F/nZ2se4ClvodPmKQDZLINcE34hgpJ0QgMzyMRKMufs6yNrF0GG83/IbHTq064tS1Jd22GvEB6+Srs3aMVpx+0G+zQssghEKrW0MWXGW/54jVGcYb3GLCevySaetjNiSHcW5DlqAxbr6NNtF1E/JpHYjd9rWc=  
+install:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install python3 upx ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -qq update ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y upx ; fi
+  - pip3 install python-socketio aiohttp PyInstaller passlib cython socketIO-client
+script:
+  - cd src_channelman
+  - python3 setup.py build_ext --inplace
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cp channelman.cpython-36m-x86_64-linux-gnu.so ../channelman.so ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cp channelman.cpython-36m-darwin.so ../channelman.so ; fi
+  - cd ../
+  - python3 tests.py
+  - python3 -m PyInstaller tonalite-lin.spec
+after_success:
+  - rm -rf dist/tonalite/static/sass
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then zip -r Tonalite-Latest-Linux64.zip dist/tonalite ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then curl --ftp-create-dirs -T Tonalite-Latest-Linux64.zip -u $FTP_USER:$FTP_PASSWORD ftp://jmroper.com/public_html/tonalite-builds/ ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then zip -r Tonalite-Latest-OSX64.zip dist/tonalite ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then curl --ftp-create-dirs -T Tonalite-Latest-OSX64.zip -u $FTP_USER:$FTP_PASSWORD ftp://jmroper.com/public_html/tonalite-builds/ ; fi
+notifications:
+  email: false

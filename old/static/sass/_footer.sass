@@ -1,0 +1,41 @@
+#footer
+    background-color: $bg-light-color
+    height: 12vh
+    max-height: 12vh
+
+    .tab-item:first-child
+        border-left: none
+
+.tab-item
+    font-family: sans-serif
+    font-size: 1.5em
+    font-weight: 400
+    text-align: center
+    height: 100%
+    background-color: $bg-light-color
+    border-radius: 0px
+    border: none
+    border-left: solid 2px lighten($bg-light-color, 10%)
+    outline: none
+    color: $text-color
+
+    &:hover
+        cursor: pointer
+        color: darken($text-color, 25%)
+    
+    &:focus
+        outline: none
+    
+    &::-moz-focus-inner
+        outline: none
+        border: 0px
+
+@media only screen and (max-width: 768px)
+    .text-hidden
+        display: none
+    
+.tab-item.active
+    color: $active-text-color
+
+    &:hover
+        cursor: default

@@ -1,0 +1,55 @@
+@import "config"
+@import "header"
+@import "content"
+@import "footer"
+@import "button"
+@import "channels"
+@import "cues"
+@import "keyboard"
+@import "submasters"
+@import "responsive"
+
+body
+    margin: 0
+    padding: 0
+    font-family: sans-serif
+    font-weight: 400
+    background-color: $bg-color
+    color: $text-color
+    height: 100vh
+
+input
+    width: 100%
+    height: 3em
+    border: none
+    border-radius: 0px
+    margin-bottom: 0.5em
+    padding-left: 1em
+    padding-right: 1em
+    font-family: sans-serif
+    font-weight: 400
+    background-color: $text-color
+    color: $bg-color
+    font-size: 0.9em
+
+.red-text
+    color: $red-color !important
+
+.green-text
+    color: $green-color !important
+
+.purple-text
+    color: $purple-color !important
+
+.yellow-text
+    color: $yellow-color !important
+
+.hidden
+    display: none
+
+.disable-selection
+    -moz-user-select: none
+    -ms-user-select: none
+    -khtml-user-select: none
+    -webkit-user-select: none
+    -webkit-touch-callout: none
