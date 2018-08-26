@@ -207,6 +207,7 @@ io.on('connection', function (socket) {
         var channel = fixture.channels[msg.cid];
         channel.value = msg.value;
         socket.emit('fixtureChannels', { id: fixture.id, name: fixture.name, channels: fixture.channels });
+        io.emit('fixtures', fixtures);
     });
 
     socket.on('recordCue', function () {
