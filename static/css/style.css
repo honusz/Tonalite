@@ -8,10 +8,10 @@ body {
     background-color: #228BE6;
     color: #F8F9FA;
     border-radius: 5px;
-    padding-top: 20%;
-    padding-left: 10%;
-    padding-bottom: 5%;
+    padding-top: 1.5rem;
+    padding-bottom: 1rem;
     margin-bottom: 1rem;
+    text-align: center;
 }
 
 .tab {
@@ -24,7 +24,7 @@ body {
     font-size: 2rem;
 }
 
-#fixtures {
+#fixtures, #fixtureChannelsPage {
     margin-top: 1rem;
 }
 
@@ -32,6 +32,6 @@ body {
     margin-bottom: 1rem;
 }
 
-.list-group-item {
+.list-group-item, .dark {
     color: #343A40;
 }

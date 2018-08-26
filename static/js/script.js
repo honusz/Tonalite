@@ -6,7 +6,7 @@ socket.on('fixtures', function (fixtures) {
     if (fixtures.length != 0) {
         $("#fixturesList").empty();
         fixtures.forEach(function (value, i) {
-            $("#fixturesList").append("<div class=\"col-4\"><div class=\"fixtureItem\" onclick=\"viewFixture('" + fixtures[i].id + "')\"><p>" + fixtures[i].shortName + "</p></div></div>");
+            $("#fixturesList").append("<div class=\"col-4\"><div class=\"fixtureItem\" onclick=\"viewFixtureChannels('" + fixtures[i].id + "')\"><p>" + fixtures[i].shortName + "</p></div></div>");
         });
     }
 });
@@ -24,10 +24,16 @@ socket.on('fixtureProfiles', function (profiles) {
 
 socket.on('fixtureChannels', function (msg) {
     $("#fixtureChannels").empty();
-    $("#fixtureName").text(msg.name);
+    $("#fixtureChannelsName").text(msg.name);
+    $("#fixtureSettingsBtn").on("click", function(){ viewFixtureSettings(msg.id); });
     msg.channels.forEach(function (channel, i) {
-        $("#fixtureChannels").append("<label for=\"" + channel.type + "\">" + channel.name + "</label><input type=\"range\" class=\"custom-range\" id=\"" + channel.type + "\" max=\"" + channel.displayMax + "\" min=\"" + channel.displayMin + "\" value=\"" + channel.value + "\" oninput=\"updateFixtureChannelValue(this, '" + msg.id + "', " + i + ")\">");
+        $("#fixtureChannels").append("<label for=\"" + channel.type + "\">" + channel.name + ":</label><input type=\"range\" class=\"custom-range\" id=\"" + channel.type + "\" max=\"" + channel.displayMax + "\" min=\"" + channel.displayMin + "\" value=\"" + channel.value + "\" oninput=\"updateFixtureChannelValue(this, '" + msg.id + "', " + i + ")\">");
     });
+});
+
+socket.on('fixtureSettings', function (fixture) {
+    $("#fixtureSettingsName").text(fixture.name);
+    $("#fixtureChannelsBackBtn").on("click", function(){ viewFixtureChannels(fixture.id); });
 });
 
 function resetFixtures() {
@@ -44,16 +50,21 @@ function addFixture(fixture) {
     $('#fixtureProfilesModal').modal("hide");
 }
 
-function viewFixture(fixtureID) {
+function viewFixtureChannels(fixtureID) {
     socket.emit('getFixtureChannels', { id: fixtureID });
-    openTab(event, 'fixtureChannelsPage');
+    openTab('fixtureChannelsPage');
+}
+
+function viewFixtureSettings(fixtureID) {
+    socket.emit('getFixtureSettings', { id: fixtureID });
+    openTab('fixtureSettingsPage');
 }
 
 function updateFixtureChannelValue(self, fixtureID, channelID) {
     socket.emit('changeFixtureChannelValue', {id: fixtureID, cid: channelID, value: parseInt(self.value)})
 }
 
-function openTab(evt, tabName) {
+function openTab(tabName) {
     // Declare all variables
     var i, tabcontent, tablinks;
 
