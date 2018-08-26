@@ -36,6 +36,9 @@ socket.on('fixtureSettings', function (fixture) {
     $("#fixtureSettingsName").text(fixture.name);
     $("#fixtureChannelsBackBtn").on("click", function(){ viewFixtureChannels(fixture.id); });
     $("#fixtureChannelsDeleteBtn").on("click", function(){ removeFixture(fixture.id); });
+    $("#fixtureNameInput").val(fixture.name);
+    $("#fixtureShortNameInput").val(fixture.shortName);
+    $("#fixtureDMXAddressInput").val(fixture.startDMXAddress);
 });
 
 function resetFixtures() {
