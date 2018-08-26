@@ -185,10 +185,11 @@ io.on('connection', function (socket) {
         var fixture = fixtures[fixtures.map(el => el.id).indexOf(msg.id)];
         fixture.name = msg.name;
         fixture.shortName = msg.shortName;
-        fixture.manfacturer = msg.manufacturer;
+        //fixture.manfacturer = msg.manufacturer;
         fixture.startDMXAddress = msg.startDMXAddress;
         socket.emit('fixtureSettings', fixture);
         socket.emit('message', { type: "info", content: "Fixture settings have been updated!" });
+        io.emit('fixtures', fixtures);
     });
 
     socket.on('getFixtureChannels', function (msg) {

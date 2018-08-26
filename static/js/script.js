@@ -3,6 +3,7 @@ document.getElementById("fixturesTab").click();
 
 socket.on('fixtures', function (fixtures) {
     $("#fixturesList").empty();
+    console.log(fixtures);
     if (fixtures.length != 0) {
         fixtures.forEach(function (value, i) {
             $("#fixturesList").append("<div class=\"col-4\"><div class=\"fixtureItem\" onclick=\"viewFixtureChannels('" + fixtures[i].id + "')\"><p>" + fixtures[i].shortName + "</p></div></div>");
@@ -36,6 +37,7 @@ socket.on('fixtureSettings', function (fixture) {
     $("#fixtureSettingsName").text(fixture.name);
     $("#fixtureChannelsBackBtn").on("click", function(){ viewFixtureChannels(fixture.id); });
     $("#fixtureChannelsDeleteBtn").on("click", function(){ removeFixture(fixture.id); });
+    $("#fixtureChannelsSaveBtn").on("click", function(){ saveFixtureSettings(fixture.id); });
     $("#fixtureNameInput").val(fixture.name);
     $("#fixtureShortNameInput").val(fixture.shortName);
     $("#fixtureDMXAddressInput").val(fixture.startDMXAddress);
@@ -74,6 +76,10 @@ function removeFixture(fixtureID) {
         socket.emit('removeFixture', { id: fixtureID });
         openTab('fixtures');
     }
+}
+
+function saveFixtureSettings(fixtureID) {
+    socket.emit('editFixtureSettings', {id: fixtureID, name: $("#fixtureNameInput").val(), shortName: $("#fixtureShortNameInput").val(), startDMXAddress: $("#fixtureDMXAddressInput").val()});
 }
 
 function openTab(tabName) {
