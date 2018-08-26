@@ -1,3 +1,8 @@
+body {
+    background-color: #212529;
+    color: #F8F9FA;
+}
+
 .fixtureItem {
     width: 100%;
     background-color: #228BE6;
@@ -14,5 +19,6 @@
     bottom: 0;
     right: 0;
     width: 100%;
-    background: red;
+    background: #343A40;
+    text-align: center;
 }

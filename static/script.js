@@ -26,7 +26,7 @@ socket.on('fixtureChannels', function (msg) {
     $("#fixtureChannels").empty();
     $("#fixtureName").text(msg.name);
     msg.channels.forEach(function (channel, i) {
-        $("#fixtureChannels").append("<label for=\"" + channel.type + "\">" + channel.name + "</label><input type=\"range\" class=\"custom-range\" id=\"" + channel.type + "\" max=\"" + channel.displayMax + "\" min=\"" + channel.displayMin + "\" value=\"" + channel.value + "\" onchange=\"updateFixtureChannelValue(this, '" + msg.id + "', " + i + ")\">");
+        $("#fixtureChannels").append("<label for=\"" + channel.type + "\">" + channel.name + "</label><input type=\"range\" class=\"custom-range\" id=\"" + channel.type + "\" max=\"" + channel.displayMax + "\" min=\"" + channel.displayMin + "\" value=\"" + channel.value + "\" oninput=\"updateFixtureChannelValue(this, '" + msg.id + "', " + i + ")\">");
     });
 });
 
