@@ -111,6 +111,7 @@ function calculateStack() {
             cue.step = (cue.time * 40) + 1;
             cue.active = false;
             io.sockets.emit('cues', cues);
+            io.sockets.emit('cueActionBtn', false);
         }
     }
     for (var s in stack) {
@@ -158,6 +159,7 @@ io.on('connection', function (socket) {
     //console.log('a user connected');
     socket.emit('fixtures', fixtures);
     socket.emit('cues', cues);
+    socket.emit('cueActionBtn', false);
 
     socket.on('getFixtureProfiles', function () {
         var fixturesList = [];
@@ -256,9 +258,10 @@ io.on('connection', function (socket) {
 
     socket.on('removeCue', function (msg) {
         cues.splice(cues[cues.map(el => el.id).indexOf(msg.id)], 1);
-        if (lastCue == cues.map(el => el.id).indexOf(msg.id)) {
+        if (currentCue == cues.map(el => el.id).indexOf(msg.id)) {
             lastCue = -1;
             currentCue = lastCue;
+            io.emit('cueActionBtn', false);
         }
         socket.emit('message', { type: "info", content: "Cue has been removed!" });
         io.emit('cues', cues);
@@ -279,6 +282,7 @@ io.on('connection', function (socket) {
         currentCue = lastCue;
         cues[lastCue].active = true;
         io.emit('cues', cues);
+        io.emit('cueActionBtn', true);
     });
 
     socket.on('lastCue', function () {
@@ -296,6 +300,7 @@ io.on('connection', function (socket) {
         currentCue = lastCue;
         cues[lastCue].active = true;
         io.emit('cues', cues);
+        io.emit('cueActionBtn', true);
     });
 
     socket.on('stopCue', function () {
@@ -303,5 +308,6 @@ io.on('connection', function (socket) {
         cues[lastCue].step = (cues[lastCue].time * 40) + 1;
         cues[lastCue].active = false;
         io.emit('cues', cues);
+        io.emit('cueActionBtn', false);
     });
 });

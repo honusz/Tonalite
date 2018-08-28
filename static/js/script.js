@@ -19,7 +19,7 @@ socket.on('fixtures', function (fixtures) {
 
 socket.on('cues', function (cues) {
     $("#cuesList").empty();
-    console.log(cues);
+    //console.log(cues);
     if (cues.length != 0) {
         cues.forEach(function (cue) {
             if (cue.active == true) {
@@ -64,6 +64,18 @@ socket.on('cueSettings', function (cue) {
     $("#cueSaveBtn").on("click", function () { saveCueSettings(cue.id); });
     $("#cueNameInput").val(cue.name);
     $("#cueTimeInput").val(cue.time);
+});
+
+socket.on('cueActionBtn', function (btnMode) {
+    $("#cueActionBtn").empty();
+    $("#cueActionBtn").off("click");
+    if (btnMode == false) {
+        $("#cueActionBtn").on("click", function () { recordCue(); });
+        $("#cueActionBtn").append("<i class=\"far fa-circle\"></i> Record");
+    } else {
+        $("#cueActionBtn").on("click", function () { stopCue(); });
+        $("#cueActionBtn").append("<i class=\"far fa-stop-circle\"></i> Stop");
+    }
 });
 
 function resetFixtures() {
@@ -126,6 +138,10 @@ function nextCue() {
 
 function lastCue() {
     socket.emit('lastCue');
+}
+
+function stopCue() {
+    socket.emit('stopCue');
 }
 
 function viewCueSettings(cueID) {
