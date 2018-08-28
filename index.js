@@ -107,8 +107,9 @@ function calculateStack() {
         cue.step -= 1;
         if (cue.step == 0) {
             currentCue = -1;
-            cue.step = 121;
+            cue.step = (cue.time * 40) + 1;
             cue.active = false;
+            io.sockets.emit('cues', cues);
         }
     }
     for (var s in stack) {
@@ -139,7 +140,6 @@ function dmxLoop() {
         slotsData = channels;
         client.send(packet);
     }
-    //console.log("frame");
 };
 
 console.log("Tonalite v2.0 - Wireless Lighting Control");
@@ -151,10 +151,10 @@ app.get('/', function (req, res) {
 http.listen(3000, function () {
     console.log('Tonalite listening on *:3000');
 });
-setInterval(dmxLoop, 250);
+setInterval(dmxLoop, 25);
 
 io.on('connection', function (socket) {
-    console.log('a user connected');
+    //console.log('a user connected');
     socket.emit('fixtures', fixtures);
     socket.emit('cues', cues);
 
@@ -224,7 +224,7 @@ io.on('connection', function (socket) {
             type: "cue",
             name: "Cue " + (cues.length + 1),
             time: 3,
-            step: 121, // 3 * (40) + 1
+            step: (3 * 40) + 1, // 3 * (40) + 1
             active: false,
             channels: getFixtureValues()
         };
@@ -261,7 +261,7 @@ io.on('connection', function (socket) {
 
     socket.on('nextCue', function () {
         if (currentCue != -1) {
-            cues[currentCue].step = 121;
+            cues[currentCue].step = (cues[currentCue].time * 40) + 1;
             cues[currentCue].active = false;
             if (currentCue == cues.length - 1) {
                 currentCue = 0;
@@ -277,7 +277,7 @@ io.on('connection', function (socket) {
 
     socket.on('lastCue', function () {
         if (currentCue != -1) {
-            cues[currentCue].step = 121;
+            cues[currentCue].step = (cues[currentCue].time * 40) + 1;
             cues[currentCue].active = false;
             if (currentCue == 0) {
                 currentCue = cues.length - 1;
@@ -293,7 +293,7 @@ io.on('connection', function (socket) {
 
     socket.on('stopCue', function () {
         currentCue = -1;
-        cues[currentCue].step = 121;
+        cues[currentCue].step = (cues[currentCue].time * 40) + 1;
         cues[currentCue].active = false;
         io.emit('cues', cues);
     });

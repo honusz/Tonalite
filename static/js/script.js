@@ -19,10 +19,15 @@ socket.on('fixtures', function (fixtures) {
 
 socket.on('cues', function (cues) {
     $("#cuesList").empty();
-    //console.log(cues);
+    console.log(cues);
     if (cues.length != 0) {
         cues.forEach(function (cue) {
-            $("#cuesList").append("<div class=\"col-4\"><div class=\"cueItem\" onclick=\"viewCueSettings('" + cue.id + "')\"><p>" + cue.name + "</p></div></div>");
+            if (cue.active == true) {
+                style = "style=\"background-color:#fab005\"";
+            } else {
+                style = "";
+            }
+            $("#cuesList").append("<div class=\"col-4\"><div class=\"cueItem\" " + style + "onclick=\"viewCueSettings('" + cue.id + "')\"><p>" + cue.name + "</p></div></div>");
         });
     } else {
         $("#cuesList").append("<div class=\"col-12\"><h5>There are no cues in this show!</h5></div>")
