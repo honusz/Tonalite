@@ -31,7 +31,7 @@ Tasks:
 - Go To Next Cue - Done - Done UI
 - Go To Last Cue - Done - Done UI
 - Go To Specific Cue
-- Stop Running Cue - Done UI
+- Stop Running Cue - Done - Done UI
 - Add Fixture To Group
 - Get All Channels In A Group
 - Change Group Channel Value
