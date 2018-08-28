@@ -54,6 +54,7 @@ var fixtures = [];
 var cues = [];
 var stack = [];
 var currentCue = -1;
+var lastCue = -1;
 
 function mapRange(num, inMin, inMax, outMin, outMax) {
     return (num - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
@@ -255,49 +256,52 @@ io.on('connection', function (socket) {
 
     socket.on('removeCue', function (msg) {
         cues.splice(cues[cues.map(el => el.id).indexOf(msg.id)], 1);
-        if (currentCue == cues.map(el => el.id).indexOf(msg.id)) {
-            currentCue = -1;
+        if (lastCue == cues.map(el => el.id).indexOf(msg.id)) {
+            lastCue = -1;
+            currentCue = lastCue;
         }
         socket.emit('message', { type: "info", content: "Cue has been removed!" });
         io.emit('cues', cues);
     });
 
     socket.on('nextCue', function () {
-        if (currentCue != -1) {
-            cues[currentCue].step = (cues[currentCue].time * 40) + 1;
-            cues[currentCue].active = false;
-            if (currentCue == cues.length - 1) {
-                currentCue = 0;
+        if (lastCue != -1) {
+            cues[lastCue].step = (cues[lastCue].time * 40) + 1;
+            cues[lastCue].active = false;
+            if (lastCue == cues.length - 1) {
+                lastCue = 0;
             } else {
-                currentCue = currentCue + 1;
+                lastCue = lastCue + 1;
             }
         } else {
-            currentCue = 0;
+            lastCue = 0;
         }
-        cues[currentCue].active = true;
+        currentCue = lastCue;
+        cues[lastCue].active = true;
         io.emit('cues', cues);
     });
 
     socket.on('lastCue', function () {
-        if (currentCue != -1) {
-            cues[currentCue].step = (cues[currentCue].time * 40) + 1;
-            cues[currentCue].active = false;
-            if (currentCue == 0) {
-                currentCue = cues.length - 1;
+        if (lastCue != -1) {
+            cues[lastCue].step = (cues[lastCue].time * 40) + 1;
+            cues[lastCue].active = false;
+            if (lastCue == 0) {
+                lastCue = cues.length - 1;
             } else {
-                currentCue = currentCue - 1;
+                lastCue = lastCue - 1;
             }
         } else {
-            currentCue = cues.length - 1;
+            lastCue = cues.length - 1;
         }
-        cues[currentCue].active = true;
+        currentCue = lastCue;
+        cues[lastCue].active = true;
         io.emit('cues', cues);
     });
 
     socket.on('stopCue', function () {
         currentCue = -1;
-        cues[currentCue].step = (cues[currentCue].time * 40) + 1;
-        cues[currentCue].active = false;
+        cues[lastCue].step = (cues[lastCue].time * 40) + 1;
+        cues[lastCue].active = false;
         io.emit('cues', cues);
     });
 });
