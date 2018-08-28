@@ -100,14 +100,17 @@ function calculateCue(cue) {
 }
 
 function calculateStack() {
-    for (var s in stack) {
-        if (s.type == "cue") {
-            channels = calculateCue(s);
-            s.step -= 1;
-            if (s.step <= 0) {
-                stack.splice(stack[stack.map(el => el.id).indexOf(s.id)], 1);
-            }
+    if (currentCue != -1) {
+        cue = cues[currentCue];
+        channels = calculateCue(cue);
+        cue.step -= 1;
+        if (cue.step == 0) {
+            currentCue = -1;
+            cue.step = 121;
         }
+    }
+    for (var s in stack) {
+        // Calculate stack
     }
 };
 
@@ -251,5 +254,29 @@ io.on('connection', function (socket) {
         cues.splice(cues[cues.map(el => el.id).indexOf(msg.id)], 1);
         socket.emit('message', { type: "info", content: "Cue has been removed!" });
         io.emit('cues', cues);
-    })
+    });
+
+    socket.on('nextCue', function () {
+        if (currentCue != -1) {
+            if (currentCue == cues.length - 1) {
+                currentCue = 0;
+            } else {;
+                currentCue = currentCue + 1;
+            }
+        } else {
+            currentCue = 0;
+        }
+    });
+
+    socket.on('lastCue', function () {
+        if (currentCue != -1) {
+            if (currentCue == 0) {
+                currentCue = cues.length - 1;
+            } else {
+                currentCue = currentCue - 1;
+            }
+        } else {
+            currentCue = cues.length - 1;
+        }
+    });
 });
