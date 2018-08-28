@@ -1,6 +1,10 @@
 var socket = io('http://' + document.domain + ':' + location.port);
 document.getElementById("fixturesTab").click();
 
+socket.on('message', function (msg) {
+    console.log(msg.type + ': ' + msg.content);
+});
+
 socket.on('fixtures', function (fixtures) {
     $("#fixturesList").empty();
     //console.log(fixtures);
@@ -13,8 +17,16 @@ socket.on('fixtures', function (fixtures) {
     }
 });
 
-socket.on('message', function (msg) {
-    console.log(msg.type + ': ' + msg.content);
+socket.on('cues', function (cues) {
+    $("#cuesList").empty();
+    //console.log(cues);
+    if (cues.length != 0) {
+        cues.forEach(function (value, i) {
+            $("#cuesList").append("<div class=\"col-4\"><div class=\"fixtureItem\" onclick=\"viewFixtureChannels('" + fixtures[i].id + "')\"><p>" + fixtures[i].shortName + "</p></div></div>");
+        });
+    } else {
+        $("#cuesList").append("<div class=\"col-12\"><h5>There are no cues in this show!</h5></div>")
+    }
 });
 
 socket.on('fixtureProfiles', function (profiles) {

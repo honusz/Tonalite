@@ -64,7 +64,6 @@
         </div>
       </div>
     </div>
-    <div id="cues" class="tabcontent"></div>
     <div id="fixtureChannelsPage" class="tabcontent">
       <div class="container">
         <div class="row topBtns">
@@ -121,18 +120,34 @@
         </div>
       </div>
     </div>
+    <div id="cues" class="tabcontent">
+      <div class="container">
+        <div class="row topBtns">
+            <div class="col-4">
+                <button class="btn btn-primary btn-block"><i class="far fa-chevron-left"></i></button>
+            </div>
+            <div class="col-4">
+                <button class="btn btn-danger btn-block"><i class="far fa-circle"></i></button>
+            </div>
+            <div class="col-4">
+                <button class="btn btn-primary btn-block"><i class="far fa-chevron-right"></i></button>
+            </div>
+        </div>
+        <div class="row" id="cuesList"></div>
+      </div>
+    </div>
     <div class="tab">
       <div class="row">
-        <div class="col-12">
+        <div class="col-6">
             <div onclick="openTab('fixtures')">
               <i class="tablinks far fa-lightbulb" id="fixturesTab"></i>
             </div>
         </div>
-        <!--<div class="col-6">
+        <div class="col-6">
             <div onclick="openTab('cues')">
               <i class="tablinks far fa-list"></i>
             </div>
-        </div>-->
+        </div>
       </div>
     </div>
     <script src="static/js/jquery-3.3.1.min.js"></script>

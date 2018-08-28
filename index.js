@@ -150,6 +150,7 @@ setInterval(dmxLoop, 250);
 io.on('connection', function (socket) {
     console.log('a user connected');
     socket.emit('fixtures', fixtures);
+    socket.emit('cues', cues);
 
     socket.on('getFixtureProfiles', function () {
         var fixturesList = [];
