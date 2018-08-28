@@ -28,9 +28,10 @@ Tasks:
 - Move Cue Up
 - Move Cue Down
 - Remove Cue - Done - Done UI
-- Go To Next Cue
-- Go To Last Cue
+- Go To Next Cue - Done
+- Go To Last Cue - Done
 - Go To Specific Cue
+- Stop Running Cue
 - Add Fixture To Group
 - Get All Channels In A Group
 - Change Group Channel Value
@@ -258,9 +259,11 @@ io.on('connection', function (socket) {
 
     socket.on('nextCue', function () {
         if (currentCue != -1) {
+            cues[currentCue].step = 121;
             if (currentCue == cues.length - 1) {
                 currentCue = 0;
-            } else {;
+            } else {
+                ;
                 currentCue = currentCue + 1;
             }
         } else {
@@ -270,6 +273,7 @@ io.on('connection', function (socket) {
 
     socket.on('lastCue', function () {
         if (currentCue != -1) {
+            cues[currentCue].step = 121;
             if (currentCue == 0) {
                 currentCue = cues.length - 1;
             } else {
@@ -278,5 +282,10 @@ io.on('connection', function (socket) {
         } else {
             currentCue = cues.length - 1;
         }
+    });
+
+    socket.on('stopCue', function () {
+        currentCue = -1;
+        cues[currentCue].step = 121;
     });
 });
