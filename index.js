@@ -11,15 +11,15 @@ var OUTPUT = 0;
 
 /*
 Tasks:
-- Get Fixtures - Done
-- Get Fixture Profiles - Done
-- Add Fixture - Done
-- Remove Fixture - Done
-- Get Fixture Settings - Done
-- Edit Fixture Settings - Done
-- Get Fixture Channels - Done
-- Change Fixture Channel Value - Done
-- Reset Fixtures - Done
+- Get Fixtures - Done - Done UI
+- Get Fixture Profiles - Done - Done UI
+- Add Fixture - Done - Done UI
+- Remove Fixture - Done - Done UI
+- Get Fixture Settings - Done - Done UI
+- Edit Fixture Settings - Done - Done UI
+- Get Fixture Channels - Done - Done UI
+- Change Fixture Channel Value - Done - Done UI
+- Reset Fixtures - Done - Done UI
 - Record Cue - Done
 - Get Cue Settings - Done
 - Update Cue - Done
