@@ -239,6 +239,7 @@ io.on('connection', function (socket) {
 
     socket.on('editCueSettings', function (msg) {
         var cue = cues[cues.map(el => el.id).indexOf(msg.id)];
+        cue.name = msg.name;
         cue.time = msg.time;
         cue.step = (msg.time * 40) + 1;
         socket.emit('cueSettings', cue);
@@ -248,6 +249,7 @@ io.on('connection', function (socket) {
 
     socket.on('removeCue', function (msg) {
         cues.splice(cues[cues.map(el => el.id).indexOf(msg.id)], 1);
-        socket.emit('cues', cues);
+        socket.emit('message', { type: "info", content: "Cue has been removed!" });
+        io.emit('cues', cues);
     })
 });

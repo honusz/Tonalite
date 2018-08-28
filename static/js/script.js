@@ -100,6 +100,17 @@ function saveFixtureSettings(fixtureID) {
     socket.emit('editFixtureSettings', { id: fixtureID, name: $("#fixtureNameInput").val(), shortName: $("#fixtureShortNameInput").val(), startDMXAddress: $("#fixtureDMXAddressInput").val() });
 }
 
+function removeCue(cueID) {
+    if (confirm("Are you sure you want to delete this cue?")) {
+        socket.emit('removeCue', { id: cueID });
+        openTab('cues');
+    }
+}
+
+function saveCueSettings(cueID) {
+    socket.emit('editCueSettings', { id: cueID, name: $("#cueNameInput").val(), time: $("#cueTimeInput").val() });
+}
+
 function recordCue() {
     socket.emit('recordCue');
 }
