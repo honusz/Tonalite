@@ -217,7 +217,7 @@ io.on('connection', function (socket) {
         var newCue = {
             id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
             type: "cue",
-            name: "Cue "+(cues.length+1),
+            name: "Cue " + (cues.length + 1),
             time: 3,
             step: 121, // 3 * (40) + 1
             channels: getFixtureValues()

@@ -46,13 +46,19 @@ socket.on('fixtureChannels', function (msg) {
 });
 
 socket.on('fixtureSettings', function (fixture) {
-    $("#fixtureSettingsName").text(fixture.name);
     $("#fixtureChannelsBackBtn").on("click", function () { viewFixtureChannels(fixture.id); });
-    $("#fixtureChannelsDeleteBtn").on("click", function () { removeFixture(fixture.id); });
-    $("#fixtureChannelsSaveBtn").on("click", function () { saveFixtureSettings(fixture.id); });
+    $("#fixtureDeleteBtn").on("click", function () { removeFixture(fixture.id); });
+    $("#fixtureSaveBtn").on("click", function () { saveFixtureSettings(fixture.id); });
     $("#fixtureNameInput").val(fixture.name);
     $("#fixtureShortNameInput").val(fixture.shortName);
     $("#fixtureDMXAddressInput").val(fixture.startDMXAddress);
+});
+
+socket.on('cueSettings', function (cue) {
+    $("#cueDeleteBtn").on("click", function () { removeCue(cue.id); });
+    $("#cueSaveBtn").on("click", function () { saveCueSettings(cue.id); });
+    $("#cueNameInput").val(cue.name);
+    $("#cueTimeInput").val(cue.time);
 });
 
 function resetFixtures() {
@@ -96,6 +102,11 @@ function saveFixtureSettings(fixtureID) {
 
 function recordCue() {
     socket.emit('recordCue');
+}
+
+function viewCueSettings(cueID) {
+    socket.emit('getCueSettings', { id: cueID });
+    openTab('cueSettingsPage');
 }
 
 function openTab(tabName) {

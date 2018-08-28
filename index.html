@@ -92,10 +92,10 @@
             <button id="fixtureChannelsBackBtn" class="btn btn-primary btn-block" onclick="">Back</button>
           </div>
           <div class="col-4">
-            <button id="fixtureChannelsSaveBtn" class="btn btn-success btn-block">Save</button>
+            <button id="fixtureSaveBtn" class="btn btn-success btn-block">Save</button>
           </div>
           <div class="col-4">
-            <button id="fixtureChannelsDeleteBtn" class="btn btn-danger btn-block">Delete</button>
+            <button id="fixtureDeleteBtn" class="btn btn-danger btn-block">Delete</button>
           </div>
         </div>
         <div class="row" id="fixtureSettings">
@@ -134,6 +134,32 @@
             </div>
         </div>
         <div class="row" id="cuesList"></div>
+      </div>
+    </div>
+    <div id="cueSettingsPage" class="tabcontent">
+      <div class="container">
+        <div class="row topBtns">
+          <div class="col-6">
+            <button id="cueSaveBtn" class="btn btn-success btn-block">Save</button>
+          </div>
+          <div class="col-6">
+            <button id="cueDeleteBtn" class="btn btn-danger btn-block">Delete</button>
+          </div>
+        </div>
+        <div class="row" id="cueSettings">
+          <div class="col-12">
+              <div class="form-group">
+                  <label for="cueNameInput"> Name:</label>
+                  <input class="form-control" type="text" id="cueNameInput" placeholder="Cue Name">
+              </div>
+          </div>
+          <div class="col-12">
+              <div class="form-group">
+                  <label for="cueTimeInput">Length:</label>
+                  <input class="form-control" type="number" id="cueTimeInput" placeholder="Cue Length In Seconds">
+              </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="tab">
