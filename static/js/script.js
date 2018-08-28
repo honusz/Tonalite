@@ -115,6 +115,14 @@ function recordCue() {
     socket.emit('recordCue');
 }
 
+function nextCue() {
+    socket.emit('nextCue');
+}
+
+function lastCue() {
+    socket.emit('lastCue');
+}
+
 function viewCueSettings(cueID) {
     socket.emit('getCueSettings', { id: cueID });
     openTab('cueSettingsPage');

@@ -108,6 +108,7 @@ function calculateStack() {
         if (cue.step == 0) {
             currentCue = -1;
             cue.step = 121;
+            cue.active = false;
         }
     }
     for (var s in stack) {
@@ -224,6 +225,7 @@ io.on('connection', function (socket) {
             name: "Cue " + (cues.length + 1),
             time: 3,
             step: 121, // 3 * (40) + 1
+            active: false,
             channels: getFixtureValues()
         };
         cues.push(newCue);
@@ -260,20 +262,23 @@ io.on('connection', function (socket) {
     socket.on('nextCue', function () {
         if (currentCue != -1) {
             cues[currentCue].step = 121;
+            cues[currentCue].active = false;
             if (currentCue == cues.length - 1) {
                 currentCue = 0;
             } else {
-                ;
                 currentCue = currentCue + 1;
             }
         } else {
             currentCue = 0;
         }
+        cues[currentCue].active = true;
+        io.emit('cues', cues);
     });
 
     socket.on('lastCue', function () {
         if (currentCue != -1) {
             cues[currentCue].step = 121;
+            cues[currentCue].active = false;
             if (currentCue == 0) {
                 currentCue = cues.length - 1;
             } else {
@@ -282,10 +287,14 @@ io.on('connection', function (socket) {
         } else {
             currentCue = cues.length - 1;
         }
+        cues[currentCue].active = true;
+        io.emit('cues', cues);
     });
 
     socket.on('stopCue', function () {
         currentCue = -1;
         cues[currentCue].step = 121;
+        cues[currentCue].active = false;
+        io.emit('cues', cues);
     });
 });
