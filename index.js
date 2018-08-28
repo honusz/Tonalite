@@ -66,27 +66,21 @@ function resetDMXValues() {
     });
 };
 
-function calculateFixtures(hasActive) {
-    for (fixture in fixtures) {
-        for (channel in fixture.channels) {
-            if (hasActive == true) {
-                if (channel.active == true) {
-                    channels[fixture.startDMXAddress + channel.dmxAddress] = mapRange(channel.value, channel.displayMin, channel.displayMax, channel.min, channel.max);
-                }
-            } else {
-                channels[fixture.startDMXAddress + channel.dmxAddress] = mapRange(channel.value, channel.displayMin, channel.displayMax, channel.min, channel.max);
-            }
-        }
-    }
+function calculateFixtures() {
+    fixtures.forEach(function (fixture) {
+        fixture.channels.forEach(function (channel) {
+            channels[(fixture.startDMXAddress -1) + channel.dmxAddress] = mapRange(channel.value, channel.displayMin, channel.displayMax, channel.min, channel.max);
+        });
+    });
 };
 
 function getFixtureValues() {
     var values = new Array(512).fill(0);
-    for (fixture in fixtures) {
-        for (channel in fixture.channels) {
-            values[fixture.startDMXAddress + channel.dmxAddress] = mapRange(channel.value, channel.displayMin, channel.displayMax, channel.min, channel.max);
-        }
-    }
+    fixtures.forEach(function (fixture) {
+        fixture.channels.forEach(function (channel) {
+            values[(fixture.startDMXAddress - 1) + channel.dmxAddress] = mapRange(channel.value, channel.displayMin, channel.displayMax, channel.min, channel.max);
+        });
+    });
     return values;
 };
 
@@ -94,10 +88,11 @@ function calculateCue(cue) {
     var outputChannels = new Array(512).fill(0);
     var startChannels = getFixtureValues();
     startChannels.forEach(function (value, i) {
-        var startChannel = startChannels[i];
-        var endChannel = cue.channels[i];
+        var endChannel = startChannels[i];
+        var startChannel = cue.channels[i];
         outputChannels[i] = startChannel + (((endChannel - startChannel) / (cue.time * 40)) * cue.step);
     });
+    console.log(outputChannels[0]);
     return outputChannels;
 }
 
@@ -105,35 +100,35 @@ function calculateStack() {
     if (currentCue != -1) {
         cue = cues[currentCue];
         channels = calculateCue(cue);
+        //console.log(channels[0]);
         cue.step -= 1;
         if (cue.step == 0) {
             currentCue = -1;
-            cue.step = (cue.time * 40) + 1;
+            cue.step = (cue.time * 40) + 2;
             cue.active = false;
             io.sockets.emit('cues', cues);
             io.sockets.emit('cueActionBtn', false);
         }
     }
-    for (var s in stack) {
-        // Calculate stack
-    }
+    //stack.forEach(function (item) {
+    // Calculate stack
+    //});
 };
 
 function resetFixtures() {
     var newFixtures = JSON.parse(JSON.stringify(fixtures));
-    for (var f in newFixtures) {
-        for (var c in newFixtures[f].channels) {
-            newFixtures[f].channels[c].value = newFixtures[f].channels[c].default;
-        }
-    }
+    newFixtures.forEach(function (fixture) {
+        fixture.channels.forEach(function (channel) {
+            channel.value = channel.default;
+        });
+    });
     return newFixtures;
 };
 
 function dmxLoop() {
     resetDMXValues();
-    calculateFixtures(false);
+    calculateFixtures();
     calculateStack();
-    calculateFixtures(true);
     if (OUTPUT == 1) {
         channels.forEach(function (value, i) {
             dmx.set(i + 1, value);
@@ -227,7 +222,7 @@ io.on('connection', function (socket) {
             type: "cue",
             name: "Cue " + (cues.length + 1),
             time: 3,
-            step: (3 * 40) + 1, // 3 * (40) + 1
+            step: (3 * 40) + 2, // 3 * (40) + 2
             active: false,
             channels: getFixtureValues()
         };
@@ -250,7 +245,7 @@ io.on('connection', function (socket) {
         var cue = cues[cues.map(el => el.id).indexOf(msg.id)];
         cue.name = msg.name;
         cue.time = msg.time;
-        cue.step = (msg.time * 40) + 1;
+        cue.step = (msg.time * 40) + 2;
         socket.emit('cueSettings', cue);
         socket.emit('message', { type: "info", content: "Cue settings have been updated!" });
         io.emit('cues', cues);
@@ -269,7 +264,7 @@ io.on('connection', function (socket) {
 
     socket.on('nextCue', function () {
         if (lastCue != -1) {
-            cues[lastCue].step = (cues[lastCue].time * 40) + 1;
+            cues[lastCue].step = (cues[lastCue].time * 40) + 2;
             cues[lastCue].active = false;
             if (lastCue == cues.length - 1) {
                 lastCue = 0;
@@ -287,7 +282,7 @@ io.on('connection', function (socket) {
 
     socket.on('lastCue', function () {
         if (lastCue != -1) {
-            cues[lastCue].step = (cues[lastCue].time * 40) + 1;
+            cues[lastCue].step = (cues[lastCue].time * 40) + 2;
             cues[lastCue].active = false;
             if (lastCue == 0) {
                 lastCue = cues.length - 1;
@@ -305,7 +300,7 @@ io.on('connection', function (socket) {
 
     socket.on('stopCue', function () {
         currentCue = -1;
-        cues[lastCue].step = (cues[lastCue].time * 40) + 1;
+        cues[lastCue].step = (cues[lastCue].time * 40) + 2;
         cues[lastCue].active = false;
         io.emit('cues', cues);
         io.emit('cueActionBtn', false);
@@ -313,7 +308,7 @@ io.on('connection', function (socket) {
 
     socket.on('gotoCue', function (cueID) {
         if (lastCue != -1) {
-            cues[lastCue].step = (cues[lastCue].time * 40) + 1;
+            cues[lastCue].step = (cues[lastCue].time * 40) + 2;
             cues[lastCue].active = false;
         }
         lastCue = cues.map(el => el.id).indexOf(cueID);

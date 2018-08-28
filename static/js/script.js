@@ -19,7 +19,7 @@ socket.on('fixtures', function (fixtures) {
 
 socket.on('cues', function (cues) {
     $("#cuesList").empty();
-    //console.log(cues);
+    console.log(cues);
     if (cues.length != 0) {
         cues.forEach(function (cue) {
             if (cue.active == true) {
