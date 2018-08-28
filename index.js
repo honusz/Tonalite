@@ -255,6 +255,9 @@ io.on('connection', function (socket) {
 
     socket.on('removeCue', function (msg) {
         cues.splice(cues[cues.map(el => el.id).indexOf(msg.id)], 1);
+        if (currentCue == cues.map(el => el.id).indexOf(msg.id)) {
+            currentCue = -1;
+        }
         socket.emit('message', { type: "info", content: "Cue has been removed!" });
         io.emit('cues', cues);
     });
