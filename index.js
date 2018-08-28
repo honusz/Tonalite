@@ -21,13 +21,13 @@ Tasks:
 - Change Fixture Channel Value - Done - Done UI
 - Reset Fixtures - Done - Done UI
 - Get Cues - Done - Done UI
-- Record Cue - Done
-- Get Cue Settings - Done
+- Record Cue - Done - Done UI
+- Get Cue Settings - Done - Done UI
 - Update Cue - Done
-- Edit Cue Settings - Done
+- Edit Cue Settings - Done - Done UI
 - Move Cue Up
 - Move Cue Down
-- Remove Cue - Done
+- Remove Cue - Done - Done UI
 - Go To Next Cue
 - Go To Last Cue
 - Go To Specific Cue
