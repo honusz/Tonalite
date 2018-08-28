@@ -30,7 +30,7 @@ Tasks:
 - Remove Cue - Done - Done UI
 - Go To Next Cue - Done - Done UI
 - Go To Last Cue - Done - Done UI
-- Go To Specific Cue
+- Go To Specific Cue - Done - Done UI
 - Stop Running Cue - Done - Done UI
 - Add Fixture To Group
 - Get All Channels In A Group
@@ -309,5 +309,17 @@ io.on('connection', function (socket) {
         cues[lastCue].active = false;
         io.emit('cues', cues);
         io.emit('cueActionBtn', false);
+    });
+
+    socket.on('gotoCue', function (cueID) {
+        if (lastCue != -1) {
+            cues[lastCue].step = (cues[lastCue].time * 40) + 1;
+            cues[lastCue].active = false;
+        }
+        lastCue = cues.map(el => el.id).indexOf(cueID);
+        currentCue = lastCue;
+        cues[lastCue].active = true;
+        io.emit('cues', cues);
+        io.emit('cueActionBtn', true);
     });
 });

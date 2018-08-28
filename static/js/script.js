@@ -62,6 +62,7 @@ socket.on('fixtureSettings', function (fixture) {
 socket.on('cueSettings', function (cue) {
     $("#cueDeleteBtn").on("click", function () { removeCue(cue.id); });
     $("#cueSaveBtn").on("click", function () { saveCueSettings(cue.id); });
+    $("#gotoCueBtn").on("click", function () { gotoCue(cue.id); });
     $("#cueNameInput").val(cue.name);
     $("#cueTimeInput").val(cue.time);
 });
@@ -142,6 +143,10 @@ function lastCue() {
 
 function stopCue() {
     socket.emit('stopCue');
+}
+
+function gotoCue(cueID) {
+    socket.emit('gotoCue', cueID);
 }
 
 function viewCueSettings(cueID) {
