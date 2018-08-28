@@ -3,7 +3,7 @@ body {
     color: #F8F9FA;
 }
 
-.fixtureItem {
+.fixtureItem, .cueItem {
     width: 100%;
     background-color: #228BE6;
     color: #F8F9FA;
@@ -12,6 +12,14 @@ body {
     padding-bottom: 1rem;
     margin-bottom: 1rem;
     text-align: center;
+}
+
+.cueItem {
+    background-color: #40C057;
+}
+
+#fixturesList, #cuesList {
+    margin-bottom: 3rem;
 }
 
 .tab {

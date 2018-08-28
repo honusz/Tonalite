@@ -9,8 +9,8 @@ socket.on('fixtures', function (fixtures) {
     $("#fixturesList").empty();
     //console.log(fixtures);
     if (fixtures.length != 0) {
-        fixtures.forEach(function (value, i) {
-            $("#fixturesList").append("<div class=\"col-4\"><div class=\"fixtureItem\" onclick=\"viewFixtureChannels('" + fixtures[i].id + "')\"><p>" + fixtures[i].shortName + "</p></div></div>");
+        fixtures.forEach(function (fixture) {
+            $("#fixturesList").append("<div class=\"col-4\"><div class=\"fixtureItem\" onclick=\"viewFixtureChannels('" + fixture.id + "')\"><p>" + fixture.shortName + "</p></div></div>");
         });
     } else {
         $("#fixturesList").append("<div class=\"col-12\"><h5>There are no fixtures in this show!</h5></div>")
@@ -21,8 +21,8 @@ socket.on('cues', function (cues) {
     $("#cuesList").empty();
     //console.log(cues);
     if (cues.length != 0) {
-        cues.forEach(function (value, i) {
-            $("#cuesList").append("<div class=\"col-4\"><div class=\"fixtureItem\" onclick=\"viewFixtureChannels('" + fixtures[i].id + "')\"><p>" + fixtures[i].shortName + "</p></div></div>");
+        cues.forEach(function (cue) {
+            $("#cuesList").append("<div class=\"col-4\"><div class=\"cueItem\" onclick=\"viewCueSettings('" + cue.id + "')\"><p>" + cue.name + "</p></div></div>");
         });
     } else {
         $("#cuesList").append("<div class=\"col-12\"><h5>There are no cues in this show!</h5></div>")
@@ -39,7 +39,7 @@ socket.on('fixtureProfiles', function (profiles) {
 socket.on('fixtureChannels', function (msg) {
     $("#fixtureChannels").empty();
     $("#fixtureChannelsName").text(msg.name);
-    $("#fixtureSettingsBtn").on("click", function(){ viewFixtureSettings(msg.id); });
+    $("#fixtureSettingsBtn").on("click", function () { viewFixtureSettings(msg.id); });
     msg.channels.forEach(function (channel, i) {
         $("#fixtureChannels").append("<label for=\"" + channel.type + "\">" + channel.name + ":</label><input type=\"range\" class=\"custom-range\" id=\"" + channel.type + "\" max=\"" + channel.displayMax + "\" min=\"" + channel.displayMin + "\" value=\"" + channel.value + "\" oninput=\"updateFixtureChannelValue(this, '" + msg.id + "', " + i + ")\">");
     });
@@ -47,9 +47,9 @@ socket.on('fixtureChannels', function (msg) {
 
 socket.on('fixtureSettings', function (fixture) {
     $("#fixtureSettingsName").text(fixture.name);
-    $("#fixtureChannelsBackBtn").on("click", function(){ viewFixtureChannels(fixture.id); });
-    $("#fixtureChannelsDeleteBtn").on("click", function(){ removeFixture(fixture.id); });
-    $("#fixtureChannelsSaveBtn").on("click", function(){ saveFixtureSettings(fixture.id); });
+    $("#fixtureChannelsBackBtn").on("click", function () { viewFixtureChannels(fixture.id); });
+    $("#fixtureChannelsDeleteBtn").on("click", function () { removeFixture(fixture.id); });
+    $("#fixtureChannelsSaveBtn").on("click", function () { saveFixtureSettings(fixture.id); });
     $("#fixtureNameInput").val(fixture.name);
     $("#fixtureShortNameInput").val(fixture.shortName);
     $("#fixtureDMXAddressInput").val(fixture.startDMXAddress);
@@ -80,7 +80,7 @@ function viewFixtureSettings(fixtureID) {
 }
 
 function updateFixtureChannelValue(self, fixtureID, channelID) {
-    socket.emit('changeFixtureChannelValue', {id: fixtureID, cid: channelID, value: parseInt(self.value)})
+    socket.emit('changeFixtureChannelValue', { id: fixtureID, cid: channelID, value: parseInt(self.value) })
 }
 
 function removeFixture(fixtureID) {
@@ -91,7 +91,11 @@ function removeFixture(fixtureID) {
 }
 
 function saveFixtureSettings(fixtureID) {
-    socket.emit('editFixtureSettings', {id: fixtureID, name: $("#fixtureNameInput").val(), shortName: $("#fixtureShortNameInput").val(), startDMXAddress: $("#fixtureDMXAddressInput").val()});
+    socket.emit('editFixtureSettings', { id: fixtureID, name: $("#fixtureNameInput").val(), shortName: $("#fixtureShortNameInput").val(), startDMXAddress: $("#fixtureDMXAddressInput").val() });
+}
+
+function recordCue() {
+    socket.emit('recordCue');
 }
 
 function openTab(tabName) {

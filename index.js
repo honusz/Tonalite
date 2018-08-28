@@ -20,6 +20,7 @@ Tasks:
 - Get Fixture Channels - Done - Done UI
 - Change Fixture Channel Value - Done - Done UI
 - Reset Fixtures - Done - Done UI
+- Get Cues - Done - Done UI
 - Record Cue - Done
 - Get Cue Settings - Done
 - Update Cue - Done
@@ -216,12 +217,13 @@ io.on('connection', function (socket) {
         var newCue = {
             id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
             type: "cue",
+            name: "Cue "+(cues.length+1),
             time: 3,
-            step: (3 * 40) + 1,
+            step: 121, // 3 * (40) + 1
             channels: getFixtureValues()
         };
         cues.push(newCue);
-        socket.emit('cues', cues);
+        io.emit('cues', cues);
     });
 
     socket.on('updateCue', function (msg) {
@@ -241,6 +243,7 @@ io.on('connection', function (socket) {
         cue.step = (msg.time * 40) + 1;
         socket.emit('cueSettings', cue);
         socket.emit('message', { type: "info", content: "Cue settings have been updated!" });
+        io.emit('cues', cues);
     });
 
     socket.on('removeCue', function (msg) {
