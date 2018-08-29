@@ -103,9 +103,9 @@ function calculateStack() {
         cue = cues[currentCue];
         channels = calculateCue(cue);
         cue.step -= 1;
-        if (cue.step == 0) {
+        if (cue.step < 0) {
             currentCue = -1;
-            cue.step = (cue.time * 40) + 2;
+            cue.step = cue.time * 40;
             cue.active = false;
             cue.fixtures.forEach(function (fixture) {
                 fixture.channels.forEach(function (channel, i) {
@@ -228,7 +228,7 @@ io.on('connection', function (socket) {
             type: "cue",
             name: "Cue " + (cues.length + 1),
             time: 3,
-            step: (3 * 40) + 2,
+            step: 120, // 3 * 40
             active: false,
             fixtures: JSON.parse(JSON.stringify(fixtures))
         };
@@ -251,7 +251,7 @@ io.on('connection', function (socket) {
         var cue = cues[cues.map(el => el.id).indexOf(msg.id)];
         cue.name = msg.name;
         cue.time = msg.time;
-        cue.step = (msg.time * 40) + 2;
+        cue.step = msg.time * 40;
         socket.emit('cueSettings', cue);
         socket.emit('message', { type: "info", content: "Cue settings have been updated!" });
         io.emit('cues', cues);
@@ -270,7 +270,7 @@ io.on('connection', function (socket) {
 
     socket.on('nextCue', function () {
         if (lastCue != -1) {
-            cues[lastCue].step = (cues[lastCue].time * 40) + 2;
+            cues[lastCue].step = cues[lastCue].time * 40;
             cues[lastCue].active = false;
             if (lastCue == cues.length - 1) {
                 lastCue = 0;
@@ -288,7 +288,7 @@ io.on('connection', function (socket) {
 
     socket.on('lastCue', function () {
         if (lastCue != -1) {
-            cues[lastCue].step = (cues[lastCue].time * 40) + 2;
+            cues[lastCue].step = cues[lastCue].time * 40;
             cues[lastCue].active = false;
             if (lastCue == 0) {
                 lastCue = cues.length - 1;
@@ -306,7 +306,7 @@ io.on('connection', function (socket) {
 
     socket.on('stopCue', function () {
         currentCue = -1;
-        cues[lastCue].step = (cues[lastCue].time * 40) + 2;
+        cues[lastCue].step = cues[lastCue].time * 40;
         cues[lastCue].active = false;
         io.emit('cues', cues);
         io.emit('cueActionBtn', false);
@@ -314,7 +314,7 @@ io.on('connection', function (socket) {
 
     socket.on('gotoCue', function (cueID) {
         if (lastCue != -1) {
-            cues[lastCue].step = (cues[lastCue].time * 40) + 2;
+            cues[lastCue].step = cues[lastCue].time * 40;
             cues[lastCue].active = false;
         }
         lastCue = cues.map(el => el.id).indexOf(cueID);
