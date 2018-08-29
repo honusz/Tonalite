@@ -86,12 +86,17 @@ function getFixtureValues() {
 
 function calculateCue(cue) {
     var outputChannels = new Array(512).fill(0);
-    var startChannels = getFixtureValues();
-    startChannels.forEach(function (value, i) {
-        var endChannel = startChannels[i];
-        var startChannel = cue.channels[i];
-        outputChannels[i] = startChannel + (((endChannel - startChannel) / (cue.time * 40)) * cue.step);
+
+    cue.fixtures.forEach(function (fixture, i) {
+        fixture.channels.forEach(function (channel, i) {
+            var startFixture = fixtures[fixtures.map(el => el.id).indexOf(fixture.id)];
+            var startChannel = mapRange(startFixture.channels[i].value, startFixture.channels[i].displayMin, startFixture.channels[i].displayMax, startFixture.channels[i].min, startFixture.channels[i].max);
+            var endChannel = mapRange(channel.value, channel.displayMin, channel.displayMax, channel.min, channel.max);
+            outputChannels[(fixture.startDMXAddress - 1) + channel.dmxAddress] = endChannel + (((startChannel - endChannel) / (cue.time * 40)) * cue.step);
+            startFixture.channels[i].value = channel.value;
+        });
     });
+    
     console.log(outputChannels[0]);
     return outputChannels;
 }
