@@ -86,7 +86,6 @@ function getFixtureValues() {
 
 function calculateCue(cue) {
     var outputChannels = new Array(512).fill(0);
-
     cue.fixtures.forEach(function (fixture, i) {
         fixture.channels.forEach(function (channel, i) {
             var startFixture = fixtures[fixtures.map(el => el.id).indexOf(fixture.id)];
@@ -96,7 +95,6 @@ function calculateCue(cue) {
             startFixture.channels[i].value = channel.value;
         });
     });
-    
     console.log(outputChannels[0]);
     return outputChannels;
 }
