@@ -2,7 +2,13 @@
 
 ![Tonalite WIP Interface](screenshot.png)
 
-Tonalite is still very WIP! This is a rewrite of the old version (found in the `old` folder of this repo). Not all features have been written yet. More coming soon.
+Tonalite is a lighting control software that runs over the network. You can access the control panel from any network-connected device. While there are more features coming soon, the available ones are listed below:
+
+- Add fixtures and map them to DMX addresses
+- Control the value of each fixture's channels
+- Add cues and cycle through them
+
+Tonalite currently works with the `uDMX` and `E1.31 (sACN)` DMX protocols.
 
 ## Run
 
