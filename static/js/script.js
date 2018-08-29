@@ -19,7 +19,7 @@ socket.on('fixtures', function (fixtures) {
 
 socket.on('cues', function (cues) {
     $("#cuesList").empty();
-    console.log(cues);
+    //console.log(cues);
     if (cues.length != 0) {
         cues.forEach(function (cue) {
             if (cue.active == true) {
@@ -42,6 +42,7 @@ socket.on('fixtureProfiles', function (profiles) {
 });
 
 socket.on('fixtureChannels', function (msg) {
+    openTab('fixtureChannelsPage');
     $("#fixtureChannels").empty();
     $("#fixtureChannelsName").text(msg.name);
     $("#fixtureSettingsBtn").on("click", function () { viewFixtureSettings(msg.id); });
@@ -51,6 +52,7 @@ socket.on('fixtureChannels', function (msg) {
 });
 
 socket.on('fixtureSettings', function (fixture) {
+    openTab('fixtureSettingsPage');
     $("#fixtureChannelsBackBtn").on("click", function () { viewFixtureChannels(fixture.id); });
     $("#fixtureDeleteBtn").on("click", function () { removeFixture(fixture.id); });
     $("#fixtureSaveBtn").on("click", function () { saveFixtureSettings(fixture.id); });
@@ -60,6 +62,7 @@ socket.on('fixtureSettings', function (fixture) {
 });
 
 socket.on('cueSettings', function (cue) {
+    openTab('cueSettingsPage');
     $("#cueDeleteBtn").on("click", function () { removeCue(cue.id); });
     $("#cueSaveBtn").on("click", function () { saveCueSettings(cue.id); });
     $("#gotoCueBtn").on("click", function () { gotoCue(cue.id); });
@@ -94,13 +97,11 @@ function addFixture(fixture) {
 }
 
 function viewFixtureChannels(fixtureID) {
-    socket.emit('getFixtureChannels', { id: fixtureID });
-    openTab('fixtureChannelsPage');
+    socket.emit('getFixtureChannels', fixtureID);
 }
 
 function viewFixtureSettings(fixtureID) {
-    socket.emit('getFixtureSettings', { id: fixtureID });
-    openTab('fixtureSettingsPage');
+    socket.emit('getFixtureSettings', fixtureID);
 }
 
 function updateFixtureChannelValue(self, fixtureID, channelID) {
@@ -109,7 +110,7 @@ function updateFixtureChannelValue(self, fixtureID, channelID) {
 
 function removeFixture(fixtureID) {
     if (confirm("Are you sure you want to delete this fixture?")) {
-        socket.emit('removeFixture', { id: fixtureID });
+        socket.emit('removeFixture', fixtureID);
         openTab('fixtures');
     }
 }
@@ -120,7 +121,7 @@ function saveFixtureSettings(fixtureID) {
 
 function removeCue(cueID) {
     if (confirm("Are you sure you want to delete this cue?")) {
-        socket.emit('removeCue', { id: cueID });
+        socket.emit('removeCue', cueID);
         openTab('cues');
     }
 }
@@ -150,8 +151,7 @@ function gotoCue(cueID) {
 }
 
 function viewCueSettings(cueID) {
-    socket.emit('getCueSettings', { id: cueID });
-    openTab('cueSettingsPage');
+    socket.emit('getCueSettings', cueID);
 }
 
 function openTab(tabName) {

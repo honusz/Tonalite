@@ -180,145 +180,205 @@ io.on('connection', function (socket) {
         io.emit('fixtures', fixtures);
     });
 
-    socket.on('removeFixture', function (msg) {
-        fixtures.splice(fixtures[fixtures.map(el => el.id).indexOf(msg.id)], 1);
-        socket.emit('message', { type: "info", content: "Fixture has been removed!" });
-        io.emit('fixtures', fixtures);
+    socket.on('removeFixture', function (fixtureID) {
+        if (fixtures.length != 0) {
+            fixtures.splice(fixtures[fixtures.map(el => el.id).indexOf(fixtureID)], 1);
+            socket.emit('message', { type: "info", content: "Fixture has been removed!" });
+            io.emit('fixtures', fixtures);
+        } else {
+            socket.emit('message', { type: "error", content: "No fixtures exist!" });
+        }
     });
 
-    socket.on('getFixtureSettings', function (msg) {
-        socket.emit('fixtureSettings', fixtures[fixtures.map(el => el.id).indexOf(msg.id)]);
+    socket.on('getFixtureSettings', function (fixtureID) {
+        if (fixtures.length != 0) {
+            socket.emit('fixtureSettings', fixtures[fixtures.map(el => el.id).indexOf(fixtureID)]);
+        } else {
+            socket.emit('message', { type: "error", content: "No fixtures exist!" });
+        }
     });
 
     socket.on('editFixtureSettings', function (msg) {
-        var fixture = fixtures[fixtures.map(el => el.id).indexOf(msg.id)];
-        fixture.name = msg.name;
-        fixture.shortName = msg.shortName;
-        //fixture.manfacturer = msg.manufacturer;
-        fixture.startDMXAddress = msg.startDMXAddress;
-        socket.emit('fixtureSettings', fixture);
-        socket.emit('message', { type: "info", content: "Fixture settings have been updated!" });
-        io.emit('fixtures', fixtures);
+        if (fixtures.length != 0) {
+            var fixture = fixtures[fixtures.map(el => el.id).indexOf(msg.id)];
+            fixture.name = msg.name;
+            fixture.shortName = msg.shortName;
+            //fixture.manfacturer = msg.manufacturer;
+            fixture.startDMXAddress = msg.startDMXAddress;
+            socket.emit('fixtureSettings', fixture);
+            socket.emit('message', { type: "info", content: "Fixture settings have been updated!" });
+            io.emit('fixtures', fixtures);
+        } else {
+            socket.emit('message', { type: "error", content: "No fixtures exist!" });
+        }
     });
 
-    socket.on('getFixtureChannels', function (msg) {
-        var fixture = fixtures[fixtures.map(el => el.id).indexOf(msg.id)];
-        socket.emit('fixtureChannels', { id: fixture.id, name: fixture.name, channels: fixture.channels });
+    socket.on('getFixtureChannels', function (fixtureID) {
+        if (fixtures.length != 0) {
+            var fixture = fixtures[fixtures.map(el => el.id).indexOf(fixtureID)];
+            socket.emit('fixtureChannels', { id: fixture.id, name: fixture.name, channels: fixture.channels });
+        } else {
+            socket.emit('message', { type: "error", content: "No fixtures exist!" });
+        }
     });
 
     socket.on('resetFixtures', function () {
-        resetFixtures();
-        io.emit('fixtures', fixtures);
-        socket.emit('message', { type: "info", content: "Fixture settings have been reset!" });
+        if (fixtures.length != 0) {
+            resetFixtures();
+            io.emit('fixtures', fixtures);
+            socket.emit('message', { type: "info", content: "Fixture settings have been reset!" });
+        } else {
+            socket.emit('message', { type: "error", content: "No fixtures exist!" });
+        }
     });
 
     socket.on('changeFixtureChannelValue', function (msg) {
-        var fixture = fixtures[fixtures.map(el => el.id).indexOf(msg.id)];
-        var channel = fixture.channels[msg.cid];
-        channel.value = msg.value;
-        //socket.emit('fixtureChannels', { id: fixture.id, name: fixture.name, channels: fixture.channels });
-        socket.broadcast.emit('fixtures', fixtures);
+        if (fixtures.length != 0) {
+            var fixture = fixtures[fixtures.map(el => el.id).indexOf(msg.id)];
+            var channel = fixture.channels[msg.cid];
+            channel.value = msg.value;
+            //socket.emit('fixtureChannels', { id: fixture.id, name: fixture.name, channels: fixture.channels });
+            socket.broadcast.emit('fixtures', fixtures);
+        } else {
+            socket.emit('message', { type: "error", content: "No fixtures exist!" });
+        }
     });
 
     socket.on('recordCue', function () {
-        var newCue = {
-            id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
-            type: "cue",
-            name: "Cue " + (cues.length + 1),
-            time: 3,
-            step: 120, // 3 * 40
-            active: false,
-            fixtures: JSON.parse(JSON.stringify(fixtures))
-        };
-        cues.push(newCue);
-        io.emit('cues', cues);
+        if (fixtures.length != 0) {
+            var newCue = {
+                id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
+                type: "cue",
+                name: "Cue " + (cues.length + 1),
+                time: 3,
+                step: 120, // 3 * 40
+                active: false,
+                fixtures: JSON.parse(JSON.stringify(fixtures))
+            };
+            cues.push(newCue);
+            io.emit('cues', cues);
+        } else {
+            socket.emit('message', { type: "error", content: "No fixtures exist!" });
+        }
     });
 
     socket.on('updateCue', function (msg) {
-        var cue = cues[cues.map(el => el.id).indexOf(msg.id)];
-        cue.channels = getFixtureValues();
-        socket.emit('cueSettings', cue);
-        socket.emit('message', { type: "info", content: "Cue channel values have been updated!" });
+        if (cues.length != 0) {
+            var cue = cues[cues.map(el => el.id).indexOf(msg.id)];
+            cue.fixtures = JSON.parse(JSON.stringify(fixtures));
+            socket.emit('cueSettings', cue);
+            socket.emit('message', { type: "info", content: "Cue channel values have been updated!" });
+        } else {
+            socket.emit('message', { type: "error", content: "No cues exist!" });
+        }
     });
 
-    socket.on('getCueSettings', function (msg) {
-        socket.emit('cueSettings', cues[cues.map(el => el.id).indexOf(msg.id)]);
+    socket.on('getCueSettings', function (cueID) {
+        if (cues.length != 0) {
+            socket.emit('cueSettings', cues[cues.map(el => el.id).indexOf(cueID)]);
+        } else {
+            socket.emit('message', { type: "error", content: "No cues exist!" });
+        }
     });
 
     socket.on('editCueSettings', function (msg) {
-        var cue = cues[cues.map(el => el.id).indexOf(msg.id)];
-        cue.name = msg.name;
-        cue.time = msg.time;
-        cue.step = msg.time * 40;
-        socket.emit('cueSettings', cue);
-        socket.emit('message', { type: "info", content: "Cue settings have been updated!" });
-        io.emit('cues', cues);
+        if (cues.length != 0) {
+            var cue = cues[cues.map(el => el.id).indexOf(msg.id)];
+            cue.name = msg.name;
+            cue.time = msg.time;
+            cue.step = msg.time * 40;
+            socket.emit('cueSettings', cue);
+            socket.emit('message', { type: "info", content: "Cue settings have been updated!" });
+            io.emit('cues', cues);
+        } else {
+            socket.emit('message', { type: "error", content: "No cues exist!" });
+        }
     });
 
-    socket.on('removeCue', function (msg) {
-        cues.splice(cues[cues.map(el => el.id).indexOf(msg.id)], 1);
-        if (currentCue == cues.map(el => el.id).indexOf(msg.id)) {
-            lastCue = -1;
-            currentCue = lastCue;
-            io.emit('cueActionBtn', false);
+    socket.on('removeCue', function (cueID) {
+        if (cues.length != 0) {
+            cues.splice(cues[cues.map(el => el.id).indexOf(cueID)], 1);
+            if (currentCue == cues.map(el => el.id).indexOf(cueID)) {
+                lastCue = -1;
+                currentCue = lastCue;
+                io.emit('cueActionBtn', false);
+            }
+            socket.emit('message', { type: "info", content: "Cue has been removed!" });
+            io.emit('cues', cues);
+        } else {
+            socket.emit('message', { type: "error", content: "No cues exist!" });
         }
-        socket.emit('message', { type: "info", content: "Cue has been removed!" });
-        io.emit('cues', cues);
     });
 
     socket.on('nextCue', function () {
-        if (lastCue != -1) {
-            cues[lastCue].step = cues[lastCue].time * 40;
-            cues[lastCue].active = false;
-            if (lastCue == cues.length - 1) {
-                lastCue = 0;
+        if (cues.length != 0) {
+            if (lastCue != -1) {
+                cues[lastCue].step = cues[lastCue].time * 40;
+                cues[lastCue].active = false;
+                if (lastCue == cues.length - 1) {
+                    lastCue = 0;
+                } else {
+                    lastCue = lastCue + 1;
+                }
             } else {
-                lastCue = lastCue + 1;
+                lastCue = 0;
             }
+            currentCue = lastCue;
+            cues[lastCue].active = true;
+            io.emit('cues', cues);
+            io.emit('cueActionBtn', true);
         } else {
-            lastCue = 0;
+            socket.emit('message', { type: "error", content: "No cues exist!" });
         }
-        currentCue = lastCue;
-        cues[lastCue].active = true;
-        io.emit('cues', cues);
-        io.emit('cueActionBtn', true);
     });
 
     socket.on('lastCue', function () {
-        if (lastCue != -1) {
-            cues[lastCue].step = cues[lastCue].time * 40;
-            cues[lastCue].active = false;
-            if (lastCue == 0) {
-                lastCue = cues.length - 1;
+        if (cues.length != 0) {
+            if (lastCue != -1) {
+                cues[lastCue].step = cues[lastCue].time * 40;
+                cues[lastCue].active = false;
+                if (lastCue == 0) {
+                    lastCue = cues.length - 1;
+                } else {
+                    lastCue = lastCue - 1;
+                }
             } else {
-                lastCue = lastCue - 1;
+                lastCue = cues.length - 1;
             }
+            currentCue = lastCue;
+            cues[lastCue].active = true;
+            io.emit('cues', cues);
+            io.emit('cueActionBtn', true);
         } else {
-            lastCue = cues.length - 1;
+            socket.emit('message', { type: "error", content: "No cues exist!" });
         }
-        currentCue = lastCue;
-        cues[lastCue].active = true;
-        io.emit('cues', cues);
-        io.emit('cueActionBtn', true);
     });
 
     socket.on('stopCue', function () {
-        currentCue = -1;
-        cues[lastCue].step = cues[lastCue].time * 40;
-        cues[lastCue].active = false;
-        io.emit('cues', cues);
-        io.emit('cueActionBtn', false);
+        if (cues.length != 0) {
+            currentCue = -1;
+            cues[lastCue].step = cues[lastCue].time * 40;
+            cues[lastCue].active = false;
+            io.emit('cues', cues);
+            io.emit('cueActionBtn', false);
+        } else {
+            socket.emit('message', { type: "error", content: "No cues exist!" });
+        }
     });
 
     socket.on('gotoCue', function (cueID) {
-        if (lastCue != -1) {
-            cues[lastCue].step = cues[lastCue].time * 40;
-            cues[lastCue].active = false;
+        if (cues.length != 0) {
+            if (lastCue != -1) {
+                cues[lastCue].step = cues[lastCue].time * 40;
+                cues[lastCue].active = false;
+            }
+            lastCue = cues.map(el => el.id).indexOf(cueID);
+            currentCue = lastCue;
+            cues[lastCue].active = true;
+            io.emit('cues', cues);
+            io.emit('cueActionBtn', true);
+        } else {
+            socket.emit('message', { type: "error", content: "No cues exist!" });
         }
-        lastCue = cues.map(el => el.id).indexOf(cueID);
-        currentCue = lastCue;
-        cues[lastCue].active = true;
-        io.emit('cues', cues);
-        io.emit('cueActionBtn', true);
     });
 });
