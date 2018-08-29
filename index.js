@@ -94,7 +94,6 @@ function calculateCue(cue) {
             outputChannels[(fixture.startDMXAddress - 1) + channel.dmxAddress] = endChannel + (((startChannel - endChannel) / (cue.time * 40)) * cue.step);
         });
     });
-    console.log(outputChannels[0]);
     return outputChannels;
 }
 
@@ -157,7 +156,6 @@ http.listen(3000, function () {
 setInterval(dmxLoop, 25);
 
 io.on('connection', function (socket) {
-    //console.log('a user connected');
     socket.emit('fixtures', fixtures);
     socket.emit('cues', cues);
     socket.emit('cueActionBtn', false);
