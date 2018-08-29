@@ -229,7 +229,7 @@ io.on('connection', function (socket) {
             time: 3,
             step: (3 * 40) + 2, // 3 * (40) + 2
             active: false,
-            channels: getFixtureValues()
+            fixtures: JSON.parse(JSON.stringify(fixtures))
         };
         cues.push(newCue);
         io.emit('cues', cues);
