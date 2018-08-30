@@ -2,6 +2,13 @@ var socket = io('http://' + document.domain + ':' + location.port);
 document.getElementById("fixturesTab").click();
 
 socket.on('message', function (msg) {
+    $("#alertText").text(msg.content);
+    $("#alert").addClass("show");
+    if (msg.type == "info") {
+        $("#alert").addClass("alert-info");
+    } else {
+        $("#alert").addClass("alert-danger");
+    }
     console.log(msg.type + ': ' + msg.content);
 });
 
@@ -152,6 +159,15 @@ function gotoCue(cueID) {
 
 function viewCueSettings(cueID) {
     socket.emit('getCueSettings', cueID);
+}
+
+function closeAlert() {
+    $("#alert").removeClass("show");
+    if ($("#alert").hasClass("alert-info")) {
+        $("#alert").removeClass("alert-info")
+    } else {
+        $("#alert").removeClass("alert-danger")
+    }
 }
 
 function openTab(tabName) {
