@@ -91,7 +91,9 @@ socket.on('cueActionBtn', function (btnMode) {
 });
 
 function resetFixtures() {
-    socket.emit('resetFixtures');
+    if (confirm("Are you sure you want to reset all fixtures?")) {
+        socket.emit('resetFixtures');
+    }
 };
 
 function addFixtureModal() {
