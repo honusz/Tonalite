@@ -120,13 +120,11 @@ function calculateStack() {
 };
 
 function resetFixtures() {
-    var newFixtures = JSON.parse(JSON.stringify(fixtures));
-    newFixtures.forEach(function (fixture) {
+    fixtures.forEach(function (fixture) {
         fixture.channels.forEach(function (channel) {
-            channel.value = channel.default;
+            channel.value = channel.defaultValue;
         });
     });
-    return newFixtures;
 };
 
 function dmxLoop() {
@@ -149,7 +147,7 @@ app.use('/static', express.static(__dirname + '/static'));
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html');
 });
-http.listen(3000, function () {
+http.listen(3000, '192.168.0.103', function () {
     console.log('Tonalite listening on *:3000');
 });
 setInterval(dmxLoop, 25);
@@ -225,7 +223,7 @@ io.on('connection', function (socket) {
         if (fixtures.length != 0) {
             resetFixtures();
             io.emit('fixtures', fixtures);
-            socket.emit('message', { type: "info", content: "Fixture settings have been reset!" });
+            socket.emit('message', { type: "info", content: "Fixture values have been reset!" });
         } else {
             socket.emit('message', { type: "error", content: "No fixtures exist!" });
         }
