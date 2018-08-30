@@ -52,7 +52,6 @@ if (OUTPUT == 1) {
 
 var fixtures = [];
 var cues = [];
-var stack = [];
 var currentCue = -1;
 var lastCue = -1;
 
@@ -61,8 +60,8 @@ function mapRange(num, inMin, inMax, outMin, outMax) {
 };
 
 function resetDMXValues() {
-    channels.forEach(function (value, i) {
-        channels[i] = 0;
+    channels.forEach(function (channel) {
+        channel = 0;
     });
 };
 
@@ -262,12 +261,12 @@ io.on('connection', function (socket) {
         }
     });
 
-    socket.on('updateCue', function (msg) {
+    socket.on('updateCue', function (cueID) {
         if (cues.length != 0) {
-            var cue = cues[cues.map(el => el.id).indexOf(msg.id)];
+            var cue = cues[cues.map(el => el.id).indexOf(cueID)];
             cue.fixtures = JSON.parse(JSON.stringify(fixtures));
             socket.emit('cueSettings', cue);
-            socket.emit('message', { type: "info", content: "Cue channel values have been updated!" });
+            socket.emit('message', { type: "info", content: "Cue channels have been updated!" });
         } else {
             socket.emit('message', { type: "error", content: "No cues exist!" });
         }

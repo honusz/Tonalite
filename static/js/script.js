@@ -9,7 +9,7 @@ socket.on('message', function (msg) {
     } else {
         $("#alert").addClass("alert-danger");
     }
-    console.log(msg.type + ': ' + msg.content);
+    //console.log(msg.type + ': ' + msg.content);
 });
 
 socket.on('fixtures', function (fixtures) {
@@ -73,6 +73,7 @@ socket.on('cueSettings', function (cue) {
     $("#cueDeleteBtn").on("click", function () { removeCue(cue.id); });
     $("#cueSaveBtn").on("click", function () { saveCueSettings(cue.id); });
     $("#gotoCueBtn").on("click", function () { gotoCue(cue.id); });
+    $("#cueUpdateBtn").on("click", function () { updateCue(cue.id); });
     $("#cueNameInput").val(cue.name);
     $("#cueTimeInput").val(cue.time);
 });
@@ -82,10 +83,10 @@ socket.on('cueActionBtn', function (btnMode) {
     $("#cueActionBtn").off("click");
     if (btnMode == false) {
         $("#cueActionBtn").on("click", function () { recordCue(); });
-        $("#cueActionBtn").append("<i class=\"far fa-circle\"></i> Record");
+        $("#cueActionBtn").append("Record");
     } else {
         $("#cueActionBtn").on("click", function () { stopCue(); });
-        $("#cueActionBtn").append("<i class=\"far fa-stop-circle\"></i> Stop");
+        $("#cueActionBtn").append("Stop");
     }
 });
 
@@ -155,6 +156,10 @@ function stopCue() {
 
 function gotoCue(cueID) {
     socket.emit('gotoCue', cueID);
+}
+
+function updateCue(cueID) {
+    socket.emit('updateCue', cueID);
 }
 
 function viewCueSettings(cueID) {
