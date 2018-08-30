@@ -147,7 +147,7 @@ app.use('/static', express.static(__dirname + '/static'));
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html');
 });
-http.listen(3000, '192.168.0.103', function () {
+http.listen(3000, function () {
     console.log('Tonalite listening on *:3000');
 });
 setInterval(dmxLoop, 25);
