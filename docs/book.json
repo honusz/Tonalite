@@ -1,7 +1,6 @@
 {
-    "plugins": ["-sharing"],
     "pluginsConfig": {
-        "fontSettings": {
+        "fontfettings": {
             "theme": "night"
         }
     },
