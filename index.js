@@ -102,16 +102,34 @@ function calculateStack() {
         channels = calculateCue(cue);
         cue.step -= 1;
         if (cue.step < 0) {
-            currentCue = -1;
-            cue.step = cue.time * 40;
-            cue.active = false;
+            if (cue.follow != 0) {
+                cue.active = false;
+                if (cue.following == false) {
+                    cue.step = cue.follow * 40;
+                    cue.following = true;
+                } else {
+                    cue.step = cue.time * 40;
+                    cue.following = false;
+                    if (currentCue == cues.length - 1) {
+                        currentCue = 0;
+                    } else {
+                        currentCue += 1;
+                    }
+                    lastCue = currentCue;
+                    cues[currentCue].active = true;
+                }
+            } else {
+                currentCue = -1;
+                cue.step = cue.time * 40;
+                cue.active = false;
+                io.sockets.emit('cueActionBtn', false);
+            }
             cue.fixtures.forEach(function (fixture) {
                 fixture.channels.forEach(function (channel, i) {
                     fixtures[fixtures.map(el => el.id).indexOf(fixture.id)].channels[i].value = channel.value;
                 });
             });
             io.sockets.emit('cues', cues);
-            io.sockets.emit('cueActionBtn', false);
         }
     }
     //stack.forEach(function (item) {
@@ -248,9 +266,10 @@ io.on('connection', function (socket) {
                 type: "cue",
                 name: "Cue " + (cues.length + 1),
                 time: 3,
-                follow, 0,
+                follow: 0,
                 step: 120, // 3 * 40
                 active: false,
+                following: false,
                 fixtures: JSON.parse(JSON.stringify(fixtures))
             };
             cues.push(newCue);
@@ -314,10 +333,11 @@ io.on('connection', function (socket) {
             if (lastCue != -1) {
                 cues[lastCue].step = cues[lastCue].time * 40;
                 cues[lastCue].active = false;
+                cues[lastCue].following = false;
                 if (lastCue == cues.length - 1) {
                     lastCue = 0;
                 } else {
-                    lastCue = lastCue + 1;
+                    lastCue += 1;
                 }
             } else {
                 lastCue = 0;
@@ -336,10 +356,11 @@ io.on('connection', function (socket) {
             if (lastCue != -1) {
                 cues[lastCue].step = cues[lastCue].time * 40;
                 cues[lastCue].active = false;
+                cues[lastCue].following = false;
                 if (lastCue == 0) {
                     lastCue = cues.length - 1;
                 } else {
-                    lastCue = lastCue - 1;
+                    lastCue -= 1;
                 }
             } else {
                 lastCue = cues.length - 1;
@@ -358,6 +379,7 @@ io.on('connection', function (socket) {
             currentCue = -1;
             cues[lastCue].step = cues[lastCue].time * 40;
             cues[lastCue].active = false;
+            cues[lastCue].following = false;
             io.emit('cues', cues);
             io.emit('cueActionBtn', false);
         } else {
@@ -370,6 +392,7 @@ io.on('connection', function (socket) {
             if (lastCue != -1) {
                 cues[lastCue].step = cues[lastCue].time * 40;
                 cues[lastCue].active = false;
+                cues[lastCue].following = false;
             }
             lastCue = cues.map(el => el.id).indexOf(cueID);
             currentCue = lastCue;
