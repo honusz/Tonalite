@@ -73,16 +73,6 @@ function calculateFixtures() {
     });
 };
 
-function getFixtureValues() {
-    var values = new Array(512).fill(0);
-    fixtures.forEach(function (fixture) {
-        fixture.channels.forEach(function (channel) {
-            values[(fixture.startDMXAddress - 1) + channel.dmxAddress] = mapRange(channel.value, channel.displayMin, channel.displayMax, channel.min, channel.max);
-        });
-    });
-    return values;
-};
-
 function calculateCue(cue) {
     var outputChannels = new Array(512).fill(0);
     cue.fixtures.forEach(function (fixture) {
