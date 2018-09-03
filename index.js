@@ -149,6 +149,16 @@ function dmxLoop() {
     }
 };
 
+function saveShow() {
+    fs.writeFile("./currentShow.json", JSON.stringify([fixtures, cues]), (err) => {
+        if (err) {
+            console.log(err);
+            return false;
+        };
+    });
+    return true;
+};
+
 console.log("Tonalite v2.0 - Wireless Lighting Control");
 app.use('/static', express.static(__dirname + '/static'));
 
@@ -158,12 +168,36 @@ app.get('/', function (req, res) {
 http.listen(3000, function () {
     console.log('Tonalite listening on *:3000');
 });
+
+// Output DMX frames 40 times a second
 setInterval(dmxLoop, 25);
+
+// Auto-save the show every 30 minutes
+setInterval(saveShow, 1800000);
 
 io.on('connection', function (socket) {
     socket.emit('fixtures', fixtures);
     socket.emit('cues', cues);
     socket.emit('cueActionBtn', false);
+
+    socket.on('saveShow', function () {
+        if (saveShow()) {
+            socket.emit('message', { type: "info", content: "The show has been saved!" });
+        } else {
+            socket.emit('message', { type: "error", content: "The show could not be saved!" });
+        }
+    });
+
+    socket.on('resetShow', function () {
+        fixtures = [];
+        cues = [];
+        currentCue = -1;
+        lastCue = -1;
+        socket.emit('fixtures', fixtures);
+        socket.emit('cues', cues);
+        socket.emit('cueActionBtn', false);
+        socket.emit('message', { type: "info", content: "The show has been reset!" });
+    });
 
     socket.on('getFixtureProfiles', function () {
         var fixturesList = [];
