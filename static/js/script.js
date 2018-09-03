@@ -76,6 +76,7 @@ socket.on('cueSettings', function (cue) {
     $("#cueUpdateBtn").on("click", function () { updateCue(cue.id); });
     $("#cueNameInput").val(cue.name);
     $("#cueTimeInput").val(cue.time);
+    $("#cueFollowInput").val(cue.follow);
 });
 
 socket.on('cueActionBtn', function (btnMode) {
@@ -137,7 +138,7 @@ function removeCue(cueID) {
 }
 
 function saveCueSettings(cueID) {
-    socket.emit('editCueSettings', { id: cueID, name: $("#cueNameInput").val(), time: $("#cueTimeInput").val() });
+    socket.emit('editCueSettings', { id: cueID, name: $("#cueNameInput").val(), time: $("#cueTimeInput").val(), follow: $("#cueFollowInput").val() });
 }
 
 function recordCue() {
