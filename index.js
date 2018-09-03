@@ -5,6 +5,7 @@ var io = require('socket.io')(http);
 var e131 = require('e131');
 var uDMX = require('./udmx');
 var fs = require('fs');
+var moment = require('moment');
 
 // 0 = e1.31, 1 = udmx
 var OUTPUT = 0;
@@ -165,6 +166,12 @@ app.use('/static', express.static(__dirname + '/static'));
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html');
 });
+
+app.get('/showFile', function (req, res) {
+    saveShow();
+    res.download("./currentShow.json", moment().format() + ".tonalite");
+});
+
 http.listen(3000, function () {
     console.log('Tonalite listening on *:3000');
 });
@@ -242,7 +249,6 @@ io.on('connection', function (socket) {
             var fixture = fixtures[fixtures.map(el => el.id).indexOf(msg.id)];
             fixture.name = msg.name;
             fixture.shortName = msg.shortName;
-            //fixture.manfacturer = msg.manufacturer;
             fixture.startDMXAddress = msg.startDMXAddress;
             socket.emit('fixtureSettings', fixture);
             socket.emit('message', { type: "info", content: "Fixture settings have been updated!" });
@@ -276,7 +282,6 @@ io.on('connection', function (socket) {
             var fixture = fixtures[fixtures.map(el => el.id).indexOf(msg.id)];
             var channel = fixture.channels[msg.cid];
             channel.value = msg.value;
-            //socket.emit('fixtureChannels', { id: fixture.id, name: fixture.name, channels: fixture.channels });
             socket.broadcast.emit('fixtures', fixtures);
         } else {
             socket.emit('message', { type: "error", content: "No fixtures exist!" });
