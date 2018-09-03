@@ -1,0 +1,11 @@
+# Supported Software
+
+It is possible to visualize your lighting using external software that supports the E1.31 (sACN) protocol. Below is a list of some visualizers that work with Tonalite.
+
+| Software                                                                        | Manufacturer  |
+|:-------------------------------------------------------------------------------:|:-------------:|
+| [Capture](http://www.capturesweden.com/)                                        | Capture Visualisation AB |
+| [ShowDesigner](http://www.martin.com/en-us/product-details/martin-showdesigner) | Martin |
+| [Realizzer](http://www.realizzer.com/)                                          | Realizzer |
+| [Vision](http://www.espvision.com/)                                             | Vectorworks, Inc. |
+| [MagicVis](https://secure.chamsys.co.uk/magicvis)                               | Chamsys Limited |

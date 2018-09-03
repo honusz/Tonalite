@@ -1,0 +1,14 @@
+{
+    "plugins": ["-sharing"],
+    "pluginsConfig": {
+        "fontSettings": {
+            "theme": "night"
+        }
+    },
+    "styles": {
+        "website": "website.css"
+    },
+    "title": "Tonalite v2.0 Documentation",
+    "description": "This is the documentation for the Tonalite lighting control software",
+    "author": "John Roper"
+}
