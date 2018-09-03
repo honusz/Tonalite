@@ -248,6 +248,7 @@ io.on('connection', function (socket) {
                 type: "cue",
                 name: "Cue " + (cues.length + 1),
                 time: 3,
+                follow, 0,
                 step: 120, // 3 * 40
                 active: false,
                 fixtures: JSON.parse(JSON.stringify(fixtures))
@@ -283,6 +284,7 @@ io.on('connection', function (socket) {
             var cue = cues[cues.map(el => el.id).indexOf(msg.id)];
             cue.name = msg.name;
             cue.time = msg.time;
+            cue.follow = msg.follow;
             cue.step = msg.time * 40;
             socket.emit('cueSettings', cue);
             socket.emit('message', { type: "info", content: "Cue settings have been updated!" });
