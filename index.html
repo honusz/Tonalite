@@ -30,7 +30,7 @@
               <a class="dropdown-item" onclick="resetShow()">New Show</a>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="/showFile">Save Show To File</a>
-              <a class="dropdown-item" href="#">Open Show From File</a>
+              <a class="dropdown-item" onclick="openShowFileModal()">Open Show From File</a>
             </div>
           </li>
         </ul>
@@ -177,6 +177,25 @@
             <div onclick="openTab('cues')">
               <i class="tablinks far fa-list"></i>
             </div>
+        </div>
+      </div>
+    </div>
+    <div id="openShowModal" class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <form action="/" enctype="multipart/form-data" method="post">
+              <div class="form-group">
+                <div class="custom-file">
+                  <label class="dark custom-file-label" for="showFile">Show File:</label>
+                  <input type="file" class="custom-file-input" id="show-file-to-upload" name="show-file-to-upload">
+                </div>
+              </div>
+              <div class="form-group">
+                <input type="submit" class="btn btn-success" value="Open Show File">
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>

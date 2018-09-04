@@ -6,6 +6,7 @@ var e131 = require('e131');
 var uDMX = require('./udmx');
 var fs = require('fs');
 var moment = require('moment');
+var multer = require('multer');
 
 // 0 = e1.31, 1 = udmx
 var OUTPUT = 0;
@@ -52,6 +53,17 @@ if (OUTPUT == 1) {
     var slotsData = packet.getSlotsData();
     var channels = slotsData;
 }
+
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, '/')
+    },
+    filename: function (req, file, cb) {
+        cb(null, 'currentShow.json')
+    }
+})
+
+var upload = multer({ storage: storage })
 
 var fixtures = [];
 var cues = [];
@@ -167,6 +179,10 @@ app.use('/static', express.static(__dirname + '/static'));
 
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html');
+});
+
+app.post('/', upload.single('show-file-to-upload'), (req, res) => {
+    res.redirect('/');
 });
 
 app.get('/showFile', function (req, res) {
