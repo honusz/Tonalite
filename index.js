@@ -10,6 +10,8 @@ var moment = require('moment');
 // 0 = e1.31, 1 = udmx
 var OUTPUT = 0;
 
+var PROD = true;
+
 /*
 Tasks:
 - Get Fixtures - Done - Done UI
@@ -179,8 +181,10 @@ http.listen(3000, function () {
 // Output DMX frames 40 times a second
 setInterval(dmxLoop, 25);
 
-// Auto-save the show every 30 minutes
-setInterval(saveShow, 1800000);
+if (PROD) {
+    // Auto-save the show every 30 minutes
+    setInterval(saveShow, 1800000);
+}
 
 io.on('connection', function (socket) {
     socket.emit('fixtures', fixtures);
