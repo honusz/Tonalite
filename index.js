@@ -9,9 +9,12 @@ var moment = require('moment');
 var multer = require('multer');
 
 // 0 = e1.31, 1 = udmx
-var OUTPUT = 0;
+var OUTPUT = 1;
 
 var PROD = true;
+
+var URL = "localhost";
+var PORT = 3000;
 
 /*
 Tasks:
@@ -190,8 +193,8 @@ app.get('/showFile', function (req, res) {
     res.download("./currentShow.json", moment().format() + ".tonalite");
 });
 
-http.listen(3000, function () {
-    console.log('Tonalite listening on *:3000');
+http.listen(PORT, URL, function () {
+    console.log('Tonalite listening at ' + URL + ':' + PORT);
 });
 
 // Output DMX frames 40 times a second
