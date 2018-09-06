@@ -8,4 +8,4 @@ Tonalite is for smaller theater venues who need a wireless lighting control syst
 
 ### What is Tonalite meant to do?
 
-Tonalite is meant to control lighting rigs wirelessly from any deivce on the network such as a phone or tablet. This allows the operator to control lighting while moving throughout the theater.
+Tonalite is meant to control lighting rigs wirelessly from any deivce on the network such as a phone or tablet. This allows the operator to control lighting while moving throughout the theater. You can still use it with a wired connection in case of connection issues.

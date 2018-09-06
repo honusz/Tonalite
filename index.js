@@ -9,7 +9,7 @@ var moment = require('moment');
 var multer = require('multer');
 
 // 0 = e1.31, 1 = udmx
-var OUTPUT = 1;
+var OUTPUT = 0;
 
 var PROD = true;
 
@@ -194,7 +194,7 @@ app.get('/showFile', function (req, res) {
 });
 
 http.listen(PORT, URL, function () {
-    console.log('Tonalite listening at ' + URL + ':' + PORT);
+    console.log('Tonalite listening at http://' + URL + ':' + PORT);
 });
 
 // Output DMX frames 40 times a second

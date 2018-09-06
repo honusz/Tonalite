@@ -76,12 +76,3 @@ body {
 .bg-light {
     background-color: #343A40 !important;
 }
-
-.navbar,
-.navbar-brand,
-.navbar-toggler,
-.navbar-toggler-icon,
-.dropdown-toggle {
-    color: #F8F9FA !important;
-    border-color: rgba(248, 249, 250, 0.2) !important;
-}

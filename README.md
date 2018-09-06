@@ -20,6 +20,10 @@ You will find the UI at `localhost:3000` by default.
 
 To build Tonalite, run `npm run build-(win/mac/linux)`
 
+To generate the documentation run `cd docs && gitbook pdf . documentation.pdf`
+
 ## Dependency Instructions
+
+You need `NodeJS`, `libusb-dev`, and `libudev-dev` installed. You also need `Calibre` if you want to generate the PDF documentation.
 
 http://dhocker.github.io/posts/2016/05/20/anyma-udmx.html
