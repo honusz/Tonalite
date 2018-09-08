@@ -1,0 +1,5 @@
+# Resetting Fixture Channel Values
+
+You can reset the values of every fixture's channels using one button. To do so, click the red Reset Values button on the top of the `Fixtures` tab. You will be asked to make sure you actually want to reset all values because this will cause a blackout in most cases.
+
+![Reset fixture channel values](../images/reset_fixture_channel_values.png)
