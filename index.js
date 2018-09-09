@@ -6,7 +6,7 @@ var e131 = require('e131');
 var uDMX = require('./udmx');
 var fs = require('fs');
 var moment = require('moment');
-var multer = require('multer');
+var fileUpload = require('express-fileupload');
 
 // 0 = e1.31, 1 = udmx
 var OUTPUT = 0;
@@ -56,17 +56,6 @@ if (OUTPUT == 1) {
     var slotsData = packet.getSlotsData();
     var channels = slotsData;
 }
-
-var storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, '/')
-    },
-    filename: function (req, file, cb) {
-        cb(null, 'currentShow.json')
-    }
-})
-
-var upload = multer({ storage: storage })
 
 var fixtures = [];
 var cues = [];
@@ -183,18 +172,27 @@ function saveShow() {
 
 console.log("Tonalite v2.0 - Wireless Lighting Control");
 app.use('/static', express.static(__dirname + '/static'));
+app.use(fileUpload());
 
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html');
 });
 
-app.post('/', upload.single('show-file-to-upload'), (req, res) => {
-    res.redirect('/');
+app.post('/', (req, res) => {
+    if (!req.files) {
+        return res.status(400).send('No files were uploaded.');
+    }
+    let showFile = req.files.showFile;
+    showFile.mv('./currentShow.json', function (err) {
+        if (err) {
+            return res.status(500).send(err);
+        }
+        res.redirect('/');
+    });
 });
 
 app.get('/showFile', function (req, res) {
-    saveShow();
-    res.download("./currentShow.json", moment().format() + ".tonalite");
+    res.download('./currentShow.json', moment().format() + '.tonalite');
 });
 
 http.listen(PORT, URL, function () {
