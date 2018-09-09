@@ -100,7 +100,7 @@ function calculateStack() {
         channels = calculateCue(cue);
         cue.step -= 1;
         if (cue.step < 0) {
-            if (cue.follow != 0) {
+            if (cue.follow != -1) {
                 cue.active = false;
                 if (cue.following == false) {
                     cue.step = cue.follow * 40;
@@ -334,7 +334,7 @@ io.on('connection', function (socket) {
                 type: "cue",
                 name: "Cue " + (cues.length + 1),
                 time: 3,
-                follow: 0,
+                follow: -1,
                 step: 120, // 3 * 40
                 active: false,
                 following: false,
@@ -371,7 +371,11 @@ io.on('connection', function (socket) {
             var cue = cues[cues.map(el => el.id).indexOf(msg.id)];
             cue.name = msg.name;
             cue.time = msg.time;
-            cue.follow = msg.follow;
+            if (msg.follow < -1) {
+                cue.follow = -1;
+            } else {
+                cue.follow = msg.follow;
+            }
             cue.step = msg.time * 40;
             socket.emit('cueSettings', cue);
             socket.emit('message', { type: "info", content: "Cue settings have been updated!" });
