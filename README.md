@@ -1,6 +1,6 @@
 # Tonalite 2.0
 
-![Tonalite fixtures](docs/images/fixtures_added.png)
+![Tonalite fixtures](docs/images/fixture_added.png)
 ![Tonalite cues](docs/images/cue_recorded.png)
 
 Tonalite is a lighting control software that runs over the network. You can access the control panel from any network-connected device. While there are more features coming soon, the available ones are listed below:
