@@ -7,3 +7,5 @@ Add a fixture using the green `Add Fixture` button on the top of the `Fixtures` 
 To select a fixture profile, click on it in the list, and a new fixture will be created based on this profile.
 
 ![Fixture added](../images/fixture_added.png)
+
+If a fixture's first channel is intensity, the value will be displayed along with the fixture name on the `Fixtures` tab.
