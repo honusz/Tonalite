@@ -84,11 +84,13 @@ function calculateCue(cue) {
     var outputChannels = new Array(512).fill(0);
     cue.fixtures.forEach(function (fixture) {
         fixture.channels.forEach(function (channel, i) {
-            var startFixture = fixtures[fixtures.map(el => el.id).indexOf(fixture.id)];
-            var startChannel = mapRange(startFixture.channels[i].value, startFixture.channels[i].displayMin, startFixture.channels[i].displayMax, startFixture.channels[i].min, startFixture.channels[i].max);
-            var endChannel = mapRange(channel.value, channel.displayMin, channel.displayMax, channel.min, channel.max);
-            outputChannels[(fixture.startDMXAddress - 1) + channel.dmxAddress] = endChannel + (((startChannel - endChannel) / (cue.time * 40)) * cue.step);
-            fixtures[fixtures.map(el => el.id).indexOf(fixture.id)].channels[i].displayValue = parseInt(channel.value + (((startFixture.channels[i].value - channel.value) / (cue.time * 40)) * cue.step));
+            if (channel.locked == false) {
+                var startFixture = fixtures[fixtures.map(el => el.id).indexOf(fixture.id)];
+                var startChannel = mapRange(startFixture.channels[i].value, startFixture.channels[i].displayMin, startFixture.channels[i].displayMax, startFixture.channels[i].min, startFixture.channels[i].max);
+                var endChannel = mapRange(channel.value, channel.displayMin, channel.displayMax, channel.min, channel.max);
+                outputChannels[(fixture.startDMXAddress - 1) + channel.dmxAddress] = endChannel + (((startChannel - endChannel) / (cue.time * 40)) * cue.step);
+                fixtures[fixtures.map(el => el.id).indexOf(fixture.id)].channels[i].displayValue = parseInt(channel.value + (((startFixture.channels[i].value - channel.value) / (cue.time * 40)) * cue.step));
+            }
         });
     });
     return outputChannels;
@@ -124,8 +126,10 @@ function calculateStack() {
             }
             cue.fixtures.forEach(function (fixture) {
                 fixture.channels.forEach(function (channel, i) {
-                    fixtures[fixtures.map(el => el.id).indexOf(fixture.id)].channels[i].value = channel.value;
-                    fixtures[fixtures.map(el => el.id).indexOf(fixture.id)].channels[i].displayValue = channel.value;
+                    if (channel.locked == false) {
+                        fixtures[fixtures.map(el => el.id).indexOf(fixture.id)].channels[i].value = channel.value;
+                        fixtures[fixtures.map(el => el.id).indexOf(fixture.id)].channels[i].displayValue = channel.value;
+                    }
                 });
             });
             io.sockets.emit('cues', cues);
@@ -321,7 +325,7 @@ io.on('connection', function (socket) {
             var channel = fixture.channels[msg.cid];
             channel.value = msg.value;
             channel.displayValue = channel.value;
-            socket.broadcast.emit('fixtures', fixtures);
+            io.emit('fixtures', fixtures);
         } else {
             socket.emit('message', { type: "error", content: "No fixtures exist!" });
         }
