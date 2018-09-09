@@ -11,3 +11,4 @@
 * [Cues](cues/README.md)
     * [Recording Cues](cues/recording_cues.md)
     * [Cue Settings](cues/cue_settings.md)
+    * [Moving Between Cues](cues/moving_between_cues.md)
