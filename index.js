@@ -11,9 +11,9 @@ var fileUpload = require('express-fileupload');
 // 0 = e1.31, 1 = udmx
 var OUTPUT = 0;
 
-var PROD = true;
+var PROD = false;
 
-var URL = "192.168.0.107";
+var URL = "localhost";
 var PORT = 3000;
 
 /*
@@ -170,6 +170,17 @@ function saveShow() {
     return true;
 };
 
+function openShow() {
+    fs.readFile('./currentShow.json', (err, data) => {
+        if (err) throw err;
+        let show = JSON.parse(data);
+        fixtures = show[0];
+        cues = show[1];
+        io.sockets.emit('fixtures', fixtures);
+        io.sockets.emit('cues', cues);
+    });
+}
+
 console.log("Tonalite v2.0 - Wireless Lighting Control");
 app.use('/static', express.static(__dirname + '/static'));
 app.use(fileUpload());
@@ -187,6 +198,7 @@ app.post('/', (req, res) => {
         if (err) {
             return res.status(500).send(err);
         }
+        openShow();
         res.redirect('/');
     });
 });
@@ -205,6 +217,7 @@ setInterval(dmxLoop, 25);
 if (PROD) {
     // Auto-save the show every 30 minutes
     setInterval(saveShow, 1800000);
+    openShow();
 }
 
 io.on('connection', function (socket) {
