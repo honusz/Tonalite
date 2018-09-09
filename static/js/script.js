@@ -17,7 +17,12 @@ socket.on('fixtures', function (fixtures) {
     //console.log(fixtures);
     if (fixtures.length != 0) {
         fixtures.forEach(function (fixture) {
-            $("#fixturesList").append("<div class=\"col-4\"><div class=\"fixtureItem\" onclick=\"viewFixtureChannels('" + fixture.id + "')\"><p>" + fixture.shortName + "</p></div></div>");
+            if (fixture.channels[0].type == "intensity") {
+                fixtureValue = "<h3 class=\"fixtureValue\">" + fixture.channels[0].displayValue + "</h3>";
+            } else {
+                fixtureValue = "";
+            }
+            $("#fixturesList").append("<div class=\"col-4\"><div class=\"fixtureItem\" onclick=\"viewFixtureChannels('" + fixture.id + "')\">" + fixtureValue + "<p>" + fixture.shortName + "</p></div></div>");
         });
     } else {
         $("#fixturesList").append("<div class=\"col-12\"><h5>There are no fixtures in this show!</h5></div>")
