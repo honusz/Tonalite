@@ -7,4 +7,4 @@
     * [Adding Fixtures](fixtures/adding_fixtures.md)
     * [Resetting Fixture Channel Values](fixtures/resetting_fixture_channel_values.md)
     * [Channels](fixtures/channels/README.md)
-    * [Settings](fixtures/settings/README.md)
+    * [Changing Fixture Settings](fixtures/changine_fixture_settings.md)
