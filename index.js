@@ -33,8 +33,8 @@ Tasks:
 - Get Cue Settings - Done - Done UI
 - Update Cue - Done
 - Edit Cue Settings - Done - Done UI
-- Move Cue Up
-- Move Cue Down
+- Move Cue Up - Done
+- Move Cue Down - Done
 - Remove Cue - Done - Done UI
 - Go To Next Cue - Done - Done UI
 - Go To Last Cue - Done - Done UI
@@ -65,6 +65,14 @@ var lastCue = -1;
 
 function mapRange(num, inMin, inMax, outMin, outMax) {
     return (num - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
+};
+
+var moveArrayItem = function (array, element, delta) {
+    var index = array.indexOf(element);
+    var newIndex = index + delta;
+    if (newIndex < 0 || newIndex == array.length) return; //Already at the top or bottom.
+    var indexes = [index, newIndex].sort(); //Sort the indixes
+    array.splice(indexes[0], 2, array[indexes[1]], array[indexes[0]]); //Replace from lowest index, two elements, reverting the order
 };
 
 function resetDMXValues() {
@@ -487,6 +495,22 @@ io.on('connection', function (socket) {
             cues[lastCue].active = true;
             io.emit('cues', cues);
             io.emit('cueActionBtn', true);
+        } else {
+            socket.emit('message', { type: "error", content: "No cues exist!" });
+        }
+    });
+
+    socket.on('moveCueUp', function (cueID) {
+        if (cues.length != 0) {
+            move(cues, cues.map(el => el.id).indexOf(cueID), -1);
+        } else {
+            socket.emit('message', { type: "error", content: "No cues exist!" });
+        }
+    });
+
+    socket.on('moveCueDown', function (cueID) {
+        if (cues.length != 0) {
+            move(cues, cues.map(el => el.id).indexOf(cueID), 1);
         } else {
             socket.emit('message', { type: "error", content: "No cues exist!" });
         }
