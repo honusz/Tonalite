@@ -26,6 +26,7 @@ Tasks:
 - Edit Fixture Settings - Done - Done UI
 - Get Fixture Channels - Done - Done UI
 - Change Fixture Channel Value - Done - Done UI
+- Channel lock - Done
 - Reset Fixtures - Done - Done UI
 - Get Cues - Done - Done UI
 - Record Cue - Done - Done UI
@@ -67,14 +68,14 @@ function mapRange(num, inMin, inMax, outMin, outMax) {
 };
 
 function resetDMXValues() {
-    channels.forEach(function(channel) {
+    channels.forEach(function (channel) {
         channel = 0;
     });
 };
 
 function calculateFixtures() {
-    fixtures.forEach(function(fixture) {
-        fixture.channels.forEach(function(channel) {
+    fixtures.forEach(function (fixture) {
+        fixture.channels.forEach(function (channel) {
             channels[(fixture.startDMXAddress - 1) + channel.dmxAddress] = mapRange(channel.value, channel.displayMin, channel.displayMax, channel.min, channel.max);
         });
     });
@@ -82,8 +83,8 @@ function calculateFixtures() {
 
 function calculateCue(cue) {
     var outputChannels = new Array(512).fill(0);
-    cue.fixtures.forEach(function(fixture) {
-        fixture.channels.forEach(function(channel, i) {
+    cue.fixtures.forEach(function (fixture) {
+        fixture.channels.forEach(function (channel, i) {
             if (channel.locked == false) {
                 var startFixture = fixtures[fixtures.map(el => el.id).indexOf(fixture.id)];
                 var startChannel = mapRange(startFixture.channels[i].value, startFixture.channels[i].displayMin, startFixture.channels[i].displayMax, startFixture.channels[i].min, startFixture.channels[i].max);
@@ -124,8 +125,8 @@ function calculateStack() {
                 cue.active = false;
                 io.sockets.emit('cueActionBtn', false);
             }
-            cue.fixtures.forEach(function(fixture) {
-                fixture.channels.forEach(function(channel, i) {
+            cue.fixtures.forEach(function (fixture) {
+                fixture.channels.forEach(function (channel, i) {
                     if (channel.locked == false) {
                         fixtures[fixtures.map(el => el.id).indexOf(fixture.id)].channels[i].value = channel.value;
                         fixtures[fixtures.map(el => el.id).indexOf(fixture.id)].channels[i].displayValue = channel.value;
@@ -142,8 +143,8 @@ function calculateStack() {
 };
 
 function resetFixtures() {
-    fixtures.forEach(function(fixture) {
-        fixture.channels.forEach(function(channel) {
+    fixtures.forEach(function (fixture) {
+        fixture.channels.forEach(function (channel) {
             channel.value = channel.defaultValue;
             channel.displayValue = channel.value;
         });
@@ -155,7 +156,7 @@ function dmxLoop() {
     calculateFixtures();
     calculateStack();
     if (OUTPUT == 1) {
-        channels.forEach(function(value, i) {
+        channels.forEach(function (value, i) {
             dmx.set(i + 1, value);
         });
     } else {
@@ -189,7 +190,7 @@ console.log("Tonalite v2.0 - Wireless Lighting Control");
 app.use('/static', express.static(__dirname + '/static'));
 app.use(fileUpload());
 
-app.get('/', function(req, res) {
+app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html');
 });
 
@@ -198,7 +199,7 @@ app.post('/', (req, res) => {
         return res.status(400).send('No files were uploaded.');
     }
     let showFile = req.files.showFile;
-    showFile.mv('./currentShow.json', function(err) {
+    showFile.mv('./currentShow.json', function (err) {
         if (err) {
             return res.status(500).send(err);
         }
@@ -207,11 +208,11 @@ app.post('/', (req, res) => {
     });
 });
 
-app.get('/showFile', function(req, res) {
+app.get('/showFile', function (req, res) {
     res.download('./currentShow.json', moment().format() + '.tonalite');
 });
 
-http.listen(PORT, URL, function() {
+http.listen(PORT, URL, function () {
     console.log('Tonalite listening at http://' + URL + ':' + PORT);
 });
 
@@ -224,12 +225,12 @@ if (PROD) {
     openShow();
 }
 
-io.on('connection', function(socket) {
+io.on('connection', function (socket) {
     socket.emit('fixtures', fixtures);
     socket.emit('cues', cues);
     socket.emit('cueActionBtn', false);
 
-    socket.on('saveShow', function() {
+    socket.on('saveShow', function () {
         if (saveShow()) {
             socket.emit('message', { type: "info", content: "The show has been saved!" });
         } else {
@@ -237,7 +238,7 @@ io.on('connection', function(socket) {
         }
     });
 
-    socket.on('resetShow', function() {
+    socket.on('resetShow', function () {
         fixtures = [];
         cues = [];
         currentCue = -1;
@@ -248,7 +249,7 @@ io.on('connection', function(socket) {
         socket.emit('message', { type: "info", content: "The show has been reset!" });
     });
 
-    socket.on('getFixtureProfiles', function() {
+    socket.on('getFixtureProfiles', function () {
         var fixturesList = [];
         fs.readdir("./fixtures", (err, files) => {
             files.forEach(file => {
@@ -258,7 +259,7 @@ io.on('connection', function(socket) {
         });
     });
 
-    socket.on('addFixture', function(msg) {
+    socket.on('addFixture', function (msg) {
         // Add a fixture using the fixture spec file in the fixtures folder
         var fixture = require("./fixtures/" + msg.fixtureName + ".json");
         fixture.startDMXAddress = msg.startDMXAddress;
@@ -268,7 +269,7 @@ io.on('connection', function(socket) {
         io.emit('fixtures', fixtures);
     });
 
-    socket.on('removeFixture', function(fixtureID) {
+    socket.on('removeFixture', function (fixtureID) {
         if (fixtures.length != 0) {
             fixtures.splice(fixtures[fixtures.map(el => el.id).indexOf(fixtureID)], 1);
             socket.emit('message', { type: "info", content: "Fixture has been removed!" });
@@ -278,7 +279,7 @@ io.on('connection', function(socket) {
         }
     });
 
-    socket.on('getFixtureSettings', function(fixtureID) {
+    socket.on('getFixtureSettings', function (fixtureID) {
         if (fixtures.length != 0) {
             socket.emit('fixtureSettings', fixtures[fixtures.map(el => el.id).indexOf(fixtureID)]);
         } else {
@@ -286,7 +287,7 @@ io.on('connection', function(socket) {
         }
     });
 
-    socket.on('editFixtureSettings', function(msg) {
+    socket.on('editFixtureSettings', function (msg) {
         if (fixtures.length != 0) {
             var fixture = fixtures[fixtures.map(el => el.id).indexOf(msg.id)];
             fixture.name = msg.name;
@@ -300,7 +301,7 @@ io.on('connection', function(socket) {
         }
     });
 
-    socket.on('getFixtureChannels', function(fixtureID) {
+    socket.on('getFixtureChannels', function (fixtureID) {
         if (fixtures.length != 0) {
             var fixture = fixtures[fixtures.map(el => el.id).indexOf(fixtureID)];
             socket.emit('fixtureChannels', { id: fixture.id, name: fixture.name, channels: fixture.channels });
@@ -309,7 +310,7 @@ io.on('connection', function(socket) {
         }
     });
 
-    socket.on('resetFixtures', function() {
+    socket.on('resetFixtures', function () {
         if (fixtures.length != 0) {
             resetFixtures();
             io.emit('fixtures', fixtures);
@@ -319,7 +320,7 @@ io.on('connection', function(socket) {
         }
     });
 
-    socket.on('changeFixtureChannelValue', function(msg) {
+    socket.on('changeFixtureChannelValue', function (msg) {
         if (fixtures.length != 0) {
             var fixture = fixtures[fixtures.map(el => el.id).indexOf(msg.id)];
             var channel = fixture.channels[msg.cid];
@@ -331,7 +332,18 @@ io.on('connection', function(socket) {
         }
     });
 
-    socket.on('recordCue', function() {
+    socket.on('changeChannelLock', function (msg) {
+        if (fixtures.length != 0) {
+            var fixture = fixtures[fixtures.map(el => el.id).indexOf(msg.id)];
+            var channel = fixture.channels[msg.cid];
+            channel.locked = !channel.locked;
+            socket.emit('fixtureChannels', { id: fixture.id, name: fixture.name, channels: fixture.channels });
+        } else {
+            socket.emit('message', { type: "error", content: "No fixtures exist!" });
+        }
+    });
+
+    socket.on('recordCue', function () {
         if (fixtures.length != 0) {
             var newCue = {
                 id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
@@ -351,7 +363,7 @@ io.on('connection', function(socket) {
         }
     });
 
-    socket.on('updateCue', function(cueID) {
+    socket.on('updateCue', function (cueID) {
         if (cues.length != 0) {
             var cue = cues[cues.map(el => el.id).indexOf(cueID)];
             cue.fixtures = JSON.parse(JSON.stringify(fixtures));
@@ -362,7 +374,7 @@ io.on('connection', function(socket) {
         }
     });
 
-    socket.on('getCueSettings', function(cueID) {
+    socket.on('getCueSettings', function (cueID) {
         if (cues.length != 0) {
             socket.emit('cueSettings', cues[cues.map(el => el.id).indexOf(cueID)]);
         } else {
@@ -370,7 +382,7 @@ io.on('connection', function(socket) {
         }
     });
 
-    socket.on('editCueSettings', function(msg) {
+    socket.on('editCueSettings', function (msg) {
         if (cues.length != 0) {
             var cue = cues[cues.map(el => el.id).indexOf(msg.id)];
             cue.name = msg.name;
@@ -389,7 +401,7 @@ io.on('connection', function(socket) {
         }
     });
 
-    socket.on('removeCue', function(cueID) {
+    socket.on('removeCue', function (cueID) {
         if (cues.length != 0) {
             cues.splice(cues[cues.map(el => el.id).indexOf(cueID)], 1);
             if (currentCue == cues.map(el => el.id).indexOf(cueID)) {
@@ -404,7 +416,7 @@ io.on('connection', function(socket) {
         }
     });
 
-    socket.on('nextCue', function() {
+    socket.on('nextCue', function () {
         if (cues.length != 0) {
             if (lastCue != -1) {
                 cues[lastCue].step = cues[lastCue].time * 40;
@@ -427,7 +439,7 @@ io.on('connection', function(socket) {
         }
     });
 
-    socket.on('lastCue', function() {
+    socket.on('lastCue', function () {
         if (cues.length != 0) {
             if (lastCue != -1) {
                 cues[lastCue].step = cues[lastCue].time * 40;
@@ -450,7 +462,7 @@ io.on('connection', function(socket) {
         }
     });
 
-    socket.on('stopCue', function() {
+    socket.on('stopCue', function () {
         if (cues.length != 0) {
             currentCue = -1;
             cues[lastCue].step = cues[lastCue].time * 40;
@@ -463,7 +475,7 @@ io.on('connection', function(socket) {
         }
     });
 
-    socket.on('gotoCue', function(cueID) {
+    socket.on('gotoCue', function (cueID) {
         if (cues.length != 0) {
             if (lastCue != -1) {
                 cues[lastCue].step = cues[lastCue].time * 40;
