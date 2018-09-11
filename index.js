@@ -9,7 +9,7 @@ var moment = require('moment');
 var fileUpload = require('express-fileupload');
 
 // 0 = e1.31, 1 = udmx
-var OUTPUT = 0;
+var OUTPUT = 1;
 
 var PROD = false;
 
@@ -60,6 +60,7 @@ if (OUTPUT == 1) {
 
 var fixtures = [];
 var cues = [];
+var groups = [];
 var currentCue = -1;
 var lastCue = -1;
 
@@ -73,12 +74,6 @@ var moveArrayItem = function (array, element, delta) {
     if (newIndex < 0 || newIndex == array.length) return; //Already at the top or bottom.
     var indexes = [index, newIndex].sort(); //Sort the indixes
     array.splice(indexes[0], 2, array[indexes[1]], array[indexes[0]]); //Replace from lowest index, two elements, reverting the order
-};
-
-function resetDMXValues() {
-    channels.forEach(function (channel) {
-        channel = 0;
-    });
 };
 
 function calculateFixtures() {
@@ -160,7 +155,10 @@ function resetFixtures() {
 };
 
 function dmxLoop() {
-    resetDMXValues();
+    // Reset DMX values
+    channels.forEach(function (channel) {
+        channel = 0;
+    });
     calculateFixtures();
     calculateStack();
     if (OUTPUT == 1) {
@@ -502,7 +500,7 @@ io.on('connection', function (socket) {
 
     socket.on('moveCueUp', function (cueID) {
         if (cues.length != 0) {
-            move(cues, cues.map(el => el.id).indexOf(cueID), -1);
+            moveArrayItem(cues, cues.map(el => el.id).indexOf(cueID), -1);
         } else {
             socket.emit('message', { type: "error", content: "No cues exist!" });
         }
@@ -510,7 +508,7 @@ io.on('connection', function (socket) {
 
     socket.on('moveCueDown', function (cueID) {
         if (cues.length != 0) {
-            move(cues, cues.map(el => el.id).indexOf(cueID), 1);
+            moveArrayItem(cues, cues.map(el => el.id).indexOf(cueID), 1);
         } else {
             socket.emit('message', { type: "error", content: "No cues exist!" });
         }
