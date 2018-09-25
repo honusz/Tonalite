@@ -58,6 +58,7 @@ socket.on('fixtureChannels', function (msg) {
     $("#fixtureChannels").empty();
     $("#fixtureChannelsName").text(msg.name);
     $("#fixtureSettingsBtn").on("click", function () { viewFixtureSettings(msg.id); });
+    $("#fixtureResetBtn").on("click", function () { resetFixture(msg.id); });
     msg.channels.forEach(function (channel, i) {
         $("#fixtureChannels").append("<label for=\"" + channel.type + "\">" + channel.name + ":</label><input type=\"range\" class=\"custom-range\" id=\"" + channel.type + "\" max=\"" + channel.displayMax + "\" min=\"" + channel.displayMin + "\" value=\"" + channel.value + "\" oninput=\"updateFixtureChannelValue(this, '" + msg.id + "', " + i + ")\">");
     });
@@ -97,8 +98,14 @@ socket.on('cueActionBtn', function (btnMode) {
 });
 
 function resetFixtures() {
-    if (confirm("Are you sure you want to reset all fixtures?")) {
+    if (confirm("Are you sure you want to reset all fixture channel values?")) {
         socket.emit('resetFixtures');
+    }
+};
+
+function resetFixture(fixtureID) {
+    if (confirm("Are you sure you want to reset this fixture's channel values?")) {
+        socket.emit('resetFixture', fixtureID);
     }
 };
 

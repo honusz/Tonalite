@@ -9,7 +9,7 @@ var moment = require('moment');
 var fileUpload = require('express-fileupload');
 
 // 0 = e1.31, 1 = udmx
-var OUTPUT = 1;
+var OUTPUT = 0;
 
 var PROD = false;
 
@@ -321,6 +321,20 @@ io.on('connection', function (socket) {
             resetFixtures();
             io.emit('fixtures', fixtures);
             socket.emit('message', { type: "info", content: "Fixture values have been reset!" });
+        } else {
+            socket.emit('message', { type: "error", content: "No fixtures exist!" });
+        }
+    });
+
+    socket.on('resetFixture', function (fixtureID) {
+        if (fixtures.length != 0) {
+            var fixture = fixtures[fixtures.map(el => el.id).indexOf(fixtureID)];
+            fixture.channels.forEach(function (channel) {
+                channel.value = channel.defaultValue;
+                channel.displayValue = channel.value;
+            });
+            socket.emit('fixtureChannels', { id: fixture.id, name: fixture.name, channels: fixture.channels });
+            io.emit('fixtures', fixtures);
         } else {
             socket.emit('message', { type: "error", content: "No fixtures exist!" });
         }
