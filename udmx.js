@@ -7,8 +7,8 @@ function DMX(options) {
         device: 0x5dc
     };
 
-    for(var opt in defaults) {
-        if(!defaults.hasOwnProperty(opt)) continue;
+    for (var opt in defaults) {
+        if (!defaults.hasOwnProperty(opt)) continue;
         this[opt] = options && options.hasOwnProperty(opt) ? options[opt] : defaults[opt];
     }
 
@@ -18,21 +18,20 @@ function DMX(options) {
 
 DMX.prototype.__proto__ = events.EventEmitter.prototype;
 
-DMX.prototype.connect = function() {
+DMX.prototype.connect = function () {
     this.dev = usb.findByIds(this.vendor, this.device);
-    if(this.dev === undefined) {
-       throw 'Unable to find USB device!';
+    if (this.dev === undefined) {
+        throw 'Unable to find USB device!';
     }
-
-   this.dev.open();
-   this.emit('connected');
+    this.dev.open();
+    this.emit('connected');
 }
 
-DMX.prototype.set = function(channel, value) {
+DMX.prototype.set = function (channel, value) {
     var self = this;
     return new Promise((resolve, reject) => {
-        this.dev.controlTransfer(0x40, 0x0002, value, channel-1, Buffer.alloc(1), 0, function(err, result) {
-            if(err) {
+        this.dev.controlTransfer(0x40, 0x0002, value, channel - 1, Buffer.alloc(1), 0, function (err, result) {
+            if (err) {
                 console.log(err);
             } else {
                 self.emit('channel-' + channel, value);
@@ -43,7 +42,7 @@ DMX.prototype.set = function(channel, value) {
     });
 }
 
-DMX.prototype.get = function(channel) {
+DMX.prototype.get = function (channel) {
     return this.state[channel];
 }
 

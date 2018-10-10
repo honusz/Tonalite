@@ -9,7 +9,7 @@ var moment = require('moment');
 var fileUpload = require('express-fileupload');
 
 // 0 = e1.31, 1 = udmx
-var OUTPUT = 0;
+var OUTPUT = 1;
 
 var PROD = false;
 
