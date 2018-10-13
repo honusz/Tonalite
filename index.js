@@ -8,8 +8,8 @@ var fs = require('fs');
 var moment = require('moment');
 var fileUpload = require('express-fileupload');
 
-// 0 = e1.31, 1 = udmx
-var OUTPUT = 1;
+// 0 = e1.31, 1 = udmx, 2 = artnet
+var OUTPUT = 2;
 
 var PROD = false;
 
@@ -51,11 +51,14 @@ if (OUTPUT == 1) {
     var dmx = new uDMX();
     dmx.connect();
     var channels = new Array(512).fill(0);
-} else {
+} else if (OUTPUT == 0) {
     var client = new e131.Client(1);
     var packet = client.createPacket(512);
     var slotsData = packet.getSlotsData();
     var channels = slotsData;
+} else {
+    var artnet = require('artnet')({host: '255.255.255.255'});
+    var channels = new Array(512).fill(0);
 }
 
 var fixtures = [];
@@ -165,9 +168,11 @@ function dmxLoop() {
         channels.forEach(function (value, i) {
             dmx.set(i + 1, value);
         });
-    } else {
+    } else if (OUTPUT == 0) {
         slotsData = channels;
         client.send(packet);
+    } else {
+        artnet.set(1, channels);
     }
 };
 
