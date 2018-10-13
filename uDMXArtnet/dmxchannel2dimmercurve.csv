@@ -1,4 +1,0 @@
-#channel (beginning with 1..512);dimmercurve from file dimmercurveuser<number>.csv with number 1..15
-#4;2;Kommentar
-#6;5;Test
-
