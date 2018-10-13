@@ -28,3 +28,5 @@ To generate the documentation run `cd docs && gitbook pdf . documentation.pdf`
 You need `NodeJS`, `libusb-dev`, and `libudev-dev` installed. You also need `Calibre` if you want to generate the PDF documentation.
 
 http://dhocker.github.io/posts/2016/05/20/anyma-udmx.html
+
+https://www.illutzmination.de/udmxartnet.html?&L=1
