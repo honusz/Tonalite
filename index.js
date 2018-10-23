@@ -177,7 +177,7 @@ function dmxLoop() {
     if (OUTPUT == 0) {
         slotsData = channels;
         client.send(packet);
-    } else (OUTPUT == 0) {
+    } else {
         artnet.set(1, channels);
     }
 };
