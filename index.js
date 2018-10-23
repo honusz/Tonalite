@@ -6,9 +6,13 @@ var e131 = require('e131');
 var fs = require('fs');
 var moment = require('moment');
 var fileUpload = require('express-fileupload');
+const { spawn } = require('child_process');
 
 // 0 = e1.31, 1 = udmx, 2 = artnet
-var OUTPUT = 2;
+var OUTPUT = 1;
+
+// 0 = linux64, 1 = rpi
+var DEVICE = 0;
 
 var PROD = false;
 
@@ -189,6 +193,15 @@ function openShow() {
 }
 
 console.log("Tonalite v2.0 - Wireless Lighting Control");
+
+if (OUTPUT == 1) {
+    if (DEVICE == 0) {
+        const ls = spawn('uDMXArtnet/uDMXArtnet_minimal_64');
+    } else if (DEVICE == 1) {
+        const ls = spawn('uDMXArtnet/uDMXArtnet_PI_minimal_32');
+    }
+}
+
 app.use('/static', express.static(__dirname + '/static'));
 app.use(fileUpload());
 
