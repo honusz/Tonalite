@@ -196,10 +196,21 @@ console.log("Tonalite v2.0 - Wireless Lighting Control");
 
 if (OUTPUT == 1) {
     if (DEVICE == 0) {
-        const ls = spawn('uDMXArtnet/uDMXArtnet_minimal_64');
+        ls = spawn('uDMXArtnet/uDMXArtnet_minimal_64');
     } else if (DEVICE == 1) {
-        const ls = spawn('uDMXArtnet/uDMXArtnet_PI_minimal_32');
+        ls = spawn('uDMXArtnet/uDMXArtnet_PI_minimal_32');
     }
+    ls.stdout.on('data', (data) => {
+        console.log('udmx stdout: ${data}');
+    });
+
+    ls.stderr.on('data', (data) => {
+        console.log('udmx stderr: ${data}');
+    });
+
+    ls.on('close', (code) => {
+        console.log('udmx child process exited with code ${code}');
+    });
 }
 
 app.use('/static', express.static(__dirname + '/static'));
