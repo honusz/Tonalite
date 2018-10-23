@@ -3,7 +3,6 @@ var express = require('express');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var e131 = require('e131');
-var uDMX = require('./udmx');
 var fs = require('fs');
 var moment = require('moment');
 var fileUpload = require('express-fileupload');
@@ -47,23 +46,18 @@ Tasks:
 - Edit Group Settings
 */
 
-if (OUTPUT == 1) {
-    var dmx = new uDMX();
-    dmx.connect();
+if (OUTPUT == 1 || OUTPUT == 2) {
+    var artnet = require('artnet')({ host: '255.255.255.255' });
     var channels = new Array(512).fill(0);
 } else if (OUTPUT == 0) {
     var client = new e131.Client(1);
     var packet = client.createPacket(512);
     var slotsData = packet.getSlotsData();
     var channels = slotsData;
-} else {
-    var artnet = require('artnet')({host: '255.255.255.255'});
-    var channels = new Array(512).fill(0);
 }
 
 var fixtures = [];
 var cues = [];
-var groups = [];
 var currentCue = -1;
 var lastCue = -1;
 
@@ -164,15 +158,11 @@ function dmxLoop() {
     });
     calculateFixtures();
     calculateStack();
-    if (OUTPUT == 1) {
-        channels.forEach(function (value, i) {
-            dmx.set(i + 1, value);
-        });
+    if (OUTPUT == 1 || OUTPUT == 2) {
+        artnet.set(1, channels);
     } else if (OUTPUT == 0) {
         slotsData = channels;
         client.send(packet);
-    } else {
-        artnet.set(1, channels);
     }
 };
 
