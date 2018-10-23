@@ -14,6 +14,7 @@ var OUTPUT = 1;
 // 0 = linux64, 1 = rpi
 var DEVICE = 0;
 
+// http web UI location
 var URL = "localhost";
 var PORT = 3000;
 
@@ -49,14 +50,15 @@ Tasks:
 - Edit Group Settings
 */
 
-if (OUTPUT == 1 || OUTPUT == 2) {
-    var artnet = require('artnet')({ host: '255.255.255.255' });
-    var channels = new Array(512).fill(0);
-} else if (OUTPUT == 0) {
+// If e1.31 selected, run that, but run artnet otherwise
+if (OUTPUT == 0) {
     var client = new e131.Client(1);
     var packet = client.createPacket(512);
     var slotsData = packet.getSlotsData();
     var channels = slotsData;
+} else {
+    var artnet = require('artnet')({ host: '255.255.255.255' });
+    var channels = new Array(512).fill(0);
 }
 
 var fixtures = [];
@@ -64,6 +66,7 @@ var cues = [];
 var currentCue = -1;
 var lastCue = -1;
 
+// Convert a number in the input range to a number in the output range
 function mapRange(num, inMin, inMax, outMin, outMax) {
     return (num - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
 };
@@ -71,12 +74,13 @@ function mapRange(num, inMin, inMax, outMin, outMax) {
 var moveArrayItem = function (array, element, delta) {
     var index = array.indexOf(element);
     var newIndex = index + delta;
-    if (newIndex < 0 || newIndex == array.length) return; //Already at the top or bottom.
-    var indexes = [index, newIndex].sort(); //Sort the indixes
-    array.splice(indexes[0], 2, array[indexes[1]], array[indexes[0]]); //Replace from lowest index, two elements, reverting the order
+    if (newIndex < 0 || newIndex == array.length) return; // Already at the top or bottom.
+    var indexes = [index, newIndex].sort(); // Sort the indixes
+    array.splice(indexes[0], 2, array[indexes[1]], array[indexes[0]]); // Replace from lowest index, two elements, reverting the order
 };
 
-function calculateFixtures() {
+// Set the output channel values to those of the current fixture values
+function calculateChannels() {
     fixtures.forEach(function (fixture) {
         fixture.channels.forEach(function (channel) {
             channels[(fixture.startDMXAddress - 1) + channel.dmxAddress] = mapRange(channel.value, channel.displayMin, channel.displayMax, channel.min, channel.max);
@@ -84,6 +88,7 @@ function calculateFixtures() {
     });
 };
 
+// Set the cue's output channel values to the correct values from the fixtures. This is basically saving the cue.
 function calculateCue(cue) {
     var outputChannels = new Array(512).fill(0);
     cue.fixtures.forEach(function (fixture) {
@@ -101,10 +106,13 @@ function calculateCue(cue) {
 }
 
 function calculateStack() {
+    // If there is a running cue
     if (currentCue != -1) {
+        // Get the current cue
         cue = cues[currentCue];
         channels = calculateCue(cue);
         cue.step -= 1;
+        // Check if the cue needs to be followed by another cue
         if (cue.step < 0) {
             if (cue.follow != -1) {
                 cue.active = false;
@@ -128,6 +136,7 @@ function calculateStack() {
                 cue.active = false;
                 io.sockets.emit('cueActionBtn', false);
             }
+            // Set the fixture's display and real values to the correct values from the cue
             cue.fixtures.forEach(function (fixture) {
                 fixture.channels.forEach(function (channel, i) {
                     if (channel.locked == false) {
@@ -145,6 +154,7 @@ function calculateStack() {
     //});
 };
 
+// Reset the channel values for each fixture
 function resetFixtures() {
     fixtures.forEach(function (fixture) {
         fixture.channels.forEach(function (channel) {
@@ -154,21 +164,25 @@ function resetFixtures() {
     });
 };
 
+// This is the output dmx loop. It gathers the channels and calculates what the output values should be.
 function dmxLoop() {
     // Reset DMX values
     channels.forEach(function (channel) {
         channel = 0;
     });
-    calculateFixtures();
+    calculateChannels();
     calculateStack();
-    if (OUTPUT == 1 || OUTPUT == 2) {
-        artnet.set(1, channels);
-    } else if (OUTPUT == 0) {
+
+    // If e1.31 is selected, output to that, if not, use artnet
+    if (OUTPUT == 0) {
         slotsData = channels;
         client.send(packet);
+    } else (OUTPUT == 0) {
+        artnet.set(1, channels);
     }
 };
 
+// Save the fixtures and cues of the show to file
 function saveShow() {
     fs.writeFile("./currentShow.json", JSON.stringify([fixtures, cues]), (err) => {
         if (err) {
@@ -179,6 +193,7 @@ function saveShow() {
     return true;
 };
 
+// Load the fixtures and cues from file
 function openShow() {
     fs.readFile('./currentShow.json', (err, data) => {
         if (err) throw err;
