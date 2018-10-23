@@ -256,14 +256,6 @@ io.on('connection', function (socket) {
     socket.emit('cues', cues);
     socket.emit('cueActionBtn', false);
 
-    socket.on('saveShow', function () {
-        if (saveShow()) {
-            socket.emit('message', { type: "info", content: "The show has been saved!" });
-        } else {
-            socket.emit('message', { type: "error", content: "The show could not be saved!" });
-        }
-    });
-
     socket.on('resetShow', function () {
         fixtures = [];
         cues = [];
