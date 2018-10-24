@@ -294,7 +294,7 @@ io.on('connection', function (socket) {
         var startDMXAddress = 1;
         fixtures.forEach(function (fixture) {
             if (fixture.startDMXAddress == startDMXAddress) {
-                startDMXAddress++;
+                startDMXAddress = fixture.startDMXAddress + fixture.channels.length;
             }
         });
         fs.readdir("./fixtures", (err, files) => {
