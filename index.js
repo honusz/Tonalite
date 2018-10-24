@@ -291,23 +291,39 @@ io.on('connection', function (socket) {
 
     socket.on('getFixtureProfiles', function () {
         var fixturesList = [];
+        var startDMXAddress = 1;
+        fixtures.forEach(function (fixture) {
+            if (fixture.startDMXAddress == startDMXAddress) {
+                startDMXAddress++;
+            }
+        });
         fs.readdir("./fixtures", (err, files) => {
             files.forEach(file => {
                 fixturesList.push(file.slice(0, -5));
             });
-            socket.emit('fixtureProfiles', fixturesList);
+            socket.emit('fixtureProfiles', [fixturesList, startDMXAddress]);
         });
     });
 
     socket.on('addFixture', function (msg) {
-        // Add a fixture using the fixture spec file in the fixtures folder
-        var fixture = require("./fixtures/" + msg.fixtureName + ".json");
-        fixture.startDMXAddress = msg.startDMXAddress;
-        // Assign a random id for easy access to this fixture
-        fixture.id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-        fixtures.push(JSON.parse(JSON.stringify(fixture)));
-        io.emit('fixtures', fixtures);
-        saveShow();
+        var startDMXAddress = msg.startDMXAddress;
+        fixtures.forEach(function (fixture) {
+            if (fixture.startDMXAddress == startDMXAddress) {
+                startDMXAddress = null;
+            }
+        });
+        if (startDMXAddress) {
+            // Add a fixture using the fixture spec file in the fixtures folder
+            var fixture = require("./fixtures/" + msg.fixtureName + ".json");
+            fixture.startDMXAddress = startDMXAddress;
+            // Assign a random id for easy access to this fixture
+            fixture.id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+            fixtures.push(JSON.parse(JSON.stringify(fixture)));
+            io.emit('fixtures', fixtures);
+            saveShow();
+        } else {
+            socket.emit('message', { type: "error", content: "A fixture with this starting DMX address already exists!" });
+        }
     });
 
     socket.on('removeFixture', function (fixtureID) {

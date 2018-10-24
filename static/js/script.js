@@ -48,9 +48,10 @@ socket.on('cues', function (cues) {
 
 socket.on('fixtureProfiles', function (profiles) {
     $("#fixtureProfilesList").empty();
-    profiles.forEach(function (value) {
+    profiles[0].forEach(function (value) {
         $("#fixtureProfilesList").append("<li class=\"list-group-item fixtureProfileItem\" onclick=\"addFixture('" + value + "')\">" + titleCase(value) + "</li>");
     });
+    $("#newFixtureStartDMXAddress").val(profiles[1]);
 });
 
 socket.on('fixtureChannels', function (msg) {
