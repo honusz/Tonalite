@@ -2,7 +2,6 @@ var app = require('express')();
 var express = require('express');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var e131 = require('e131');
 var fs = require('fs');
 var moment = require('moment');
 var fileUpload = require('express-fileupload');
@@ -52,6 +51,7 @@ Tasks:
 
 // If e1.31 selected, run that, but run artnet otherwise
 if (OUTPUT == 0) {
+    var e131 = require('e131');
     var client = new e131.Client(1);
     var packet = client.createPacket(512);
     var slotsData = packet.getSlotsData();
@@ -257,6 +257,13 @@ if (OUTPUT == 1) {
 
 // Output DMX frames 40 times a second
 setInterval(dmxLoop, 25);
+
+// If on the raspberry pi, turn on an led to show that the program is started
+if (DEVICE == 1) {
+    const Gpio = require('onoff').Gpio;
+    const led = new Gpio(17, 'out');
+    led.writeSync(true);
+}
 
 fs.exists('currentShow.json', function (exists) {
     if (exists == false) {
