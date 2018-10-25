@@ -176,11 +176,13 @@ and remove
 ```
 sudo systemctl start hostapd
 sudo systemctl start dnsmasq
-iptables-restore < /etc/iptables.ipv4.nat
 ```
 and add 
 
-`/usr/local/bin/npm start --prefix /home/pi/Tonalite &`
+```
+/usr/local/bin/npm start --prefix /home/pi/Tonalite &
+iptables-restore < /etc/iptables.ipv4.nat
+```
 
 right before `exit 0`
 
