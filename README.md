@@ -163,6 +163,12 @@ give the RPIZW about 90 seconds to start, and then check for wifi networks. The 
 
 ### Back on the RPIZW
 
+`sudo iptables -t nat -A PREROUTING -p tcp --dport 443 -j DNAT --to-destination 192.168.4.1:3000`
+
+`sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination 192.168.4.1:3000`
+
+`sudo sh -c "iptables-save > /etc/iptables.ipv4.nat"`
+
 `sudo nano /etc/rc.local`
 
 and remove
@@ -170,6 +176,7 @@ and remove
 ```
 sudo systemctl start hostapd
 sudo systemctl start dnsmasq
+iptables-restore < /etc/iptables.ipv4.nat
 ```
 and add 
 
