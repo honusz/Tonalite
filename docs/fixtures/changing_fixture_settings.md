@@ -13,7 +13,7 @@ Go back to the fixture's channels.
 
 ### Save
 
-Save the changes you hve made to a fixture. Make sure you do this every time you make a change or your edits won't apply!
+Save the changes you have made to a fixture. Make sure you do this every time you make a change or your edits won't apply!
 
 ### Delete
 

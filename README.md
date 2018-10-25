@@ -21,7 +21,7 @@ You will find the UI at `localhost:3000` by default.
 
 To build Tonalite, run `npm run build-(win/mac/linux)`
 
-To generate the documentation run `cd docs && gitbook pdf . documentation.pdf`
+To generate the documentation run `cd docs && gitbook pdf . documentation.pdf && cd ../`
 
 ## Dependency Instructions
 
