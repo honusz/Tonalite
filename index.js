@@ -262,7 +262,7 @@ setInterval(dmxLoop, 25);
 if (DEVICE == 1) {
     const Gpio = require('onoff').Gpio;
     const led = new Gpio(17, 'out');
-    led.writeSync(true);
+    led.writeSync(1);
 }
 
 fs.exists('currentShow.json', function (exists) {
