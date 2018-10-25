@@ -243,11 +243,11 @@ if (OUTPUT == 1) {
         ls = spawn('uDMXArtnet/uDMXArtnet_PI_minimal_32');
     }
     ls.stdout.on('data', (data) => {
-        console.log('udmx stdout: ${data}');
+        console.log('udmx stdout: ' + data);
     });
 
     ls.stderr.on('data', (data) => {
-        console.log('udmx stderr: ${data}');
+        console.log('udmx stderr: ' + data);
     });
 
     ls.on('close', (code) => {
