@@ -7,7 +7,7 @@ var moment = require('moment');
 var fileUpload = require('express-fileupload');
 const { spawn } = require('child_process');
 
-// 0 = e1.31, 1 = udmx, 2 = artnet
+// 0 = E1.31, 1 = uDMX, 2 = ArtNet
 var OUTPUT = 1;
 
 // 0 = linux64, 1 = rpi

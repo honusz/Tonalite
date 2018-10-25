@@ -1,6 +1,6 @@
 # Supported Software
 
-It is possible to visualize your lighting using external software that supports the E1.31 (sACN) protocol. Below is a list of some visualizers that work with Tonalite.
+It is possible to visualize your lighting using external software that supports the E1.31 (sACN) or ArtNet protocols. Below is a list of some visualizers that work with Tonalite.
 
 | Software                                                                        | Manufacturer  |
 |:-------------------------------------------------------------------------------:|:-------------:|
