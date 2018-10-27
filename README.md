@@ -181,4 +181,4 @@ right before `exit 0`
 
 `sudo nano Tonalite/index.js`
 
-and change `URL` to `"192.168.4.1"`
+and change `URL` to `"192.168.4.1"` and `PORT` to `80`
