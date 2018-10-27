@@ -88,7 +88,6 @@ socket.on('cueSettings', function (cue) {
 
 socket.on('cueActionBtn', function (btnMode) {
     $("#cueActionBtn").empty();
-    $("#cueActionBtn").off("click");
     if (btnMode == false) {
         $("#cueActionBtn").off().on("click", function () { recordCue(); });
         $("#cueActionBtn").append("Record");
