@@ -58,8 +58,8 @@ socket.on('fixtureChannels', function (msg) {
     openTab('fixtureChannelsPage');
     $("#fixtureChannels").empty();
     $("#fixtureChannelsName").text(msg.name);
-    $("#fixtureSettingsBtn").on("click", function () { viewFixtureSettings(msg.id); });
-    $("#fixtureResetBtn").on("click", function () { resetFixture(msg.id); });
+    $("#fixtureSettingsBtn").off().on("click", function () { viewFixtureSettings(msg.id); });
+    $("#fixtureResetBtn").off().on("click", function () { resetFixture(msg.id); });
     msg.channels.forEach(function (channel, i) {
         $("#fixtureChannels").append("<label for=\"" + channel.type + "\">" + channel.name + ":</label><input type=\"range\" class=\"custom-range\" id=\"" + channel.type + "\" max=\"" + channel.displayMax + "\" min=\"" + channel.displayMin + "\" value=\"" + channel.value + "\" oninput=\"updateFixtureChannelValue(this, '" + msg.id + "', " + i + ")\">");
     });
@@ -67,9 +67,9 @@ socket.on('fixtureChannels', function (msg) {
 
 socket.on('fixtureSettings', function (fixture) {
     openTab('fixtureSettingsPage');
-    $("#fixtureChannelsBackBtn").on("click", function () { viewFixtureChannels(fixture.id); });
-    $("#fixtureDeleteBtn").on("click", function () { removeFixture(fixture.id); });
-    $("#fixtureSaveBtn").on("click", function () { saveFixtureSettings(fixture.id); });
+    $("#fixtureChannelsBackBtn").off().on("click", function () { viewFixtureChannels(fixture.id); });
+    $("#fixtureDeleteBtn").off().on("click", function () { removeFixture(fixture.id); });
+    $("#fixtureSaveBtn").off().on("click", function () { saveFixtureSettings(fixture.id); });
     $("#fixtureNameInput").val(fixture.name);
     $("#fixtureShortNameInput").val(fixture.shortName);
     $("#fixtureDMXAddressInput").val(fixture.startDMXAddress);
@@ -77,10 +77,10 @@ socket.on('fixtureSettings', function (fixture) {
 
 socket.on('cueSettings', function (cue) {
     openTab('cueSettingsPage');
-    $("#cueDeleteBtn").on("click", function () { removeCue(cue.id); });
-    $("#cueSaveBtn").on("click", function () { saveCueSettings(cue.id); });
-    $("#gotoCueBtn").on("click", function () { gotoCue(cue.id); });
-    $("#cueUpdateBtn").on("click", function () { updateCue(cue.id); });
+    $("#cueDeleteBtn").off().on("click", function () { removeCue(cue.id); });
+    $("#cueSaveBtn").off().on("click", function () { saveCueSettings(cue.id); });
+    $("#gotoCueBtn").off().on("click", function () { gotoCue(cue.id); });
+    $("#cueUpdateBtn").off().on("click", function () { updateCue(cue.id); });
     $("#cueNameInput").val(cue.name);
     $("#cueTimeInput").val(cue.time);
     $("#cueFollowInput").val(cue.follow);
@@ -90,10 +90,10 @@ socket.on('cueActionBtn', function (btnMode) {
     $("#cueActionBtn").empty();
     $("#cueActionBtn").off("click");
     if (btnMode == false) {
-        $("#cueActionBtn").on("click", function () { recordCue(); });
+        $("#cueActionBtn").off().on("click", function () { recordCue(); });
         $("#cueActionBtn").append("Record");
     } else {
-        $("#cueActionBtn").on("click", function () { stopCue(); });
+        $("#cueActionBtn").off().on("click", function () { stopCue(); });
         $("#cueActionBtn").append("Stop");
     }
 });
