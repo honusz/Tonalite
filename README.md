@@ -90,6 +90,8 @@ and change `DEVICE` to `1`, change `URL` to `"192.168.4.1"` and `PORT` to `80`
 
 `sudo systemctl stop hostapd`
 
+`sudo raspi-config` and expand the filesystem
+
 `sudo reboot`
 
 `sudo nano /etc/dhcpcd.conf`
@@ -102,7 +104,7 @@ interface wlan0
     nohook wpa_supplicant
 ```
 
-Shut down the raspberry pi and reinser the sd card into the linux computer.
+Shut down the raspberry pi and reinsert the sd card into the linux computer.
 
 ### Back on the linux machine
 
