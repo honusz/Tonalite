@@ -68,7 +68,7 @@ Wait about 90 seconds.
 
 `sudo apt-get upgrade`
 
-`sudo apt-get install dnsmasq hostapd git libusb-dev`
+`sudo apt-get install dnsmasq hostapd git libusb-dev libusb-1.0-0-dev`
 
 `curl -o node-v11.0.0-linux-armv6l.tar.xz https://nodejs.org/dist/v11.0.0/node-v11.0.0-linux-armv6l.tar.xz`
 
