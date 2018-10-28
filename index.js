@@ -240,7 +240,7 @@ if (OUTPUT == 1) {
     if (DEVICE == 0) {
         ls = spawn('uDMXArtnet/uDMXArtnet_minimal_64');
     } else if (DEVICE == 1) {
-        ls = spawn('uDMXArtnet/uDMXArtnet_PI_minimal_32 -i 192.168.4.1');
+        ls = spawn('uDMXArtnet/uDMXArtnet_PI_minimal_32', ['-i', '192.168.4.1']);
     }
     ls.stdout.on('data', (data) => {
         console.log('udmx stdout: ' + data);
