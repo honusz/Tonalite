@@ -68,7 +68,7 @@ Wait about 90 seconds.
 
 `sudo apt-get upgrade`
 
-`sudo apt-get install dnsmasq hostapd git`
+`sudo apt-get install dnsmasq hostapd git libusb-dev`
 
 `curl -o node-v11.0.0-linux-armv6l.tar.xz https://nodejs.org/dist/v11.0.0/node-v11.0.0-linux-armv6l.tar.xz`
 
@@ -84,7 +84,7 @@ Wait about 90 seconds.
 
 `sudo nano index.js`
 
-and change `DEVICE` to `1`
+and change `DEVICE` to `1`, change `URL` to `"192.168.4.1"` and `PORT` to `80`
 
 `sudo systemctl stop dnsmasq`
 
@@ -178,7 +178,3 @@ and add
 ```
 
 right before `exit 0`
-
-`sudo nano Tonalite/index.js`
-
-and change `URL` to `"192.168.4.1"` and `PORT` to `80`
