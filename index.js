@@ -57,7 +57,11 @@ if (OUTPUT == 0) {
     var slotsData = packet.getSlotsData();
     var channels = slotsData;
 } else {
-    var artnet = require('artnet')({ host: '255.255.255.255' });
+    var host = '255.255.255.255';
+    /*if (DEVICE == 1) {
+        host = '255.255.255.0';
+    }*/
+    var artnet = require('artnet')({ host: host });
     var channels = new Array(512).fill(0);
 }
 
