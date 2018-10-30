@@ -329,8 +329,15 @@ io.on('connection', function (socket) {
     socket.on('removeFixture', function (fixtureID) {
         if (fixtures.length != 0) {
             fixtures.splice(fixtures[fixtures.map(el => el.id).indexOf(fixtureID)], 1);
+            cues.forEach(function (cue) {
+                cue.fixtures.splice(cue.fixtures[cue.fixtures.map(el => el.id).indexOf(fixtureID)], 1);
+                if (cue.fixtures.length == 0) {
+                    cues.splice(cues[cues.map(el => el.id).indexOf(cue.id)], 1);
+                }
+            });
             socket.emit('message', { type: "info", content: "Fixture has been removed!" });
             io.emit('fixtures', fixtures);
+            io.emit('cues', cues);
             saveShow();
         } else {
             socket.emit('message', { type: "error", content: "No fixtures exist!" });
