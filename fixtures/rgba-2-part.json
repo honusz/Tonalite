@@ -1,0 +1,111 @@
+{
+    "name": "Generic RGBA Fixture - 2 Parts",
+    "shortName": "RGBA 2 Parts",
+    "manufacturer": "Generic",
+    "channels": [
+        {
+            "type": "color-red",
+            "name": "Red Top",
+            "max": 255,
+            "min": 0,
+            "displayMax": 100,
+            "displayMin": 0,
+            "value": 0,
+            "displayValue": 0,
+            "defaultValue": 0,
+            "dmxAddress": 0,
+            "locked": false
+        },
+        {
+            "type": "color-green",
+            "name": "Green Top",
+            "max": 255,
+            "min": 0,
+            "displayMax": 100,
+            "displayMin": 0,
+            "value": 0,
+            "displayValue": 0,
+            "defaultValue": 0,
+            "dmxAddress": 0,
+            "locked": false
+        },
+        {
+            "type": "color-blue",
+            "name": "Blue Top",
+            "max": 255,
+            "min": 0,
+            "displayMax": 100,
+            "displayMin": 0,
+            "value": 0,
+            "displayValue": 0,
+            "defaultValue": 0,
+            "dmxAddress": 0,
+            "locked": false
+        },
+        {
+            "type": "color-amber",
+            "name": "Amber Top",
+            "max": 255,
+            "min": 0,
+            "displayMax": 100,
+            "displayMin": 0,
+            "value": 0,
+            "displayValue": 0,
+            "defaultValue": 0,
+            "dmxAddress": 0,
+            "locked": false
+        },
+        {
+            "type": "color-red",
+            "name": "Red Bottom",
+            "max": 255,
+            "min": 0,
+            "displayMax": 100,
+            "displayMin": 0,
+            "value": 0,
+            "displayValue": 0,
+            "defaultValue": 0,
+            "dmxAddress": 0,
+            "locked": false
+        },
+        {
+            "type": "color-green",
+            "name": "Green Bottom",
+            "max": 255,
+            "min": 0,
+            "displayMax": 100,
+            "displayMin": 0,
+            "value": 0,
+            "displayValue": 0,
+            "defaultValue": 0,
+            "dmxAddress": 0,
+            "locked": false
+        },
+        {
+            "type": "color-blue",
+            "name": "Blue Bottom",
+            "max": 255,
+            "min": 0,
+            "displayMax": 100,
+            "displayMin": 0,
+            "value": 0,
+            "displayValue": 0,
+            "defaultValue": 0,
+            "dmxAddress": 0,
+            "locked": false
+        },
+        {
+            "type": "color-amber",
+            "name": "Amber Bottom",
+            "max": 255,
+            "min": 0,
+            "displayMax": 100,
+            "displayMin": 0,
+            "value": 0,
+            "displayValue": 0,
+            "defaultValue": 0,
+            "dmxAddress": 0,
+            "locked": false
+        }
+    ]
+}
