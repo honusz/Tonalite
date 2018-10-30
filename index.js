@@ -328,15 +328,15 @@ io.on('connection', function (socket) {
 
     socket.on('removeFixture', function (fixtureID) {
         if (fixtures.length != 0) {
-            fixtures.splice(fixtures.map(el => el.id).indexOf(fixtureID), 1);
             cues.forEach(function (cue) {
-                if (cue.fixtures.includes(fixtures.map(el => el.id).indexOf(fixtureID))) {
+                if (cue.fixtures.some(e => e.id === fixtureID)) {
                     cue.fixtures.splice(cue.fixtures.map(el => el.id).indexOf(fixtureID), 1);
                     if (cue.fixtures.length == 0) {
                         cues.splice(cues.map(el => el.id).indexOf(cue.id), 1);
                     }
                 }
             });
+            fixtures.splice(fixtures.map(el => el.id).indexOf(fixtureID), 1);
             socket.emit('message', { type: "info", content: "Fixture has been removed!" });
             io.emit('fixtures', fixtures);
             io.emit('cues', cues);
