@@ -313,12 +313,16 @@ io.on('connection', function (socket) {
             }
         });
         if (startDMXAddress) {
-            // Add a fixture using the fixture spec file in the fixtures folder
-            var fixture = require("./fixtures/" + msg.fixtureName + ".json");
-            fixture.startDMXAddress = startDMXAddress;
-            // Assign a random id for easy access to this fixture
-            fixture.id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-            fixtures.push(JSON.parse(JSON.stringify(fixture)));
+            for (var i = 0; i < msg.creationCount; i++) {
+                // Add a fixture using the fixture spec file in the fixtures folder
+                var fixture = require("./fixtures/" + msg.fixtureName + ".json");
+                fixture.startDMXAddress = startDMXAddress;
+                // Assign a random id for easy access to this fixture
+                fixture.id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+                fixtures.push(JSON.parse(JSON.stringify(fixture)));
+                startDMXAddress += fixture.channels.length;
+            }
+            
             io.emit('fixtures', fixtures);
             saveShow();
         } else {
