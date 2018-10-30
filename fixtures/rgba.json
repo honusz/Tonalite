@@ -4,7 +4,8 @@
     "manufacturer": "Generic",
     "channels": [
         {
-            "type": "color-red",
+            "type": "color",
+            "subtype": "red",
             "name": "Red",
             "max": 255,
             "min": 0,
@@ -17,7 +18,8 @@
             "locked": false
         },
         {
-            "type": "color-green",
+            "type": "color",
+            "subtype": "green",
             "name": "Green",
             "max": 255,
             "min": 0,
@@ -30,7 +32,8 @@
             "locked": false
         },
         {
-            "type": "color-blue",
+            "type": "color",
+            "subtype": "blue",
             "name": "Blue",
             "max": 255,
             "min": 0,
@@ -43,7 +46,8 @@
             "locked": false
         },
         {
-            "type": "color-amber",
+            "type": "color",
+            "subtype": "amber",
             "name": "Amber",
             "max": 255,
             "min": 0,

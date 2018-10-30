@@ -4,7 +4,8 @@
     "manufacturer": "Generic",
     "channels": [
         {
-            "type": "color-red",
+            "type": "color",
+            "subtype": "red",
             "name": "Red Top",
             "max": 255,
             "min": 0,
@@ -17,7 +18,8 @@
             "locked": false
         },
         {
-            "type": "color-green",
+            "type": "color",
+            "subtype": "green",
             "name": "Green Top",
             "max": 255,
             "min": 0,
@@ -30,7 +32,8 @@
             "locked": false
         },
         {
-            "type": "color-blue",
+            "type": "color",
+            "subtype": "blue",
             "name": "Blue Top",
             "max": 255,
             "min": 0,
@@ -43,7 +46,8 @@
             "locked": false
         },
         {
-            "type": "color-amber",
+            "type": "color",
+            "subtype": "amber",
             "name": "Amber Top",
             "max": 255,
             "min": 0,
@@ -56,7 +60,8 @@
             "locked": false
         },
         {
-            "type": "color-red",
+            "type": "color",
+            "subtype": "red",
             "name": "Red Bottom",
             "max": 255,
             "min": 0,
@@ -69,7 +74,8 @@
             "locked": false
         },
         {
-            "type": "color-green",
+            "type": "color",
+            "subtype": "green",
             "name": "Green Bottom",
             "max": 255,
             "min": 0,
@@ -82,7 +88,8 @@
             "locked": false
         },
         {
-            "type": "color-blue",
+            "type": "color",
+            "subtype": "blue",
             "name": "Blue Bottom",
             "max": 255,
             "min": 0,
@@ -95,7 +102,8 @@
             "locked": false
         },
         {
-            "type": "color-amber",
+            "type": "color",
+            "subtype": "amber",
             "name": "Amber Bottom",
             "max": 255,
             "min": 0,
