@@ -188,6 +188,7 @@ function viewCueSettings(cueID) {
 function resetShow() {
     if (confirm("Are you sure you want a new show? This will reset everything.")) {
         socket.emit('resetShow');
+        openTab('fixtures');
     }
 }
 
