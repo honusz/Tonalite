@@ -328,11 +328,13 @@ io.on('connection', function (socket) {
 
     socket.on('removeFixture', function (fixtureID) {
         if (fixtures.length != 0) {
-            fixtures.splice(fixtures[fixtures.map(el => el.id).indexOf(fixtureID)], 1);
+            fixtures.splice(fixtures.map(el => el.id).indexOf(fixtureID), 1);
             cues.forEach(function (cue) {
-                cue.fixtures.splice(cue.fixtures[cue.fixtures.map(el => el.id).indexOf(fixtureID)], 1);
-                if (cue.fixtures.length == 0) {
-                    cues.splice(cues[cues.map(el => el.id).indexOf(cue.id)], 1);
+                if (cue.fixtures.includes(fixtures.map(el => el.id).indexOf(fixtureID))) {
+                    cue.fixtures.splice(cue.fixtures.map(el => el.id).indexOf(fixtureID), 1);
+                    if (cue.fixtures.length == 0) {
+                        cues.splice(cues.map(el => el.id).indexOf(cue.id), 1);
+                    }
                 }
             });
             socket.emit('message', { type: "info", content: "Fixture has been removed!" });
@@ -490,7 +492,7 @@ io.on('connection', function (socket) {
 
     socket.on('removeCue', function (cueID) {
         if (cues.length != 0) {
-            cues.splice(cues[cues.map(el => el.id).indexOf(cueID)], 1);
+            cues.splice(cues.map(el => el.id).indexOf(cueID), 1);
             if (currentCue == cues.map(el => el.id).indexOf(cueID)) {
                 lastCue = -1;
                 currentCue = lastCue;
