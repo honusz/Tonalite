@@ -215,7 +215,7 @@ app.use('/static', express.static(__dirname + '/static'));
 app.use(fileUpload());
 
 app.get('/', function (req, res) {
-    res.sendFile(__dirname + '/index.html');
+    res.sendFile(__dirname + '/index.min.html');
 });
 
 app.post('/', (req, res) => {
