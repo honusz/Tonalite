@@ -1,0 +1,59 @@
+{
+    "name": "Generic RGBA Fixture",
+    "shortName": "RGBA",
+    "manufacturer": "Generic",
+    "channels": [
+        {
+            "type": "color-red",
+            "name": "Red",
+            "max": 255,
+            "min": 0,
+            "displayMax": 100,
+            "displayMin": 0,
+            "value": 0,
+            "displayValue": 0,
+            "defaultValue": 0,
+            "dmxAddress": 0,
+            "locked": false
+        },
+        {
+            "type": "color-green",
+            "name": "Green",
+            "max": 255,
+            "min": 0,
+            "displayMax": 100,
+            "displayMin": 0,
+            "value": 0,
+            "displayValue": 0,
+            "defaultValue": 0,
+            "dmxAddress": 0,
+            "locked": false
+        },
+        {
+            "type": "color-blue",
+            "name": "Blue",
+            "max": 255,
+            "min": 0,
+            "displayMax": 100,
+            "displayMin": 0,
+            "value": 0,
+            "displayValue": 0,
+            "defaultValue": 0,
+            "dmxAddress": 0,
+            "locked": false
+        },
+        {
+            "type": "color-amber",
+            "name": "Amber",
+            "max": 255,
+            "min": 0,
+            "displayMax": 100,
+            "displayMin": 0,
+            "value": 0,
+            "displayValue": 0,
+            "defaultValue": 0,
+            "dmxAddress": 0,
+            "locked": false
+        }
+    ]
+}

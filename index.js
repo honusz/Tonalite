@@ -219,14 +219,14 @@ app.get('/', function (req, res) {
 });
 
 app.post('/', (req, res) => {
-    if (!req.files) {
+    if (Object.keys(req.files).length == 0) {
         return res.status(400).send('No files were uploaded.');
     }
     let showFile = req.files.showFile;
+
     showFile.mv('./currentShow.json', function (err) {
-        if (err) {
+        if (err)
             return res.status(500).send(err);
-        }
         openShow();
         res.redirect('/');
     });
