@@ -13,7 +13,7 @@
             "value": 0,
             "displayValue": 0,
             "defaultValue": 0,
-            "dmxAddress": 0,
+            "dmxAddressOffset": 0,
             "locked": false
         }
     ]

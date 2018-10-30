@@ -87,7 +87,7 @@ var moveArrayItem = function (array, element, delta) {
 function calculateChannels() {
     fixtures.forEach(function (fixture) {
         fixture.channels.forEach(function (channel) {
-            channels[(fixture.startDMXAddress - 1) + channel.dmxAddress] = mapRange(channel.value, channel.displayMin, channel.displayMax, channel.min, channel.max);
+            channels[(fixture.startDMXAddress - 1) + channel.dmxAddressOffset] = mapRange(channel.value, channel.displayMin, channel.displayMax, channel.min, channel.max);
         });
     });
 };
@@ -101,7 +101,7 @@ function calculateCue(cue) {
                 var startFixture = fixtures[fixtures.map(el => el.id).indexOf(fixture.id)];
                 var startChannel = mapRange(startFixture.channels[i].value, startFixture.channels[i].displayMin, startFixture.channels[i].displayMax, startFixture.channels[i].min, startFixture.channels[i].max);
                 var endChannel = mapRange(channel.value, channel.displayMin, channel.displayMax, channel.min, channel.max);
-                outputChannels[(fixture.startDMXAddress - 1) + channel.dmxAddress] = endChannel + (((startChannel - endChannel) / (cue.time * 40)) * cue.step);
+                outputChannels[(fixture.startDMXAddress - 1) + channel.dmxAddressOffset] = endChannel + (((startChannel - endChannel) / (cue.time * 40)) * cue.step);
                 fixtures[fixtures.map(el => el.id).indexOf(fixture.id)].channels[i].displayValue = parseInt(channel.value + (((startFixture.channels[i].value - channel.value) / (cue.time * 40)) * cue.step));
             }
         });
