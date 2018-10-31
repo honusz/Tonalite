@@ -49,7 +49,7 @@ socket.on('cues', function (cues) {
 socket.on('fixtureProfiles', function (profiles) {
     $("#fixtureProfilesList").empty();
     profiles[0].forEach(function (value) {
-        $("#fixtureProfilesList").append("<li class=\"list-group-item fixtureProfileItem\" onclick=\"addFixture('" + value + "')\">" + titleCase(value) + "</li>");
+        $("#fixtureProfilesList").append("<li class=\"list-group-item fixtureProfileItem\" onclick=\"addFixture('" + value + "')\">" + upperCase(value) + "</li>");
     });
     $("#newFixtureStartDMXAddress").val(profiles[1]);
 });
@@ -227,3 +227,12 @@ function titleCase(str) {
         return (word.charAt(0).toUpperCase() + word.slice(1));
     }).join(' ');
 }
+
+function upperCase(str) {
+    return str.toUpperCase().replace(/-/g, " ");
+}
+
+$('.custom-file-input').change(function () {
+    let fileName = $(this).val().split('\\').pop();
+    $(this).next('.custom-file-label').html(fileName);
+});
