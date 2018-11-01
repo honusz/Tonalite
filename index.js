@@ -48,6 +48,10 @@ Features:
 - Change Group Channel Value
 - Get Group Settings
 - Edit Group Settings
+- Save Show - Done - Done UI
+- Open Show From File - Done - Done UI
+- Save Show To File - Done - Done UI
+- Import Fixture Definition File - Done - Done UI
 */
 
 // If e1.31 selected, run that, but run artnet otherwise
@@ -227,6 +231,23 @@ app.post('/', (req, res) => {
         openShow();
         res.redirect('/');
     });
+});
+
+app.post('/importFixtureDefinition', (req, res) => {
+    if (Object.keys(req.files).length == 0) {
+        return res.status(400).send('No files were uploaded.');
+    }
+    let fixtureDefinition = req.files.fixtureDefinition;
+
+    if (fixtureDefinition.mimetype == "application/json") {
+        fixtureDefinition.mv('./fixtures/' + req.files.fixtureDefinition.name, function (err) {
+            if (err)
+                return res.status(500).send(err);
+            io.emit('message', { type: "info", content: "The fixture profile has been imported!" });
+        });
+    } else {
+        io.emit('message', { type: "error", content: "The fixture profile was not a json file!" });
+    }
 });
 
 app.get('/showFile', function (req, res) {

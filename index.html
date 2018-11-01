@@ -30,6 +30,8 @@
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="/showFile">Save Show To File</a>
               <a class="dropdown-item" onclick="openShowFileModal()">Open Show From File</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" onclick="openFixtureDefinitionModal()">Import Fixture Definition</a>
             </div>
           </li>
         </ul>
@@ -209,6 +211,25 @@
               </div>
               <div class="form-group">
                 <input type="submit" class="btn btn-success" value="Open Show File">
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="openFixtureDefinitionModal" class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <form action="/importFixtureDefinition" method='post' enctype="multipart/form-data">
+              <div class="form-group">
+                <div class="custom-file">
+                  <input type="file" class="custom-file-input" name="fixtureDefinition" id="fixtureDefinition">
+                  <label class="dark custom-file-label" for="fixtureDefinition">Choose file</label>
+                </div>
+              </div>
+              <div class="form-group">
+                <input type="submit" class="btn btn-success" value="Import Fixture Definition">
               </div>
             </form>
           </div>

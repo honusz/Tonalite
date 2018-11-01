@@ -119,6 +119,10 @@ function openShowFileModal() {
     $('#openShowModal').modal("show");
 }
 
+function openFixtureDefinitionModal() {
+    $('#openFixtureDefinitionModal').modal("show");
+}
+
 function addFixture(fixture) {
     socket.emit('addFixture', { fixtureName: fixture, startDMXAddress: parseInt($('#newFixtureStartDMXAddress').val()), creationCount: parseInt($('#newFixtureCreationCount').val()) });
     $('#fixtureProfilesModal').modal("hide");
