@@ -3,6 +3,14 @@ body {
     color: #F8F9FA;
 }
 
+.nav-item.dropdown, .dropdown-item:hover {
+    cursor: pointer;
+}
+
+.dropdown-item:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
 .fixtureItem,
 .cueItem {
     width: 100%;
