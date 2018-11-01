@@ -52,6 +52,7 @@ Features:
 - Open Show From File - Done - Done UI
 - Save Show To File - Done - Done UI
 - Import Fixture Definition File - Done - Done UI
+- View Docs - Done - Done UI
 */
 
 // If e1.31 selected, run that, but run artnet otherwise
