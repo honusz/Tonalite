@@ -18,7 +18,7 @@ var URL = "localhost";
 var PORT = 3000;
 
 /*
-Tasks:
+Features:
 - Get Fixtures - Done - Done UI
 - Get Fixture Profiles - Done - Done UI
 - Add Fixture - Done - Done UI
@@ -27,7 +27,7 @@ Tasks:
 - Edit Fixture Settings - Done - Done UI
 - Get Fixture Channels - Done - Done UI
 - Change Fixture Channel Value - Done - Done UI
-- Channel lock - Done
+- Channel Lock - Done
 - Reset Fixtures - Done - Done UI
 - Get Cues - Done - Done UI
 - Record Cue - Done - Done UI
@@ -323,7 +323,7 @@ io.on('connection', function (socket) {
                 fixtures.push(JSON.parse(JSON.stringify(fixture)));
                 startDMXAddress += fixture.channels.length;
             }
-            
+
             io.emit('fixtures', fixtures);
             saveShow();
         } else {
