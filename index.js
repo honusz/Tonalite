@@ -459,7 +459,23 @@ io.on('connection', function (socket) {
             var cue = cues[cues.map(el => el.id).indexOf(cueID)];
             cue.fixtures = JSON.parse(JSON.stringify(fixtures));
             socket.emit('cueSettings', cue);
+            io.emit('cues', cues);
             socket.emit('message', { type: "info", content: "Cue channels have been updated!" });
+            saveShow();
+        } else {
+            socket.emit('message', { type: "error", content: "No cues exist!" });
+        }
+    });
+
+    socket.on('cloneCue', function (cueID) {
+        if (cues.length != 0) {
+            var newCue = JSON.parse(JSON.stringify(cues[cues.map(el => el.id).indexOf(cueID)]));
+            newCue.id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+            newCue.name = "Cue " + (cues.length + 1);
+            cues.push(newCue);
+            socket.emit('cueSettings', newCue);
+            io.emit('cues', cues);
+            socket.emit('message', { type: "info", content: "Cue has been cloned!" });
             saveShow();
         } else {
             socket.emit('message', { type: "error", content: "No cues exist!" });

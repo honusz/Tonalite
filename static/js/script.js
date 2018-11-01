@@ -81,6 +81,7 @@ socket.on('cueSettings', function (cue) {
     $("#cueSaveBtn").off().on("click", function () { saveCueSettings(cue.id); });
     $("#gotoCueBtn").off().on("click", function () { gotoCue(cue.id); });
     $("#cueUpdateBtn").off().on("click", function () { updateCue(cue.id); });
+    $("#cueCloneBtn").off().on("click", function () { cloneCue(cue.id); });
     $("#cueNameInput").val(cue.name);
     $("#cueTimeInput").val(cue.time);
     $("#cueFollowInput").val(cue.follow);
@@ -181,6 +182,10 @@ function updateCue(cueID) {
     socket.emit('updateCue', cueID);
 }
 
+function cloneCue(cueID) {
+    socket.emit('cloneCue', cueID);
+}
+
 function viewCueSettings(cueID) {
     socket.emit('getCueSettings', cueID);
 }
@@ -233,6 +238,6 @@ function upperCase(str) {
 }
 
 $('.custom-file-input').change(function () {
-    let fileName = $(this).val().split('\\').pop();
+    var fileName = $(this).val().split('\\').pop();
     $(this).next('.custom-file-label').html(fileName);
 });
