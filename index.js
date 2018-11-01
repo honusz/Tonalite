@@ -34,6 +34,7 @@ Tasks:
 - Get Cue Settings - Done - Done UI
 - Update Cue - Done
 - Edit Cue Settings - Done - Done UI
+- Clone Cue - Done - Done UI
 - Move Cue Up - Done
 - Move Cue Down - Done
 - Remove Cue - Done - Done UI
