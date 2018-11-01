@@ -189,7 +189,7 @@ function dmxLoop() {
 
 // Save the fixtures and cues of the show to file
 function saveShow() {
-    fs.writeFile("./currentShow.json", JSON.stringify([fixtures, cues]), (err) => {
+    fs.writeFile(__dirname + "/currentShow.json", JSON.stringify([fixtures, cues]), (err) => {
         if (err) {
             console.log(err);
             return false;
@@ -200,7 +200,7 @@ function saveShow() {
 
 // Load the fixtures and cues from file
 function openShow() {
-    fs.readFile('./currentShow.json', (err, data) => {
+    fs.readFile(__dirname + '/currentShow.json', (err, data) => {
         if (err) throw err;
         let show = JSON.parse(data);
         fixtures = show[0];
@@ -219,13 +219,22 @@ app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.min.html');
 });
 
-app.post('/', (req, res) => {
+app.get('/docs', function (req, res) {
+    res.sendFile(__dirname + '/docs/documentation.pdf');
+});
+
+app.get('/showFile', function (req, res) {
+    res.download(__dirname + '/currentShow.json', moment().format() + '.tonalite');
+});
+
+// Upload Show File
+app.post('/showFile', (req, res) => {
     if (Object.keys(req.files).length == 0) {
         return res.status(400).send('No files were uploaded.');
     }
     let showFile = req.files.showFile;
 
-    showFile.mv('./currentShow.json', function (err) {
+    showFile.mv(__dirname + '/currentShow.json', function (err) {
         if (err)
             return res.status(500).send(err);
         openShow();
@@ -240,7 +249,7 @@ app.post('/importFixtureDefinition', (req, res) => {
     let fixtureDefinition = req.files.fixtureDefinition;
 
     if (fixtureDefinition.mimetype == "application/json") {
-        fixtureDefinition.mv('./fixtures/' + req.files.fixtureDefinition.name, function (err) {
+        fixtureDefinition.mv(__dirname + '/fixtures/' + req.files.fixtureDefinition.name, function (err) {
             if (err)
                 return res.status(500).send(err);
             io.emit('message', { type: "info", content: "The fixture profile has been imported!" });
@@ -248,10 +257,6 @@ app.post('/importFixtureDefinition', (req, res) => {
     } else {
         io.emit('message', { type: "error", content: "The fixture profile was not a json file!" });
     }
-});
-
-app.get('/showFile', function (req, res) {
-    res.download('./currentShow.json', moment().format() + '.tonalite');
 });
 
 http.listen(PORT, URL, function () {
@@ -319,7 +324,7 @@ io.on('connection', function (socket) {
                 startDMXAddress = fixture.startDMXAddress + fixture.channels.length;
             }
         });
-        fs.readdir("./fixtures", (err, files) => {
+        fs.readdir(__dirname + "/fixtures", (err, files) => {
             files.forEach(file => {
                 fixturesList.push(file.slice(0, -5));
             });
@@ -337,7 +342,7 @@ io.on('connection', function (socket) {
         if (startDMXAddress) {
             for (var i = 0; i < msg.creationCount; i++) {
                 // Add a fixture using the fixture spec file in the fixtures folder
-                var fixture = require("./fixtures/" + msg.fixtureName + ".json");
+                var fixture = require(__dirname + "/fixtures/" + msg.fixtureName + ".json");
                 fixture.startDMXAddress = startDMXAddress;
                 // Assign a random id for easy access to this fixture
                 fixture.id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);

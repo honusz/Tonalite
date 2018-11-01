@@ -34,6 +34,15 @@
               <a class="dropdown-item" onclick="openFixtureDefinitionModal()">Import Fixture Definition</a>
             </div>
           </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Help
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="/docs">Documentation</a>
+              <a class="dropdown-item" href="mailto(johnroper100@gmail.com)">Send An Email</a>
+            </div>
+          </li>
         </ul>
       </div>
     </nav>
@@ -202,7 +211,7 @@
         <div class="modal-content">
           <div class="modal-body">
             <p class="dark">Opening a new show file will overwrite the current show.</p>
-            <form action="/" method='post' enctype="multipart/form-data">
+            <form action="/showFile" method='post' enctype="multipart/form-data">
               <div class="form-group">
                 <div class="custom-file">
                   <input type="file" class="custom-file-input" name="showFile" id="showFile">
