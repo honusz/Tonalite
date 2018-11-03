@@ -71,7 +71,11 @@ if (SETTINGS.output == 0) {
     var slotsData = packet.getSlotsData();
     var channels = slotsData;
 } else {
-    var artnet = require('artnet')({ iface: SETTINGS.url, host: '255.255.255.255' });
+    if (SETTINGS.url != "localhost") {
+        var artnet = require('artnet')({ iface: SETTINGS.url, host: '255.255.255.255' });
+    } else {
+        var artnet = require('artnet')({ host: '255.255.255.255' });
+    }
     var channels = new Array(512).fill(0);
 }
 

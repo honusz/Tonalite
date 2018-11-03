@@ -88,7 +88,7 @@ Wait about 90 seconds.
 
 `sudo nano index.js`
 
-and change `DEVICE` to `1`, change `URL` to `"192.168.4.1"` and `PORT` to `80`
+and change `SETTINGS.device` to `1`, change `SETTINGS.url` to `"192.168.4.1"` and `SETTINGS.port` to `80`
 
 `sudo systemctl stop dnsmasq`
 
