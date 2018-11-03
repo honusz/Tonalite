@@ -358,10 +358,10 @@ io.on('connection', function (socket) {
         cues = [];
         currentCue = -1;
         lastCue = -1;
-        socket.emit('fixtures', fixtures);
-        socket.emit('cues', cues);
-        socket.emit('cueActionBtn', false);
-        socket.emit('message', { type: "info", content: "The show has been reset!" });
+        io.emit('fixtures', fixtures);
+        io.emit('cues', cues);
+        io.emit('cueActionBtn', false);
+        io.emit('message', { type: "info", content: "The show has been reset!" });
         saveShow();
     });
 
