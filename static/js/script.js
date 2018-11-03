@@ -61,7 +61,11 @@ socket.on('fixtureChannels', function (msg) {
     $("#fixtureSettingsBtn").off().on("click", function () { viewFixtureSettings(msg.id); });
     $("#fixtureResetBtn").off().on("click", function () { resetFixture(msg.id); });
     msg.channels.forEach(function (channel, i) {
-        $("#fixtureChannels").append("<label for=\"" + channel.type + "\">" + channel.name + ":</label><input type=\"range\" class=\"custom-range\" id=\"" + channel.type + "\" max=\"" + channel.displayMax + "\" min=\"" + channel.displayMin + "\" value=\"" + channel.value + "\" oninput=\"updateFixtureChannelValue(this, '" + msg.id + "', " + i + ")\">");
+        if (channel.locked) {
+            $("#fixtureChannels").append("<button class=\"btn btn-info\" onclick=\"updateFixtureChannelLock(this, '" + msg.id + "', " + i + ")\"><i class=\"far fa-lock-alt\"></i></button><label class=\"ml-2\" for=\"" + channel.type + "\">" + channel.name + ":</label><input type=\"range\" class=\"custom-range\" id=\"" + channel.type + "\" max=\"" + channel.displayMax + "\" min=\"" + channel.displayMin + "\" value=\"" + channel.value + "\" oninput=\"updateFixtureChannelValue(this, '" + msg.id + "', " + i + ")\">");
+        } else {
+            $("#fixtureChannels").append("<button class=\"btn btn-info\" onclick=\"updateFixtureChannelLock(this, '" + msg.id + "', " + i + ")\"><i class=\"far fa-lock-open-alt\"></i></button><label class=\"ml-2\" for=\"" + channel.type + "\">" + channel.name + ":</label><input type=\"range\" class=\"custom-range\" id=\"" + channel.type + "\" max=\"" + channel.displayMax + "\" min=\"" + channel.displayMin + "\" value=\"" + channel.value + "\" oninput=\"updateFixtureChannelValue(this, '" + msg.id + "', " + i + ")\">");
+        }
     });
 });
 
@@ -149,7 +153,11 @@ function viewFixtureSettings(fixtureID) {
 }
 
 function updateFixtureChannelValue(self, fixtureID, channelID) {
-    socket.emit('changeFixtureChannelValue', { id: fixtureID, cid: channelID, value: parseInt(self.value) })
+    socket.emit('changeFixtureChannelValue', { id: fixtureID, cid: channelID, value: parseInt(self.value) });
+}
+
+function updateFixtureChannelLock(self, fixtureID, channelID) {
+    socket.emit('changeFixtureChannelLock', { id: fixtureID, cid: channelID });
 }
 
 function removeFixture(fixtureID) {

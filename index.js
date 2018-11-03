@@ -17,7 +17,7 @@ Features:
 - Edit Fixture Settings - Done - Done UI
 - Get Fixture Channels - Done - Done UI
 - Change Fixture Channel Value - Done - Done UI
-- Channel Lock - Done
+- Channel Lock - Done - Done UI
 - Reset Fixtures - Done - Done UI
 - Get Cues - Done - Done UI
 - Record Cue - Done - Done UI
@@ -496,7 +496,7 @@ io.on('connection', function (socket) {
         }
     });
 
-    socket.on('changeChannelLock', function (msg) {
+    socket.on('changeFixtureChannelLock', function (msg) {
         if (fixtures.length != 0) {
             var fixture = fixtures[fixtures.map(el => el.id).indexOf(msg.id)];
             var channel = fixture.channels[msg.cid];
