@@ -47,6 +47,10 @@ body {
     padding-top: 0.45rem;
 }
 
+.tabcontent {
+    margin-bottom: 3.5rem;
+}
+
 .topBtns {
     margin-bottom: 1rem;
     margin-top: 1rem;
