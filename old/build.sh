@@ -1,1 +1,0 @@
-cd docs && gitbook pdf . Tonalite-v1.0.0-Documentation.pdf && cd ../src_channelman && ./build.sh && cd ../ && python3 -m PyInstaller tonalite-lin.spec
