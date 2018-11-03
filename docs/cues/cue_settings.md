@@ -32,9 +32,13 @@ Update this cue to use the current values of the show's fixture's channels.
 
 The name of the cue. You can use this to describe when the cue should be run.
 
-### Length
+### In Time
 
-The time it takes to transition to this cue (in seconds).
+The time it takes for fixture values to change between cues if they are increasing.
+
+### Out Time
+
+The time it takes for fixture values to change between cues if they are decreasing.
 
 ### Follow
 
