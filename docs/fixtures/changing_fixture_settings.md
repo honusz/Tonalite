@@ -1,6 +1,6 @@
 # Changing Fixture Settings
 
-You can change various settings about a fixture including its name and start dmx address.
+You can change various settings about a fixture.
 You can access the fixtures setting page by clicking the `Settings` button on the fixture channels page.
 
 ![Fixture settings page](../images/fixture_settings.png)
@@ -31,4 +31,4 @@ A shorter version of the fixture's name for display in the interface.
 
 ### Starting DMX Address
 
-The base DMX address that the channels for the fixture are based off of. See description in `Adding a Fixture`.
+The base DMX address that the channels for the fixture are based on. See description in `Adding a Fixture`.
