@@ -14,6 +14,10 @@ Save the changes you have made to this cue. Make sure you always press this butt
 
 Remove this cue from the show. You will be prompted to make sure that you really want to do this.
 
+### Clone
+
+Make a duplicate of this cue and place it at the end of the cue list. The new cloned cue will have the same fixture values, but a different name.
+
 ### Go
 
 Transition to this cue specific cue in the time stated in the cue's `Length` setting.

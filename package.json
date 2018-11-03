@@ -9,7 +9,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-linux": "pkg . -t node10-linux",
     "build-win": "pkg . -t node10-win",
-    "build-osx": "pkg . -t node10-osx"
+    "build-osx": "pkg . -t node10-osx",
+    "build-docs": "cd docs && gitbook pdf . documentation.pdf && cd ../"
   },
   "repository": {
     "type": "git",
@@ -24,8 +25,8 @@
   "dependencies": {
     "artnet": "^1.4.0",
     "e131": "^1.1.1",
-    "express": "^4.16.3",
-    "express-fileupload": "^0.4.0",
+    "express": "^4.16.4",
+    "express-fileupload": "^1.0.0",
     "moment": "^2.22.2",
     "onoff": "^3.2.2",
     "sleep": "^5.2.3",

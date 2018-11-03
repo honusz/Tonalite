@@ -13,7 +13,7 @@ Tonalite currently works with the `ArtNet`, `E1.31 (sACN)`, and `uDMX (using Art
 
 ## Run
 
-To start Tonalite locally, run `node index.js`
+To start Tonalite locally, run `npm start`
 
 You will find the UI at `localhost:3000` by default.
 
@@ -21,7 +21,7 @@ You will find the UI at `localhost:3000` by default.
 
 To build Tonalite, run `npm run build-(win/mac/linux)`
 
-To generate the documentation run `cd docs && gitbook pdf . documentation.pdf && cd ../`
+To generate the documentation run `npm run build-docs`
 
 ## Dependency Instructions
 
