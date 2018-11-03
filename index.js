@@ -7,16 +7,6 @@ var moment = require('moment');
 var fileUpload = require('express-fileupload');
 const { spawn } = require('child_process');
 
-// 0 = E1.31, 1 = uDMX, 2 = ArtNet
-var OUTPUT = 1;
-
-// 0 = linux64, 1 = rpi
-var DEVICE = 0;
-
-// http web UI location
-var URL = "localhost";
-var PORT = 3000;
-
 /*
 Features:
 - Get Fixtures - Done - Done UI
@@ -53,10 +43,26 @@ Features:
 - Save Show To File - Done - Done UI
 - Import Fixture Definition File - Done - Done UI
 - View Docs - Done - Done UI
+- View Settings - Done
+- Save Settings - Done
 */
 
+var SETTINGS = {
+    output: 1, // 0 = E1.31, 1 = uDMX, 2 = ArtNet
+    device: 0, // 0 = linux64, 1 = rpi
+    url: "localhost", // http web UI location
+    port: 3000
+}
+
+fs.exists('tonaliteSettings.json', function (exists) {
+    if (exists == false) {
+        saveSettings();
+    }
+    openSettings();
+});
+
 // If e1.31 selected, run that, but run artnet otherwise
-if (OUTPUT == 0) {
+if (SETTINGS.output == 0) {
     var e131 = require('e131');
     var client = new e131.Client(1);
     var packet = client.createPacket(512);
@@ -180,7 +186,7 @@ function dmxLoop() {
     calculateStack();
 
     // If e1.31 is selected, output to that, if not, use artnet
-    if (OUTPUT == 0) {
+    if (SETTINGS.output == 0) {
         slotsData = channels;
         client.send(packet);
     } else {
@@ -188,9 +194,18 @@ function dmxLoop() {
     }
 };
 
-// Save the fixtures and cues of the show to file
-function saveShow() {
-    fs.writeFile(__dirname + "/currentShow.json", JSON.stringify([fixtures, cues]), (err) => {
+// Load the Tonalite settings from file
+function openSettings() {
+    fs.readFile(__dirname + '/tonaliteSettings.json', (err, data) => {
+        if (err) throw err;
+        let settings = JSON.parse(data);
+        SETTINGS = settings;
+    });
+}
+
+// Save the Tonalite settings from file
+function saveSettings() {
+    fs.writeFile(__dirname + "/tonaliteSettings.json", JSON.stringify(SETTINGS), (err) => {
         if (err) {
             console.log(err);
             return false;
@@ -209,6 +224,17 @@ function openShow() {
         io.sockets.emit('fixtures', fixtures);
         io.sockets.emit('cues', cues);
     });
+}
+
+// Save the fixtures and cues of the show to file
+function saveShow() {
+    fs.writeFile(__dirname + "/currentShow.json", JSON.stringify([fixtures, cues]), (err) => {
+        if (err) {
+            console.log(err);
+            return false;
+        };
+    });
+    return true;
 }
 
 console.log("Tonalite v2.0 - Wireless Lighting Control");
@@ -260,14 +286,14 @@ app.post('/importFixtureDefinition', (req, res) => {
     }
 });
 
-http.listen(PORT, URL, function () {
-    console.log('Tonalite listening at http://' + URL + ':' + PORT);
+http.listen(SETTINGS.port, SETTINGS.url, function () {
+    console.log('Tonalite listening at http://' + SETTINGS.url + ':' + SETTINGS.port);
 });
 
-if (OUTPUT == 1) {
-    if (DEVICE == 0) {
+if (SETTINGS.output == 1) {
+    if (SETTINGS.device == 0) {
         ls = spawn('uDMXArtnet/uDMXArtnet_minimal_64');
-    } else if (DEVICE == 1) {
+    } else if (SETTINGS.device == 1) {
         ls = spawn('uDMXArtnet/uDMXArtnet_PI_minimal_32', ['-i', '192.168.4.1']);
     }
     ls.stdout.on('data', (data) => {
@@ -287,7 +313,7 @@ if (OUTPUT == 1) {
 setInterval(dmxLoop, 25);
 
 // If on the raspberry pi, turn on an led to show that the program is started
-if (DEVICE == 1) {
+if (SETTINGS.device == 1) {
     const Gpio = require('onoff').Gpio;
     const led = new Gpio(17, 'out');
     led.writeSync(1);
@@ -648,6 +674,20 @@ io.on('connection', function (socket) {
             saveShow();
         } else {
             socket.emit('message', { type: "error", content: "No cues exist!" });
+        }
+    });
+
+    socket.on('getSettings', function () {
+        socket.emit('settings', SETTINGS);
+    });
+
+    socket.on('saveSettings', function (msg) {
+        SETTINGS.url = msg.url;
+        SETTINGS.port = msg.port;
+        if (saveSettings()) {
+            socket.emit('message', { type: "info", content: "The Tonalite settings have been saved please reboot or restart." });
+        } else {
+            socket.emit('message', { type: "error", content: "The Tonalite settings file could not be saved on disk." });
         }
     });
 });

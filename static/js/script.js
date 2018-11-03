@@ -98,6 +98,12 @@ socket.on('cueActionBtn', function (btnMode) {
     }
 });
 
+socket.on('settings', function (settings) {
+    $("#serverURL").val(settings.url);
+    $("#serverPort").val(settings.port);
+    $('#openSettingsModal').modal("show");
+});
+
 function resetFixtures() {
     if (confirm("Are you sure you want to reset all fixture channel values?")) {
         socket.emit('resetFixtures');
@@ -121,6 +127,11 @@ function openShowFileModal() {
 
 function openFixtureDefinitionModal() {
     $('#openFixtureDefinitionModal').modal("show");
+}
+
+function openSettingsModal() {
+    socket.emit('getSettings');
+    $('#openSettingsModal').modal("show");
 }
 
 function addFixture(fixture) {
@@ -199,6 +210,11 @@ function resetShow() {
         socket.emit('resetShow');
         openTab('fixtures');
     }
+}
+
+function saveSettings() {
+    socket.emit('saveSettings', { url: $("#serverURL").val(), port: $("#serverPort").val() });
+    $('#openSettingsModal').modal("hide");
 }
 
 function closeAlert() {

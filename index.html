@@ -36,6 +36,14 @@
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Edit
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" onclick="openSettingsModal()">Settings</a>
+            </div>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Help
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -115,7 +123,7 @@
         <div class="row" id="fixtureSettings">
           <div class="col-12">
               <div class="form-group">
-                  <label for="fixtureNameInput"> Name:</label>
+                  <label for="fixtureNameInput">Name:</label>
                   <input class="form-control" type="text" id="fixtureNameInput" placeholder="Full Fixture Name">
               </div>
           </div>
@@ -174,7 +182,7 @@
         <div class="row" id="cueSettings">
           <div class="col-12">
               <div class="form-group">
-                  <label for="cueNameInput"> Name:</label>
+                  <label for="cueNameInput">Name:</label>
                   <input class="form-control" type="text" id="cueNameInput" placeholder="Cue Name">
               </div>
           </div>
@@ -219,9 +227,7 @@
                   <label class="dark custom-file-label" for="showFile">Choose file</label>
                 </div>
               </div>
-              <div class="form-group">
-                <input type="submit" class="btn btn-success" value="Open Show File">
-              </div>
+              <input type="submit" class="btn btn-success" value="Open Show File">
             </form>
           </div>
         </div>
@@ -238,9 +244,26 @@
                   <label class="dark custom-file-label" for="fixtureDefinition">Choose file</label>
                 </div>
               </div>
+              <input type="submit" class="btn btn-success" value="Import Fixture Definition">
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="openSettingsModal" class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <p class="dark">Edit the settings for the Tonalite web server.</p>
               <div class="form-group">
-                <input type="submit" class="btn btn-success" value="Import Fixture Definition">
+                <label class="dark" for="serverURL">URL:</label>
+                <input class="form-control" type="text" id="serverURL" placeholder="Web Server URL">
               </div>
+              <div class="form-group">
+                <label class="dark" for="serverPrt">Port:</label>
+                <input class="form-control" type="text" id="serverPort" placeholder="Web Server Port">
+              </div>
+              <button class="btn btn-success" onclick="saveSettings()">Save Settings</button>
             </form>
           </div>
         </div>
