@@ -54,6 +54,8 @@ var SETTINGS = {
     port: 3000
 }
 
+const VERSION = "2.0";
+
 fs.exists('tonaliteSettings.json', function (exists) {
     if (exists == false) {
         saveSettings();
@@ -237,7 +239,7 @@ function saveShow() {
     return true;
 }
 
-console.log("Tonalite v2.0 - Wireless Lighting Control");
+console.log("Tonalite v"+VERSION+" - Wireless DMX Lighting Control");
 
 app.use('/static', express.static(__dirname + '/static'));
 app.use(fileUpload());
