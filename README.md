@@ -13,7 +13,7 @@ With effects coming soon, this makes Tonalite a directyo competetor to other wel
 
 Tonalite currently works with the `ArtNet`, `E1.31 (sACN)`, and `uDMX (using ArtNet)` DMX protocols.
 
-Read the full documentation [here](docs/documentation.pdf)
+You can read the full documentation [here](docs/documentation.pdf).
 
 ## Run
 
