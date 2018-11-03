@@ -239,7 +239,7 @@ function saveShow() {
     return true;
 }
 
-console.log("Tonalite v"+VERSION+" - Wireless DMX Lighting Control");
+console.log("Tonalite v"+VERSION+" - DMX Lighting Control System");
 
 app.use('/static', express.static(__dirname + '/static'));
 app.use(fileUpload());

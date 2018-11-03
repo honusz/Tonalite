@@ -3,13 +3,17 @@
 ![Tonalite fixtures](docs/images/fixture_added.png)
 ![Tonalite cues](docs/images/cue_recorded.png)
 
-Tonalite is a lighting control software that runs over the network. You can access the control panel from any network-connected device. While there are more features coming soon, the available ones are listed below:
+Tonalite is a lighting control software that uses a web interface accessible from any device on the network such as a phone, tablet, or laptop. While there are more features coming soon, Tonalite can currently:
 
 - Add fixtures and map them to DMX addresses
-- Control the value of each fixture's channels
+- Control the value of each fixture's channels (attributes)
 - Add cues and cycle through them
+  
+With effects coming soon, this makes Tonalite a directyo competetor to other well-known theater lighting consoles.
 
 Tonalite currently works with the `ArtNet`, `E1.31 (sACN)`, and `uDMX (using ArtNet)` DMX protocols.
+
+Read the full documentation [here](docs/documentation.pdf)
 
 ## Run
 
@@ -117,7 +121,7 @@ Navigate to the rootfs folder of the flashed sd card.
 with the content
 
 ```
-interface=wlan0      # Use the require wireless interface - usually wlan0
+interface=wlan0      # Use the required wireless interface - usually wlan0
   dhcp-range=192.168.4.2,192.168.4.20,255.255.255.0,24h
 ```
 
