@@ -368,6 +368,9 @@ io.on('connection', function (socket) {
                     }
                 }
             });
+            fixtures[fixtures.map(el => el.id).indexOf(fixtureID)].channels.forEach(function (channel) {
+                channels[(fixture.startDMXAddress - 1) + channel.dmxAddressOffset] = 0;
+            });
             fixtures.splice(fixtures.map(el => el.id).indexOf(fixtureID), 1);
             socket.emit('message', { type: "info", content: "Fixture has been removed!" });
             io.emit('fixtures', fixtures);
