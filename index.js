@@ -22,7 +22,7 @@ Features:
 - Get Cues - Done - Done UI
 - Record Cue - Done - Done UI
 - Get Cue Settings - Done - Done UI
-- Update Cue - Done
+- Update Cue - Done - Done UI
 - Edit Cue Settings - Done - Done UI
 - Clone Cue - Done - Done UI
 - Move Cue Up - Done
@@ -43,8 +43,8 @@ Features:
 - Save Show To File - Done - Done UI
 - Import Fixture Definition File - Done - Done UI
 - View Docs - Done - Done UI
-- View Settings - Done
-- Save Settings - Done
+- View Settings - Done - Done UI
+- Save Settings - Done - Done UI
 */
 
 var SETTINGS = {
