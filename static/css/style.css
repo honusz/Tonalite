@@ -51,6 +51,10 @@ body {
     margin-bottom: 3.5rem;
 }
 
+#fixtureChannelsPage {
+    margin-bottom: 4.5rem;
+}
+
 .topBtns {
     margin-bottom: 1rem;
     margin-top: 1rem;
@@ -87,4 +91,9 @@ body {
 
 .bg-light {
     background-color: #343A40 !important;
+}
+
+.custom-range {
+    margin-bottom: 1.5rem;
+    margin-top: 1.0rem;
 }

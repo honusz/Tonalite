@@ -17,12 +17,21 @@ socket.on('fixtures', function (fixtures) {
     //console.log(fixtures);
     if (fixtures.length != 0) {
         fixtures.forEach(function (fixture) {
+            if (fixture.hasLockedChannels) {
+                fixtureLock = "<i class=\"ml-2 far fa-lock-alt fa-sm\"></i>";
+            } else {
+                fixtureLock = "";
+            }
             if (fixture.channels[0].type == "intensity") {
                 fixtureValue = "<h3 class=\"fixtureValue\">" + fixture.channels[0].displayValue + "</h3>";
             } else {
-                fixtureValue = "";
+                if (fixtureLock == "") {
+                    fixtureValue = "<h3 class=\"fixtureValue\"><i class=\"ml-2 far fa-lock-open-alt fa-sm\"></i></h3>";
+                } else {
+                    fixtureValue = "<h3 class=\"fixtureValue\">" + fixtureLock + "</h3>";
+                }
             }
-            $("#fixturesList").append("<div class=\"col-4\"><div class=\"fixtureItem\" onclick=\"viewFixtureChannels('" + fixture.id + "')\">" + fixtureValue + "<p>" + fixture.shortName + "</p></div></div>");
+            $("#fixturesList").append("<div class=\"col-4\"><div class=\"fixtureItem\" onclick=\"viewFixtureChannels('" + fixture.id + "')\">" + fixtureValue + "<p>" + fixture.shortName + fixtureLock + "</p></div></div>");
         });
     } else {
         $("#fixturesList").append("<div class=\"col-12\"><h5>There are no fixtures in this show!</h5></div>")
@@ -62,9 +71,9 @@ socket.on('fixtureChannels', function (msg) {
     $("#fixtureResetBtn").off().on("click", function () { resetFixture(msg.id); });
     msg.channels.forEach(function (channel, i) {
         if (channel.locked) {
-            $("#fixtureChannels").append("<button class=\"btn btn-info\" onclick=\"updateFixtureChannelLock(this, '" + msg.id + "', " + i + ")\"><i class=\"far fa-lock-alt\"></i></button><label class=\"ml-2\" for=\"" + channel.type + "\">" + channel.name + ":</label><input type=\"range\" class=\"custom-range\" id=\"" + channel.type + "\" max=\"" + channel.displayMax + "\" min=\"" + channel.displayMin + "\" value=\"" + channel.value + "\" oninput=\"updateFixtureChannelValue(this, '" + msg.id + "', " + i + ")\">");
+            $("#fixtureChannels").append("<button class=\"btn btn-info\" onclick=\"updateFixtureChannelLock(this, '" + msg.id + "', " + i + ")\"><i class=\"far fa-lock-alt fa-sm\"></i></button><label class=\"ml-2\" for=\"" + channel.type + "\">" + channel.name + ":</label><input type=\"range\" class=\"custom-range\" id=\"" + channel.type + "\" max=\"" + channel.displayMax + "\" min=\"" + channel.displayMin + "\" value=\"" + channel.value + "\" oninput=\"updateFixtureChannelValue(this, '" + msg.id + "', " + i + ")\">");
         } else {
-            $("#fixtureChannels").append("<button class=\"btn btn-info\" onclick=\"updateFixtureChannelLock(this, '" + msg.id + "', " + i + ")\"><i class=\"far fa-lock-open-alt\"></i></button><label class=\"ml-2\" for=\"" + channel.type + "\">" + channel.name + ":</label><input type=\"range\" class=\"custom-range\" id=\"" + channel.type + "\" max=\"" + channel.displayMax + "\" min=\"" + channel.displayMin + "\" value=\"" + channel.value + "\" oninput=\"updateFixtureChannelValue(this, '" + msg.id + "', " + i + ")\">");
+            $("#fixtureChannels").append("<button class=\"btn btn-info\" onclick=\"updateFixtureChannelLock(this, '" + msg.id + "', " + i + ")\"><i class=\"far fa-lock-open-alt fa-sm \"></i></button><label class=\"ml-2\" for=\"" + channel.type + "\">" + channel.name + ":</label><input type=\"range\" class=\"custom-range\" id=\"" + channel.type + "\" max=\"" + channel.displayMax + "\" min=\"" + channel.displayMin + "\" value=\"" + channel.value + "\" oninput=\"updateFixtureChannelValue(this, '" + msg.id + "', " + i + ")\">");
         }
     });
 });
@@ -86,6 +95,8 @@ socket.on('cueSettings', function (cue) {
     $("#gotoCueBtn").off().on("click", function () { gotoCue(cue.id); });
     $("#cueUpdateBtn").off().on("click", function () { updateCue(cue.id); });
     $("#cueCloneBtn").off().on("click", function () { cloneCue(cue.id); });
+    $("#moveCueUpBtn").off().on("click", function () { moveCueUp(cue.id); });
+    $("#moveCueDownBtn").off().on("click", function () { moveCueDown(cue.id); });
     $("#cueNameInput").val(cue.name);
     $("#cueInTimeInput").val(cue.inTime);
     $("#cueOutTimeInput").val(cue.outTime);
@@ -212,6 +223,14 @@ function cloneCue(cueID) {
 
 function viewCueSettings(cueID) {
     socket.emit('getCueSettings', cueID);
+}
+
+function moveCueUp(cueID) {
+    socket.emit('moveCueUp', cueID);
+}
+
+function moveCueDown(cueID) {
+    socket.emit('moveCueDown', cueID);
 }
 
 function resetShow() {

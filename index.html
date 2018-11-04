@@ -164,20 +164,36 @@
           <div class="col-4">
             <button id="cueSaveBtn" class="btn btn-success btn-block">Save</button>
           </div>
-          <div class="col-4">
+          <div class="col-3">
             <button id="cueDeleteBtn" class="btn btn-danger btn-block">Delete</button>
           </div>
-          <div class="col-4">
+          <div class="col-3">
             <button id="cueCloneBtn" class="btn btn-info btn-block">Clone</button>
+          </div>
+          <div class="col-2">
+            <button id="moveCueUpBtn" class="btn btn-success btn-block"><i class="far fa-chevron-up"></i></button>
           </div>
         </div>
         <div class="row topBtns">
-          <div class="col-6">
+          <div class="col-4">
             <button id="gotoCueBtn" class="btn btn-primary btn-block">Go</button>
           </div>
           <div class="col-6">
             <button id="cueUpdateBtn" class="btn btn-warning btn-block">Update Channels</button>
           </div>
+          <div class="col-2">
+            <button id="moveCueDownBtn" class="btn btn-success btn-block"><i class="far fa-chevron-down"></i></button>
+          </div>
+          <!--<div class="col-4">
+            <div class="row">
+              <div class="col-6">
+                <button id="moveCueUpBtn" class="btn btn-success btn-block"><i class="far fa-chevron-up"></i></button>
+              </div>
+              <div class="col-6">
+                <button id="moveCueDownBtn" class="btn btn-success btn-block"><i class="far fa-chevron-down"></i></button>
+              </div>
+            </div>
+          </div>-->
         </div>
         <div class="row" id="cueSettings">
           <div class="col-12">
@@ -188,14 +204,14 @@
           </div>
           <div class="col-12">
               <div class="form-group">
-                  <label for="cueInTimeInput">In Time:</label>
-                  <input class="form-control" type="number" id="cueInTimeInput" placeholder="Cue In Length In Seconds">
+                  <label for="cueInTimeInput">Up Time:</label>
+                  <input class="form-control" type="number" id="cueInTimeInput" placeholder="Cue Up Length In Seconds">
               </div>
           </div>
           <div class="col-12">
               <div class="form-group">
-                  <label for="cueOutTimeInput">Out Time:</label>
-                  <input class="form-control" type="number" id="cueOutTimeInput" placeholder="Cue Out Length In Seconds">
+                  <label for="cueOutTimeInput">Down Time:</label>
+                  <input class="form-control" type="number" id="cueOutTimeInput" placeholder="Cue Down Length In Seconds">
               </div>
           </div>
           <div class="col-12">

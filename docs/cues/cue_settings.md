@@ -26,17 +26,25 @@ Transition to this cue specific cue in the time stated in the cue's `Length` set
 
 Update this cue to use the current values of the show's fixture's channels.
 
+### Up
+
+Move this cue forward in the cue list.
+
+### Down
+
+Move this cue backward in the cue list.
+
 ## Inputs
 
 ### Name
 
 The name of the cue. You can use this to describe when the cue should be run.
 
-### In Time
+### Up Time
 
 The time it takes for fixture values to change between cues if they are increasing.
 
-### Out Time
+### Down Time
 
 The time it takes for fixture values to change between cues if they are decreasing.
 

@@ -32,7 +32,7 @@ Features:
 - Go To Last Cue - Done - Done UI
 - Go To Specific Cue - Done - Done UI
 - Stop Running Cue - Done - Done UI
-- Get Groups
+- Get Groups - Done
 - Add Group
 - Get All Channels In A Group
 - Change Group Channel Value
@@ -81,6 +81,7 @@ if (SETTINGS.output == 0) {
 
 var fixtures = [];
 var cues = [];
+var groups = [];
 var currentCue = -1;
 var lastCue = -1;
 
@@ -90,7 +91,7 @@ function mapRange(num, inMin, inMax, outMin, outMax) {
 };
 
 var moveArrayItem = function (array, element, delta) {
-    var index = array.indexOf(element);
+    var index = element;
     var newIndex = index + delta;
     if (newIndex < 0 || newIndex == array.length) return; // Already at the top or bottom.
     var indexes = [index, newIndex].sort(); // Sort the indixes
@@ -111,8 +112,8 @@ function calculateCue(cue) {
     var outputChannels = new Array(512).fill(0);
     cue.fixtures.forEach(function (fixture) {
         fixture.channels.forEach(function (channel, i) {
-            if (channel.locked == false) {
-                var startFixture = fixtures[fixtures.map(el => el.id).indexOf(fixture.id)];
+            var startFixture = fixtures[fixtures.map(el => el.id).indexOf(fixture.id)];
+            if (startFixture.channels[i].locked == false) {
                 var startChannel = mapRange(startFixture.channels[i].value, startFixture.channels[i].displayMin, startFixture.channels[i].displayMax, startFixture.channels[i].min, startFixture.channels[i].max);
                 var endChannel = mapRange(channel.value, channel.displayMin, channel.displayMax, channel.min, channel.max);
                 // If the end channel is greater than the start channel, the value is going in, out is going out if less
@@ -129,6 +130,9 @@ function calculateCue(cue) {
                         fixtures[fixtures.map(el => el.id).indexOf(fixture.id)].channels[i].displayValue = parseInt(channel.value + (((startFixture.channels[i].value - channel.value) / (cue.outTime * 40)) * cue.outStep));
                     }
                 }
+            } else {
+                var startChannel = mapRange(startFixture.channels[i].value, startFixture.channels[i].displayMin, startFixture.channels[i].displayMax, startFixture.channels[i].min, startFixture.channels[i].max);
+                outputChannels[(fixture.startDMXAddress - 1) + channel.dmxAddressOffset] = startChannel;
             }
         });
     });
@@ -168,14 +172,15 @@ function calculateStack() {
                 cue.inStep = cue.inTime * 40;
                 cue.outStep = cue.outTime * 40;
                 cue.active = false;
-                io.sockets.emit('cueActionBtn', false);
+                io.emit('cueActionBtn', false);
             }
             // Set the fixture's display and real values to the correct values from the cue
             cue.fixtures.forEach(function (fixture) {
                 fixture.channels.forEach(function (channel, i) {
-                    if (channel.locked == false) {
-                        fixtures[fixtures.map(el => el.id).indexOf(fixture.id)].channels[i].value = channel.value;
-                        fixtures[fixtures.map(el => el.id).indexOf(fixture.id)].channels[i].displayValue = channel.value;
+                    var startFixtureChannels = fixtures[fixtures.map(el => el.id).indexOf(fixture.id)].channels;
+                    if (startFixtureChannels[i].locked == false) {
+                        startFixtureChannels[i].value = channel.value;
+                        startFixtureChannels[i].displayValue = channel.value;
                     }
                 });
             });
@@ -243,14 +248,16 @@ function openShow() {
         let show = JSON.parse(data);
         fixtures = show[0];
         cues = show[1];
-        io.sockets.emit('fixtures', fixtures);
-        io.sockets.emit('cues', cues);
+        groups = show[2];
+        io.emit('fixtures', fixtures);
+        io.emit('cues', cues);
+        io.emit('groups', groups);
     });
 }
 
 // Save the fixtures and cues of the show to file
 function saveShow() {
-    fs.writeFile(__dirname + "/currentShow.json", JSON.stringify([fixtures, cues]), (err) => {
+    fs.writeFile(__dirname + "/currentShow.json", JSON.stringify([fixtures, cues, groups]), (err) => {
         if (err) {
             console.log(err);
             return false;
@@ -351,11 +358,13 @@ fs.exists('currentShow.json', function (exists) {
 io.on('connection', function (socket) {
     socket.emit('fixtures', fixtures);
     socket.emit('cues', cues);
+    socket.emit('groups', groups);
     socket.emit('cueActionBtn', false);
 
     socket.on('resetShow', function () {
         fixtures = [];
         cues = [];
+        groups = [];
         currentCue = -1;
         lastCue = -1;
         io.emit('fixtures', fixtures);
@@ -393,6 +402,7 @@ io.on('connection', function (socket) {
                 // Add a fixture using the fixture spec file in the fixtures folder
                 var fixture = require(__dirname + "/fixtures/" + msg.fixtureName + ".json");
                 fixture.startDMXAddress = startDMXAddress;
+                fixture.hasLockedChannels = false;
                 // Assign a random id for easy access to this fixture
                 fixture.id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
                 fixtures.push(JSON.parse(JSON.stringify(fixture)));
@@ -417,7 +427,7 @@ io.on('connection', function (socket) {
                 }
             });
             fixtures[fixtures.map(el => el.id).indexOf(fixtureID)].channels.forEach(function (channel) {
-                channels[(fixture.startDMXAddress - 1) + channel.dmxAddressOffset] = 0;
+                channels[(fixtures[fixtures.map(el => el.id).indexOf(fixtureID)].startDMXAddress - 1) + channel.dmxAddressOffset] = 0;
             });
             fixtures.splice(fixtures.map(el => el.id).indexOf(fixtureID), 1);
             socket.emit('message', { type: "info", content: "Fixture has been removed!" });
@@ -505,7 +515,14 @@ io.on('connection', function (socket) {
             var fixture = fixtures[fixtures.map(el => el.id).indexOf(msg.id)];
             var channel = fixture.channels[msg.cid];
             channel.locked = !channel.locked;
+            fixture.hasLockedChannels = false;
+            fixture.channels.forEach(function (chan) {
+                if (chan.locked) {
+                    fixture.hasLockedChannels = true;
+                }
+            });
             socket.emit('fixtureChannels', { id: fixture.id, name: fixture.name, channels: fixture.channels });
+            io.emit('fixtures', fixtures);
             saveShow();
         } else {
             socket.emit('message', { type: "error", content: "No fixtures exist!" });
@@ -692,6 +709,8 @@ io.on('connection', function (socket) {
     socket.on('moveCueUp', function (cueID) {
         if (cues.length != 0) {
             moveArrayItem(cues, cues.map(el => el.id).indexOf(cueID), -1);
+            io.emit('cues', cues);
+            socket.emit('message', { type: "info", content: "Cue moved up." });
             saveShow();
         } else {
             socket.emit('message', { type: "error", content: "No cues exist!" });
@@ -701,10 +720,16 @@ io.on('connection', function (socket) {
     socket.on('moveCueDown', function (cueID) {
         if (cues.length != 0) {
             moveArrayItem(cues, cues.map(el => el.id).indexOf(cueID), 1);
+            io.emit('cues', cues);
+            socket.emit('message', { type: "info", content: "Cue moved down." });
             saveShow();
         } else {
             socket.emit('message', { type: "error", content: "No cues exist!" });
         }
+    });
+
+    socket.on('addGroup', function (msg) {
+
     });
 
     socket.on('getSettings', function () {
