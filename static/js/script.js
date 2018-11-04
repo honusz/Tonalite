@@ -14,6 +14,7 @@ socket.on('message', function (msg) {
 
 socket.on('fixtures', function (fixtures) {
     $("#fixturesList").empty();
+    $("#groupFixtureIDs").empty();
     //console.log(fixtures);
     if (fixtures.length != 0) {
         fixtures.forEach(function (fixture) {
@@ -32,6 +33,7 @@ socket.on('fixtures', function (fixtures) {
                 }
             }
             $("#fixturesList").append("<div class=\"col-4\"><div class=\"fixtureItem\" onclick=\"viewFixtureChannels('" + fixture.id + "')\">" + fixtureValue + "<p>" + fixture.shortName + fixtureLock + "</p></div></div>");
+            $("#groupFixtureIDs").append("<option value=" + fixture.id + ">" + fixture.shortName + " (" + fixture.startDMXAddress + ")</option>");
         });
     } else {
         $("#fixturesList").append("<div class=\"col-12\"><h5>There are no fixtures in this show!</h5></div>")
@@ -51,7 +53,19 @@ socket.on('cues', function (cues) {
             $("#cuesList").append("<div class=\"col-4\"><div class=\"cueItem\" " + style + "onclick=\"viewCueSettings('" + cue.id + "')\"><p>" + cue.name + "</p></div></div>");
         });
     } else {
-        $("#cuesList").append("<div class=\"col-12\"><h5>There are no cues in this show!</h5></div>")
+        $("#cuesList").append("<div class=\"col-12\"><h5>There are no cues in this show!</h5></div>");
+    }
+});
+
+socket.on('groups', function (groups) {
+    $("#groupsList").empty();
+    //console.log(groups);
+    if (groups.length != 0) {
+        groups.forEach(function (group) {
+            $("#groupsList").append("<div class=\"col-4\"><div class=\"groupItem\" onclick=\"viewGroupChannels('" + group.id + "')\"><p>" + group.name + "</p></div></div>");
+        });
+    } else {
+        $("#groupsList").append("<div class=\"col-12\"><h5>There are no groups in this show!</h5></div>");
     }
 });
 
@@ -103,6 +117,24 @@ socket.on('cueSettings', function (cue) {
     $("#cueFollowInput").val(cue.follow);
 });
 
+socket.on('groupSettings', function (group) {
+    openTab('groupSettingsPage');
+    $("#groupDeleteBtn").off().on("click", function () { removeGroup(group.id); });
+    $("#groupSaveBtn").off().on("click", function () { saveGroupSettings(group.id); });
+    $("#groupNameInput").val(group.name);
+});
+
+socket.on('groupChannels', function (msg) {
+    openTab('groupChannelsPage');
+    $("#groupChannels").empty();
+    $("#groupChannelsName").text(msg.name);
+    $("#groupSettingsBtn").off().on("click", function () { viewGroupSettings(msg.id); });
+    /*$("#groupResetBtn").off().on("click", function () { resetFixture(msg.id); });*/
+    msg.channels.forEach(function (channel, i) {
+        $("#groupChannels").append("<label class=\"ml-2\" for=\"" + channel.type + "\">" + channel.name + ":</label><input type=\"range\" class=\"custom-range\" id=\"" + channel.type + "\" max=\"" + channel.displayMax + "\" min=\"" + channel.displayMin + "\" value=\"" + channel.value + "\" oninput=\"updateGroupChannelValue(this, '" + msg.id + "', " + i + ")\">");
+    });
+});
+
 socket.on('cueActionBtn', function (btnMode) {
     $("#cueActionBtn").empty();
     if (btnMode == false) {
@@ -137,6 +169,10 @@ function addFixtureModal() {
     $('#fixtureProfilesModal').modal("show");
 }
 
+function addGroupModal() {
+    $('#addGroupModal').modal("show");
+}
+
 function openShowFileModal() {
     $('#openShowModal').modal("show");
 }
@@ -159,12 +195,20 @@ function viewFixtureChannels(fixtureID) {
     socket.emit('getFixtureChannels', fixtureID);
 }
 
+function viewGroupChannels(groupID) {
+    socket.emit('getGroupChannels', groupID);
+}
+
 function viewFixtureSettings(fixtureID) {
     socket.emit('getFixtureSettings', fixtureID);
 }
 
 function updateFixtureChannelValue(self, fixtureID, channelID) {
     socket.emit('changeFixtureChannelValue', { id: fixtureID, cid: channelID, value: parseInt(self.value) });
+}
+
+function updateGroupChannelValue(self, groupID, channelID) {
+    socket.emit('changeGroupChannelValue', { id: groupID, cid: channelID, value: parseInt(self.value) });
 }
 
 function updateFixtureChannelLock(self, fixtureID, channelID) {
@@ -231,6 +275,26 @@ function moveCueUp(cueID) {
 
 function moveCueDown(cueID) {
     socket.emit('moveCueDown', cueID);
+}
+
+function removeGroup(groupID) {
+    if (confirm("Are you sure you want to delete this group?")) {
+        socket.emit('removeGroup', groupID);
+        openTab('groups');
+    }
+}
+
+function saveGroupSettings(groupID) {
+    socket.emit('editGroupSettings', { id: groupID, name: $("#groupNameInput").val(), fixtureIDs: $("#groupFixtureIDsInput").val() });
+}
+
+function addGroup() {
+    socket.emit('addGroup', $("#groupFixtureIDs").val());
+    $('#addGroupModal').modal("hide");
+}
+
+function viewGroupSettings(groupID) {
+    socket.emit('getGroupSettings', groupID);
 }
 
 function resetShow() {

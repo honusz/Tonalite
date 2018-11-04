@@ -32,12 +32,13 @@ Features:
 - Go To Last Cue - Done - Done UI
 - Go To Specific Cue - Done - Done UI
 - Stop Running Cue - Done - Done UI
-- Get Groups - Done
-- Add Group
-- Get All Channels In A Group
-- Change Group Channel Value
-- Get Group Settings
-- Edit Group Settings
+- Get Groups - Done - Done UI
+- Add Group - Done - Done UI
+- Get Group Channels - Done
+- Change Group Channel Value - Done - Done UI
+- Get Group Settings - Done - Done UI
+- Edit Group Settings - Done - Done UI
+- Remove Group - Done - Done UI
 - Save Show - Done - Done UI
 - Open Show From File - Done - Done UI
 - Save Show To File - Done - Done UI
@@ -90,7 +91,7 @@ function mapRange(num, inMin, inMax, outMin, outMax) {
     return (num - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
 };
 
-var moveArrayItem = function (array, element, delta) {
+function moveArrayItem(array, element, delta) {
     var index = element;
     var newIndex = index + delta;
     if (newIndex < 0 || newIndex == array.length) return; // Already at the top or bottom.
@@ -369,6 +370,7 @@ io.on('connection', function (socket) {
         lastCue = -1;
         io.emit('fixtures', fixtures);
         io.emit('cues', cues);
+        io.emit('groups', groups);
         io.emit('cueActionBtn', false);
         io.emit('message', { type: "info", content: "The show has been reset!" });
         saveShow();
@@ -569,7 +571,6 @@ io.on('connection', function (socket) {
         if (cues.length != 0) {
             var newCue = JSON.parse(JSON.stringify(cues[cues.map(el => el.id).indexOf(cueID)]));
             newCue.id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-            newCue.name = "Cue " + (cues.length + 1);
             cues.push(newCue);
             socket.emit('cueSettings', newCue);
             io.emit('cues', cues);
@@ -728,8 +729,89 @@ io.on('connection', function (socket) {
         }
     });
 
-    socket.on('addGroup', function (msg) {
+    socket.on('addGroup', function (fixtureIDs) {
+        var newGroup = {
+            id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
+            name: "Group " + (groups.length + 1),
+            ids: fixtureIDs,
+            channels: []
+        };
+        newGroup.ids.forEach(function (fixtureID) {
+            var fixture = fixtures[fixtures.map(el => el.id).indexOf(fixtureID)];
+            fixture.channels.forEach(function (channel) {
+                var newChannel = JSON.parse(JSON.stringify(channel));
+                newChannel.value = newChannel.defaultValue;
+                newGroup.channels.push(newChannel);
+            });
+        });
+        groups.push(newGroup);
+        io.emit('groups', groups);
+        saveShow();
+    });
 
+    socket.on('getGroupChannels', function (groupID) {
+        if (groups.length != 0) {
+            var group = groups[groups.map(el => el.id).indexOf(groupID)];
+            socket.emit('groupChannels', { id: group.id, name: group.name, channels: group.channels });
+        } else {
+            socket.emit('message', { type: "error", content: "No groups exist!" });
+        }
+    });
+
+    socket.on('changeGroupChannelValue', function (msg) {
+        if (fixtures.length != 0 && groups.length != 0) {
+            var group = groups[groups.map(el => el.id).indexOf(msg.id)];
+            var channel = group.channels[msg.cid];
+            channel.value = msg.value;
+            channel.displayValue = channel.value;
+            group.ids.forEach(function (fixtureID) {
+                var fixture = fixtures[fixtures.map(el => el.id).indexOf(fixtureID)];
+                fixture.channels.forEach(function (chan) {
+                    if (chan.type == channel.type && chan.subtype == channel.subtype) {
+                        if (chan.locked == false) {
+                            chan.value = channel.value;
+                            chan.displayValue = chan.value;
+                        }
+                    }
+                });
+            });
+            io.emit('fixtures', fixtures);
+            saveShow();
+        } else {
+            socket.emit('message', { type: "error", content: "No fixtures or groups exist!" });
+        }
+    });
+
+    socket.on('getGroupSettings', function (groupID) {
+        if (groups.length != 0) {
+            socket.emit('groupSettings', groups[groups.map(el => el.id).indexOf(groupID)]);
+        } else {
+            socket.emit('message', { type: "error", content: "No groups exist!" });
+        }
+    });
+
+    socket.on('editGroupSettings', function (msg) {
+        if (groups.length != 0) {
+            var group = groups[groups.map(el => el.id).indexOf(msg.id)];
+            group.name = msg.name;
+            socket.emit('groupSettings', group);
+            socket.emit('message', { type: "info", content: "Group settings have been updated!" });
+            io.emit('groups', groups);
+            saveShow();
+        } else {
+            socket.emit('message', { type: "error", content: "No groups exist!" });
+        }
+    });
+
+    socket.on('removeGroup', function (groupID) {
+        if (groups.length != 0) {
+            groups.splice(groups.map(el => el.id).indexOf(groupID), 1);
+            socket.emit('message', { type: "info", content: "Group has been removed!" });
+            io.emit('groups', groups);
+            saveShow();
+        } else {
+            socket.emit('message', { type: "error", content: "No groups exist!" });
+        }
     });
 
     socket.on('getSettings', function () {

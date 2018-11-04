@@ -5,6 +5,7 @@
     "channels": [
         {
             "type": "intensity",
+            "subtype": "",
             "name": "Intensity",
             "max": 255,
             "min": 0,

@@ -184,16 +184,6 @@
           <div class="col-2">
             <button id="moveCueDownBtn" class="btn btn-success btn-block"><i class="far fa-chevron-down"></i></button>
           </div>
-          <!--<div class="col-4">
-            <div class="row">
-              <div class="col-6">
-                <button id="moveCueUpBtn" class="btn btn-success btn-block"><i class="far fa-chevron-up"></i></button>
-              </div>
-              <div class="col-6">
-                <button id="moveCueDownBtn" class="btn btn-success btn-block"><i class="far fa-chevron-down"></i></button>
-              </div>
-            </div>
-          </div>-->
         </div>
         <div class="row" id="cueSettings">
           <div class="col-12">
@@ -223,18 +213,66 @@
         </div>
       </div>
     </div>
+    <div id="groups" class="tabcontent">
+      <div class="container">
+        <div class="row topBtns">
+            <div class="col-12">
+                <button class="btn btn-success btn-block" onclick="addGroupModal()">Add Group</button>
+            </div>
+        </div>
+        <div class="row" id="groupsList"></div>
+      </div>
+    </div>
+    <div id="groupSettingsPage" class="tabcontent">
+      <div class="container">
+        <div class="row topBtns">
+          <div class="col-6">
+            <button id="groupSaveBtn" class="btn btn-success btn-block">Save</button>
+          </div>
+          <div class="col-6">
+            <button id="groupDeleteBtn" class="btn btn-danger btn-block">Delete</button>
+          </div>
+        </div>
+        <div class="row" id="groupSettings">
+          <div class="col-12">
+              <div class="form-group">
+                  <label for="groupNameInput">Name:</label>
+                  <input class="form-control" type="text" id="groupNameInput" placeholder="Group Name">
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="groupChannelsPage" class="tabcontent">
+      <div class="container">
+        <div class="row topBtns">
+          <div class="col-9">
+              <h5 id="groupChannelsName">Group name</h5>
+          </div>
+          <div class="col-3">
+            <button id="groupSettingsBtn" class="btn btn-primary btn-block">Settings</button>
+          </div>
+        </div>
+        <div id="groupChannels"></div>
+      </div>
+    </div>
     <div class="tab">
       <div class="row">
-        <div class="col-6">
+        <div class="col-4">
             <div onclick="openTab('fixtures')">
               <i class="tablinks far fa-lightbulb" id="fixturesTab"></i>
             </div>
         </div>
-        <div class="col-6">
+        <div class="col-4">
             <div onclick="openTab('cues')">
               <i class="tablinks far fa-list"></i>
             </div>
         </div>
+        <div class="col-4">
+          <div onclick="openTab('groups')">
+            <i class="tablinks far fa-layer-group"></i>
+          </div>
+      </div>
       </div>
     </div>
     <div id="openShowModal" class="modal" tabindex="-1" role="dialog">
@@ -287,6 +325,19 @@
               </div>
               <button class="btn btn-success" onclick="saveSettings()">Save Settings</button>
             </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="addGroupModal" class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+              <div class="form-group">
+                  <label class="dark" for="groupFixtureIDs">Fixtures:</label>
+                  <select class="form-control" multiple id="groupFixtureIDs" name="groupFixtures" size="5"></select>
+              </div>
+              <button class="btn btn-success" onclick="addGroup()">Add Group</button>
           </div>
         </div>
       </div>

@@ -16,7 +16,7 @@ Remove this cue from the show. You will be prompted to make sure that you really
 
 ### Clone
 
-Make a duplicate of this cue and place it at the end of the cue list. The new cloned cue will have the same fixture values, but a different name.
+Make a duplicate of this cue and place it at the end of the cue list. The new cloned cue will have the same settings and fixture values as the cue that is being cloned.
 
 ### Go
 

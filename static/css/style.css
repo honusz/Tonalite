@@ -12,7 +12,8 @@ body {
 }
 
 .fixtureItem,
-.cueItem {
+.cueItem,
+.groupItem {
     width: 100%;
     background-color: #228BE6;
     color: #F8F9FA;
@@ -31,8 +32,13 @@ body {
     background-color: #40C057;
 }
 
+.groupItem {
+    background-color: #40C057;
+}
+
 #fixturesList,
-#cuesList {
+#cuesList,
+#groupsList {
     margin-bottom: 3rem;
 }
 
