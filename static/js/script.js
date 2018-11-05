@@ -356,6 +356,7 @@ function openTab(tabName) {
     if (document.getElementsByClassName("tablinks-" + tabName)[0]) {
         document.getElementsByClassName("tablinks-" + tabName)[0].classList.add("active");
     }
+    closeAlert();
 }
 
 function titleCase(str) {
