@@ -1,7 +1,7 @@
 # Changing Fixture Settings
 
-You can change various settings about a fixture.
-You can access the fixtures setting page by clicking the `Settings` button on the fixture channels page.
+You can change various settings of a fixture.
+You can access a fixture's setting page by clicking the `Settings` button on the fixture's channels page.
 
 ![Fixture settings page](../images/fixture_settings.png)
 
@@ -13,7 +13,7 @@ Go back to the fixture's channels.
 
 ### Save
 
-Save the changes you have made to a fixture. Make sure you do this every time you make a change or your edits won't apply!
+Save the changes you have made to the fixture. Make sure you do this every time you make a change or your edits won't apply!
 
 ### Delete
 

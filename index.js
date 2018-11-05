@@ -741,6 +741,7 @@ io.on('connection', function (socket) {
         var newGroup = {
             id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
             name: "Group " + (groups.length + 1),
+            shortName: "Group " + (groups.length + 1),
             ids: fixtureIDs,
             channels: []
         };
@@ -811,6 +812,7 @@ io.on('connection', function (socket) {
         if (groups.length != 0) {
             var group = groups[groups.map(el => el.id).indexOf(msg.id)];
             group.name = msg.name;
+            group.shortName = msg.shortName;
             socket.emit('groupSettings', group);
             socket.emit('message', { type: "info", content: "Group settings have been updated!" });
             io.emit('groups', groups);

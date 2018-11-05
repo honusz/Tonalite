@@ -12,3 +12,7 @@
     * [Recording Cues](cues/recording_cues.md)
     * [Cue Settings](cues/cue_settings.md)
     * [Moving Between Cues](cues/moving_between_cues.md)
+* [Groups](groups/README.md)
+    * [Adding Groups](groups/adding_groups.md)
+    * [Channels](groups/channels/README.md)
+    * [Changing Group Settings](groups/changing_group_settings.md)

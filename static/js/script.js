@@ -121,7 +121,7 @@ socket.on('groups', function (groups) {
     //console.log(groups);
     if (groups.length != 0) {
         groups.forEach(function (group) {
-            $("#groupsList").append("<div class=\"col-4\"><div class=\"groupItem\" onclick=\"viewGroupChannels('" + group.id + "')\"><p>" + group.name + "</p></div></div>");
+            $("#groupsList").append("<div class=\"col-4\"><div class=\"groupItem\" onclick=\"viewGroupChannels('" + group.id + "')\"><p>" + group.shortName + "</p></div></div>");
         });
     } else {
         $("#groupsList").append("<div class=\"col-12\"><h5>There are no groups in this show!</h5></div>");
@@ -134,6 +134,7 @@ socket.on('groupSettings', function (group) {
     $("#groupDeleteBtn").off().on("click", function () { removeGroup(group.id); });
     $("#groupSaveBtn").off().on("click", function () { saveGroupSettings(group.id); });
     $("#groupNameInput").val(group.name);
+    $("#groupShortNameInput").val(group.shortName);
 });
 
 socket.on('groupChannels', function (msg) {
@@ -283,7 +284,7 @@ function removeGroup(groupID) {
 }
 
 function saveGroupSettings(groupID) {
-    socket.emit('editGroupSettings', { id: groupID, name: $("#groupNameInput").val(), fixtureIDs: $("#groupFixtureIDsInput").val() });
+    socket.emit('editGroupSettings', { id: groupID, name: $("#groupNameInput").val(), shortName: $("#groupShortNameInput").val(), fixtureIDs: $("#groupFixtureIDsInput").val() });
 }
 
 function addGroup() {
