@@ -29,6 +29,7 @@
     "express-fileupload": "^1.0.0",
     "moment": "^2.22.2",
     "onoff": "^3.2.2",
+    "serve-favicon": "^2.5.0",
     "sleep": "^5.2.3",
     "socket.io": "^2.1.1"
   },

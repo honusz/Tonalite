@@ -1,5 +1,6 @@
 var app = require('express')();
 var express = require('express');
+var favicon = require('serve-favicon');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var fs = require('fs');
@@ -278,6 +279,7 @@ console.log("Tonalite v" + VERSION + " - DMX Lighting Control System");
 
 app.use('/static', express.static(__dirname + '/static'));
 app.use(fileUpload());
+app.use(favicon(__dirname + '/static/favicon.ico'));
 
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.min.html');
