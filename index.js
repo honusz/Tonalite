@@ -99,6 +99,12 @@ function moveArrayItem(array, element, delta) {
     array.splice(indexes[0], 2, array[indexes[1]], array[indexes[0]]); // Replace from lowest index, two elements, reverting the order
 };
 
+function titleCase(str) {
+    return str.toLowerCase().split(' ').map(function (word) {
+        return (word.charAt(0).toUpperCase() + word.slice(1));
+    }).join(' ');
+}
+
 // Set the output channel values to those of the current fixture values
 function calculateChannels() {
     fixtures.forEach(function (fixture) {
@@ -736,12 +742,21 @@ io.on('connection', function (socket) {
             ids: fixtureIDs,
             channels: []
         };
+        var channelCats = [];
         newGroup.ids.forEach(function (fixtureID) {
             var fixture = fixtures[fixtures.map(el => el.id).indexOf(fixtureID)];
             fixture.channels.forEach(function (channel) {
                 var newChannel = JSON.parse(JSON.stringify(channel));
-                newChannel.value = newChannel.defaultValue;
-                newGroup.channels.push(newChannel);
+                if (!channelCats.includes(newChannel.type + ":" + newChannel.subtype)) {
+                    newChannel.value = newChannel.defaultValue;
+                    if (newChannel.subtype != "") {
+                        newChannel.name = titleCase(newChannel.subtype);
+                    } else {
+                        newChannel.name = titleCase(newChannel.type);
+                    }
+                    newGroup.channels.push(newChannel);
+                    channelCats.push(newChannel.type + ":" + newChannel.subtype);
+                }
             });
         });
         groups.push(newGroup);
