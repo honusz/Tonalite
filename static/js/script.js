@@ -40,35 +40,6 @@ socket.on('fixtures', function (fixtures) {
     }
 });
 
-socket.on('cues', function (cues) {
-    $("#cuesList").empty();
-    //console.log(cues);
-    if (cues.length != 0) {
-        cues.forEach(function (cue) {
-            if (cue.active == true) {
-                style = "style=\"background-color:#fab005\"";
-            } else {
-                style = "";
-            }
-            $("#cuesList").append("<div class=\"col-4\"><div class=\"cueItem\" " + style + "onclick=\"viewCueSettings('" + cue.id + "')\"><p>" + cue.name + "</p></div></div>");
-        });
-    } else {
-        $("#cuesList").append("<div class=\"col-12\"><h5>There are no cues in this show!</h5></div>");
-    }
-});
-
-socket.on('groups', function (groups) {
-    $("#groupsList").empty();
-    //console.log(groups);
-    if (groups.length != 0) {
-        groups.forEach(function (group) {
-            $("#groupsList").append("<div class=\"col-4\"><div class=\"groupItem\" onclick=\"viewGroupChannels('" + group.id + "')\"><p>" + group.name + "</p></div></div>");
-        });
-    } else {
-        $("#groupsList").append("<div class=\"col-12\"><h5>There are no groups in this show!</h5></div>");
-    }
-});
-
 socket.on('fixtureProfiles', function (profiles) {
     $("#fixtureProfilesList").empty();
     profiles[0].forEach(function (value) {
@@ -102,6 +73,23 @@ socket.on('fixtureSettings', function (fixture) {
     $("#fixtureDMXAddressInput").val(fixture.startDMXAddress);
 });
 
+socket.on('cues', function (cues) {
+    $("#cuesList").empty();
+    //console.log(cues);
+    if (cues.length != 0) {
+        cues.forEach(function (cue) {
+            if (cue.active == true) {
+                style = "style=\"background-color:#fab005\"";
+            } else {
+                style = "";
+            }
+            $("#cuesList").append("<div class=\"col-4\"><div class=\"cueItem\" " + style + "onclick=\"viewCueSettings('" + cue.id + "')\"><p>" + cue.name + "</p></div></div>");
+        });
+    } else {
+        $("#cuesList").append("<div class=\"col-12\"><h5>There are no cues in this show!</h5></div>");
+    }
+});
+
 socket.on('cueSettings', function (cue) {
     openTab('cueSettingsPage');
     $("#cueDeleteBtn").off().on("click", function () { removeCue(cue.id); });
@@ -115,6 +103,29 @@ socket.on('cueSettings', function (cue) {
     $("#cueInTimeInput").val(cue.inTime);
     $("#cueOutTimeInput").val(cue.outTime);
     $("#cueFollowInput").val(cue.follow);
+});
+
+socket.on('cueActionBtn', function (btnMode) {
+    $("#cueActionBtn").empty();
+    if (btnMode == false) {
+        $("#cueActionBtn").off().on("click", function () { recordCue(); });
+        $("#cueActionBtn").append("Record");
+    } else {
+        $("#cueActionBtn").off().on("click", function () { stopCue(); });
+        $("#cueActionBtn").append("Stop");
+    }
+});
+
+socket.on('groups', function (groups) {
+    $("#groupsList").empty();
+    //console.log(groups);
+    if (groups.length != 0) {
+        groups.forEach(function (group) {
+            $("#groupsList").append("<div class=\"col-4\"><div class=\"groupItem\" onclick=\"viewGroupChannels('" + group.id + "')\"><p>" + group.name + "</p></div></div>");
+        });
+    } else {
+        $("#groupsList").append("<div class=\"col-12\"><h5>There are no groups in this show!</h5></div>");
+    }
 });
 
 socket.on('groupSettings', function (group) {
@@ -136,17 +147,6 @@ socket.on('groupChannels', function (msg) {
     });
 });
 
-socket.on('cueActionBtn', function (btnMode) {
-    $("#cueActionBtn").empty();
-    if (btnMode == false) {
-        $("#cueActionBtn").off().on("click", function () { recordCue(); });
-        $("#cueActionBtn").append("Record");
-    } else {
-        $("#cueActionBtn").off().on("click", function () { stopCue(); });
-        $("#cueActionBtn").append("Stop");
-    }
-});
-
 socket.on('settings', function (settings) {
     $("#serverURL").val(settings.url);
     $("#serverPort").val(settings.port);
@@ -165,32 +165,13 @@ function resetFixture(fixtureID) {
     }
 };
 
-function resetGroup(groupID) {
-    if (confirm("Are you sure you want to reset this group's channel values?")) {
-        socket.emit('resetGroup', groupID);
-    }
-};
-
 function addFixtureModal() {
     socket.emit('getFixtureProfiles');
     $('#fixtureProfilesModal').modal("show");
 }
 
-function addGroupModal() {
-    $('#addGroupModal').modal("show");
-}
-
-function openShowFileModal() {
-    $('#openShowModal').modal("show");
-}
-
 function openFixtureDefinitionModal() {
     $('#openFixtureDefinitionModal').modal("show");
-}
-
-function openSettingsModal() {
-    socket.emit('getSettings');
-    $('#openSettingsModal').modal("show");
 }
 
 function addFixture(fixture) {
@@ -202,20 +183,12 @@ function viewFixtureChannels(fixtureID) {
     socket.emit('getFixtureChannels', fixtureID);
 }
 
-function viewGroupChannels(groupID) {
-    socket.emit('getGroupChannels', groupID);
-}
-
 function viewFixtureSettings(fixtureID) {
     socket.emit('getFixtureSettings', fixtureID);
 }
 
 function updateFixtureChannelValue(self, fixtureID, channelID) {
     socket.emit('changeFixtureChannelValue', { id: fixtureID, cid: channelID, value: parseInt(self.value) });
-}
-
-function updateGroupChannelValue(self, groupID, channelID) {
-    socket.emit('changeGroupChannelValue', { id: groupID, cid: channelID, value: parseInt(self.value) });
 }
 
 function updateFixtureChannelLock(self, fixtureID, channelID) {
@@ -284,6 +257,24 @@ function moveCueDown(cueID) {
     socket.emit('moveCueDown', cueID);
 }
 
+function resetGroup(groupID) {
+    if (confirm("Are you sure you want to reset this group's channel values?")) {
+        socket.emit('resetGroup', groupID);
+    }
+};
+
+function addGroupModal() {
+    $('#addGroupModal').modal("show");
+}
+
+function viewGroupChannels(groupID) {
+    socket.emit('getGroupChannels', groupID);
+}
+
+function updateGroupChannelValue(self, groupID, channelID) {
+    socket.emit('changeGroupChannelValue', { id: groupID, cid: channelID, value: parseInt(self.value) });
+}
+
 function removeGroup(groupID) {
     if (confirm("Are you sure you want to delete this group?")) {
         socket.emit('removeGroup', groupID);
@@ -302,6 +293,15 @@ function addGroup() {
 
 function viewGroupSettings(groupID) {
     socket.emit('getGroupSettings', groupID);
+}
+
+function openShowFileModal() {
+    $('#openShowModal').modal("show");
+}
+
+function openSettingsModal() {
+    socket.emit('getSettings');
+    $('#openSettingsModal').modal("show");
 }
 
 function resetShow() {
