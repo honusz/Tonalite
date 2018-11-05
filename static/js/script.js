@@ -264,6 +264,12 @@ function resetGroup(groupID) {
     }
 };
 
+function resetGroups() {
+    if (confirm("Are you sure you want to reset all group channel values?")) {
+        socket.emit('resetGroups');
+    }
+};
+
 function addGroupModal() {
     $('#addGroupModal').modal("show");
 }

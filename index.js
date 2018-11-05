@@ -41,6 +41,7 @@ Features:
 - Edit Group Settings - Done - Done UI
 - Remove Group - Done - Done UI
 - Reset Group - Done - Done UI
+- Reset Groups - Done - Done UI
 - Save Show - Done - Done UI
 - Open Show From File - Done - Done UI
 - Save Show To File - Done - Done UI
@@ -202,12 +203,38 @@ function calculateStack() {
     //});
 };
 
+// Set the fixture values for each group equal to the group's channel value
+function setFixtureGroupValues(group, channel) {
+    group.ids.forEach(function (fixtureID) {
+        var fixture = fixtures[fixtures.map(el => el.id).indexOf(fixtureID)];
+        fixture.channels.forEach(function (chan) {
+            if (chan.type == channel.type && chan.subtype == channel.subtype) {
+                if (chan.locked == false) {
+                    chan.value = channel.value;
+                    chan.displayValue = chan.value;
+                }
+            }
+        });
+    });
+}
+
 // Reset the channel values for each fixture
 function resetFixtures() {
     fixtures.forEach(function (fixture) {
         fixture.channels.forEach(function (channel) {
             channel.value = channel.defaultValue;
             channel.displayValue = channel.value;
+        });
+    });
+};
+
+// Reset the channel values for each group
+function resetGroups() {
+    groups.forEach(function (group) {
+        group.channels.forEach(function (channel) {
+            channel.value = channel.defaultValue;
+            channel.displayValue = channel.value;
+            setFixtureGroupValues(group, channel);
         });
     });
 };
@@ -784,17 +811,7 @@ io.on('connection', function (socket) {
             var channel = group.channels[msg.cid];
             channel.value = msg.value;
             channel.displayValue = channel.value;
-            group.ids.forEach(function (fixtureID) {
-                var fixture = fixtures[fixtures.map(el => el.id).indexOf(fixtureID)];
-                fixture.channels.forEach(function (chan) {
-                    if (chan.type == channel.type && chan.subtype == channel.subtype) {
-                        if (chan.locked == false) {
-                            chan.value = channel.value;
-                            chan.displayValue = chan.value;
-                        }
-                    }
-                });
-            });
+            setFixtureGroupValues(group, channel);
             io.emit('fixtures', fixtures);
             saveShow();
         } else {
@@ -841,17 +858,7 @@ io.on('connection', function (socket) {
             group.channels.forEach(function (channel) {
                 channel.value = channel.defaultValue;
                 channel.displayValue = channel.value;
-                group.ids.forEach(function (fixtureID) {
-                    var fixture = fixtures[fixtures.map(el => el.id).indexOf(fixtureID)];
-                    fixture.channels.forEach(function (chan) {
-                        if (chan.type == channel.type && chan.subtype == channel.subtype) {
-                            if (chan.locked == false) {
-                                chan.value = channel.value;
-                                chan.displayValue = chan.value;
-                            }
-                        }
-                    });
-                });
+                setFixtureGroupValues(group, channel);
             });
             socket.emit('groupChannels', { id: group.id, name: group.name, channels: group.channels });
             io.emit('fixtures', fixtures);
@@ -859,6 +866,17 @@ io.on('connection', function (socket) {
             saveShow();
         } else {
             socket.emit('message', { type: "error", content: "No groups exist!" });
+        }
+    });
+
+    socket.on('resetGroups', function () {
+        if (groups.length != 0) {
+            resetGroups();
+            io.emit('fixtures', fixtures);
+            socket.emit('message', { type: "info", content: "Group values have been reset!" });
+            saveShow();
+        } else {
+            socket.emit('message', { type: "error", content: "No fixtures exist!" });
         }
     });
 
