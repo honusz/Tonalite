@@ -57,6 +57,10 @@ body {
     margin-bottom: 3.5rem;
 }
 
+.tablinks.active {
+    color: #74c0fc;
+}
+
 #fixtureChannelsPage {
     margin-bottom: 4.5rem;
 }
