@@ -119,6 +119,7 @@ socket.on('cueSettings', function (cue) {
 
 socket.on('groupSettings', function (group) {
     openTab('groupSettingsPage');
+    $("#groupChannelsBackBtn").off().on("click", function () { viewGroupChannels(group.id); });
     $("#groupDeleteBtn").off().on("click", function () { removeGroup(group.id); });
     $("#groupSaveBtn").off().on("click", function () { saveGroupSettings(group.id); });
     $("#groupNameInput").val(group.name);
@@ -129,7 +130,7 @@ socket.on('groupChannels', function (msg) {
     $("#groupChannels").empty();
     $("#groupChannelsName").text(msg.name);
     $("#groupSettingsBtn").off().on("click", function () { viewGroupSettings(msg.id); });
-    /*$("#groupResetBtn").off().on("click", function () { resetFixture(msg.id); });*/
+    $("#groupResetBtn").off().on("click", function () { resetGroup(msg.id); });
     msg.channels.forEach(function (channel, i) {
         $("#groupChannels").append("<label class=\"ml-2\" for=\"" + channel.type + "\">" + channel.name + ":</label><input type=\"range\" class=\"custom-range\" id=\"" + channel.type + "\" max=\"" + channel.displayMax + "\" min=\"" + channel.displayMin + "\" value=\"" + channel.value + "\" oninput=\"updateGroupChannelValue(this, '" + msg.id + "', " + i + ")\">");
     });
@@ -161,6 +162,12 @@ function resetFixtures() {
 function resetFixture(fixtureID) {
     if (confirm("Are you sure you want to reset this fixture's channel values?")) {
         socket.emit('resetFixture', fixtureID);
+    }
+};
+
+function resetGroup(groupID) {
+    if (confirm("Are you sure you want to reset this group's channel values?")) {
+        socket.emit('resetGroup', groupID);
     }
 };
 

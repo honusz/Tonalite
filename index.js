@@ -39,6 +39,7 @@ Features:
 - Get Group Settings - Done - Done UI
 - Edit Group Settings - Done - Done UI
 - Remove Group - Done - Done UI
+- Reset Group - Done - Done UI
 - Save Show - Done - Done UI
 - Open Show From File - Done - Done UI
 - Save Show To File - Done - Done UI
@@ -499,6 +500,7 @@ io.on('connection', function (socket) {
             });
             socket.emit('fixtureChannels', { id: fixture.id, name: fixture.name, channels: fixture.channels });
             io.emit('fixtures', fixtures);
+            socket.emit('message', { type: "error", content: "No fixtures exist!" });
             saveShow();
         } else {
             socket.emit('message', { type: "error", content: "No fixtures exist!" });
@@ -823,6 +825,33 @@ io.on('connection', function (socket) {
             groups.splice(groups.map(el => el.id).indexOf(groupID), 1);
             socket.emit('message', { type: "info", content: "Group has been removed!" });
             io.emit('groups', groups);
+            saveShow();
+        } else {
+            socket.emit('message', { type: "error", content: "No groups exist!" });
+        }
+    });
+
+    socket.on('resetGroup', function (groupID) {
+        if (groups.length != 0) {
+            var group = groups[groups.map(el => el.id).indexOf(groupID)];
+            group.channels.forEach(function (channel) {
+                channel.value = channel.defaultValue;
+                channel.displayValue = channel.value;
+                group.ids.forEach(function (fixtureID) {
+                    var fixture = fixtures[fixtures.map(el => el.id).indexOf(fixtureID)];
+                    fixture.channels.forEach(function (chan) {
+                        if (chan.type == channel.type && chan.subtype == channel.subtype) {
+                            if (chan.locked == false) {
+                                chan.value = channel.value;
+                                chan.displayValue = chan.value;
+                            }
+                        }
+                    });
+                });
+            });
+            socket.emit('groupChannels', { id: group.id, name: group.name, channels: group.channels });
+            io.emit('fixtures', fixtures);
+            socket.emit('message', { type: "error", content: "Group channels reset!" });
             saveShow();
         } else {
             socket.emit('message', { type: "error", content: "No groups exist!" });
