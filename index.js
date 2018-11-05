@@ -53,7 +53,7 @@ Features:
 
 var SETTINGS = {
     output: 1, // 0 = E1.31, 1 = uDMX, 2 = ArtNet
-    device: 0, // 0 = linux64, 1 = rpi
+    device: 0, // 0 = linux64, 1 = rpi, 2 = windows
     url: "localhost", // http web UI location
     port: 3000
 }
@@ -361,6 +361,8 @@ if (SETTINGS.output == 1) {
         ls = spawn('uDMXArtnet/uDMXArtnet_minimal_64');
     } else if (SETTINGS.device == 1) {
         ls = spawn('uDMXArtnet/uDMXArtnet_PI_minimal_32', ['-i', '192.168.4.1']);
+    } else if (SETTINGS.device == 2) {
+        ls = spawn('uDMXArtnet/uDMXArtnet_Minimal.exe');
     }
     ls.stdout.on('data', (data) => {
         console.log('udmx stdout: ' + data);
