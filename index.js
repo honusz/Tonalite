@@ -109,6 +109,34 @@ function titleCase(str) {
     }).join(' ');
 }
 
+function cleanFixtures() {
+    var newFixtures = JSON.parse(JSON.stringify(fixtures));
+    newFixtures.forEach(function (fixture) {
+        fixture.channels.forEach(function (channel) {
+            delete channel.max;
+            delete channel.min;
+            delete channel.defaultValue;
+            delete channel.dmxAddressOffset;
+        });
+    });
+    return newFixtures;
+}
+
+function cleanCues() {
+    var newCues = JSON.parse(JSON.stringify(cues));
+    newCues.forEach(function (cue) {
+        delete cue.type;
+        delete cue.inTime;
+        delete cue.outTime;
+        delete cue.follow;
+        delete cue.inStep;
+        delete cue.outStep;
+        delete cue.following;
+        delete cue.fixtures;
+    });
+    return newCues;
+}
+
 // Set the output channel values to those of the current fixture values
 function calculateChannels() {
     fixtures.forEach(function (fixture) {
@@ -195,9 +223,9 @@ function calculateStack() {
                     }
                 });
             });
-            io.sockets.emit('cues', cues);
+            io.sockets.emit('cues', cleanCues());
         }
-        //io.sockets.emit('fixtures', fixtures);
+        io.sockets.emit('fixtures', cleanFixtures());
     }
     //stack.forEach(function (item) {
     // Calculate stack
@@ -288,8 +316,8 @@ function openShow() {
         fixtures = show[0];
         cues = show[1];
         groups = show[2];
-        io.emit('fixtures', fixtures);
-        io.emit('cues', cues);
+        io.emit('fixtures', cleanFixtures());
+        io.emit('cues', cleanCues());
         io.emit('groups', groups);
     });
 }
@@ -391,8 +419,8 @@ fs.exists('currentShow.json', function (exists) {
 });
 
 io.on('connection', function (socket) {
-    socket.emit('fixtures', fixtures);
-    socket.emit('cues', cues);
+    socket.emit('fixtures', cleanFixtures());
+    socket.emit('cues', cleanCues());
     socket.emit('groups', groups);
     if (currentCue == -1) {
         io.emit('cueActionBtn', false);
@@ -406,8 +434,8 @@ io.on('connection', function (socket) {
         groups = [];
         currentCue = -1;
         lastCue = -1;
-        io.emit('fixtures', fixtures);
-        io.emit('cues', cues);
+        io.emit('fixtures', cleanFixtures());
+        io.emit('cues', cleanCues());
         io.emit('groups', groups);
         io.emit('cueActionBtn', false);
         io.emit('message', { type: "info", content: "The show has been reset!" });
@@ -449,7 +477,7 @@ io.on('connection', function (socket) {
                 startDMXAddress += fixture.channels.length;
             }
 
-            io.emit('fixtures', fixtures);
+            io.emit('fixtures', cleanFixtures());
             saveShow();
         } else {
             socket.emit('message', { type: "error", content: "A fixture with this starting DMX address already exists!" });
@@ -471,8 +499,8 @@ io.on('connection', function (socket) {
             });
             fixtures.splice(fixtures.map(el => el.id).indexOf(fixtureID), 1);
             socket.emit('message', { type: "info", content: "Fixture has been removed!" });
-            io.emit('fixtures', fixtures);
-            io.emit('cues', cues);
+            io.emit('fixtures', cleanFixtures());
+            io.emit('cues', cleanCues());
             saveShow();
         } else {
             socket.emit('message', { type: "error", content: "No fixtures exist!" });
@@ -495,7 +523,7 @@ io.on('connection', function (socket) {
             fixture.startDMXAddress = msg.startDMXAddress;
             socket.emit('fixtureSettings', fixture);
             socket.emit('message', { type: "info", content: "Fixture settings have been updated!" });
-            io.emit('fixtures', fixtures);
+            io.emit('fixtures', cleanFixtures());
             saveShow();
         } else {
             socket.emit('message', { type: "error", content: "No fixtures exist!" });
@@ -514,7 +542,7 @@ io.on('connection', function (socket) {
     socket.on('resetFixtures', function () {
         if (fixtures.length != 0) {
             resetFixtures();
-            //io.emit('fixtures', fixtures);
+            io.emit('fixtures', cleanFixtures());
             socket.emit('message', { type: "info", content: "Fixture values have been reset!" });
             saveShow();
         } else {
@@ -532,7 +560,7 @@ io.on('connection', function (socket) {
                 }
             });
             socket.emit('fixtureChannels', { id: fixture.id, name: fixture.name, channels: fixture.channels });
-            //io.emit('fixtures', fixtures);
+            io.emit('fixtures', cleanFixtures());
             socket.emit('message', { type: "info", content: "Fixture values reset!" });
             saveShow();
         } else {
@@ -546,7 +574,7 @@ io.on('connection', function (socket) {
             var channel = fixture.channels[msg.cid];
             channel.value = msg.value;
             channel.displayValue = channel.value;
-            //io.emit('fixtures', fixtures);
+            io.emit('fixtures', cleanFixtures());
             saveShow();
         } else {
             socket.emit('message', { type: "error", content: "No fixtures exist!" });
@@ -565,7 +593,7 @@ io.on('connection', function (socket) {
                 }
             });
             socket.emit('fixtureChannels', { id: fixture.id, name: fixture.name, channels: fixture.channels });
-            io.emit('fixtures', fixtures);
+            io.emit('fixtures', cleanFixtures());
             saveShow();
         } else {
             socket.emit('message', { type: "error", content: "No fixtures exist!" });
@@ -588,7 +616,7 @@ io.on('connection', function (socket) {
                 fixtures: JSON.parse(JSON.stringify(fixtures))
             };
             cues.push(newCue);
-            io.emit('cues', cues);
+            io.emit('cues', cleanCues());
             saveShow();
         } else {
             socket.emit('message', { type: "error", content: "No fixtures exist!" });
@@ -600,7 +628,7 @@ io.on('connection', function (socket) {
             var cue = cues[cues.map(el => el.id).indexOf(cueID)];
             cue.fixtures = JSON.parse(JSON.stringify(fixtures));
             socket.emit('cueSettings', cue);
-            io.emit('cues', cues);
+            io.emit('cues', cleanCues());
             socket.emit('message', { type: "info", content: "Cue channels have been updated!" });
             saveShow();
         } else {
@@ -614,7 +642,7 @@ io.on('connection', function (socket) {
             newCue.id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
             cues.push(newCue);
             socket.emit('cueSettings', newCue);
-            io.emit('cues', cues);
+            io.emit('cues', cleanCues());
             socket.emit('message', { type: "info", content: "Cue has been cloned!" });
             saveShow();
         } else {
@@ -645,7 +673,7 @@ io.on('connection', function (socket) {
             cue.outStep = cue.outTime * 40;
             socket.emit('cueSettings', cue);
             socket.emit('message', { type: "info", content: "Cue settings have been updated!" });
-            io.emit('cues', cues);
+            io.emit('cues', cleanCues());
             saveShow();
         } else {
             socket.emit('message', { type: "error", content: "No cues exist!" });
@@ -661,7 +689,7 @@ io.on('connection', function (socket) {
                 io.emit('cueActionBtn', false);
             }
             socket.emit('message', { type: "info", content: "Cue has been removed!" });
-            io.emit('cues', cues);
+            io.emit('cues', cleanCues());
             saveShow();
         } else {
             socket.emit('message', { type: "error", content: "No cues exist!" });
@@ -685,7 +713,7 @@ io.on('connection', function (socket) {
             }
             currentCue = lastCue;
             cues[lastCue].active = true;
-            io.emit('cues', cues);
+            io.emit('cues', cleanCues());
             io.emit('cueActionBtn', true);
         } else {
             socket.emit('message', { type: "error", content: "No cues exist!" });
@@ -709,7 +737,7 @@ io.on('connection', function (socket) {
             }
             currentCue = lastCue;
             cues[lastCue].active = true;
-            io.emit('cues', cues);
+            io.emit('cues', cleanCues());
             io.emit('cueActionBtn', true);
         } else {
             socket.emit('message', { type: "error", content: "No cues exist!" });
@@ -723,7 +751,7 @@ io.on('connection', function (socket) {
             cues[lastCue].outStep = cues[lastCue].outTime * 40;
             cues[lastCue].active = false;
             cues[lastCue].following = false;
-            io.emit('cues', cues);
+            io.emit('cues', cleanCues());
             io.emit('cueActionBtn', false);
         } else {
             socket.emit('message', { type: "error", content: "No cues exist!" });
@@ -741,7 +769,7 @@ io.on('connection', function (socket) {
             lastCue = cues.map(el => el.id).indexOf(cueID);
             currentCue = lastCue;
             cues[lastCue].active = true;
-            io.emit('cues', cues);
+            io.emit('cues', cleanCues());
             io.emit('cueActionBtn', true);
         } else {
             socket.emit('message', { type: "error", content: "No cues exist!" });
@@ -751,7 +779,7 @@ io.on('connection', function (socket) {
     socket.on('moveCueUp', function (cueID) {
         if (cues.length != 0) {
             moveArrayItem(cues, cues.map(el => el.id).indexOf(cueID), -1);
-            io.emit('cues', cues);
+            io.emit('cues', cleanCues());
             socket.emit('message', { type: "info", content: "Cue moved up." });
             saveShow();
         } else {
@@ -762,7 +790,7 @@ io.on('connection', function (socket) {
     socket.on('moveCueDown', function (cueID) {
         if (cues.length != 0) {
             moveArrayItem(cues, cues.map(el => el.id).indexOf(cueID), 1);
-            io.emit('cues', cues);
+            io.emit('cues', cleanCues());
             socket.emit('message', { type: "info", content: "Cue moved down." });
             saveShow();
         } else {
@@ -816,7 +844,7 @@ io.on('connection', function (socket) {
             channel.value = msg.value;
             channel.displayValue = channel.value;
             setFixtureGroupValues(group, channel);
-            //io.emit('fixtures', fixtures);
+            io.emit('fixtures', cleanFixtures());
             saveShow();
         } else {
             socket.emit('message', { type: "error", content: "No fixtures or groups exist!" });
@@ -865,7 +893,7 @@ io.on('connection', function (socket) {
                 setFixtureGroupValues(group, channel);
             });
             socket.emit('groupChannels', { id: group.id, name: group.name, channels: group.channels });
-            //io.emit('fixtures', fixtures);
+            io.emit('fixtures', cleanFixtures());
             socket.emit('message', { type: "info", content: "Group channels reset!" });
             saveShow();
         } else {
@@ -876,7 +904,7 @@ io.on('connection', function (socket) {
     socket.on('resetGroups', function () {
         if (groups.length != 0) {
             resetGroups();
-            //io.emit('fixtures', fixtures);
+            io.emit('fixtures', cleanFixtures());
             socket.emit('message', { type: "info", content: "Group values have been reset!" });
             saveShow();
         } else {
