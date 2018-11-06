@@ -79,7 +79,7 @@ socket.on('cues', function (cues) {
     if (cues.length != 0) {
         cues.forEach(function (cue) {
             if (cue.active == true) {
-                style = "style=\"background-color:#fab005\"";
+                style = "style=\"background-color:#f59f00\"";
             } else {
                 style = "";
             }

@@ -368,16 +368,8 @@ if (SETTINGS.output == 1) {
     } else if (SETTINGS.device == 2) {
         ls = spawn('uDMXArtnet/uDMXArtnet_Minimal.exe');
     }
-    ls.stdout.on('data', (data) => {
-        console.log('udmx stdout: ' + data);
-    });
-
-    ls.stderr.on('data', (data) => {
-        console.log('udmx stderr: ' + data);
-    });
-
     ls.on('close', (code) => {
-        console.log('udmx child process exited with code ${code}');
+        console.log('udmx child process exited with code ' + code);
     });
 }
 
@@ -402,7 +394,11 @@ io.on('connection', function (socket) {
     socket.emit('fixtures', fixtures);
     socket.emit('cues', cues);
     socket.emit('groups', groups);
-    socket.emit('cueActionBtn', false);
+    if (currentCue == -1) {
+        io.emit('cueActionBtn', false);
+    } else {
+        io.emit('cueActionBtn', true);
+    }
 
     socket.on('resetShow', function () {
         fixtures = [];
