@@ -83,7 +83,7 @@ socket.on('cues', function (cues) {
             } else {
                 style = "";
             }
-            $("#cuesList").append("<div class=\"col-4\"><div class=\"cueItem\" " + style + "onclick=\"viewCueSettings('" + cue.id + "')\"><p>" + cue.name + "</p></div></div>");
+            $("#cuesList").append("<div class=\"col-4 col-lg-2\"><div class=\"cueItem\" " + style + "onclick=\"viewCueSettings('" + cue.id + "')\"><p>" + cue.name + "</p></div></div>");
         });
     } else {
         $("#cuesList").append("<div class=\"col-12\"><h5>There are no cues in this show!</h5></div>");
@@ -121,7 +121,7 @@ socket.on('groups', function (groups) {
     //console.log(groups);
     if (groups.length != 0) {
         groups.forEach(function (group) {
-            $("#groupsList").append("<div class=\"col-4\"><div class=\"groupItem\" onclick=\"viewGroupChannels('" + group.id + "')\"><p>" + group.shortName + "</p></div></div>");
+            $("#groupsList").append("<div class=\"col-4 col-lg-2\"><div class=\"groupItem\" onclick=\"viewGroupChannels('" + group.id + "')\"><p>" + group.shortName + "</p></div></div>");
         });
     } else {
         $("#groupsList").append("<div class=\"col-12\"><h5>There are no groups in this show!</h5></div>");
