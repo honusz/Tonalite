@@ -197,7 +197,7 @@ function calculateStack() {
             });
             io.sockets.emit('cues', cues);
         }
-        io.sockets.emit('fixtures', fixtures);
+        //io.sockets.emit('fixtures', fixtures);
     }
     //stack.forEach(function (item) {
     // Calculate stack
@@ -518,7 +518,7 @@ io.on('connection', function (socket) {
     socket.on('resetFixtures', function () {
         if (fixtures.length != 0) {
             resetFixtures();
-            io.emit('fixtures', fixtures);
+            //io.emit('fixtures', fixtures);
             socket.emit('message', { type: "info", content: "Fixture values have been reset!" });
             saveShow();
         } else {
@@ -536,7 +536,7 @@ io.on('connection', function (socket) {
                 }
             });
             socket.emit('fixtureChannels', { id: fixture.id, name: fixture.name, channels: fixture.channels });
-            io.emit('fixtures', fixtures);
+            //io.emit('fixtures', fixtures);
             socket.emit('message', { type: "info", content: "Fixture values reset!" });
             saveShow();
         } else {
@@ -550,7 +550,7 @@ io.on('connection', function (socket) {
             var channel = fixture.channels[msg.cid];
             channel.value = msg.value;
             channel.displayValue = channel.value;
-            io.emit('fixtures', fixtures);
+            //io.emit('fixtures', fixtures);
             saveShow();
         } else {
             socket.emit('message', { type: "error", content: "No fixtures exist!" });
@@ -820,7 +820,7 @@ io.on('connection', function (socket) {
             channel.value = msg.value;
             channel.displayValue = channel.value;
             setFixtureGroupValues(group, channel);
-            io.emit('fixtures', fixtures);
+            //io.emit('fixtures', fixtures);
             saveShow();
         } else {
             socket.emit('message', { type: "error", content: "No fixtures or groups exist!" });
@@ -869,7 +869,7 @@ io.on('connection', function (socket) {
                 setFixtureGroupValues(group, channel);
             });
             socket.emit('groupChannels', { id: group.id, name: group.name, channels: group.channels });
-            io.emit('fixtures', fixtures);
+            //io.emit('fixtures', fixtures);
             socket.emit('message', { type: "info", content: "Group channels reset!" });
             saveShow();
         } else {
@@ -880,7 +880,7 @@ io.on('connection', function (socket) {
     socket.on('resetGroups', function () {
         if (groups.length != 0) {
             resetGroups();
-            io.emit('fixtures', fixtures);
+            //io.emit('fixtures', fixtures);
             socket.emit('message', { type: "info", content: "Group values have been reset!" });
             saveShow();
         } else {

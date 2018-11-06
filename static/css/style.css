@@ -26,14 +26,25 @@ body {
 
 .fixtureItem:hover {
     background-color: #1971c2;
+    cursor: pointer;
 }
 
 .cueItem {
     background-color: #40C057;
 }
 
+.cueItem:hover {
+    cursor: pointer;
+    background-color: #2f9e44;
+}
+
 .groupItem {
     background-color: #f59f00;
+}
+
+.groupItem:hover {
+    cursor: pointer;
+    background-color: #f08c00;
 }
 
 #fixturesList,
@@ -57,12 +68,16 @@ body {
     margin-bottom: 3.5rem;
 }
 
+.tablinks:hover {
+    cursor: pointer;
+}
+
 .tablinks.active {
     color: #74c0fc;
 }
 
 #fixtureChannelsPage {
-    margin-bottom: 4.5rem;
+    margin-bottom: 5rem;
 }
 
 .topBtns {

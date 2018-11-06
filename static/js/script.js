@@ -23,7 +23,7 @@ socket.on('fixtures', function (fixtures) {
             } else {
                 fixtureLock = "";
             }
-            if (fixture.channels[0].type == "intensity") {
+            /*if (fixture.channels[0].type == "intensity") {
                 fixtureValue = "<h3 class=\"fixtureValue\">" + fixture.channels[0].displayValue + "</h3>";
             } else {
                 if (fixtureLock == "") {
@@ -31,8 +31,8 @@ socket.on('fixtures', function (fixtures) {
                 } else {
                     fixtureValue = "<h3 class=\"fixtureValue\">" + fixtureLock + "</h3>";
                 }
-            }
-            $("#fixturesList").append("<div class=\"col-4\"><div class=\"fixtureItem\" onclick=\"viewFixtureChannels('" + fixture.id + "')\">" + fixtureValue + "<p>" + fixture.shortName + fixtureLock + "</p></div></div>");
+            }*/
+            $("#fixturesList").append("<div class=\"col-4 col-lg-2\"><div class=\"fixtureItem\" onclick=\"viewFixtureChannels('" + fixture.id + "')\"><p>" + fixture.shortName + fixtureLock + "</p></div></div>");
             $("#groupFixtureIDs").append("<option value=" + fixture.id + ">" + fixture.shortName + " (" + fixture.startDMXAddress + ")</option>");
         });
     } else {
