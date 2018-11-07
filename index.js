@@ -122,6 +122,20 @@ function cleanFixtures() {
     return newFixtures;
 }
 
+function cleanGroups() {
+    var newGroups = JSON.parse(JSON.stringify(groups));
+    newGroups.forEach(function (group) {
+        delete group.ids;
+        group.channels.forEach(function (channel) {
+            delete channel.max;
+            delete channel.min;
+            delete channel.defaultValue;
+            delete channel.dmxAddressOffset;
+        });
+    });
+    return newGroups;
+}
+
 function cleanCues() {
     var newCues = JSON.parse(JSON.stringify(cues));
     newCues.forEach(function (cue) {
@@ -318,7 +332,7 @@ function openShow() {
         groups = show[2];
         io.emit('fixtures', cleanFixtures());
         io.emit('cues', cleanCues());
-        io.emit('groups', groups);
+        io.emit('groups', cleanGroups());
     });
 }
 
@@ -421,7 +435,7 @@ fs.exists('currentShow.json', function (exists) {
 io.on('connection', function (socket) {
     socket.emit('fixtures', cleanFixtures());
     socket.emit('cues', cleanCues());
-    socket.emit('groups', groups);
+    socket.emit('groups', cleanGroups());
     if (currentCue == -1) {
         io.emit('cueActionBtn', false);
     } else {
@@ -436,7 +450,7 @@ io.on('connection', function (socket) {
         lastCue = -1;
         io.emit('fixtures', cleanFixtures());
         io.emit('cues', cleanCues());
-        io.emit('groups', groups);
+        io.emit('groups', cleanGroups());
         io.emit('cueActionBtn', false);
         io.emit('message', { type: "info", content: "The show has been reset!" });
         saveShow();
@@ -824,7 +838,7 @@ io.on('connection', function (socket) {
             });
         });
         groups.push(newGroup);
-        io.emit('groups', groups);
+        io.emit('groups', cleanGroups());
         saveShow();
     });
 
@@ -866,7 +880,7 @@ io.on('connection', function (socket) {
             group.shortName = msg.shortName;
             socket.emit('groupSettings', group);
             socket.emit('message', { type: "info", content: "Group settings have been updated!" });
-            io.emit('groups', groups);
+            io.emit('groups', cleanGroups());
             saveShow();
         } else {
             socket.emit('message', { type: "error", content: "No groups exist!" });
@@ -877,7 +891,7 @@ io.on('connection', function (socket) {
         if (groups.length != 0) {
             groups.splice(groups.map(el => el.id).indexOf(groupID), 1);
             socket.emit('message', { type: "info", content: "Group has been removed!" });
-            io.emit('groups', groups);
+            io.emit('groups', cleanGroups());
             saveShow();
         } else {
             socket.emit('message', { type: "error", content: "No groups exist!" });
