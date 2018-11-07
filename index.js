@@ -27,8 +27,8 @@ Features:
 - Update Cue - Done - Done UI
 - Edit Cue Settings - Done - Done UI
 - Clone Cue - Done - Done UI
-- Move Cue Up - Done
-- Move Cue Down - Done
+- Move Cue Up - Done - Done UI
+- Move Cue Down - Done - Done UI
 - Remove Cue - Done - Done UI
 - Go To Next Cue - Done - Done UI
 - Go To Last Cue - Done - Done UI
@@ -36,7 +36,7 @@ Features:
 - Stop Running Cue - Done - Done UI
 - Get Groups - Done - Done UI
 - Add Group - Done - Done UI
-- Get Group Channels - Done
+- Get Group Channels - Done - Done UI
 - Change Group Channel Value - Done - Done UI
 - Get Group Settings - Done - Done UI
 - Edit Group Settings - Done - Done UI
