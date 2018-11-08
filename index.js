@@ -111,53 +111,53 @@ function titleCase(str) {
 
 function cleanFixtures() {
     var newFixtures = JSON.parse(JSON.stringify(fixtures));
-    newFixtures.forEach(function (fixture) {
-        fixture.channels.forEach(function (channel) {
-            delete channel.max;
-            delete channel.min;
-            delete channel.defaultValue;
-            delete channel.dmxAddressOffset;
-        });
-    });
+    let f = 0; const fMax = newFixtures.length; for(; f < fMax; f++) {
+        let c = 0; const cMax = newFixtures[f].channels.length; for(; c < cMax; c++) {
+            delete newFixtures[f].channels[c].max;
+            delete newFixtures[f].channels[c].min;
+            delete newFixtures[f].channels[c].defaultValue;
+            delete newFixtures[f].channels[c].dmxAddressOffset;
+        }
+    }
     return newFixtures;
 }
 
 function cleanGroups() {
     var newGroups = JSON.parse(JSON.stringify(groups));
-    newGroups.forEach(function (group) {
-        delete group.ids;
-        group.channels.forEach(function (channel) {
-            delete channel.max;
-            delete channel.min;
-            delete channel.defaultValue;
-            delete channel.dmxAddressOffset;
-        });
-    });
+    let g = 0; const gMax = newGroups.length; for(; g < gMax; g++) {
+        delete newGroups[g].ids;
+        let c = 0; const cMax = newGroups[g].channels.length; for(; c < cMax; c++) {
+            delete newGroups[g].channels[c].max;
+            delete newGroups[g].channels[c].min;
+            delete newGroups[g].channels[c].defaultValue;
+            delete newGroups[g].channels[c].dmxAddressOffset;
+        }
+    }
     return newGroups;
 }
 
 function cleanCues() {
     var newCues = JSON.parse(JSON.stringify(cues));
-    newCues.forEach(function (cue) {
-        delete cue.type;
-        delete cue.inTime;
-        delete cue.outTime;
-        delete cue.follow;
-        delete cue.inStep;
-        delete cue.outStep;
-        delete cue.following;
-        delete cue.fixtures;
-    });
+    let c = 0; const cMax = newCues.length; for(; c < cMax; c++) {
+        delete newCues[c].type;
+        delete newCues[c].inTime;
+        delete newCues[c].outTime;
+        delete newCues[c].follow;
+        delete newCues[c].inStep;
+        delete newCues[c].outStep;
+        delete newCues[c].following;
+        delete newCues[c].fixtures;
+    }
     return newCues;
 }
 
 // Set the output channel values to those of the current fixture values
 function calculateChannels() {
-    fixtures.forEach(function (fixture) {
-        fixture.channels.forEach(function (channel) {
-            channels[(fixture.startDMXAddress - 1) + channel.dmxAddressOffset] = mapRange(channel.value, channel.displayMin, channel.displayMax, channel.min, channel.max);
-        });
-    });
+    let f = 0; const fMax = fixtures.length; for(; f < fMax; f++) {
+        let c = 0; const cMax = fixtures[f].channels.length; for(; c < cMax; c++) {
+            channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].channels[c].dmxAddressOffset] = mapRange(fixtures[f].channels[c].value, fixtures[f].channels[c].displayMin, fixtures[f].channels[c].displayMax, fixtures[f].channels[c].min, fixtures[f].channels[c].max);
+        }
+    }
 };
 
 // Set the cue's output channel values to the correct values from the fixtures. This is basically saving the cue.
