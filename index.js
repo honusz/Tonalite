@@ -242,55 +242,55 @@ function calculateStack() {
         }
         io.sockets.emit('fixtures', cleanFixtures());
     }
-    //stack.forEach(function (item) {
+    //let s = 0; const sMax = stack.length; for (; s < sMax; s++) {
     // Calculate stack
-    //});
+    //}
 };
 
 // Set the fixture values for each group equal to the group's channel value
 function setFixtureGroupValues(group, channel) {
-    group.ids.forEach(function (fixtureID) {
-        var fixture = fixtures[fixtures.map(el => el.id).indexOf(fixtureID)];
-        fixture.channels.forEach(function (chan) {
-            if (chan.type == channel.type && chan.subtype == channel.subtype) {
-                if (chan.locked != true) {
-                    chan.value = channel.value;
-                    chan.displayValue = chan.value;
+    let i = 0; const iMax = group.ids.length; for (; i < iMax; i++) {
+        var fixture = fixtures[fixtures.map(el => el.id).indexOf(group.ids[i])];
+        let c = 0; const cMax = fixture.channels.length; for (; c < cMax; c++) {
+            if (fixture.channels[c].type == channel.type && fixture.channels[c].subtype == channel.subtype) {
+                if (fixture.channels[c].locked != true) {
+                    fixture.channels[c].value = channel.value;
+                    fixture.channels[c].displayValue = fixture.channels[c].value;
                 }
             }
-        });
-    });
+        }
+    }
 }
 
 // Reset the channel values for each fixture
 function resetFixtures() {
-    fixtures.forEach(function (fixture) {
-        fixture.channels.forEach(function (channel) {
-            if (channel.locked != true) {
-                channel.value = channel.defaultValue;
-                channel.displayValue = channel.value;
+    let f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
+        let c = 0; const cMax = fixtures[f].channels.length; for (; c < cMax; c++) {
+            if (fixtures[f].channels[c].locked != true) {
+                fixtures[f].channels[c].value = fixtures[f].channels[c].defaultValue;
+                fixtures[f].channels[c].displayValue = fixtures[f].channels[c].value;
             }
-        });
-    });
+        }
+    }
 };
 
 // Reset the channel values for each group
 function resetGroups() {
-    groups.forEach(function (group) {
-        group.channels.forEach(function (channel) {
-            channel.value = channel.defaultValue;
-            channel.displayValue = channel.value;
-            setFixtureGroupValues(group, channel);
-        });
-    });
+    let g = 0; const gMax = groups.length; for (; g < gMax; g++) {
+        let c = 0; const cMax = groups[g].channels.length; for (; c < cMax; c++) {
+            groups[g].channels[c].value = groups[g].channels[c].defaultValue;
+            groups[g].channels[c].displayValue = groups[g].channels[c].value;
+            setFixtureGroupValues(group, groups[g].channels[c]);
+        }
+    }
 };
 
 // This is the output dmx loop. It gathers the channels and calculates what the output values should be.
 function dmxLoop() {
     // Reset DMX values
-    channels.forEach(function (channel) {
-        channel = 0;
-    });
+    let c = 0; const cMax = channels.length; for (; c < cMax; c++) {
+        channels[c] = 0;
+    }
     calculateChannels();
     calculateStack();
 
