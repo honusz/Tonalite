@@ -56,7 +56,7 @@ Features:
 var SETTINGS = {
     output: 1, // 0 = E1.31, 1 = uDMX, 2 = ArtNet
     device: 0, // 0 = linux64, 1 = rpi, 2 = windows
-    url: "localhost", // http web UI location
+    url: "10.42.0.1", // http web UI location
     port: 3000
 }
 
@@ -280,7 +280,7 @@ function resetGroups() {
         let c = 0; const cMax = groups[g].channels.length; for (; c < cMax; c++) {
             groups[g].channels[c].value = groups[g].channels[c].defaultValue;
             groups[g].channels[c].displayValue = groups[g].channels[c].value;
-            setFixtureGroupValues(group, groups[g].channels[c]);
+            setFixtureGroupValues(groups[g], groups[g].channels[c]);
         }
     }
 };

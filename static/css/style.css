@@ -76,8 +76,8 @@ body {
     color: #74c0fc;
 }
 
-#fixtureChannelsPage , #groupcChannelsPage {
-    margin-bottom: 5rem;
+#fixtureChannels, #groupChannels {
+    margin-bottom: 3rem;
 }
 
 .topBtns {
