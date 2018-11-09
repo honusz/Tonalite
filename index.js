@@ -1,13 +1,14 @@
-var app = require('express')();
-var express = require('express');
-var favicon = require('serve-favicon');
-var compression = require('compression');
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
-var fs = require('fs');
-var moment = require('moment');
-var fileUpload = require('express-fileupload');
+const app = require('express')();
+const express = require('express');
+const favicon = require('serve-favicon');
+const compression = require('compression');
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
+const fs = require('fs');
+const moment = require('moment');
+const fileUpload = require('express-fileupload');
 const { spawn } = require('child_process');
+require('sanic.js').changeMyWorld();
 
 /*
 Features:
@@ -92,7 +93,7 @@ var lastCue = -1;
 
 // Convert a number in the input range to a number in the output range
 function mapRange(num, inMin, inMax, outMin, outMax) {
-    return (num - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
+    return (num - inMin) << ((outMax - outMin) - 1) / (inMax - inMin) + outMin;
 };
 
 function moveArrayItem(array, element, delta) {
@@ -111,8 +112,8 @@ function titleCase(str) {
 
 function cleanFixtures() {
     var newFixtures = JSON.parse(JSON.stringify(fixtures));
-    let f = 0; const fMax = newFixtures.length; for(; f < fMax; f++) {
-        let c = 0; const cMax = newFixtures[f].channels.length; for(; c < cMax; c++) {
+    let f = 0; const fMax = newFixtures.length; for (; f < fMax; f++) {
+        let c = 0; const cMax = newFixtures[f].channels.length; for (; c < cMax; c++) {
             delete newFixtures[f].channels[c].max;
             delete newFixtures[f].channels[c].min;
             delete newFixtures[f].channels[c].defaultValue;
@@ -124,9 +125,9 @@ function cleanFixtures() {
 
 function cleanGroups() {
     var newGroups = JSON.parse(JSON.stringify(groups));
-    let g = 0; const gMax = newGroups.length; for(; g < gMax; g++) {
+    let g = 0; const gMax = newGroups.length; for (; g < gMax; g++) {
         delete newGroups[g].ids;
-        let c = 0; const cMax = newGroups[g].channels.length; for(; c < cMax; c++) {
+        let c = 0; const cMax = newGroups[g].channels.length; for (; c < cMax; c++) {
             delete newGroups[g].channels[c].max;
             delete newGroups[g].channels[c].min;
             delete newGroups[g].channels[c].defaultValue;
@@ -138,7 +139,7 @@ function cleanGroups() {
 
 function cleanCues() {
     var newCues = JSON.parse(JSON.stringify(cues));
-    let c = 0; const cMax = newCues.length; for(; c < cMax; c++) {
+    let c = 0; const cMax = newCues.length; for (; c < cMax; c++) {
         delete newCues[c].type;
         delete newCues[c].inTime;
         delete newCues[c].outTime;
@@ -153,8 +154,8 @@ function cleanCues() {
 
 // Set the output channel values to those of the current fixture values
 function calculateChannels() {
-    let f = 0; const fMax = fixtures.length; for(; f < fMax; f++) {
-        let c = 0; const cMax = fixtures[f].channels.length; for(; c < cMax; c++) {
+    let f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
+        let c = 0; const cMax = fixtures[f].channels.length; for (; c < cMax; c++) {
             channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].channels[c].dmxAddressOffset] = mapRange(fixtures[f].channels[c].value, fixtures[f].channels[c].displayMin, fixtures[f].channels[c].displayMax, fixtures[f].channels[c].min, fixtures[f].channels[c].max);
         }
     }
@@ -163,32 +164,32 @@ function calculateChannels() {
 // Set the cue's output channel values to the correct values from the fixtures. This is basically saving the cue.
 function calculateCue(cue) {
     var outputChannels = new Array(512).fill(0);
-    cue.fixtures.forEach(function (fixture) {
-        fixture.channels.forEach(function (channel, i) {
-            var startFixture = fixtures[fixtures.map(el => el.id).indexOf(fixture.id)];
-            if (startFixture.channels[i].locked == false) {
-                var startChannel = mapRange(startFixture.channels[i].value, startFixture.channels[i].displayMin, startFixture.channels[i].displayMax, startFixture.channels[i].min, startFixture.channels[i].max);
-                var endChannel = mapRange(channel.value, channel.displayMin, channel.displayMax, channel.min, channel.max);
+    let f = 0; const fMax = cue.fixtures.length; for (; f < fMax; f++) {
+        let c = 0; const cMax = cue.fixtures[f].channels.length; for (; c < cMax; c++) {
+            var startFixture = fixtures[fixtures.map(el => el.id).indexOf(cue.fixtures[f].id)];
+            if (startFixture.channels[c].locked == false) {
+                var startChannel = mapRange(startFixture.channels[c].value, startFixture.channels[c].displayMin, startFixture.channels[c].displayMax, startFixture.channels[c].min, startFixture.channels[c].max);
+                var endChannel = mapRange(cue.fixtures[f].channels[c].value, cue.fixtures[f].channels[c].displayMin, cue.fixtures[f].channels[c].displayMax, cue.fixtures[f].channels[c].min, cue.fixtures[f].channels[c].max);
                 // If the end channel is greater than the start channel, the value is going in, out is going out if less
                 if (endChannel >= startChannel) {
                     // Make sure that the step does not dip below 0 (finished)
                     if (cue.inStep >= 0) {
-                        outputChannels[(fixture.startDMXAddress - 1) + channel.dmxAddressOffset] = endChannel + (((startChannel - endChannel) / (cue.inTime * 40)) * cue.inStep);
-                        fixtures[fixtures.map(el => el.id).indexOf(fixture.id)].channels[i].displayValue = parseInt(channel.value + (((startFixture.channels[i].value - channel.value) / (cue.inTime * 40)) * cue.inStep));
+                        outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].channels[c].dmxAddressOffset] = endChannel + (((startChannel - endChannel) / (cue.inTime * 40)) * cue.inStep);
+                        fixtures[fixtures.map(el => el.id).indexOf(cue.fixtures[f].id)].channels[c].displayValue = parseInt(cue.fixtures[f].channels[c].value + (((startFixture.channels[c].value - cue.fixtures[f].channels[c].value) / (cue.inTime * 40)) * cue.inStep));
                     }
                 } else {
                     // Make sure that the step does not dip below 0 (finished)
                     if (cue.outStep >= 0) {
-                        outputChannels[(fixture.startDMXAddress - 1) + channel.dmxAddressOffset] = endChannel + (((startChannel - endChannel) / (cue.outTime * 40)) * cue.outStep);
-                        fixtures[fixtures.map(el => el.id).indexOf(fixture.id)].channels[i].displayValue = parseInt(channel.value + (((startFixture.channels[i].value - channel.value) / (cue.outTime * 40)) * cue.outStep));
+                        outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].channels[c].dmxAddressOffset] = endChannel + (((startChannel - endChannel) / (cue.outTime * 40)) * cue.outStep);
+                        fixtures[fixtures.map(el => el.id).indexOf(cue.fixtures[f].id)].channels[c].displayValue = parseInt(cue.fixtures[f].channels[c].value + (((startFixture.channels[c].value - cue.fixtures[f].channels[c].value) / (cue.outTime * 40)) * cue.outStep));
                     }
                 }
             } else {
-                var startChannel = mapRange(startFixture.channels[i].value, startFixture.channels[i].displayMin, startFixture.channels[i].displayMax, startFixture.channels[i].min, startFixture.channels[i].max);
-                outputChannels[(fixture.startDMXAddress - 1) + channel.dmxAddressOffset] = startChannel;
+                var startChannel = mapRange(startFixture.channels[c].value, startFixture.channels[c].displayMin, startFixture.channels[c].displayMax, startFixture.channels[c].min, startFixture.channels[c].max);
+                outputChannels[(fixture.startDMXAddress - 1) + cue.fixtures[f].channels[c].dmxAddressOffset] = startChannel;
             }
-        });
-    });
+        }
+    }
     return outputChannels;
 }
 
@@ -228,15 +229,15 @@ function calculateStack() {
                 io.emit('cueActionBtn', false);
             }
             // Set the fixture's display and real values to the correct values from the cue
-            cue.fixtures.forEach(function (fixture) {
-                fixture.channels.forEach(function (channel, i) {
-                    var startFixtureChannels = fixtures[fixtures.map(el => el.id).indexOf(fixture.id)].channels;
-                    if (startFixtureChannels[i].locked == false) {
-                        startFixtureChannels[i].value = channel.value;
-                        startFixtureChannels[i].displayValue = channel.value;
+            let f = 0; const fMax = cue.fixtures.length; for (; f < fMax; f++) {
+                let c = 0; const cMax = cue.fixtures[f].channels.length; for (; c < cMax; c++) {
+                    var startFixtureChannels = fixtures[fixtures.map(el => el.id).indexOf(cue.fixtures[f].id)].channels;
+                    if (startFixtureChannels[c].locked == false) {
+                        startFixtureChannels[c].value = cue.fixtures[f].channels[c].value;
+                        startFixtureChannels[c].displayValue = cue.fixtures[f].channels[c].value;
                     }
-                });
-            });
+                }
+            }
             io.sockets.emit('cues', cleanCues());
         }
         io.sockets.emit('fixtures', cleanFixtures());
@@ -347,7 +348,7 @@ function saveShow() {
     return true;
 }
 
-console.log("Tonalite v" + VERSION + " - DMX Lighting Control System");
+console.log(`Tonalite v${VERSION} - DMX Lighting Control System`);
 
 app.use('/static', express.static(__dirname + '/static'));
 app.use(fileUpload());

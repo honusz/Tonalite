@@ -17,14 +17,14 @@ socket.on('fixtures', function (fixtures) {
     $("#groupFixtureIDs").empty();
     //console.log(fixtures);
     if (fixtures.length != 0) {
-        fixtures.forEach(function (fixture) {
-            if (fixture.hasLockedChannels) {
+        let f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
+            if (fixtures[f].hasLockedChannels) {
                 fixtureLock = "<i class=\"ml-2 far fa-lock-alt fa-sm\"></i>";
             } else {
                 fixtureLock = "";
             }
-            if (fixture.channels[0].type == "intensity") {
-                fixtureValue = "<h3 class=\"fixtureValue\">" + fixture.channels[0].displayValue + "</h3>";
+            if (fixtures[f].channels[0].type == "intensity") {
+                fixtureValue = "<h3 class=\"fixtureValue\">" + fixtures[f].channels[0].displayValue + "</h3>";
             } else {
                 if (fixtureLock == "") {
                     fixtureValue = "<h3 class=\"fixtureValue\"><i class=\"ml-2 far fa-lock-open-alt fa-sm\"></i></h3>";
@@ -32,9 +32,9 @@ socket.on('fixtures', function (fixtures) {
                     fixtureValue = "<h3 class=\"fixtureValue\">" + fixtureLock + "</h3>";
                 }
             }
-            $("#fixturesList").append("<div class=\"col-4 col-lg-2\"><div class=\"fixtureItem\" onclick=\"viewFixtureChannels('" + fixture.id + "')\">"+fixtureValue+"<p>" + fixture.shortName + fixtureLock + "</p></div></div>");
-            $("#groupFixtureIDs").append("<option value=" + fixture.id + ">" + fixture.shortName + " (" + fixture.startDMXAddress + ")</option>");
-        });
+            $("#fixturesList").append("<div class=\"col-4 col-lg-2\"><div class=\"fixtureItem\" onclick=\"viewFixtureChannels('" + fixtures[f].id + "')\">" + fixtureValue + "<p>" + fixtures[f].shortName + fixtureLock + "</p></div></div>");
+            $("#groupFixtureIDs").append("<option value=" + fixtures[f].id + ">" + fixtures[f].shortName + " (" + fixtures[f].startDMXAddress + ")</option>");
+        }
     } else {
         $("#fixturesList").append("<div class=\"col-12\"><h5>There are no fixtures in this show!</h5></div>")
     }
@@ -42,9 +42,9 @@ socket.on('fixtures', function (fixtures) {
 
 socket.on('fixtureProfiles', function (profiles) {
     $("#fixtureProfilesList").empty();
-    profiles[0].forEach(function (value) {
-        $("#fixtureProfilesList").append("<li class=\"list-group-item fixtureProfileItem\" onclick=\"addFixture('" + value + "')\">" + upperCase(value) + "</li>");
-    });
+    let p = 0; const pMax = profiles[0].length; for (; p < pMax; p++) {
+        $("#fixtureProfilesList").append("<li class=\"list-group-item fixtureProfileItem\" onclick=\"addFixture('" + profiles[0][p] + "')\">" + upperCase(profiles[0][p]) + "</li>");
+    }
     $("#newFixtureStartDMXAddress").val(profiles[1]);
 });
 
@@ -54,13 +54,13 @@ socket.on('fixtureChannels', function (msg) {
     $("#fixtureChannelsName").text(msg.name);
     $("#fixtureSettingsBtn").off().on("click", function () { viewFixtureSettings(msg.id); });
     $("#fixtureResetBtn").off().on("click", function () { resetFixture(msg.id); });
-    msg.channels.forEach(function (channel, i) {
-        if (channel.locked) {
-            $("#fixtureChannels").append("<button class=\"btn btn-info\" onclick=\"updateFixtureChannelLock(this, '" + msg.id + "', " + i + ")\"><i class=\"far fa-lock-alt fa-sm\"></i></button><label class=\"ml-2\" for=\"" + channel.type + "\">" + channel.name + ":</label><input type=\"range\" class=\"custom-range\" id=\"" + channel.type + "\" max=\"" + channel.displayMax + "\" min=\"" + channel.displayMin + "\" value=\"" + channel.value + "\" oninput=\"updateFixtureChannelValue(this, '" + msg.id + "', " + i + ")\">");
+    let c = 0; const cMax = msg.channels.length; for (; c < cMax; c++) {
+        if (msg.channels[c].locked) {
+            $("#fixtureChannels").append("<button class=\"btn btn-info\" onclick=\"updateFixtureChannelLock(this, '" + msg.id + "', " + i + ")\"><i class=\"far fa-lock-alt fa-sm\"></i></button><label class=\"ml-2\" for=\"" + msg.channels[c].type + "\">" + msg.channels[c].name + ":</label><input type=\"range\" class=\"custom-range\" id=\"" + msg.channels[c].type + "\" max=\"" + msg.channels[c].displayMax + "\" min=\"" + msg.channels[c].displayMin + "\" value=\"" + msg.channels[c].value + "\" oninput=\"updateFixtureChannelValue(this, '" + msg.id + "', " + i + ")\">");
         } else {
-            $("#fixtureChannels").append("<button class=\"btn btn-info\" onclick=\"updateFixtureChannelLock(this, '" + msg.id + "', " + i + ")\"><i class=\"far fa-lock-open-alt fa-sm \"></i></button><label class=\"ml-2\" for=\"" + channel.type + "\">" + channel.name + ":</label><input type=\"range\" class=\"custom-range\" id=\"" + channel.type + "\" max=\"" + channel.displayMax + "\" min=\"" + channel.displayMin + "\" value=\"" + channel.value + "\" oninput=\"updateFixtureChannelValue(this, '" + msg.id + "', " + i + ")\">");
+            $("#fixtureChannels").append("<button class=\"btn btn-info\" onclick=\"updateFixtureChannelLock(this, '" + msg.id + "', " + i + ")\"><i class=\"far fa-lock-open-alt fa-sm \"></i></button><label class=\"ml-2\" for=\"" + msg.channels[c].type + "\">" + msg.channels[c].name + ":</label><input type=\"range\" class=\"custom-range\" id=\"" + msg.channels[c].type + "\" max=\"" + msg.channels[c].displayMax + "\" min=\"" + msg.channels[c].displayMin + "\" value=\"" + msg.channels[c].value + "\" oninput=\"updateFixtureChannelValue(this, '" + msg.id + "', " + i + ")\">");
         }
-    });
+    }
 });
 
 socket.on('fixtureSettings', function (fixture) {
@@ -77,14 +77,14 @@ socket.on('cues', function (cues) {
     $("#cuesList").empty();
     //console.log(cues);
     if (cues.length != 0) {
-        cues.forEach(function (cue) {
-            if (cue.active == true) {
+        let c = 0; const cMax = cues.length; for (; c < cMax; c++) {
+            if (cues[c].active == true) {
                 style = "style=\"background-color:#f59f00\"";
             } else {
                 style = "";
             }
-            $("#cuesList").append("<div class=\"col-4 col-lg-2\"><div class=\"cueItem\" " + style + "onclick=\"viewCueSettings('" + cue.id + "')\"><p>" + cue.name + "</p></div></div>");
-        });
+            $("#cuesList").append("<div class=\"col-4 col-lg-2\"><div class=\"cueItem\" " + style + "onclick=\"viewCueSettings('" + cues[c].id + "')\"><p>" + cues[c].name + "</p></div></div>");
+        }
     } else {
         $("#cuesList").append("<div class=\"col-12\"><h5>There are no cues in this show!</h5></div>");
     }
