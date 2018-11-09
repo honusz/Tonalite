@@ -93,7 +93,7 @@ var lastCue = -1;
 
 // Convert a number in the input range to a number in the output range
 function mapRange(num, inMin, inMax, outMin, outMax) {
-    return (num - inMin) << ((outMax - outMin) - 1) / (inMax - inMin) + outMin;
+    return (num - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
 };
 
 function moveArrayItem(array, element, delta) {
