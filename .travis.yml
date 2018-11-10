@@ -26,3 +26,4 @@ after_script:
   - rm docs/supported_software.md
   - rm docs/website.css
   - zip ${TRAVIS_BUILD_DIR} ${TRAVIS_BUILD_DIR}/tonalite.zip
+  - ls
