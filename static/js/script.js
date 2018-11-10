@@ -2,6 +2,8 @@ var socket = io('http://' + document.domain + ':' + location.port);
 document.getElementById("fixturesTab").click();
 var fixturesList = document.getElementById('fixturesList');
 var groupFixtureIDs = document.getElementById('groupFixtureIDs');
+var currentTab = "fixtures";
+var backupFixtures = [];
 
 function launchFullScreen(element) {
     if (element.requestFullScreen) {
@@ -30,33 +32,10 @@ socket.on('fixtures', function (fixtures) {
     //console.log(fixtures);
     fixturesList.innerHTML = "";
     groupFixtureIDs.innerHTML = "";
-    if (fixtures.length != 0) {
-        var f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
-            if (fixtures[f].hasLockedChannels) {
-                fixtureLock = "<i class=\"ml-2 far fa-lock-alt fa-sm\"></i>";
-            } else {
-                fixtureLock = "";
-            }
-            if (fixtures[f].channels[0].type == "intensity") {
-                fixtureValue = "<h3 class=\"fixtureValue\">" + fixtures[f].channels[0].displayValue + "</h3>";
-            } else {
-                if (fixtureLock == "") {
-                    fixtureValue = "<h3 class=\"fixtureValue\"><i class=\"ml-2 far fa-lock-open-alt fa-sm\"></i></h3>";
-                } else {
-                    fixtureValue = "<h3 class=\"fixtureValue\">" + fixtureLock + "</h3>";
-                }
-            }
-            var e = document.createElement('div');
-            e.className = "col-4 col-lg-2";
-            e.innerHTML = "<div class=\"fixtureItem\" onclick=\"viewFixtureChannels('" + fixtures[f].id + "')\">" + fixtureValue + "<p>" + fixtures[f].shortName + fixtureLock + "</p></div>";
-            fixturesList.appendChild(e);
-            var fi = document.createElement('option');
-            fi.value = fixtures[f].id;
-            fi.innerHTML = fixtures[f].shortName + " (" + fixtures[f].startDMXAddress + ")";
-            groupFixtureIDs.appendChild(fi);
-        }
+    if (currentTab == "fixtures") {
+        setFixtures(fixtures);
     } else {
-        $("#fixturesList").append("<div class=\"col-12\"><h5>There are no fixtures in this show!</h5></div>")
+        backupFixtures = fixtures;
     }
 });
 
@@ -372,7 +351,10 @@ function openTab(tabName) {
 
     // Show the current tab, and add an "active" class to the button that opened the tab
     document.getElementById(tabName).style.display = "block";
-
+    currentTab = tabName;
+    if (currentTab == "fixtures") {
+        setFixtures(backupFixtures);
+    }
     if (document.getElementsByClassName("tablinks-" + tabName)[0]) {
         document.getElementsByClassName("tablinks-" + tabName)[0].classList.add("active");
     }
@@ -387,6 +369,37 @@ function titleCase(str) {
 
 function upperCase(str) {
     return str.toUpperCase().replace(/-/g, " ");
+}
+
+function setFixtures(fixtures) {
+    if (fixtures.length != 0) {
+        var f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
+            if (fixtures[f].hasLockedChannels) {
+                fixtureLock = "<i class=\"ml-2 far fa-lock-alt fa-sm\"></i>";
+            } else {
+                fixtureLock = "";
+            }
+            if (fixtures[f].channels[0].type == "intensity") {
+                fixtureValue = "<h3 class=\"fixtureValue\">" + fixtures[f].channels[0].displayValue + "</h3>";
+            } else {
+                if (fixtureLock == "") {
+                    fixtureValue = "<h3 class=\"fixtureValue\"><i class=\"ml-2 far fa-lock-open-alt fa-sm\"></i></h3>";
+                } else {
+                    fixtureValue = "<h3 class=\"fixtureValue\">" + fixtureLock + "</h3>";
+                }
+            }
+            var e = document.createElement('div');
+            e.className = "col-4 col-lg-2";
+            e.innerHTML = "<div class=\"fixtureItem\" onclick=\"viewFixtureChannels('" + fixtures[f].id + "')\">" + fixtureValue + "<p>" + fixtures[f].shortName + fixtureLock + "</p></div>";
+            fixturesList.appendChild(e);
+            var fi = document.createElement('option');
+            fi.value = fixtures[f].id;
+            fi.innerHTML = fixtures[f].shortName + " (" + fixtures[f].startDMXAddress + ")";
+            groupFixtureIDs.appendChild(fi);
+        }
+    } else {
+        $("#fixturesList").append("<div class=\"col-12\"><h5>There are no fixtures in this show!</h5></div>")
+    }
 }
 
 $('.custom-file-input').change(function () {
