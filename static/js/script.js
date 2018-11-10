@@ -13,7 +13,7 @@ function launchFullScreen(element) {
     }
 }
 
-launchFullScreen(document.documentElement);
+//launchFullScreen(document.documentElement);
 
 socket.on('message', function (msg) {
     $("#alertText").text(msg.content);
