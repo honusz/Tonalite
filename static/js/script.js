@@ -1,5 +1,7 @@
 var socket = io('http://' + document.domain + ':' + location.port);
 document.getElementById("fixturesTab").click();
+var fixturesList = document.getElementById('fixturesList');
+var groupFixtureIDs = document.getElementById('groupFixtureIDs');
 
 socket.on('message', function (msg) {
     $("#alertText").text(msg.content);
@@ -14,8 +16,6 @@ socket.on('message', function (msg) {
 
 socket.on('fixtures', function (fixtures) {
     //console.log(fixtures);
-    var fixturesList = document.getElementById('fixturesList');
-    var groupFixtureIDs = document.getElementById('groupFixtureIDs');
     fixturesList.innerHTML = "";
     groupFixtureIDs.innerHTML = "";
     if (fixtures.length != 0) {
