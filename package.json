@@ -6,7 +6,7 @@
   "bin": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"Warning: no test specified\" && exit 0",
     "build-linux": "pkg . -t node10-linux",
     "build-win": "pkg . -t node10-win",
     "build-docs": "cd docs && gitbook pdf . documentation.pdf && cd ../"
