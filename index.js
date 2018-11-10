@@ -118,11 +118,11 @@ function openSettings() {
 
             if (SETTINGS.output == "udmx") {
                 if (SETTINGS.device == "linux") {
-                    ls = spawn('uDMXArtnet/uDMXArtnet_minimal_64');
+                    ls = spawn('./uDMXArtnet/uDMXArtnet_minimal_64');
                 } else if (SETTINGS.device == "rpi") {
-                    ls = spawn('uDMXArtnet/uDMXArtnet_PI_minimal_32', ['-i', '192.168.4.1']);
+                    ls = spawn('./uDMXArtnet/uDMXArtnet_PI_minimal_32', ['-i', '192.168.4.1']);
                 } else if (SETTINGS.device == "win") {
-                    ls = spawn('uDMXArtnet/uDMXArtnet_Minimal.exe');
+                    ls = spawn('./uDMXArtnet/uDMXArtnet_Minimal.exe');
                 }
                 ls.on('close', (code) => {
                     console.log('udmx child process exited with code ' + code);
@@ -439,8 +439,6 @@ app.post('/importFixtureDefinition', (req, res) => {
     }
 });
 
-
-
 fs.exists('./currentShow.json', function (exists) {
     if (exists == false) {
         saveShow();
@@ -480,7 +478,7 @@ io.on('connection', function (socket) {
                 startDMXAddress = fixture.startDMXAddress + fixture.channels.length;
             }
         });
-        fs.readdir(__dirname + "/fixtures", (err, files) => {
+        fs.readdir("./fixtures", (err, files) => {
             files.forEach(file => {
                 fixturesList.push(file.slice(0, -5));
             });
@@ -498,7 +496,7 @@ io.on('connection', function (socket) {
         if (startDMXAddress) {
             for (var i = 0; i < msg.creationCount; i++) {
                 // Add a fixture using the fixture spec file in the fixtures folder
-                var fixture = require("./fixtures/" + msg.fixtureName + ".json");
+                var fixture = require(process.cwd() + "/fixtures/" + msg.fixtureName + ".json");
                 fixture.startDMXAddress = startDMXAddress;
                 fixture.hasLockedChannels = false;
                 // Assign a random id for easy access to this fixture

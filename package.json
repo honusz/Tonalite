@@ -42,7 +42,6 @@
   "pkg": {
     "assets": [
       "static/**/*",
-      "uDMXArtnet/*",
       "index.min.html"
     ]
   }
