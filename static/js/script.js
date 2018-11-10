@@ -3,6 +3,18 @@ document.getElementById("fixturesTab").click();
 var fixturesList = document.getElementById('fixturesList');
 var groupFixtureIDs = document.getElementById('groupFixtureIDs');
 
+function launchFullScreen(element) {
+    if (element.requestFullScreen) {
+        element.requestFullScreen();
+    } else if (element.mozRequestFullScreen) {
+        element.mozRequestFullScreen();
+    } else if (element.webkitRequestFullScreen) {
+        element.webkitRequestFullScreen();
+    }
+}
+
+launchFullScreen(document.documentElement);
+
 socket.on('message', function (msg) {
     $("#alertText").text(msg.content);
     $("#alert").addClass("show");
