@@ -64,7 +64,7 @@ var STARTED = false;
 
 const VERSION = "2.0";
 
-fs.exists('tonaliteSettings.json', function (exists) {
+fs.exists('./tonaliteSettings.json', function (exists) {
     if (exists == false) {
         saveSettings();
     }
@@ -87,7 +87,7 @@ var artnet = null;
 
 // Load the Tonalite settings from file
 function openSettings() {
-    fs.readFile(__dirname + '/tonaliteSettings.json', (err, data) => {
+    fs.readFile('./tonaliteSettings.json', (err, data) => {
         if (err) throw err;
         var settings = JSON.parse(data);
         SETTINGS = settings;
@@ -144,7 +144,7 @@ function openSettings() {
 
 // Save the Tonalite settings to a file
 function saveSettings() {
-    fs.writeFile(__dirname + "/tonaliteSettings.json", JSON.stringify(SETTINGS, null, 4), (err) => {
+    fs.writeFile("./tonaliteSettings.json", JSON.stringify(SETTINGS, null, 4), (err) => {
         if (err) {
             console.log(err);
             return false;
@@ -367,7 +367,7 @@ function dmxLoop() {
 
 // Load the fixtures and cues from file
 function openShow() {
-    fs.readFile(__dirname + '/currentShow.json', (err, data) => {
+    fs.readFile('./currentShow.json', (err, data) => {
         if (err) throw err;
         let show = JSON.parse(data);
         fixtures = show[0];
@@ -381,7 +381,7 @@ function openShow() {
 
 // Save the fixtures and cues of the show to file
 function saveShow() {
-    fs.writeFile(__dirname + "/currentShow.json", JSON.stringify([fixtures, cues, groups]), (err) => {
+    fs.writeFile("./currentShow.json", JSON.stringify([fixtures, cues, groups]), (err) => {
         if (err) {
             console.log(err);
             return false;
@@ -400,11 +400,11 @@ app.get('/', function (req, res) {
 });
 
 app.get('/docs', function (req, res) {
-    res.sendFile(__dirname + '/docs/documentation.pdf');
+    res.sendFile('./docs/documentation.pdf');
 });
 
 app.get('/showFile', function (req, res) {
-    res.download(__dirname + '/currentShow.json', moment().format() + '.tonalite');
+    res.download('./currentShow.json', moment().format() + '.tonalite');
 });
 
 // Upload Show File
@@ -414,7 +414,7 @@ app.post('/showFile', (req, res) => {
     }
     let showFile = req.files.showFile;
 
-    showFile.mv(__dirname + '/currentShow.json', function (err) {
+    showFile.mv('./currentShow.json', function (err) {
         if (err)
             return res.status(500).send(err);
         openShow();
@@ -429,7 +429,7 @@ app.post('/importFixtureDefinition', (req, res) => {
     let fixtureDefinition = req.files.fixtureDefinition;
 
     if (fixtureDefinition.mimetype == "application/json") {
-        fixtureDefinition.mv(__dirname + '/fixtures/' + req.files.fixtureDefinition.name, function (err) {
+        fixtureDefinition.mv('./fixtures/' + req.files.fixtureDefinition.name, function (err) {
             if (err)
                 return res.status(500).send(err);
             io.emit('message', { type: "info", content: "The fixture profile has been imported!" });
@@ -441,7 +441,7 @@ app.post('/importFixtureDefinition', (req, res) => {
 
 
 
-fs.exists('currentShow.json', function (exists) {
+fs.exists('./currentShow.json', function (exists) {
     if (exists == false) {
         saveShow();
     }
@@ -498,7 +498,7 @@ io.on('connection', function (socket) {
         if (startDMXAddress) {
             for (var i = 0; i < msg.creationCount; i++) {
                 // Add a fixture using the fixture spec file in the fixtures folder
-                var fixture = require(__dirname + "/fixtures/" + msg.fixtureName + ".json");
+                var fixture = require("./fixtures/" + msg.fixtureName + ".json");
                 fixture.startDMXAddress = startDMXAddress;
                 fixture.hasLockedChannels = false;
                 // Assign a random id for easy access to this fixture
