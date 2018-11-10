@@ -54,11 +54,13 @@ Features:
 */
 
 var SETTINGS = {
-    output: 1, // 0 = E1.31, 1 = uDMX, 2 = ArtNet
-    device: 2, // 0 = linux64, 1 = rpi, 2 = windows
+    output: "udmx", // e131, udmx, artnet
+    device: "linux", // linux, rpi, win
     url: "localhost", // http web UI location
     port: 3000
 }
+
+var STARTED = false;
 
 const VERSION = "2.0";
 
@@ -69,27 +71,87 @@ fs.exists('tonaliteSettings.json', function (exists) {
     openSettings();
 });
 
-// If e1.31 selected, run that, but run artnet otherwise
-if (SETTINGS.output == 0) {
-    var e131 = require('e131');
-    var client = new e131.Client(1);
-    var packet = client.createPacket(512);
-    var slotsData = packet.getSlotsData();
-    var channels = slotsData;
-} else {
-    if (SETTINGS.url != "localhost") {
-        var artnet = require('artnet')({ iface: SETTINGS.url, host: '255.255.255.255' });
-    } else {
-        var artnet = require('artnet')({ host: '255.255.255.255' });
-    }
-    var channels = new Array(512).fill(0);
-}
-
 var fixtures = [];
 var cues = [];
 var groups = [];
 var currentCue = -1;
 var lastCue = -1;
+
+// Set up dmx variables for integrations used later on
+var e131 = null;
+var client = null;
+var packet = null;
+var slotsData = null;
+var channels = null;
+var artnet = null;
+
+// Load the Tonalite settings from file
+function openSettings() {
+    fs.readFile(__dirname + '/tonaliteSettings.json', (err, data) => {
+        if (err) throw err;
+        var settings = JSON.parse(data);
+        SETTINGS = settings;
+
+        if (STARTED == false) {
+            STARTED = true;
+
+            // If e1.31 selected, run that, but run artnet otherwise
+            if (SETTINGS.output == "e131") {
+                e131 = require('e131');
+                client = new e131.Client(1);
+                packet = client.createPacket(512);
+                slotsData = packet.getSlotsData();
+                channels = slotsData;
+            } else {
+                if (SETTINGS.url != "localhost") {
+                    artnet = require('artnet')({ iface: SETTINGS.url, host: '255.255.255.255' });
+                } else {
+                    artnet = require('artnet')({ host: '255.255.255.255' });
+                }
+                channels = new Array(512).fill(0);
+            }
+
+            http.listen(SETTINGS.port, SETTINGS.url, function () {
+                console.log(`Tonalite v${VERSION} - DMX Lighting Control System`);
+                console.log('The web UI can be found at http://' + SETTINGS.url + ':' + SETTINGS.port);
+            });
+
+            if (SETTINGS.output == "udmx") {
+                if (SETTINGS.device == "linux") {
+                    ls = spawn('uDMXArtnet/uDMXArtnet_minimal_64');
+                } else if (SETTINGS.device == "rpi") {
+                    ls = spawn('uDMXArtnet/uDMXArtnet_PI_minimal_32', ['-i', '192.168.4.1']);
+                } else if (SETTINGS.device == "win") {
+                    ls = spawn('uDMXArtnet/uDMXArtnet_Minimal.exe');
+                }
+                ls.on('close', (code) => {
+                    console.log('udmx child process exited with code ' + code);
+                });
+            }
+
+            // Output DMX frames 40 times a second
+            setInterval(dmxLoop, 25);
+
+            // If on the raspberry pi, turn on an led to show that the program is started
+            if (SETTINGS.device == "rpi") {
+                const Gpio = require('onoff').Gpio;
+                const led = new Gpio(17, 'out');
+                led.writeSync(1);
+            }
+        }
+    });
+}
+
+// Save the Tonalite settings to a file
+function saveSettings() {
+    fs.writeFile(__dirname + "/tonaliteSettings.json", JSON.stringify(SETTINGS, null, 4), (err) => {
+        if (err) {
+            console.log(err);
+            return false;
+        };
+    });
+    return true;
+};
 
 // Convert a number in the input range to a number in the output range
 function mapRange(num, inMin, inMax, outMin, outMax) {
@@ -295,32 +357,12 @@ function dmxLoop() {
     calculateStack();
 
     // If e1.31 is selected, output to that, if not, use artnet
-    if (SETTINGS.output == 0) {
+    if (SETTINGS.output == "e131") {
         slotsData = channels;
         client.send(packet);
     } else {
         artnet.set(1, channels);
     }
-};
-
-// Load the Tonalite settings from file
-function openSettings() {
-    fs.readFile(__dirname + '/tonaliteSettings.json', (err, data) => {
-        if (err) throw err;
-        let settings = JSON.parse(data);
-        SETTINGS = settings;
-    });
-}
-
-// Save the Tonalite settings from file
-function saveSettings() {
-    fs.writeFile(__dirname + "/tonaliteSettings.json", JSON.stringify(SETTINGS), (err) => {
-        if (err) {
-            console.log(err);
-            return false;
-        };
-    });
-    return true;
 };
 
 // Load the fixtures and cues from file
@@ -347,8 +389,6 @@ function saveShow() {
     });
     return true;
 }
-
-console.log(`Tonalite v${VERSION} - DMX Lighting Control System`);
 
 app.use('/static', express.static(__dirname + '/static'));
 app.use(fileUpload());
@@ -399,32 +439,7 @@ app.post('/importFixtureDefinition', (req, res) => {
     }
 });
 
-http.listen(SETTINGS.port, SETTINGS.url, function () {
-    console.log('Tonalite listening at http://' + SETTINGS.url + ':' + SETTINGS.port);
-});
 
-if (SETTINGS.output == 1) {
-    if (SETTINGS.device == 0) {
-        ls = spawn('uDMXArtnet/uDMXArtnet_minimal_64');
-    } else if (SETTINGS.device == 1) {
-        ls = spawn('uDMXArtnet/uDMXArtnet_PI_minimal_32', ['-i', '192.168.4.1']);
-    } else if (SETTINGS.device == 2) {
-        ls = spawn('uDMXArtnet/uDMXArtnet_Minimal.exe');
-    }
-    ls.on('close', (code) => {
-        console.log('udmx child process exited with code ' + code);
-    });
-}
-
-// Output DMX frames 40 times a second
-setInterval(dmxLoop, 25);
-
-// If on the raspberry pi, turn on an led to show that the program is started
-if (SETTINGS.device == 1) {
-    const Gpio = require('onoff').Gpio;
-    const led = new Gpio(17, 'out');
-    led.writeSync(1);
-}
 
 fs.exists('currentShow.json', function (exists) {
     if (exists == false) {
