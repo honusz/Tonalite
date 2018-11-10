@@ -56,7 +56,7 @@ Features:
 var SETTINGS = {
     output: 1, // 0 = E1.31, 1 = uDMX, 2 = ArtNet
     device: 0, // 0 = linux64, 1 = rpi, 2 = windows
-    url: "10.42.0.1", // http web UI location
+    url: "localhost", // http web UI location
     port: 3000
 }
 

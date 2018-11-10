@@ -13,11 +13,13 @@ socket.on('message', function (msg) {
 });
 
 socket.on('fixtures', function (fixtures) {
-    $("#fixturesList").empty();
-    $("#groupFixtureIDs").empty();
     //console.log(fixtures);
+    var fixturesList = document.getElementById('fixturesList');
+    var groupFixtureIDs = document.getElementById('groupFixtureIDs');
+    fixturesList.innerHTML = "";
+    groupFixtureIDs.innerHTML = "";
     if (fixtures.length != 0) {
-        let f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
+        var f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
             if (fixtures[f].hasLockedChannels) {
                 fixtureLock = "<i class=\"ml-2 far fa-lock-alt fa-sm\"></i>";
             } else {
@@ -32,8 +34,14 @@ socket.on('fixtures', function (fixtures) {
                     fixtureValue = "<h3 class=\"fixtureValue\">" + fixtureLock + "</h3>";
                 }
             }
-            $("#fixturesList").append("<div class=\"col-4 col-lg-2\"><div class=\"fixtureItem\" onclick=\"viewFixtureChannels('" + fixtures[f].id + "')\">" + fixtureValue + "<p>" + fixtures[f].shortName + fixtureLock + "</p></div></div>");
-            $("#groupFixtureIDs").append("<option value=" + fixtures[f].id + ">" + fixtures[f].shortName + " (" + fixtures[f].startDMXAddress + ")</option>");
+            var e = document.createElement('div');
+            e.className = "col-4 col-lg-2";
+            e.innerHTML = "<div class=\"fixtureItem\" onclick=\"viewFixtureChannels('" + fixtures[f].id + "')\">" + fixtureValue + "<p>" + fixtures[f].shortName + fixtureLock + "</p></div>";
+            fixturesList.appendChild(e);
+            var fi = document.createElement('option');
+            fi.value = fixtures[f].id;
+            fi.innerHTML = fixtures[f].shortName + " (" + fixtures[f].startDMXAddress + ")";
+            groupFixtureIDs.appendChild(fi);
         }
     } else {
         $("#fixturesList").append("<div class=\"col-12\"><h5>There are no fixtures in this show!</h5></div>")
@@ -42,7 +50,7 @@ socket.on('fixtures', function (fixtures) {
 
 socket.on('fixtureProfiles', function (profiles) {
     $("#fixtureProfilesList").empty();
-    let p = 0; const pMax = profiles[0].length; for (; p < pMax; p++) {
+    var p = 0; const pMax = profiles[0].length; for (; p < pMax; p++) {
         $("#fixtureProfilesList").append("<li class=\"list-group-item fixtureProfileItem\" onclick=\"addFixture('" + profiles[0][p] + "')\">" + upperCase(profiles[0][p]) + "</li>");
     }
     $("#newFixtureStartDMXAddress").val(profiles[1]);
@@ -54,7 +62,7 @@ socket.on('fixtureChannels', function (msg) {
     $("#fixtureChannelsName").text(msg.name);
     $("#fixtureSettingsBtn").off().on("click", function () { viewFixtureSettings(msg.id); });
     $("#fixtureResetBtn").off().on("click", function () { resetFixture(msg.id); });
-    let c = 0; const cMax = msg.channels.length; for (; c < cMax; c++) {
+    var c = 0; const cMax = msg.channels.length; for (; c < cMax; c++) {
         if (msg.channels[c].locked) {
             $("#fixtureChannels").append("<button class=\"btn btn-info\" onclick=\"updateFixtureChannelLock(this, '" + msg.id + "', " + i + ")\"><i class=\"far fa-lock-alt fa-sm\"></i></button><label class=\"ml-2\" for=\"" + msg.channels[c].type + "\">" + msg.channels[c].name + ":</label><input type=\"range\" class=\"custom-range\" id=\"" + msg.channels[c].type + "\" max=\"" + msg.channels[c].displayMax + "\" min=\"" + msg.channels[c].displayMin + "\" value=\"" + msg.channels[c].value + "\" oninput=\"updateFixtureChannelValue(this, '" + msg.id + "', " + i + ")\">");
         } else {
@@ -66,7 +74,7 @@ socket.on('fixtureChannels', function (msg) {
 socket.on('fixtureSettings', function (fixture) {
     openTab('fixtureSettingsPage');
     $("#fixtureChannelsBackBtn").off().on("click", function () { viewFixtureChannels(fixture.id); });
-    $("#fixtureDeleteBtn").off().on("click", function () { removeFixture(fixture.id); });
+    $("#fixtureDevareBtn").off().on("click", function () { removeFixture(fixture.id); });
     $("#fixtureSaveBtn").off().on("click", function () { saveFixtureSettings(fixture.id); });
     $("#fixtureNameInput").val(fixture.name);
     $("#fixtureShortNameInput").val(fixture.shortName);
@@ -77,7 +85,7 @@ socket.on('cues', function (cues) {
     $("#cuesList").empty();
     //console.log(cues);
     if (cues.length != 0) {
-        let c = 0; const cMax = cues.length; for (; c < cMax; c++) {
+        var c = 0; const cMax = cues.length; for (; c < cMax; c++) {
             if (cues[c].active == true) {
                 style = "style=\"background-color:#f59f00\"";
             } else {
@@ -92,7 +100,7 @@ socket.on('cues', function (cues) {
 
 socket.on('cueSettings', function (cue) {
     openTab('cueSettingsPage');
-    $("#cueDeleteBtn").off().on("click", function () { removeCue(cue.id); });
+    $("#cueDevareBtn").off().on("click", function () { removeCue(cue.id); });
     $("#cueSaveBtn").off().on("click", function () { saveCueSettings(cue.id); });
     $("#gotoCueBtn").off().on("click", function () { gotoCue(cue.id); });
     $("#cueUpdateBtn").off().on("click", function () { updateCue(cue.id); });
@@ -131,7 +139,7 @@ socket.on('groups', function (groups) {
 socket.on('groupSettings', function (group) {
     openTab('groupSettingsPage');
     $("#groupChannelsBackBtn").off().on("click", function () { viewGroupChannels(group.id); });
-    $("#groupDeleteBtn").off().on("click", function () { removeGroup(group.id); });
+    $("#groupDevareBtn").off().on("click", function () { removeGroup(group.id); });
     $("#groupSaveBtn").off().on("click", function () { saveGroupSettings(group.id); });
     $("#groupNameInput").val(group.name);
     $("#groupShortNameInput").val(group.shortName);
@@ -197,7 +205,7 @@ function updateFixtureChannelLock(self, fixtureID, channelID) {
 }
 
 function removeFixture(fixtureID) {
-    if (confirm("Are you sure you want to delete this fixture?")) {
+    if (confirm("Are you sure you want to devare this fixture?")) {
         socket.emit('removeFixture', fixtureID);
         openTab('fixtures');
     }
@@ -208,7 +216,7 @@ function saveFixtureSettings(fixtureID) {
 }
 
 function removeCue(cueID) {
-    if (confirm("Are you sure you want to delete this cue?")) {
+    if (confirm("Are you sure you want to devare this cue?")) {
         socket.emit('removeCue', cueID);
         openTab('cues');
     }
@@ -283,7 +291,7 @@ function updateGroupChannelValue(self, groupID, channelID) {
 }
 
 function removeGroup(groupID) {
-    if (confirm("Are you sure you want to delete this group?")) {
+    if (confirm("Are you sure you want to devare this group?")) {
         socket.emit('removeGroup', groupID);
         openTab('groups');
     }
