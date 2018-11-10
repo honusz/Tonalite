@@ -3,7 +3,7 @@ node_js:
   - "11"
 after_script:
   - npm run build-linux
-  - cp /home/travis/build/johnroper100/Tonalite/node_modules/sleep/build/Release/node_sleep.node node_sleep.node
+  - cp ${TRAVIS_BUILD_DIR}/node_modules/sleep/build/Release/node_sleep.node node_sleep.node
   - rm .gitignore
   - rm .travis.yml
   - rm index.html
@@ -26,4 +26,3 @@ after_script:
   - rm docs/supported_software.md
   - rm docs/website.css
   - zip ${TRAVIS_BUILD_DIR}/tonalite.zip ${TRAVIS_BUILD_DIR}
-  - ls
