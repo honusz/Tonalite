@@ -15,4 +15,13 @@ after_script:
   - rm README.md
   - rm -rf static
   - rm -rf node_modules
-  - ls
+  - rm -rf docs/cues
+  - rm -rf docs/fixtures
+  - rm -rf docs/groups
+  - rm -rf docs/images
+  - rm docs/book.json
+  - rm docs/README.md
+  - rm docs/SUMMARY.md
+  - rm docs/supported_hardware.md
+  - rm docs/supported_software.md
+  - rm docs/website.css
