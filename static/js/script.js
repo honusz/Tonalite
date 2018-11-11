@@ -30,8 +30,6 @@ socket.on('message', function (msg) {
 
 socket.on('fixtures', function (fixtures) {
     //console.log(fixtures);
-    fixturesList.innerHTML = "";
-    groupFixtureIDs.innerHTML = "";
     if (currentTab == "fixtures") {
         setFixtures(fixtures);
     } else {
@@ -372,6 +370,8 @@ function upperCase(str) {
 }
 
 function setFixtures(fixtures) {
+    fixturesList.innerHTML = "";
+    groupFixtureIDs.innerHTML = "";
     if (fixtures.length != 0) {
         var f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
             if (fixtures[f].hasLockedChannels) {
