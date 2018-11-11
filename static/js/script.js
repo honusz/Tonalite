@@ -1,9 +1,9 @@
 var socket = io('http://' + document.domain + ':' + location.port);
-document.getElementById("fixturesTab").click();
 var fixturesList = document.getElementById('fixturesList');
 var groupFixtureIDs = document.getElementById('groupFixtureIDs');
 var currentTab = "fixtures";
 var backupFixtures = [];
+document.getElementById("fixturesTab").click();
 
 function launchFullScreen(element) {
     if (element.requestFullScreen) {
