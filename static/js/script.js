@@ -43,6 +43,7 @@ socket.on('fixtureProfiles', function (profiles) {
         $("#fixtureProfilesList").append("<li class=\"list-group-item fixtureProfileItem\" onclick=\"addFixture('" + profiles[0][p] + "')\">" + upperCase(profiles[0][p]) + "</li>");
     }
     $("#newFixtureStartDMXAddress").val(profiles[1]);
+    $("#newFixtureCreationCount").val(1);
 });
 
 socket.on('fixtureChannels', function (msg) {
