@@ -66,7 +66,7 @@ var STARTED = false;
 
 const VERSION = "2.0";
 
-fs.exists('./tonaliteSettings.json', function (exists) {
+fs.exists(process.cwd() + '/tonaliteSettings.json', function (exists) {
     if (exists == false) {
         saveSettings();
     }
@@ -89,7 +89,7 @@ var artnet = null;
 
 // Load the Tonalite settings from file
 function openSettings() {
-    fs.readFile('./tonaliteSettings.json', (err, data) => {
+    fs.readFile(process.cwd() + '/tonaliteSettings.json', (err, data) => {
         if (err) throw err;
         var settings = JSON.parse(data);
         SETTINGS = settings;
@@ -120,11 +120,11 @@ function openSettings() {
 
             if (SETTINGS.output == "udmx") {
                 if (SETTINGS.device == "linux") {
-                    ls = spawn('./uDMXArtnet/uDMXArtnet_minimal_64');
+                    ls = spawn(process.cwd() + '/uDMXArtnet/uDMXArtnet_minimal_64');
                 } else if (SETTINGS.device == "rpi") {
-                    ls = spawn('./uDMXArtnet/uDMXArtnet_PI_minimal_32', ['-i', '192.168.4.1']);
+                    ls = spawn(process.cwd() + '/uDMXArtnet/uDMXArtnet_PI_minimal_32', ['-i', '192.168.4.1']);
                 } else if (SETTINGS.device == "win") {
-                    ls = spawn('./uDMXArtnet/uDMXArtnet_Minimal.exe');
+                    ls = spawn(process.cwd() + '/uDMXArtnet/uDMXArtnet_Minimal.exe');
                 }
                 ls.on('close', (code) => {
                     console.log('udmx child process exited with code ' + code);
@@ -146,7 +146,7 @@ function openSettings() {
 
 // Save the Tonalite settings to a file
 function saveSettings() {
-    fs.writeFile("./tonaliteSettings.json", JSON.stringify(SETTINGS, null, 4), (err) => {
+    fs.writeFile(process.cwd() + "/tonaliteSettings.json", JSON.stringify(SETTINGS, null, 4), (err) => {
         if (err) {
             console.log(err);
             return false;
@@ -369,7 +369,7 @@ function dmxLoop() {
 
 // Load the fixtures and cues from file
 function openShow() {
-    fs.readFile('./currentShow.json', (err, data) => {
+    fs.readFile(process.cwd() + '/currentShow.json', (err, data) => {
         if (err) throw err;
         let show = JSON.parse(data);
         fixtures = show[0];
@@ -383,7 +383,7 @@ function openShow() {
 
 // Save the fixtures and cues of the show to file
 function saveShow() {
-    fs.writeFile("./currentShow.json", JSON.stringify([fixtures, cues, groups]), (err) => {
+    fs.writeFile(process.cwd() + "/currentShow.json", JSON.stringify([fixtures, cues, groups]), (err) => {
         if (err) {
             console.log(err);
             return false;
@@ -402,11 +402,11 @@ app.get('/', function (req, res) {
 });
 
 app.get('/docs', function (req, res) {
-    res.sendFile('./docs/documentation.pdf');
+    res.sendFile(process.cwd() + '/docs/documentation.pdf');
 });
 
 app.get('/showFile', function (req, res) {
-    res.download('./currentShow.json', moment().format() + '.tonalite');
+    res.download(process.cwd() + '/currentShow.json', moment().format() + '.tonalite');
 });
 
 // Upload Show File
@@ -416,7 +416,7 @@ app.post('/showFile', (req, res) => {
     }
     let showFile = req.files.showFile;
 
-    showFile.mv('./currentShow.json', function (err) {
+    showFile.mv(process.cwd() + '/currentShow.json', function (err) {
         if (err)
             return res.status(500).send(err);
         openShow();
@@ -431,7 +431,7 @@ app.post('/importFixtureDefinition', (req, res) => {
     let fixtureDefinition = req.files.fixtureDefinition;
 
     if (fixtureDefinition.mimetype == "application/json") {
-        fixtureDefinition.mv('./fixtures/' + req.files.fixtureDefinition.name, function (err) {
+        fixtureDefinition.mv(process.cwd() + '/fixtures/' + req.files.fixtureDefinition.name, function (err) {
             if (err)
                 return res.status(500).send(err);
             io.emit('message', { type: "info", content: "The fixture profile has been imported!" });
@@ -441,7 +441,7 @@ app.post('/importFixtureDefinition', (req, res) => {
     }
 });
 
-fs.exists('./currentShow.json', function (exists) {
+fs.exists(process.cwd() + '/currentShow.json', function (exists) {
     if (exists == false) {
         saveShow();
     }
@@ -480,7 +480,7 @@ io.on('connection', function (socket) {
                 startDMXAddress = fixture.startDMXAddress + fixture.channels.length;
             }
         });
-        fs.readdir("./fixtures", (err, files) => {
+        fs.readdir(process.cwd() + "/fixtures", (err, files) => {
             files.forEach(file => {
                 fixturesList.push(file.slice(0, -5));
             });
