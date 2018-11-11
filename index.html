@@ -196,14 +196,14 @@
           </div>
           <div class="col-12">
               <div class="form-group">
-                  <label for="cueInTimeInput">Up Time:</label>
-                  <input class="form-control" type="number" id="cueInTimeInput" placeholder="Cue Up Length In Seconds">
+                  <label for="cueUpTimeInput">Up Time:</label>
+                  <input class="form-control" type="number" id="cueUpTimeInput" placeholder="Cue Up Length In Seconds">
               </div>
           </div>
           <div class="col-12">
               <div class="form-group">
-                  <label for="cueOutTimeInput">Down Time:</label>
-                  <input class="form-control" type="number" id="cueOutTimeInput" placeholder="Cue Down Length In Seconds">
+                  <label for="cueDownTimeInput">Down Time:</label>
+                  <input class="form-control" type="number" id="cueDownTimeInput" placeholder="Cue Down Length In Seconds">
               </div>
           </div>
           <div class="col-12">
@@ -335,8 +335,16 @@
                 <input class="form-control" type="text" id="serverURL" placeholder="Web Server URL">
               </div>
               <div class="form-group">
-                <label class="dark" for="serverPrt">Port:</label>
+                <label class="dark" for="serverPort">Port:</label>
                 <input class="form-control" type="text" id="serverPort" placeholder="Web Server Port">
+              </div>
+              <div class="form-group">
+                <label class="dark" for="defaultUpTime">Default Up Time:</label>
+                <input class="form-control" type="text" id="defaultUpTime" placeholder="Default Cue Up Time">
+              </div>
+              <div class="form-group">
+                <label class="dark" for="defaultDownTime">Default Up Time:</label>
+                <input class="form-control" type="text" id="defaultDownTime" placeholder="Default Cue Up Time">
               </div>
               <button class="btn btn-success" onclick="saveSettings()">Save Settings</button>
             </form>

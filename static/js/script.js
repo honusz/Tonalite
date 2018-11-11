@@ -32,6 +32,7 @@ socket.on('fixtures', function (fixtures) {
     //console.log(fixtures);
     if (currentTab == "fixtures") {
         setFixtures(fixtures);
+        backupFixtures = fixtures;
     } else {
         backupFixtures = fixtures;
     }
@@ -64,7 +65,7 @@ socket.on('fixtureChannels', function (msg) {
 socket.on('fixtureSettings', function (fixture) {
     openTab('fixtureSettingsPage');
     $("#fixtureChannelsBackBtn").off().on("click", function () { viewFixtureChannels(fixture.id); });
-    $("#fixtureDevareBtn").off().on("click", function () { removeFixture(fixture.id); });
+    $("#fixtureDeleteBtn").off().on("click", function () { removeFixture(fixture.id); });
     $("#fixtureSaveBtn").off().on("click", function () { saveFixtureSettings(fixture.id); });
     $("#fixtureNameInput").val(fixture.name);
     $("#fixtureShortNameInput").val(fixture.shortName);
@@ -90,7 +91,7 @@ socket.on('cues', function (cues) {
 
 socket.on('cueSettings', function (cue) {
     openTab('cueSettingsPage');
-    $("#cueDevareBtn").off().on("click", function () { removeCue(cue.id); });
+    $("#cueDeleteBtn").off().on("click", function () { removeCue(cue.id); });
     $("#cueSaveBtn").off().on("click", function () { saveCueSettings(cue.id); });
     $("#gotoCueBtn").off().on("click", function () { gotoCue(cue.id); });
     $("#cueUpdateBtn").off().on("click", function () { updateCue(cue.id); });
@@ -98,8 +99,8 @@ socket.on('cueSettings', function (cue) {
     $("#moveCueUpBtn").off().on("click", function () { moveCueUp(cue.id); });
     $("#moveCueDownBtn").off().on("click", function () { moveCueDown(cue.id); });
     $("#cueNameInput").val(cue.name);
-    $("#cueInTimeInput").val(cue.inTime);
-    $("#cueOutTimeInput").val(cue.outTime);
+    $("#cueUpTimeInput").val(cue.upTime);
+    $("#cueDownTimeInput").val(cue.downTime);
     $("#cueFollowInput").val(cue.follow);
 });
 
@@ -129,7 +130,7 @@ socket.on('groups', function (groups) {
 socket.on('groupSettings', function (group) {
     openTab('groupSettingsPage');
     $("#groupChannelsBackBtn").off().on("click", function () { viewGroupChannels(group.id); });
-    $("#groupDevareBtn").off().on("click", function () { removeGroup(group.id); });
+    $("#groupDeleteBtn").off().on("click", function () { removeGroup(group.id); });
     $("#groupSaveBtn").off().on("click", function () { saveGroupSettings(group.id); });
     $("#groupNameInput").val(group.name);
     $("#groupShortNameInput").val(group.shortName);
@@ -149,6 +150,8 @@ socket.on('groupChannels', function (msg) {
 socket.on('settings', function (settings) {
     $("#serverURL").val(settings.url);
     $("#serverPort").val(settings.port);
+    $("#defaultUpTime").val(settings.defaultUpTime);
+    $("#defaultDownTime").val(settings.defaultDownTime);
     $('#openSettingsModal').modal("show");
 });
 
@@ -195,7 +198,7 @@ function updateFixtureChannelLock(self, fixtureID, channelID) {
 }
 
 function removeFixture(fixtureID) {
-    if (confirm("Are you sure you want to devare this fixture?")) {
+    if (confirm("Are you sure you want to delete this fixture?")) {
         socket.emit('removeFixture', fixtureID);
         openTab('fixtures');
     }
@@ -206,14 +209,14 @@ function saveFixtureSettings(fixtureID) {
 }
 
 function removeCue(cueID) {
-    if (confirm("Are you sure you want to devare this cue?")) {
+    if (confirm("Are you sure you want to delete this cue?")) {
         socket.emit('removeCue', cueID);
         openTab('cues');
     }
 }
 
 function saveCueSettings(cueID) {
-    socket.emit('editCueSettings', { id: cueID, name: $("#cueNameInput").val(), inTime: $("#cueInTimeInput").val(), outTime: $("#cueOutTimeInput").val(), follow: $("#cueFollowInput").val() });
+    socket.emit('editCueSettings', { id: cueID, name: $("#cueNameInput").val(), upTime: $("#cueUpTimeInput").val(), downTime: $("#cueDownTimeInput").val(), follow: $("#cueFollowInput").val() });
 }
 
 function recordCue() {
@@ -281,7 +284,7 @@ function updateGroupChannelValue(self, groupID, channelID) {
 }
 
 function removeGroup(groupID) {
-    if (confirm("Are you sure you want to devare this group?")) {
+    if (confirm("Are you sure you want to delete this group?")) {
         socket.emit('removeGroup', groupID);
         openTab('groups');
     }
@@ -317,7 +320,7 @@ function resetShow() {
 }
 
 function saveSettings() {
-    socket.emit('saveSettings', { url: $("#serverURL").val(), port: $("#serverPort").val() });
+    socket.emit('saveSettings', { url: $("#serverURL").val(), port: $("#serverPort").val(), defaultUpTime: $("#defaultUpTime").val(), defaultDownTime: $("#defaultDownTime").val() });
     $('#openSettingsModal').modal("hide");
 }
 

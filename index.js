@@ -57,7 +57,9 @@ var SETTINGS = {
     output: "udmx", // e131, udmx, artnet
     device: "linux", // linux, rpi, win
     url: "localhost", // http web UI location
-    port: 3000
+    port: 3000,
+    defaultUpTime: 3,
+    defaultDownTime: 3
 }
 
 var STARTED = false;
@@ -203,11 +205,11 @@ function cleanCues() {
     var newCues = JSON.parse(JSON.stringify(cues));
     let c = 0; const cMax = newCues.length; for (; c < cMax; c++) {
         delete newCues[c].type;
-        delete newCues[c].inTime;
-        delete newCues[c].outTime;
+        delete newCues[c].upTime;
+        delete newCues[c].downTime;
         delete newCues[c].follow;
-        delete newCues[c].inStep;
-        delete newCues[c].outStep;
+        delete newCues[c].upStep;
+        delete newCues[c].downStep;
         delete newCues[c].following;
         delete newCues[c].fixtures;
     }
@@ -235,15 +237,15 @@ function calculateCue(cue) {
                 // If the end channel is greater than the start channel, the value is going in, out is going out if less
                 if (endChannel >= startChannel) {
                     // Make sure that the step does not dip below 0 (finished)
-                    if (cue.inStep >= 0) {
-                        outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].channels[c].dmxAddressOffset] = endChannel + (((startChannel - endChannel) / (cue.inTime * 40)) * cue.inStep);
-                        fixtures[fixtures.map(el => el.id).indexOf(cue.fixtures[f].id)].channels[c].displayValue = parseInt(cue.fixtures[f].channels[c].value + (((startFixture.channels[c].value - cue.fixtures[f].channels[c].value) / (cue.inTime * 40)) * cue.inStep));
+                    if (cue.upStep >= 0) {
+                        outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].channels[c].dmxAddressOffset] = endChannel + (((startChannel - endChannel) / (cue.upTime * 40)) * cue.upStep);
+                        fixtures[fixtures.map(el => el.id).indexOf(cue.fixtures[f].id)].channels[c].displayValue = parseInt(cue.fixtures[f].channels[c].value + (((startFixture.channels[c].value - cue.fixtures[f].channels[c].value) / (cue.upTime * 40)) * cue.upStep));
                     }
                 } else {
                     // Make sure that the step does not dip below 0 (finished)
-                    if (cue.outStep >= 0) {
-                        outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].channels[c].dmxAddressOffset] = endChannel + (((startChannel - endChannel) / (cue.outTime * 40)) * cue.outStep);
-                        fixtures[fixtures.map(el => el.id).indexOf(cue.fixtures[f].id)].channels[c].displayValue = parseInt(cue.fixtures[f].channels[c].value + (((startFixture.channels[c].value - cue.fixtures[f].channels[c].value) / (cue.outTime * 40)) * cue.outStep));
+                    if (cue.downStep >= 0) {
+                        outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].channels[c].dmxAddressOffset] = endChannel + (((startChannel - endChannel) / (cue.downTime * 40)) * cue.downStep);
+                        fixtures[fixtures.map(el => el.id).indexOf(cue.fixtures[f].id)].channels[c].displayValue = parseInt(cue.fixtures[f].channels[c].value + (((startFixture.channels[c].value - cue.fixtures[f].channels[c].value) / (cue.downTime * 40)) * cue.downStep));
                     }
                 }
             } else {
@@ -261,19 +263,19 @@ function calculateStack() {
         // Get the current cue
         cue = cues[currentCue];
         channels = calculateCue(cue);
-        cue.inStep -= 1;
-        cue.outStep -= 1;
+        cue.upStep -= 1;
+        cue.downStep -= 1;
         // Check if the cue needs to be followed by another cue
-        if (cue.inStep < 0 || cue.outStep < 0) {
+        if (cue.upStep < 0 || cue.downStep < 0) {
             if (cue.follow != -1) {
                 cue.active = false;
                 if (cue.following == false) {
-                    cue.inStep = cue.follow * 40;
-                    cue.outStep = cue.follow * 40;
+                    cue.upStep = cue.follow * 40;
+                    cue.downStep = cue.follow * 40;
                     cue.following = true;
                 } else {
-                    cue.inStep = cue.inTime * 40;
-                    cue.outStep = cue.outTime * 40;
+                    cue.upStep = cue.upTime * 40;
+                    cue.downStep = cue.downTime * 40;
                     cue.following = false;
                     if (currentCue == cues.length - 1) {
                         currentCue = 0;
@@ -285,8 +287,8 @@ function calculateStack() {
                 }
             } else {
                 currentCue = -1;
-                cue.inStep = cue.inTime * 40;
-                cue.outStep = cue.outTime * 40;
+                cue.upStep = cue.upTime * 40;
+                cue.downStep = cue.downTime * 40;
                 cue.active = false;
                 io.emit('cueActionBtn', false);
             }
@@ -634,11 +636,11 @@ io.on('connection', function (socket) {
                 id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
                 type: "cue",
                 name: "Cue " + (cues.length + 1),
-                inTime: 3,
-                outTime: 3,
+                upTime: SETTINGS.defaultUpTime,
+                downTime: SETTINGS.defaultDownTime,
                 follow: -1,
-                inStep: 120, // 3 * 40
-                outStep: 120, // 3 * 40
+                upStep: SETTINGS.defaultUpTime * 40,
+                downStep: SETTINGS.defaultDownTime * 40,
                 active: false,
                 following: false,
                 fixtures: JSON.parse(JSON.stringify(fixtures))
@@ -690,15 +692,15 @@ io.on('connection', function (socket) {
         if (cues.length != 0) {
             var cue = cues[cues.map(el => el.id).indexOf(msg.id)];
             cue.name = msg.name;
-            cue.inTime = msg.inTime;
-            cue.outTime = msg.outTime;
+            cue.upTime = msg.upTime;
+            cue.downTime = msg.downTime;
             if (msg.follow < -1) {
                 cue.follow = -1;
             } else {
                 cue.follow = msg.follow;
             }
-            cue.inStep = cue.inTime * 40;
-            cue.outStep = cue.outTime * 40;
+            cue.upStep = cue.upTime * 40;
+            cue.downStep = cue.downTime * 40;
             socket.emit('cueSettings', cue);
             socket.emit('message', { type: "info", content: "Cue settings have been updated!" });
             io.emit('cues', cleanCues());
@@ -727,8 +729,8 @@ io.on('connection', function (socket) {
     socket.on('nextCue', function () {
         if (cues.length != 0) {
             if (lastCue != -1) {
-                cues[lastCue].inStep = cues[lastCue].inTime * 40;
-                cues[lastCue].outStep = cues[lastCue].outTime * 40;
+                cues[lastCue].upStep = cues[lastCue].upTime * 40;
+                cues[lastCue].downStep = cues[lastCue].downTime * 40;
                 cues[lastCue].active = false;
                 cues[lastCue].following = false;
                 if (lastCue == cues.length - 1) {
@@ -751,8 +753,8 @@ io.on('connection', function (socket) {
     socket.on('lastCue', function () {
         if (cues.length != 0) {
             if (lastCue != -1) {
-                cues[lastCue].inStep = cues[lastCue].inTime * 40;
-                cues[lastCue].outStep = cues[lastCue].outTime * 40;
+                cues[lastCue].upStep = cues[lastCue].upTime * 40;
+                cues[lastCue].downStep = cues[lastCue].downTime * 40;
                 cues[lastCue].active = false;
                 cues[lastCue].following = false;
                 if (lastCue == 0) {
@@ -775,8 +777,8 @@ io.on('connection', function (socket) {
     socket.on('stopCue', function () {
         if (cues.length != 0) {
             currentCue = -1;
-            cues[lastCue].inStep = cues[lastCue].inTime * 40;
-            cues[lastCue].outStep = cues[lastCue].outTime * 40;
+            cues[lastCue].upStep = cues[lastCue].upTime * 40;
+            cues[lastCue].downStep = cues[lastCue].downTime * 40;
             cues[lastCue].active = false;
             cues[lastCue].following = false;
             io.emit('cues', cleanCues());
@@ -789,8 +791,8 @@ io.on('connection', function (socket) {
     socket.on('gotoCue', function (cueID) {
         if (cues.length != 0) {
             if (lastCue != -1) {
-                cues[lastCue].inStep = cues[lastCue].inTime * 40;
-                cues[lastCue].outStep = cues[lastCue].outTime * 40;
+                cues[lastCue].upStep = cues[lastCue].upTime * 40;
+                cues[lastCue].downStep = cues[lastCue].downTime * 40;
                 cues[lastCue].active = false;
                 cues[lastCue].following = false;
             }
@@ -947,8 +949,10 @@ io.on('connection', function (socket) {
     socket.on('saveSettings', function (msg) {
         SETTINGS.url = msg.url;
         SETTINGS.port = msg.port;
+        SETTINGS.defaultUpTime = msg.defaultUpTime;
+        SETTINGS.defaultDownTime = msg.defaultDownTime;
         if (saveSettings()) {
-            socket.emit('message', { type: "info", content: "The Tonalite settings have been saved please reboot or restart." });
+            socket.emit('message', { type: "info", content: "The Tonalite settings have been saved please reboot or restart if you have edited the server options." });
         } else {
             socket.emit('message', { type: "error", content: "The Tonalite settings file could not be saved on disk." });
         }
