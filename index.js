@@ -60,6 +60,7 @@ Features:
 - Edit Scene
 - Activate/Deactivate Scene
 - Remove Scene
+- Kiosk Page
 */
 
 var SETTINGS = {
