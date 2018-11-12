@@ -68,7 +68,8 @@ typings/
 
 .vscode/
 
-currentShow.json
-tonaliteSettings.json
+show.json
+settings.json
+presets.json
 tonalite
 tonalite.exe

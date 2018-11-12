@@ -87,6 +87,36 @@ socket.on('cues', function (cues) {
     }
 });
 
+socket.on('presets', function (presets) {
+    $("#presetsList").empty();
+    //console.log(presets);
+    if (presets.length != 0) {
+        var p = 0; const pMax = presets.length; for (; p < pMax; p++) {
+            if (presets[p].active == true) {
+                style = "style=\"background-color:#f59f00\"";
+            } else {
+                style = "";
+            }
+            $("#presetsList").append("<div class=\"col-4 col-lg-2\"><div class=\"presetItem\" " + style + "onclick=\"viewPresetSettings('" + presets[p].id + "')\"><p>" + presets[p].name + "</p></div></div>");
+        }
+    } else {
+        $("#presetsList").append("<div class=\"col-12\"><h5>There are no presets in this show!</h5></div>");
+    }
+});
+
+socket.on('presetSettings', function (preset) {
+    openTab('presetSettingsPage');
+    $("#presetDeleteBtn").off().on("click", function () { removePreset(preset.id); });
+    $("#presetSaveBtn").off().on("click", function () { savePresetSettings(preset.id); });
+    $("#presetActiveBtn").off().on("click", function () { changePresetActive(preset.id); });
+    $("#presetNameInput").val(preset.name);
+    if (preset.active) {
+        $("#presetActiveBtn").html("Deactivate");
+    } else {
+        $("#presetActiveBtn").html("Activate");
+    }
+});
+
 socket.on('cueSettings', function (cue) {
     openTab('cueSettingsPage');
     $("#cueDeleteBtn").off().on("click", function () { removeCue(cue.id); });
@@ -255,6 +285,29 @@ function moveCueUp(cueID) {
 
 function moveCueDown(cueID) {
     socket.emit('moveCueDown', cueID);
+}
+
+function removePreset(presetID) {
+    if (confirm("Are you sure you want to delete this preset?")) {
+        socket.emit('removePreset', presetID);
+        openTab('presets');
+    }
+}
+
+function viewPresetSettings(presetID) {
+    socket.emit('getPresetSettings', presetID);
+}
+
+function savePresetSettings(presetID) {
+    socket.emit('editPresetSettings', { id: presetID, name: $("#presetNameInput").val() });
+}
+
+function recordPreset() {
+    socket.emit('recordPreset');
+}
+
+function changePresetActive(presetID) {
+    socket.emit('changePresetActive', presetID);
 }
 
 function resetGroup(groupID) {

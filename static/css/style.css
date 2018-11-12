@@ -13,7 +13,8 @@ body {
 
 .fixtureItem,
 .cueItem,
-.groupItem {
+.groupItem,
+.presetItem {
     width: 100%;
     background-color: #228BE6;
     color: #F8F9FA;
@@ -45,6 +46,15 @@ body {
 .groupItem:hover {
     cursor: pointer;
     background-color: #f08c00;
+}
+
+.presetItem {
+    background-color: #cc5de8;
+}
+
+.presetItem:hover {
+    cursor: pointer;
+    background-color: #ae3ec9;
 }
 
 #fixturesList,

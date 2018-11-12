@@ -68,15 +68,14 @@ var SETTINGS = {
     url: "localhost", // http web UI location
     port: 3000,
     defaultUpTime: 3,
-    defaultDownTime: 3,
-    presets: []
+    defaultDownTime: 3
 }
 
 var STARTED = false;
 
 const VERSION = "2.0";
 
-fs.exists(process.cwd() + '/tonaliteSettings.json', function (exists) {
+fs.exists(process.cwd() + '/settings.json', function (exists) {
     if (exists == false) {
         saveSettings();
     }
@@ -86,6 +85,7 @@ fs.exists(process.cwd() + '/tonaliteSettings.json', function (exists) {
 var fixtures = [];
 var cues = [];
 var groups = [];
+var presets = [];
 var currentCue = -1;
 var lastCue = -1;
 
@@ -99,7 +99,7 @@ var artnet = null;
 
 // Load the Tonalite settings from file
 function openSettings() {
-    fs.readFile(process.cwd() + '/tonaliteSettings.json', (err, data) => {
+    fs.readFile(process.cwd() + '/settings.json', (err, data) => {
         if (err) logError(err);
         var settings = JSON.parse(data);
         SETTINGS = settings;
@@ -122,6 +122,12 @@ function openSettings() {
                 }
                 channels = new Array(512).fill(0);
             }
+
+            fs.exists(process.cwd() + '/presets.json', function (exists) {
+                if (exists == true) {
+                    openPresets();
+                }
+            });
 
             http.listen(SETTINGS.port, SETTINGS.url, function () {
                 console.log(`Tonalite v${VERSION} - DMX Lighting Control System`);
@@ -156,7 +162,7 @@ function openSettings() {
 
 // Save the Tonalite settings to a file
 function saveSettings() {
-    fs.writeFile(process.cwd() + "/tonaliteSettings.json", JSON.stringify(SETTINGS, null, 4), (err) => {
+    fs.writeFile(process.cwd() + "/settings.json", JSON.stringify(SETTINGS, null, 4), (err) => {
         if (err) {
             logError(err);
             return false;
@@ -187,7 +193,7 @@ function updateFirmware(callback) {
 
 function logError(msg) {
     var datetime = new Date();
-    fs.appendFile('error-'+datetime+'.txt', msg, function (err) {
+    fs.appendFile('error-' + datetime + '.txt', msg, function (err) {
         if (err) logError(err);
     });
 }
@@ -254,8 +260,8 @@ function cleanCues() {
 }
 
 function cleanPresets() {
-    var newPresets = JSON.parse(JSON.stringify(SETTINGS.presets));
-    let p = 0; const pMax = newPresets.length; for (; p < pMax; cp++) {
+    var newPresets = JSON.parse(JSON.stringify(presets));
+    let p = 0; const pMax = newPresets.length; for (; p < pMax; p++) {
         delete newPresets[p].fixtures;
     }
     return newPresets;
@@ -351,6 +357,14 @@ function calculateStack() {
         }
         io.sockets.emit('fixtures', cleanFixtures());
     }
+    // Allow presets to overide everything else for channels in which they have higher values
+    let p = 0; const pMax = presets.length; for (; p < pMax; p++) {
+        let c = 0; const cMax = presets[p].channels.length; for (; c < cMax; c++) {
+            if (presets[p].channels[c] > channels[c]) {
+                channels[c] = presets[p].channels[c];
+            }
+        }
+    }
     //let s = 0; const sMax = stack.length; for (; s < sMax; s++) {
     // Calculate stack
     //}
@@ -412,9 +426,9 @@ function dmxLoop() {
     }
 };
 
-// Load the fixtures and cues from file
+// Load the fixtures, cues, and groups from file
 function openShow() {
-    fs.readFile(process.cwd() + '/currentShow.json', (err, data) => {
+    fs.readFile(process.cwd() + '/show.json', (err, data) => {
         if (err) logError(err);
         let show = JSON.parse(data);
         fixtures = show[0];
@@ -426,9 +440,29 @@ function openShow() {
     });
 }
 
-// Save the fixtures and cues of the show to file
+// Save the fixtures, cues, and groups of the show to file
 function saveShow() {
-    fs.writeFile(process.cwd() + "/currentShow.json", JSON.stringify([fixtures, cues, groups]), (err) => {
+    fs.writeFile(process.cwd() + "/show.json", JSON.stringify([fixtures, cues, groups]), (err) => {
+        if (err) {
+            logError(err);
+            return false;
+        };
+    });
+    return true;
+}
+
+// Load the presets from file
+function openPresets() {
+    fs.readFile(process.cwd() + '/presets.json', (err, data) => {
+        if (err) logError(err);
+        presets = JSON.parse(data);
+        io.emit('presets', cleanPresets());
+    });
+}
+
+// Save the presets to file
+function savePresets() {
+    fs.writeFile(process.cwd() + "/presets.json", JSON.stringify(presets), (err) => {
         if (err) {
             logError(err);
             return false;
@@ -451,7 +485,7 @@ app.get('/docs', function (req, res) {
 });
 
 app.get('/showFile', function (req, res) {
-    res.download(process.cwd() + '/currentShow.json', moment().format() + '.tonalite');
+    res.download(process.cwd() + '/show.json', moment().format() + '.tonalite');
 });
 
 // Upload Show File
@@ -461,7 +495,7 @@ app.post('/showFile', (req, res) => {
     }
     let showFile = req.files.showFile;
 
-    showFile.mv(process.cwd() + '/currentShow.json', function (err) {
+    showFile.mv(process.cwd() + '/show.json', function (err) {
         if (err)
             return res.status(500).send(err);
         openShow();
@@ -486,7 +520,7 @@ app.post('/importFixtureDefinition', (req, res) => {
     }
 });
 
-fs.exists(process.cwd() + '/currentShow.json', function (exists) {
+fs.exists(process.cwd() + '/show.json', function (exists) {
     if (exists == false) {
         saveShow();
     }
@@ -993,57 +1027,75 @@ io.on('connection', function (socket) {
         if (fixtures.length != 0) {
             var newPreset = {
                 id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
-                name: "Preset " + (SETTINGS.presets.length + 1),
-                fixtures: JSON.parse(JSON.stringify(fixtures))
+                name: "Preset " + (presets.length + 1),
+                active: false,
+                channels: JSON.parse(JSON.stringify(channels))
             };
-            SETTINGS.presets.push(newPreset);
+            presets.push(newPreset);
             io.emit('presets', cleanPresets());
-            saveSettings();
+            savePresets();
         } else {
             socket.emit('message', { type: "error", content: "No fixtures exist!" });
         }
     });
 
     socket.on('updatePreset', function (presetID) {
-        if (SETTINGS.presets.length != 0) {
-            var preset = SETTINGS.presets[SETTINGS.presets.map(el => el.id).indexOf(presetID)];
+        if (presets.length != 0) {
+            var preset = presets[presets.map(el => el.id).indexOf(presetID)];
             preset.fixtures = JSON.parse(JSON.stringify(fixtures));
             socket.emit('presetSettings', preset);
             io.emit('presets', cleanPresets());
             socket.emit('message', { type: "info", content: "Preset channels have been updated!" });
-            saveSettings();
+            savePresets();
         } else {
             socket.emit('message', { type: "error", content: "No presets exist!" });
         }
     });
 
     socket.on('getPresetSettings', function (presetID) {
-        if (SETTINGS.presets.length != 0) {
-            socket.emit('presetSettings', SETTINGS.presets[SETTINGS.presets.map(el => el.id).indexOf(presetID)]);
+        if (presets.length != 0) {
+            socket.emit('presetSettings', presets[presets.map(el => el.id).indexOf(presetID)]);
         } else {
             socket.emit('message', { type: "error", content: "No presets exist!" });
         }
     });
 
     socket.on('editPresetSettings', function (msg) {
-        if (SETTINGS.presets.length != 0) {
-            var preset = SETTINGS.presets[SETTINGS.presets.map(el => el.id).indexOf(msg.id)];
+        if (presets.length != 0) {
+            var preset = presets[presets.map(el => el.id).indexOf(msg.id)];
             preset.name = msg.name;
             socket.emit('presetSettings', preset);
             socket.emit('message', { type: "info", content: "Preset settings have been updated!" });
             io.emit('presets', cleanPresets());
-            saveSettings();
+            savePresets();
         } else {
             socket.emit('message', { type: "error", content: "No presets exist!" });
         }
     });
 
     socket.on('removePreset', function (presetID) {
-        if (SETTINGS.presets.length != 0) {
-            SETTINGS.presets.splice(SETTINGS.presets.map(el => el.id).indexOf(presetID), 1);
+        if (presets.length != 0) {
+            presets.splice(presets.map(el => el.id).indexOf(presetID), 1);
             socket.emit('message', { type: "info", content: "Preset has been removed!" });
             io.emit('presets', cleanPresets());
-            saveSettings();
+            savePresets();
+        } else {
+            socket.emit('message', { type: "error", content: "No presets exist!" });
+        }
+    });
+
+    socket.on('changePresetActive', function (presetID) {
+        if (presets.length != 0) {
+            var preset = presets[presets.map(el => el.id).indexOf(presetID)];
+            preset.active = !preset.active;
+            socket.emit('presetSettings', preset);
+            if (preset.active == true) {
+                socket.emit('message', { type: "info", content: "Preset has been activated!" });
+            } else {
+                socket.emit('message', { type: "info", content: "Preset has been deactivated!" });
+            }
+            io.emit('presets', cleanPresets());
+            savePresets();
         } else {
             socket.emit('message', { type: "error", content: "No presets exist!" });
         }
