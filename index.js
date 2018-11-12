@@ -53,6 +53,13 @@ Features:
 - View Docs - Done - Done UI
 - View Settings - Done - Done UI
 - Save Settings - Done - Done UI
+- Update Firmware - Done - Done UI
+- Save Errors To Log File
+- View Scenes
+- Add Scene
+- Edit Scene
+- Activate/Deactivate Scene
+- Remove Scene
 */
 
 var SETTINGS = {
