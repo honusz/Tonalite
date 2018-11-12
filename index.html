@@ -272,6 +272,36 @@
         <div id="groupChannels"></div>
       </div>
     </div>
+    <div id="presets" class="tabcontent">
+      <div class="container">
+        <div class="row topBtns">
+          <div class="col-12">
+            <button class="btn btn-success btn-block" onclick="addPreset()">Add Preset</button>
+          </div>
+        </div>
+        <div class="row" id="presetsList"></div>
+      </div>
+    </div>
+    <div id="presetSettingsPage" class="tabcontent">
+      <div class="container">
+        <div class="row topBtns">
+          <div class="col-6">
+            <button id="presetSaveBtn" class="btn btn-success btn-block">Save</button>
+          </div>
+          <div class="col-6">
+            <button id="presetDeleteBtn" class="btn btn-danger btn-block"><i class="far fa-trash-alt d-sm-none d-inline-block"></i><span class="d-none d-sm-block">Delete</span></button>
+          </div>
+        </div>
+        <div class="row" id="presetSettings">
+          <div class="col-12">
+              <div class="form-group">
+                  <label for="presetNameInput">Name:</label>
+                  <input class="form-control" type="text" id="presetNameInput" placeholder="Preset Name">
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="tab">
       <div class="row">
         <div class="col-4">

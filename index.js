@@ -54,12 +54,12 @@ Features:
 - View Settings - Done - Done UI
 - Save Settings - Done - Done UI
 - Update Firmware - Done - Done UI
-- View Presets
-- Add Preset
-- Edit Preset
+- View Presets - Done
+- Add Preset - Done
+- Edit Preset - Done
 - Activate/Deactivate Preset
-- Remove Preset
-- Preset Page
+- Remove Preset - Done
+- Preset Kiosk Page
 */
 
 var SETTINGS = {
@@ -68,7 +68,8 @@ var SETTINGS = {
     url: "localhost", // http web UI location
     port: 3000,
     defaultUpTime: 3,
-    defaultDownTime: 3
+    defaultDownTime: 3,
+    presets: []
 }
 
 var STARTED = false;
@@ -250,6 +251,14 @@ function cleanCues() {
         delete newCues[c].fixtures;
     }
     return newCues;
+}
+
+function cleanPresets() {
+    var newPresets = JSON.parse(JSON.stringify(SETTINGS.presets));
+    let p = 0; const pMax = newPresets.length; for (; p < pMax; cp++) {
+        delete newPresets[p].fixtures;
+    }
+    return newPresets;
 }
 
 // Set the output channel values to those of the current fixture values
@@ -488,6 +497,8 @@ io.on('connection', function (socket) {
     socket.emit('fixtures', cleanFixtures());
     socket.emit('cues', cleanCues());
     socket.emit('groups', cleanGroups());
+    socket.emit('presets', cleanPresets());
+
     if (currentCue == -1) {
         io.emit('cueActionBtn', false);
     } else {
@@ -975,6 +986,66 @@ io.on('connection', function (socket) {
             saveShow();
         } else {
             socket.emit('message', { type: "error", content: "No fixtures exist!" });
+        }
+    });
+
+    socket.on('recordPreset', function () {
+        if (fixtures.length != 0) {
+            var newPreset = {
+                id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
+                name: "Preset " + (SETTINGS.presets.length + 1),
+                fixtures: JSON.parse(JSON.stringify(fixtures))
+            };
+            SETTINGS.presets.push(newPreset);
+            io.emit('presets', cleanPresets());
+            saveSettings();
+        } else {
+            socket.emit('message', { type: "error", content: "No fixtures exist!" });
+        }
+    });
+
+    socket.on('updatePreset', function (presetID) {
+        if (SETTINGS.presets.length != 0) {
+            var preset = SETTINGS.presets[SETTINGS.presets.map(el => el.id).indexOf(presetID)];
+            preset.fixtures = JSON.parse(JSON.stringify(fixtures));
+            socket.emit('presetSettings', preset);
+            io.emit('presets', cleanPresets());
+            socket.emit('message', { type: "info", content: "Preset channels have been updated!" });
+            saveSettings();
+        } else {
+            socket.emit('message', { type: "error", content: "No presets exist!" });
+        }
+    });
+
+    socket.on('getPresetSettings', function (presetID) {
+        if (SETTINGS.presets.length != 0) {
+            socket.emit('presetSettings', SETTINGS.presets[SETTINGS.presets.map(el => el.id).indexOf(presetID)]);
+        } else {
+            socket.emit('message', { type: "error", content: "No presets exist!" });
+        }
+    });
+
+    socket.on('editPresetSettings', function (msg) {
+        if (SETTINGS.presets.length != 0) {
+            var preset = SETTINGS.presets[SETTINGS.presets.map(el => el.id).indexOf(msg.id)];
+            preset.name = msg.name;
+            socket.emit('presetSettings', preset);
+            socket.emit('message', { type: "info", content: "Preset settings have been updated!" });
+            io.emit('presets', cleanPresets());
+            saveSettings();
+        } else {
+            socket.emit('message', { type: "error", content: "No presets exist!" });
+        }
+    });
+
+    socket.on('removePreset', function (presetID) {
+        if (SETTINGS.presets.length != 0) {
+            SETTINGS.presets.splice(SETTINGS.presets.map(el => el.id).indexOf(presetID), 1);
+            socket.emit('message', { type: "info", content: "Preset has been removed!" });
+            io.emit('presets', cleanPresets());
+            saveSettings();
+        } else {
+            socket.emit('message', { type: "error", content: "No presets exist!" });
         }
     });
 
