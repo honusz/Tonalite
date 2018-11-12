@@ -59,7 +59,7 @@ Features:
 - Edit Preset - Done - Done UI
 - Activate/Deactivate Preset - Done UI
 - Remove Preset - Done - Done UI
-- Preset Kiosk Page
+- Preset Kiosk Page - Done
 */
 
 var SETTINGS = {
@@ -262,7 +262,7 @@ function cleanCues() {
 function cleanPresets() {
     var newPresets = JSON.parse(JSON.stringify(presets));
     let p = 0; const pMax = newPresets.length; for (; p < pMax; p++) {
-        delete newPresets[p].fixtures;
+        delete newPresets[p].channels;
     }
     return newPresets;
 }
@@ -478,6 +478,10 @@ app.use(favicon(__dirname + '/static/favicon.ico'));
 
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.min.html');
+});
+
+app.get('/presets', function (req, res) {
+    res.sendFile(__dirname + '/presets.min.html');
 });
 
 app.get('/docs', function (req, res) {
@@ -1089,11 +1093,7 @@ io.on('connection', function (socket) {
             var preset = presets[presets.map(el => el.id).indexOf(presetID)];
             preset.active = !preset.active;
             socket.emit('presetSettings', preset);
-            if (preset.active == true) {
-                socket.emit('message', { type: "info", content: "Preset has been activated!" });
-            } else {
-                socket.emit('message', { type: "info", content: "Preset has been deactivated!" });
-            }
+            socket.emit('presets', cleanPresets());
             io.emit('presets', cleanPresets());
             savePresets();
         } else {

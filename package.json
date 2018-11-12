@@ -43,7 +43,8 @@
   "pkg": {
     "assets": [
       "static/**/*",
-      "index.min.html"
+      "index.min.html",
+      "presets.min.html"
     ]
   }
 }
