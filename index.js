@@ -54,11 +54,11 @@ Features:
 - View Settings - Done - Done UI
 - Save Settings - Done - Done UI
 - Update Firmware - Done - Done UI
-- View Presets - Done
-- Add Preset - Done
-- Edit Preset - Done
-- Activate/Deactivate Preset
-- Remove Preset - Done
+- View Presets - Done - Done UI
+- Add Preset - Done - Done UI
+- Edit Preset - Done - Done UI
+- Activate/Deactivate Preset - Done UI
+- Remove Preset - Done - Done UI
 - Preset Kiosk Page
 */
 
