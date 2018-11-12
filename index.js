@@ -100,7 +100,7 @@ var artnet = null;
 // Load the Tonalite settings from file
 function openSettings() {
     fs.readFile(process.cwd() + '/tonaliteSettings.json', (err, data) => {
-        if (err) console.log(err);
+        if (err) logError(err);
         var settings = JSON.parse(data);
         SETTINGS = settings;
 
@@ -122,8 +122,6 @@ function openSettings() {
                 }
                 channels = new Array(512).fill(0);
             }
-
-            //updateFirmware();
 
             http.listen(SETTINGS.port, SETTINGS.url, function () {
                 console.log(`Tonalite v${VERSION} - DMX Lighting Control System`);
@@ -160,7 +158,7 @@ function openSettings() {
 function saveSettings() {
     fs.writeFile(process.cwd() + "/tonaliteSettings.json", JSON.stringify(SETTINGS, null, 4), (err) => {
         if (err) {
-            console.log(err);
+            logError(err);
             return false;
         };
     });
@@ -172,13 +170,12 @@ function updateFirmware(callback) {
 
     drivelist.list((error, drives) => {
         if (error) {
-            console.log(error);
+            logError(error);
         }
 
         drives.forEach((drive) => {
             fs.exists(drive.mountpoints[0].path + "/tonalite.zip", function (exists) {
                 if (exists) {
-                    //console.log("firmware exists: " + drive.mountpoints[0].path);
                     fs.createReadStream(drive.mountpoints[0].path + "/tonalite.zip").pipe(unzipper.Extract({ path: process.cwd() }));
                     uploadComplete = true;
                     return callback(uploadComplete);
@@ -186,7 +183,13 @@ function updateFirmware(callback) {
             });
         });
     });
-    //return callback(uploadComplete);
+}
+
+function logError(msg) {
+    var datetime = new Date();
+    fs.appendFile('error-'+datetime+'.txt', msg, function (err) {
+        if (err) logError(err);
+    });
 }
 
 // Convert a number in the input range to a number in the output range
@@ -404,7 +407,7 @@ function dmxLoop() {
 // Load the fixtures and cues from file
 function openShow() {
     fs.readFile(process.cwd() + '/currentShow.json', (err, data) => {
-        if (err) console.log(err);
+        if (err) logError(err);
         let show = JSON.parse(data);
         fixtures = show[0];
         cues = show[1];
@@ -419,7 +422,7 @@ function openShow() {
 function saveShow() {
     fs.writeFile(process.cwd() + "/currentShow.json", JSON.stringify([fixtures, cues, groups]), (err) => {
         if (err) {
-            console.log(err);
+            logError(err);
             return false;
         };
     });
