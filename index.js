@@ -54,7 +54,6 @@ Features:
 - View Settings - Done - Done UI
 - Save Settings - Done - Done UI
 - Update Firmware - Done - Done UI
-- Save Errors To Log File
 - View Presets
 - Add Preset
 - Edit Preset
