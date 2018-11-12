@@ -55,12 +55,12 @@ Features:
 - Save Settings - Done - Done UI
 - Update Firmware - Done - Done UI
 - Save Errors To Log File
-- View Scenes
-- Add Scene
-- Edit Scene
-- Activate/Deactivate Scene
-- Remove Scene
-- Kiosk Page
+- View Presets
+- Add Preset
+- Edit Preset
+- Activate/Deactivate Preset
+- Remove Preset
+- Preset Page
 */
 
 var SETTINGS = {
