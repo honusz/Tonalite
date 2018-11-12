@@ -18,6 +18,9 @@ function launchFullScreen(element) {
 socket.on('message', function (msg) {
     $("#alertText").text(msg.content);
     $("#alert").addClass("show");
+    $("#alert").fadeTo(1000, 500).slideUp(500, function () {
+        $("#alert").removeClass('show');
+    });
     if (msg.type == "info") {
         $("#alert").addClass("alert-info");
     } else {
