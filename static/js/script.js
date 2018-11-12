@@ -15,8 +15,6 @@ function launchFullScreen(element) {
     }
 }
 
-//launchFullScreen(document.documentElement);
-
 socket.on('message', function (msg) {
     $("#alertText").text(msg.content);
     $("#alert").addClass("show");
@@ -322,6 +320,10 @@ function resetShow() {
 function saveSettings() {
     socket.emit('saveSettings', { url: $("#serverURL").val(), port: $("#serverPort").val(), defaultUpTime: $("#defaultUpTime").val(), defaultDownTime: $("#defaultDownTime").val() });
     $('#openSettingsModal').modal("hide");
+}
+
+function updateFirmware() {
+    socket.emit('updateFirmware');
 }
 
 function closeAlert() {

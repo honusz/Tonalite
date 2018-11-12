@@ -8,6 +8,8 @@ const fs = require('fs');
 const moment = require('moment');
 const fileUpload = require('express-fileupload');
 const { spawn } = require('child_process');
+const drivelist = require('drivelist');
+const unzipper = require('unzipper');
 require('sanic.js').changeMyWorld();
 
 /*
@@ -90,7 +92,7 @@ var artnet = null;
 // Load the Tonalite settings from file
 function openSettings() {
     fs.readFile(process.cwd() + '/tonaliteSettings.json', (err, data) => {
-        if (err) throw err;
+        if (err) console.log(err);
         var settings = JSON.parse(data);
         SETTINGS = settings;
 
@@ -112,6 +114,8 @@ function openSettings() {
                 }
                 channels = new Array(512).fill(0);
             }
+
+            //updateFirmware();
 
             http.listen(SETTINGS.port, SETTINGS.url, function () {
                 console.log(`Tonalite v${VERSION} - DMX Lighting Control System`);
@@ -154,6 +158,28 @@ function saveSettings() {
     });
     return true;
 };
+
+function updateFirmware(callback) {
+    var uploadComplete = false;
+
+    drivelist.list((error, drives) => {
+        if (error) {
+            console.log(error);
+        }
+
+        drives.forEach((drive) => {
+            fs.exists(drive.mountpoints[0].path + "/tonalite.zip", function (exists) {
+                if (exists) {
+                    //console.log("firmware exists: " + drive.mountpoints[0].path);
+                    fs.createReadStream(drive.mountpoints[0].path + "/tonalite.zip").pipe(unzipper.Extract({ path: process.cwd() }));
+                    uploadComplete = true;
+                    return callback(uploadComplete);
+                }
+            });
+        });
+    });
+    //return callback(uploadComplete);
+}
 
 // Convert a number in the input range to a number in the output range
 function mapRange(num, inMin, inMax, outMin, outMax) {
@@ -370,7 +396,7 @@ function dmxLoop() {
 // Load the fixtures and cues from file
 function openShow() {
     fs.readFile(process.cwd() + '/currentShow.json', (err, data) => {
-        if (err) throw err;
+        if (err) console.log(err);
         let show = JSON.parse(data);
         fixtures = show[0];
         cues = show[1];
@@ -956,5 +982,13 @@ io.on('connection', function (socket) {
         } else {
             socket.emit('message', { type: "error", content: "The Tonalite settings file could not be saved on disk." });
         }
+    });
+
+    socket.on('updateFirmware', function () {
+        updateFirmware(function (result) {
+            if (result) {
+                socket.emit('message', { type: "info", content: "The Tonalite firmware has been updated. Please restart the server." });
+            }
+        });
     });
 });
