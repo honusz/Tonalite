@@ -3,6 +3,7 @@ var fixturesList = document.getElementById('fixturesList');
 var groupFixtureIDs = document.getElementById('groupFixtureIDs');
 var currentTab = "fixtures";
 var backupFixtures = [];
+var lastActiveCue = "";
 document.getElementById("fixturesTab").click();
 
 function launchFullScreen(element) {
@@ -80,8 +81,13 @@ socket.on('cues', function (cues) {
         var c = 0; const cMax = cues.length; for (; c < cMax; c++) {
             if (cues[c].active == true) {
                 style = "style=\"background-color:#f59f00\"";
+                lastActiveCue = cues[c].id;
             } else {
-                style = "";
+                if (cues[c].id == lastActiveCue) {
+                    style = "style=\"background-color:#0c8599\"";
+                } else {
+                    style = "";
+                }
             }
             $("#cuesList").append("<div class=\"col-4 col-lg-2\"><div class=\"cueItem\" " + style + "onclick=\"viewCueSettings('" + cues[c].id + "')\"><p>" + cues[c].name + "</p></div></div>");
         }
