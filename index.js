@@ -301,7 +301,7 @@ function calculateCue(cue) {
                 }
             } else {
                 var startChannel = mapRange(startFixture.channels[c].value, startFixture.channels[c].displayMin, startFixture.channels[c].displayMax, startFixture.channels[c].min, startFixture.channels[c].max);
-                outputChannels[(fixture.startDMXAddress - 1) + cue.fixtures[f].channels[c].dmxAddressOffset] = startChannel;
+                outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].channels[c].dmxAddressOffset] = startChannel;
             }
         }
     }
@@ -360,8 +360,10 @@ function calculateStack() {
     // Allow presets to overide everything else for channels in which they have higher values
     let p = 0; const pMax = presets.length; for (; p < pMax; p++) {
         let c = 0; const cMax = presets[p].channels.length; for (; c < cMax; c++) {
-            if (presets[p].channels[c] > channels[c]) {
-                channels[c] = presets[p].channels[c];
+            if (presets[p].active) {
+                if (presets[p].channels[c] > channels[c]) {
+                    channels[c] = presets[p].channels[c];
+                }
             }
         }
     }
