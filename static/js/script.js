@@ -96,7 +96,7 @@ socket.on('presets', function (presets) {
     if (presets.length != 0) {
         var p = 0; const pMax = presets.length; for (; p < pMax; p++) {
             if (presets[p].active == true) {
-                style = "style=\"background-color:#f59f00\"";
+                style = "style=\"background-color:#fa5252\"";
             } else {
                 style = "";
             }

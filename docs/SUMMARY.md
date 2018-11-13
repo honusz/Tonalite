@@ -17,3 +17,7 @@
     * [Resetting Group Channel Values](group/resetting_group_channel_values.md)
     * [Channels](groups/channels/README.md)
     * [Changing Group Settings](groups/changing_group_settings.md)
+* [Presets](presets/README.md)
+    * [Recording Presets](presets/recording_presets.md)
+    * [Preset Settings](presets/preset_settings.md)
+    * [Activating Presets](presets/activating_presets.md)
