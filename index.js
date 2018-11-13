@@ -659,6 +659,7 @@ io.on('connection', function (socket) {
     socket.on('resetFixtures', function () {
         if (fixtures.length != 0) {
             resetFixtures();
+            resetGroups();
             io.emit('fixtures', cleanFixtures());
             socket.emit('message', { type: "info", content: "Fixture values have been reset!" });
             saveShow();
