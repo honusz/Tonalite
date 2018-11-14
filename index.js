@@ -90,7 +90,8 @@ var groups = [];
 var presets = [];
 var currentCue = -1;
 var lastCue = -1;
-var blackout= false;
+var blackout = false;
+var grandmaster = 100;
 
 // Set up dmx variables for integrations used later on
 var e131 = null;
@@ -422,6 +423,9 @@ function dmxLoop() {
     if (blackout == false) {
         calculateChannels();
         calculateStack();
+        let c = 0; const cMax = channels.length; for (; c < cMax; c++) {
+            channels[c] = parseInt((channels[c] / 100.0) * grandmaster);
+        }
     }
 
     // If e1.31 is selected, output to that, if not, use artnet
@@ -544,11 +548,12 @@ io.on('connection', function (socket) {
     socket.emit('groups', cleanGroups());
     socket.emit('presets', cleanPresets());
     socket.emit('blackout', blackout);
+    socket.emit('grandmaster', grandmaster);
 
     if (currentCue == -1) {
-        io.emit('cueActionBtn', false);
+        socket.emit('cueActionBtn', false);
     } else {
-        io.emit('cueActionBtn', true);
+        socket.emit('cueActionBtn', true);
     }
 
     socket.on('resetShow', function () {
@@ -1112,8 +1117,12 @@ io.on('connection', function (socket) {
 
     socket.on('toggleBlackout', function () {
         blackout = !blackout;
-        socket.emit('blackout', blackout);
         io.emit('blackout', blackout);
+    });
+
+    socket.on('changeGrandmasterValue', function (value) {
+        grandmaster = value;
+        socket.broadcast.emit('grandmaster', grandmaster);
     });
 
     socket.on('getSettings', function () {

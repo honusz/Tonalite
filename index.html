@@ -298,7 +298,7 @@
         <div class="col-12">
           <button id="blackoutBtn" class="btn btn-primary" onclick="toggleBlackout()">Blackout</button>
           <label class="ml-2" for="grandmaster">Grandmaster:</label>
-          <input type="range" class="custom-range" id="grandmaster" oninput="updateGrandmasterValue(this)">
+          <input type="range" class="custom-range" id="grandmaster" min="0" max="100" oninput="updateGrandmasterValue(this)">
         </div>
       </div>
       <div class="row" id="presetsList"></div>

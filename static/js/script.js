@@ -40,6 +40,11 @@ socket.on('blackout', function (msg) {
     }
 });
 
+
+socket.on('grandmaster', function (value) {
+    $("#grandmaster").val(value);
+});
+
 socket.on('fixtures', function (fixtures) {
     //console.log(fixtures);
     if (currentTab == "fixtures") {
@@ -374,7 +379,7 @@ function viewGroupSettings(groupID) {
 }
 
 function updateGrandmasterValue(self) {
-    socket.emit('changeGrandmasterValue', { value: parseInt(self.value) });
+    socket.emit('changeGrandmasterValue', parseInt(self.value));
 }
 
 function toggleBlackout() {
