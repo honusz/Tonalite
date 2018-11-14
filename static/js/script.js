@@ -30,6 +30,16 @@ socket.on('message', function (msg) {
     //console.log(msg.type + ': ' + msg.content);
 });
 
+socket.on('blackout', function (msg) {
+    if (msg == true) {
+        $("#blackoutBtn").removeClass("btn-primary");
+        $("#blackoutBtn").addClass("btn-danger");
+    } else {
+        $("#blackoutBtn").removeClass("btn-danger");
+        $("#blackoutBtn").addClass("btn-primary");
+    }
+});
+
 socket.on('fixtures', function (fixtures) {
     //console.log(fixtures);
     if (currentTab == "fixtures") {
@@ -361,6 +371,14 @@ function addGroup() {
 
 function viewGroupSettings(groupID) {
     socket.emit('getGroupSettings', groupID);
+}
+
+function updateGrandmasterValue(self) {
+    socket.emit('changeGrandmasterValue', { value: parseInt(self.value) });
+}
+
+function toggleBlackout() {
+    socket.emit('toggleBlackout');
 }
 
 function openShowFileModal() {

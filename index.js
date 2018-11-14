@@ -90,6 +90,7 @@ var groups = [];
 var presets = [];
 var currentCue = -1;
 var lastCue = -1;
+var blackout= false;
 
 // Set up dmx variables for integrations used later on
 var e131 = null;
@@ -418,8 +419,10 @@ function dmxLoop() {
     let c = 0; const cMax = channels.length; for (; c < cMax; c++) {
         channels[c] = 0;
     }
-    calculateChannels();
-    calculateStack();
+    if (blackout == false) {
+        calculateChannels();
+        calculateStack();
+    }
 
     // If e1.31 is selected, output to that, if not, use artnet
     if (SETTINGS.output == "e131") {
@@ -540,6 +543,7 @@ io.on('connection', function (socket) {
     socket.emit('cues', cleanCues());
     socket.emit('groups', cleanGroups());
     socket.emit('presets', cleanPresets());
+    socket.emit('blackout', blackout);
 
     if (currentCue == -1) {
         io.emit('cueActionBtn', false);
@@ -1104,6 +1108,12 @@ io.on('connection', function (socket) {
         } else {
             socket.emit('message', { type: "error", content: "No presets exist!" });
         }
+    });
+
+    socket.on('toggleBlackout', function () {
+        blackout = !blackout;
+        socket.emit('blackout', blackout);
+        io.emit('blackout', blackout);
     });
 
     socket.on('getSettings', function () {
