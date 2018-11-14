@@ -59,7 +59,9 @@ Features:
 - Edit Preset - Done - Done UI
 - Activate/Deactivate Preset - Done UI
 - Remove Preset - Done - Done UI
-- Preset Kiosk Page - Done
+- Preset Kiosk Page - Done - Done UI
+- Grandmaster
+- Blackout button
 */
 
 var SETTINGS = {
