@@ -45,7 +45,7 @@ socket.on('grandmaster', function (value) {
 });
 
 socket.on('currentCue', function (value) {
-    currentCue = currentCue;
+    currentCue = value;
 });
 
 socket.on('fixtures', function (fixtures) {

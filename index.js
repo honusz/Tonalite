@@ -545,13 +545,13 @@ fs.exists(process.cwd() + '/show.json', function (exists) {
 });
 
 io.on('connection', function (socket) {
+    socket.emit('currentCue', currentCueID);
     socket.emit('fixtures', cleanFixtures());
     socket.emit('cues', cleanCues());
     socket.emit('groups', cleanGroups());
     socket.emit('presets', cleanPresets());
     socket.emit('blackout', blackout);
     socket.emit('grandmaster', grandmaster);
-    socket.emit('currentCue', currentCueID);
 
     if (currentCue == -1) {
         socket.emit('cueActionBtn', false);
@@ -846,9 +846,9 @@ io.on('connection', function (socket) {
             currentCue = lastCue;
             cues[lastCue].active = true;
             currentCueID = cues[lastCue].id;
+            io.emit('currentCue', currentCueID);
             io.emit('cues', cleanCues());
             io.emit('cueActionBtn', true);
-            io.emit('currentCue', currentCueID);
         } else {
             socket.emit('message', { type: "error", content: "No cues exist!" });
         }
@@ -872,9 +872,9 @@ io.on('connection', function (socket) {
             currentCue = lastCue;
             cues[lastCue].active = true;
             currentCueID = cues[lastCue].id;
+            io.emit('currentCue', currentCueID);
             io.emit('cues', cleanCues());
             io.emit('cueActionBtn', true);
-            io.emit('currentCue', currentCueID);
         } else {
             socket.emit('message', { type: "error", content: "No cues exist!" });
         }
@@ -906,9 +906,9 @@ io.on('connection', function (socket) {
             currentCue = lastCue;
             cues[lastCue].active = true;
             currentCueID = cues[lastCue].id;
+            io.emit('currentCue', currentCueID);
             io.emit('cues', cleanCues());
             io.emit('cueActionBtn', true);
-            io.emit('currentCue', currentCueID);
         } else {
             socket.emit('message', { type: "error", content: "No cues exist!" });
         }
