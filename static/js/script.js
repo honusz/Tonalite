@@ -40,9 +40,12 @@ socket.on('blackout', function (msg) {
     }
 });
 
-
 socket.on('grandmaster', function (value) {
     $("#grandmaster").val(value);
+});
+
+socket.on('currentCue', function (value) {
+    currentCue = currentCue;
 });
 
 socket.on('fixtures', function (fixtures) {

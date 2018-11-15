@@ -60,8 +60,8 @@ Features:
 - Activate/Deactivate Preset - Done UI
 - Remove Preset - Done - Done UI
 - Preset Kiosk Page - Done - Done UI
-- Grandmaster
-- Blackout button
+- Grandmaster - Done - Done UI
+- Blackout - Done - Done UI
 */
 
 var SETTINGS = {
@@ -89,6 +89,7 @@ var cues = [];
 var groups = [];
 var presets = [];
 var currentCue = -1;
+var currentCueID = "";
 var lastCue = -1;
 var blackout = false;
 var grandmaster = 100;
@@ -339,6 +340,7 @@ function calculateStack() {
                     }
                     lastCue = currentCue;
                     cues[currentCue].active = true;
+                    currentCueID = cues[currentCue].id;
                 }
             } else {
                 currentCue = -1;
@@ -549,6 +551,7 @@ io.on('connection', function (socket) {
     socket.emit('presets', cleanPresets());
     socket.emit('blackout', blackout);
     socket.emit('grandmaster', grandmaster);
+    socket.emit('currentCue', currentCueID);
 
     if (currentCue == -1) {
         socket.emit('cueActionBtn', false);
@@ -842,8 +845,10 @@ io.on('connection', function (socket) {
             }
             currentCue = lastCue;
             cues[lastCue].active = true;
+            currentCueID = cues[lastCue].id;
             io.emit('cues', cleanCues());
             io.emit('cueActionBtn', true);
+            io.emit('currentCue', currentCueID);
         } else {
             socket.emit('message', { type: "error", content: "No cues exist!" });
         }
@@ -866,8 +871,10 @@ io.on('connection', function (socket) {
             }
             currentCue = lastCue;
             cues[lastCue].active = true;
+            currentCueID = cues[lastCue].id;
             io.emit('cues', cleanCues());
             io.emit('cueActionBtn', true);
+            io.emit('currentCue', currentCueID);
         } else {
             socket.emit('message', { type: "error", content: "No cues exist!" });
         }
@@ -898,8 +905,10 @@ io.on('connection', function (socket) {
             lastCue = cues.map(el => el.id).indexOf(cueID);
             currentCue = lastCue;
             cues[lastCue].active = true;
+            currentCueID = cues[lastCue].id;
             io.emit('cues', cleanCues());
             io.emit('cueActionBtn', true);
+            io.emit('currentCue', currentCueID);
         } else {
             socket.emit('message', { type: "error", content: "No cues exist!" });
         }
