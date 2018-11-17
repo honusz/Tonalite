@@ -198,7 +198,7 @@ function updateFirmware(callback) {
 
 function logError(msg) {
     var datetime = new Date();
-    fs.appendFile('error-' + datetime + '.txt', msg, function (err) {
+    fs.appendFile('error-' + datetime + '.txt', msg, (err) => {
         if (err) logError(err);
     });
 }

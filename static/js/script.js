@@ -466,17 +466,17 @@ function upperCase(str) {
 function setFixtures(fixtures) {
     fixturesList.innerHTML = "";
     groupFixtureIDs.innerHTML = "";
-    if (fixtures.length != 0) {
+    if (fixtures.length !== 0) {
         var f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
             if (fixtures[f].hasLockedChannels) {
                 fixtureLock = "<i class=\"ml-2 far fa-lock-alt fa-sm\"></i>";
             } else {
                 fixtureLock = "";
             }
-            if (fixtures[f].channels[0].type == "intensity") {
+            if (fixtures[f].channels[0].type === "intensity") {
                 fixtureValue = "<h3 class=\"fixtureValue\">" + fixtures[f].channels[0].displayValue + "</h3>";
             } else {
-                if (fixtureLock == "") {
+                if (fixtureLock === "") {
                     fixtureValue = "<h3 class=\"fixtureValue\"><i class=\"ml-2 far fa-lock-open-alt fa-sm\"></i></h3>";
                 } else {
                     fixtureValue = "<h3 class=\"fixtureValue\">" + fixtureLock + "</h3>";
