@@ -102,7 +102,7 @@ socket.on('cues', function (cues) {
                 currentCue = cues[c].id;
             } else {
                 if (cues[c].id == currentCue) {
-                    style = "style=\"background-color:#0ca678\"";
+                    style = "style=\"background-color:#099268\"";
                 } else {
                     style = "";
                 }

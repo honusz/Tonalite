@@ -211,7 +211,7 @@ function mapRange(num, inMin, inMax, outMin, outMax) {
 function moveArrayItem(array, element, delta) {
     var index = element;
     var newIndex = index + delta;
-    if (newIndex < 0 || newIndex == array.length) return; // Already at the top or bottom.
+    if (newIndex < 0 || newIndex === array.length) return; // Already at the top or bottom.
     var indexes = [index, newIndex].sort(); // Sort the indixes
     array.splice(indexes[0], 2, array[indexes[1]], array[indexes[0]]); // Replace from lowest index, two elements, reverting the order
 };
@@ -287,7 +287,7 @@ function calculateCue(cue) {
     let f = 0; const fMax = cue.fixtures.length; for (; f < fMax; f++) {
         let c = 0; const cMax = cue.fixtures[f].channels.length; for (; c < cMax; c++) {
             var startFixture = fixtures[fixtures.map(el => el.id).indexOf(cue.fixtures[f].id)];
-            if (startFixture.channels[c].locked == false) {
+            if (startFixture.channels[c].locked === false) {
                 var startChannel = mapRange(startFixture.channels[c].value, startFixture.channels[c].displayMin, startFixture.channels[c].displayMax, startFixture.channels[c].min, startFixture.channels[c].max);
                 var endChannel = mapRange(cue.fixtures[f].channels[c].value, cue.fixtures[f].channels[c].displayMin, cue.fixtures[f].channels[c].displayMax, cue.fixtures[f].channels[c].min, cue.fixtures[f].channels[c].max);
                 // If the end channel is greater than the start channel, the value is going in, out is going out if less
@@ -325,7 +325,7 @@ function calculateStack() {
         if (cue.upStep < 0 || cue.downStep < 0) {
             if (cue.follow != -1) {
                 cue.active = false;
-                if (cue.following == false) {
+                if (cue.following === false) {
                     cue.upStep = cue.follow * 40;
                     cue.downStep = cue.follow * 40;
                     cue.following = true;
@@ -333,7 +333,7 @@ function calculateStack() {
                     cue.upStep = cue.upTime * 40;
                     cue.downStep = cue.downTime * 40;
                     cue.following = false;
-                    if (currentCue == cues.length - 1) {
+                    if (currentCue === cues.length - 1) {
                         currentCue = 0;
                     } else {
                         currentCue += 1;
@@ -353,7 +353,7 @@ function calculateStack() {
             let f = 0; const fMax = cue.fixtures.length; for (; f < fMax; f++) {
                 let c = 0; const cMax = cue.fixtures[f].channels.length; for (; c < cMax; c++) {
                     var startFixtureChannels = fixtures[fixtures.map(el => el.id).indexOf(cue.fixtures[f].id)].channels;
-                    if (startFixtureChannels[c].locked == false) {
+                    if (startFixtureChannels[c].locked === false) {
                         startFixtureChannels[c].value = cue.fixtures[f].channels[c].value;
                         startFixtureChannels[c].displayValue = cue.fixtures[f].channels[c].value;
                     }
@@ -383,7 +383,7 @@ function setFixtureGroupValues(group, channel) {
     let i = 0; const iMax = group.ids.length; for (; i < iMax; i++) {
         var fixture = fixtures[fixtures.map(el => el.id).indexOf(group.ids[i])];
         let c = 0; const cMax = fixture.channels.length; for (; c < cMax; c++) {
-            if (fixture.channels[c].type == channel.type && fixture.channels[c].subtype == channel.subtype) {
+            if (fixture.channels[c].type === channel.type && fixture.channels[c].subtype === channel.subtype) {
                 if (fixture.channels[c].locked != true) {
                     fixture.channels[c].value = channel.value;
                     fixture.channels[c].displayValue = fixture.channels[c].value;
@@ -422,7 +422,7 @@ function dmxLoop() {
     let c = 0; const cMax = channels.length; for (; c < cMax; c++) {
         channels[c] = 0;
     }
-    if (blackout == false) {
+    if (blackout === false) {
         calculateChannels();
         calculateStack();
         let c = 0; const cMax = channels.length; for (; c < cMax; c++) {
@@ -431,7 +431,7 @@ function dmxLoop() {
     }
 
     // If e1.31 is selected, output to that, if not, use artnet
-    if (SETTINGS.output == "e131") {
+    if (SETTINGS.output === "e131") {
         slotsData = channels;
         client.send(packet);
     } else {
