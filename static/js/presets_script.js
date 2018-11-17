@@ -3,9 +3,9 @@ var socket = io('http://' + document.domain + ':' + location.port);
 socket.on('presets', function (presets) {
     $("#presetsList").empty();
     //console.log(presets);
-    if (presets.length != 0) {
+    if (presets.length !== 0) {
         var p = 0; const pMax = presets.length; for (; p < pMax; p++) {
-            if (presets[p].active == true) {
+            if (presets[p].active === true) {
                 style = "style=\"background-color:#fa5252\"";
             } else {
                 style = "";
