@@ -483,7 +483,7 @@ function setFixtures(fixtures) {
                 }
             }
             var e = document.createElement('div');
-            e.className = "col-4 col-lg-2";
+            e.className = "col-3 col-lg-1";
             e.innerHTML = "<div class=\"fixtureItem\" onclick=\"viewFixtureChannels('" + fixtures[f].id + "')\">" + fixtureValue + "<p>" + fixtures[f].shortName + fixtureLock + "</p></div>";
             fixturesList.appendChild(e);
             var fi = document.createElement('option');

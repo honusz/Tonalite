@@ -23,6 +23,7 @@ body {
     padding-bottom: 0.01rem;
     margin-bottom: 1rem;
     text-align: center;
+    font-size: 75%;
 }
 
 .fixtureItem:hover {
@@ -71,7 +72,7 @@ body {
     background: #343A40;
     text-align: center;
     font-size: 2rem;
-    padding-top: 0.45rem;
+    padding-top: 0.105rem;
 }
 
 .tabcontent {
@@ -132,3 +133,5 @@ body {
     margin-bottom: 1.5rem;
     margin-top: 1.0rem;
 }
+
+.topBtns.sticky-top { top: 4.5rem; }
