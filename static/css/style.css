@@ -23,7 +23,14 @@ body {
     padding-bottom: 0.01rem;
     margin-bottom: 1rem;
     text-align: center;
+}
+
+.fixtureItem {
     font-size: 75%;
+}
+
+.fixtureValue {
+    font-size: 1.5rem;
 }
 
 .fixtureItem:hover {
@@ -72,7 +79,7 @@ body {
     background: #343A40;
     text-align: center;
     font-size: 2rem;
-    padding-top: 0.105rem;
+    padding-top: 0.15rem;
 }
 
 .tabcontent {
@@ -81,6 +88,7 @@ body {
 
 .tablinks:hover {
     cursor: pointer;
+    color: #a5d8ff;
 }
 
 .tablinks.active {

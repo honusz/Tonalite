@@ -6,6 +6,10 @@ var backupFixtures = [];
 var currentCue = "";
 document.getElementById("fixturesTab").click();
 
+Mousetrap.bind('r', function () { recordCue(); });
+Mousetrap.bind('right', function () { nextCue(); });
+Mousetrap.bind('left', function () { lastCue(); });
+
 function launchFullScreen(element) {
     if (element.requestFullScreen) {
         element.requestFullScreen();
