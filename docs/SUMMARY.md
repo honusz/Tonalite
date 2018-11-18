@@ -21,3 +21,4 @@
     * [Recording Presets](presets/recording_presets.md)
     * [Preset Settings](presets/preset_settings.md)
     * [Activating Presets](presets/activating_presets.md)
+* [Keyboard Shortcuts](keyboard_shortcuts.md)

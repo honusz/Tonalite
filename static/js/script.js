@@ -9,6 +9,9 @@ document.getElementById("fixturesTab").click();
 Mousetrap.bind('r', function () { recordCue(); });
 Mousetrap.bind('right', function () { nextCue(); });
 Mousetrap.bind('left', function () { lastCue(); });
+Mousetrap.bind('ctrl+n', function () { resetShow(); return false; });
+Mousetrap.bind('shift+a', function () { addFixtureModal(); return false; });
+Mousetrap.bind('ctrl+s', function () { window.location = "/showFile"; return false; });
 
 function launchFullScreen(element) {
     if (element.requestFullScreen) {
