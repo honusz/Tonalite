@@ -483,11 +483,7 @@ function setFixtures(fixtures) {
             if (fixtures[f].channels[0].type === "intensity") {
                 fixtureValue = "<h3 class=\"fixtureValue\">" + fixtures[f].channels[0].displayValue + "</h3>";
             } else {
-                if (fixtureLock === "") {
-                    fixtureValue = "<h3 class=\"fixtureValue\"><i class=\"ml-2 far fa-lock-open-alt fa-sm\"></i></h3>";
-                } else {
-                    fixtureValue = "<h3 class=\"fixtureValue\">" + fixtureLock + "</h3>";
-                }
+                fixtureValue = "";
             }
             var e = document.createElement('div');
             e.className = "col-3 col-lg-1";
