@@ -4,6 +4,10 @@ var groupFixtureIDs = document.getElementById('groupFixtureIDs');
 var currentTab = "fixtures";
 var backupFixtures = [];
 var currentCue = "";
+var timerID;
+var counter = 0;
+var pressHoldEvent = new CustomEvent("pressHold");
+var pressHoldDuration = 50;
 document.getElementById("fixturesTab").click();
 
 Mousetrap.bind('r', function () { recordCue(); });
@@ -486,6 +490,12 @@ function setFixtures(fixtures) {
                 fixtureValue = "";
             }
             var e = document.createElement('div');
+            /*e.addEventListener("mousedown", pressingDown, false);
+            e.addEventListener("mouseup", notPressingDown, false);
+            e.addEventListener("mouseleave", notPressingDown, false);
+            e.addEventListener("touchstart", pressingDown, false);
+            e.addEventListener("touchend", notPressingDown, false);
+            e.addEventListener("pressHold", doSomething, false);*/
             e.className = "col-3 col-lg-1";
             e.innerHTML = "<div class=\"fixtureItem\" onclick=\"viewFixtureChannels('" + fixtures[f].id + "')\">" + fixtureValue + "<p>" + fixtures[f].shortName + fixtureLock + "</p></div>";
             fixturesList.appendChild(e);
@@ -503,3 +513,34 @@ $('.custom-file-input').change(function () {
     var fileName = $(this).val().split('\\').pop();
     $(this).next('.custom-file-label').html(fileName);
 });
+
+function pressingDown(e) {
+    requestAnimationFrame(timer);
+    e.preventDefault();
+}
+
+function notPressingDown(e) {
+    cancelAnimationFrame(timerID);
+    console.log(counter);
+    if (counter == 50) {
+        e.preventDefault();
+    }
+    counter = 0;
+}
+
+//
+// Runs at 60fps when you are pressing down
+//
+function timer() {
+    if (counter < pressHoldDuration) {
+        timerID = requestAnimationFrame(timer);
+        counter++;
+    } else {
+        console.log("Press threshold reached!");
+    }
+}
+
+function doSomething(e) {
+    console.log("pressHold event fired!");
+    e.preventDefault();
+}
