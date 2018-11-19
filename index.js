@@ -235,6 +235,25 @@ function cleanFixtures() {
     return newFixtures;
 }
 
+function cleanFixturesForCue() {
+    var newFixtures = JSON.parse(JSON.stringify(fixtures));
+    let f = 0; const fMax = newFixtures.length; for (; f < fMax; f++) {
+        delete newFixtures[f].name;
+        delete newFixtures[f].shortName;
+        delete newFixtures[f].manufacturer;
+        delete newFixtures[f].hasLockedChannels;
+        let c = 0; const cMax = newFixtures[f].channels.length; for (; c < cMax; c++) {
+            delete newFixtures[f].channels[c].type;
+            delete newFixtures[f].channels[c].subtype;
+            delete newFixtures[f].channels[c].name;
+            delete newFixtures[f].channels[c].displayValue;
+            delete newFixtures[f].channels[c].defaultValue;
+            delete newFixtures[f].channels[c].locked;
+        }
+    }
+    return newFixtures;
+}
+
 function cleanGroups() {
     var newGroups = JSON.parse(JSON.stringify(groups));
     let g = 0; const gMax = newGroups.length; for (; g < gMax; g++) {
@@ -745,7 +764,7 @@ io.on('connection', function (socket) {
                 downStep: SETTINGS.defaultDownTime * 40,
                 active: false,
                 following: false,
-                fixtures: JSON.parse(JSON.stringify(fixtures))
+                fixtures: cleanFixturesForCue()
             };
             cues.push(newCue);
             io.emit('cues', cleanCues());
