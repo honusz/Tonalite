@@ -3,6 +3,7 @@ node_js:
   - "11"
 after_script:
   - sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sudo sh /dev/stdin
+  - npm install -g gitbook-cli
   - npm run build-linux
   - npm run build-docs
   - npm run build-pdf-docs
