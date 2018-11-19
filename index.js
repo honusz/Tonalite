@@ -314,13 +314,13 @@ function calculateCue(cue) {
                     // Make sure that the step does not dip below 0 (finished)
                     if (cue.upStep >= 0) {
                         outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].channels[c].dmxAddressOffset] = endChannel + (((startChannel - endChannel) / (cue.upTime * 40)) * cue.upStep);
-                        fixtures[fixtures.map(el => el.id).indexOf(cue.fixtures[f].id)].channels[c].displayValue = parseInt(cue.fixtures[f].channels[c].value + (((startFixture.channels[c].value - cue.fixtures[f].channels[c].value) / (cue.upTime * 40)) * cue.upStep));
+                        fixtures[fixtures.map(el => el.id).indexOf(cue.fixtures[f].id)].channels[c].displayValue = Math.round(cue.fixtures[f].channels[c].value + (((startFixture.channels[c].value - cue.fixtures[f].channels[c].value) / (cue.upTime * 40)) * cue.upStep));
                     }
                 } else {
                     // Make sure that the step does not dip below 0 (finished)
                     if (cue.downStep >= 0) {
                         outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].channels[c].dmxAddressOffset] = endChannel + (((startChannel - endChannel) / (cue.downTime * 40)) * cue.downStep);
-                        fixtures[fixtures.map(el => el.id).indexOf(cue.fixtures[f].id)].channels[c].displayValue = parseInt(cue.fixtures[f].channels[c].value + (((startFixture.channels[c].value - cue.fixtures[f].channels[c].value) / (cue.downTime * 40)) * cue.downStep));
+                        fixtures[fixtures.map(el => el.id).indexOf(cue.fixtures[f].id)].channels[c].displayValue = Math.round(cue.fixtures[f].channels[c].value + (((startFixture.channels[c].value - cue.fixtures[f].channels[c].value) / (cue.downTime * 40)) * cue.downStep));
                     }
                 }
             } else {
@@ -445,7 +445,7 @@ function dmxLoop() {
         calculateChannels();
         calculateStack();
         let c = 0; const cMax = channels.length; for (; c < cMax; c++) {
-            channels[c] = parseInt((channels[c] / 100.0) * grandmaster);
+            channels[c] = Math.round((channels[c] / 100.0) * grandmaster);
         }
     }
 
@@ -616,7 +616,7 @@ io.on('connection', function (socket) {
             }
         });
         if (startDMXAddress) {
-            for (var i = 0; i < msg.creationCount; i++) {
+            let i = 0; const iMax = msg.creationCount; for (; i < iMax; i++) {
                 // Add a fixture using the fixture spec file in the fixtures folder
                 var fixture = require(process.cwd() + "/fixtures/" + msg.fixtureName + ".json");
                 fixture.startDMXAddress = startDMXAddress;
@@ -626,7 +626,6 @@ io.on('connection', function (socket) {
                 fixtures.push(JSON.parse(JSON.stringify(fixture)));
                 startDMXAddress += fixture.channels.length;
             }
-
             io.emit('fixtures', cleanFixtures());
             saveShow();
         } else {
@@ -692,7 +691,6 @@ io.on('connection', function (socket) {
     socket.on('resetFixtures', function () {
         if (fixtures.length != 0) {
             resetFixtures();
-            resetGroups();
             io.emit('fixtures', cleanFixtures());
             socket.emit('message', { type: "info", content: "Fixture values have been reset!" });
             saveShow();
@@ -988,6 +986,20 @@ io.on('connection', function (socket) {
     socket.on('getGroupChannels', function (groupID) {
         if (groups.length != 0) {
             var group = groups[groups.map(el => el.id).indexOf(groupID)];
+            group.channels.forEach(function (channel) {
+                var valAvg = 0;
+                var valAvgCount = 0;
+                group.ids.forEach(function (id) {
+                    var fixture = fixtures[fixtures.map(el => el.id).indexOf(id)];
+                    fixture.channels.forEach(function (chan) {
+                        if (chan.type === channel.type && chan.subtype === channel.subtype) {
+                            valAvg = valAvg + chan.value;
+                            valAvgCount++;
+                        }
+                    });
+                });
+                channel.value = Math.round(valAvg / valAvgCount);
+            });
             socket.emit('groupChannels', { id: group.id, name: group.name, channels: group.channels });
         } else {
             socket.emit('message', { type: "error", content: "No groups exist!" });
