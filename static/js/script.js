@@ -480,7 +480,7 @@ function setFixtures(fixtures) {
     if (fixtures.length !== 0) {
         var f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
             if (fixtures[f].hasLockedChannels) {
-                fixtureLock = "<i class=\"ml-2 far fa-lock-alt fa-sm\"></i>";
+                fixtureLock = "<i class=\"ml-1 far fa-lock-alt fa-sm\"></i>";
             } else {
                 fixtureLock = "";
             }
