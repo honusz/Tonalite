@@ -5,6 +5,7 @@ after_script:
   - sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sudo sh /dev/stdin
   - npm run build-linux
   - npm run build-docs
+  - npm run build-pdf-docs
   - cp ${TRAVIS_BUILD_DIR}/node_modules/sleep/build/Release/node_sleep.node node_sleep.node
   - rm .gitignore
   - rm .travis.yml

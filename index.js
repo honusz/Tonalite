@@ -504,6 +504,8 @@ function savePresets() {
 }
 
 app.use('/static', express.static(__dirname + '/static'));
+app.use('/docs', express.static(process.cwd() + '/docs/dist'));
+
 app.use(fileUpload());
 app.use(compression());
 app.use(favicon(__dirname + '/static/favicon.ico'));
@@ -514,10 +516,6 @@ app.get('/', function (req, res) {
 
 app.get('/presets', function (req, res) {
     res.sendFile(__dirname + '/presets.min.html');
-});
-
-app.get('/docs', function (req, res) {
-    res.sendFile(process.cwd() + '/docs/documentation.pdf');
 });
 
 app.get('/showFile', function (req, res) {
