@@ -10,6 +10,21 @@ var pressHoldEvent = new CustomEvent("pressHold");
 var pressHoldDuration = 50;
 document.getElementById("fixturesTab").click();
 
+var app = new Vue({
+    el: '#app',
+    data: {
+        fixtures: [],
+        cues: [],
+        groups: [],
+        presets: []
+    },
+    methods: {
+        changePresetActive: function (presetID) {
+            socket.emit('changePresetActive', presetID);
+        }
+    }
+});
+
 Mousetrap.bind('r', function () { recordCue(); });
 Mousetrap.bind('right', function () { nextCue(); });
 Mousetrap.bind('left', function () { lastCue(); });

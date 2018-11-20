@@ -15,18 +15,22 @@
 </head>
 
 <body>
-    <div class="container mt-5">
-        <div class="row" id="presetsList"></div>
-        <!--<div class="row">
-            <div class="col-4">
-                <a href="/" class="btn btn-primary">Full View</a>
+    <div id="app">
+        <div class="container mt-5">
+            <div class="row" id="presetsList">
+                <div class="col-4 col-lg-2" v-for="preset in presets">
+                    <div :class="{ 'presetActive' : preset.active == true}" class="presetItem" v-on:click="changePresetActive(preset.id)">
+                        <p>{{preset.name}}</p>
+                    </div>
+                </div>
             </div>
-        </div>-->
+        </div>
     </div>
     <script src="static/js/jquery-3.3.1.min.js"></script>
     <script src="static/js/popper.min.js"></script>
     <script src="static/js/bootstrap.min.js"></script>
     <script src="static/js/socket.io.js"></script>
+    <script src="static/js/vue.js"></script>
     <script src="static/js/presets_script.min.js"></script>
 </body>
 
