@@ -44,6 +44,7 @@
   "pkg": {
     "assets": [
       "static/**/*",
+      "docs/dist/**/*",
       "index.min.html",
       "presets.min.html"
     ]

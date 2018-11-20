@@ -504,7 +504,7 @@ function savePresets() {
 }
 
 app.use('/static', express.static(__dirname + '/static'));
-app.use('/docs', express.static(process.cwd() + '/docs/dist'));
+app.use('/docs', express.static(__dirname + '/docs/dist'));
 
 app.use(fileUpload());
 app.use(compression());
