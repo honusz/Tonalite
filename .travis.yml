@@ -7,7 +7,7 @@ after_script:
   - npm run build-docs
   - npm run build-pdf-docs
   - npm run build-linux
-  - cp ${TRAVIS_BUILD_DIR}/node_modules/sleep/build/Release/node_sleep.node node_sleep.node
+  - cp node_modules/sleep/build/Release/node_sleep.node node_sleep.node
   - rm .gitignore
   - rm .travis.yml
   - rm index.html
@@ -23,10 +23,12 @@ after_script:
   - rm -rf docs/fixtures
   - rm -rf docs/groups
   - rm -rf docs/images
+  - rm -rf docs/dist
   - rm docs/book.json
   - rm docs/README.md
   - rm docs/SUMMARY.md
   - rm docs/supported_hardware.md
   - rm docs/supported_software.md
   - rm docs/website.css
+  - ls
   - zip -9 ${TRAVIS_BUILD_DIR}/tonalite-linux.zip ${TRAVIS_BUILD_DIR} -r
