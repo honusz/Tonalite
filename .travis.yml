@@ -14,6 +14,8 @@ after_script:
   - rm index.html
   - rm index.js
   - rm index.min.html
+  - rm presets.html
+  - rm presets.min.html
   - rm logo.png
   - rm package-lock.json
   - rm package.json
@@ -27,3 +29,4 @@ after_script:
   - rm -rf docs/dist
   - rm -rf docs
   - zip -9 ${TRAVIS_BUILD_DIR}/tonalite-linux.zip ${TRAVIS_BUILD_DIR} -r
+  - ls
