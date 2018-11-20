@@ -29,4 +29,3 @@ after_script:
   - rm -rf docs/dist
   - rm -rf docs
   - zip -9 ${TRAVIS_BUILD_DIR}/tonalite-linux.zip ${TRAVIS_BUILD_DIR} -r
-  - ls
