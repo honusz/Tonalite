@@ -21,6 +21,12 @@ var app = new Vue({
     methods: {
         changePresetActive: function (presetID) {
             socket.emit('changePresetActive', presetID);
+        },
+        viewPresetSettings: function (presetID) {
+            socket.emit('getPresetSettings', presetID);
+        },
+        viewFixtureChannels: function (fixtureID) {
+            socket.emit('getFixtureChannels', fixtureID);
         }
     }
 });
@@ -76,12 +82,14 @@ socket.on('currentCue', function (value) {
 
 socket.on('fixtures', function (fixtures) {
     //console.log(fixtures);
-    if (currentTab == "fixtures") {
+    app.fixtures = fixtures;
+    /*if (currentTab == "fixtures") {
+        app.fixtures = fixtures;
         setFixtures(fixtures);
         backupFixtures = fixtures;
     } else {
         backupFixtures = fixtures;
-    }
+    }*/
 });
 
 socket.on('fixtureProfiles', function (profiles) {
@@ -110,7 +118,7 @@ socket.on('fixtureChannels', function (msg) {
 
 socket.on('fixtureSettings', function (fixture) {
     openTab('fixtureSettingsPage');
-    $("#fixtureChannelsBackBtn").off().on("click", function () { viewFixtureChannels(fixture.id); });
+    $("#fixtureChannelsBackBtn").off().on("click", function () { app.viewFixtureChannels(fixture.id); });
     $("#fixtureDeleteBtn").off().on("click", function () { removeFixture(fixture.id); });
     $("#fixtureSaveBtn").off().on("click", function () { saveFixtureSettings(fixture.id); });
     $("#fixtureNameInput").val(fixture.name);
@@ -141,6 +149,9 @@ socket.on('cues', function (cues) {
 });
 
 socket.on('presets', function (presets) {
+    app.presets = presets;
+});
+/*socket.on('presets', function (presets) {
     $("#presetsList").empty();
     //console.log(presets);
     if (presets.length != 0) {
@@ -155,13 +166,13 @@ socket.on('presets', function (presets) {
     } else {
         $("#presetsList").append("<div class=\"col-12\"><h5>There are no presets in this show!</h5></div>");
     }
-});
+});*/
 
 socket.on('presetSettings', function (preset) {
     openTab('presetSettingsPage');
     $("#presetDeleteBtn").off().on("click", function () { removePreset(preset.id); });
     $("#presetSaveBtn").off().on("click", function () { savePresetSettings(preset.id); });
-    $("#presetActiveBtn").off().on("click", function () { changePresetActive(preset.id); });
+    $("#presetActiveBtn").off().on("click", function () { app.changePresetActive(preset.id); });
     $("#presetNameInput").val(preset.name);
     if (preset.active) {
         $("#presetActiveBtn").html("Deactivate");
@@ -262,10 +273,6 @@ function addFixture(fixture) {
     $('#fixtureProfilesModal').modal("hide");
 }
 
-function viewFixtureChannels(fixtureID) {
-    socket.emit('getFixtureChannels', fixtureID);
-}
-
 function viewFixtureSettings(fixtureID) {
     socket.emit('getFixtureSettings', fixtureID);
 }
@@ -357,10 +364,6 @@ function savePresetSettings(presetID) {
 
 function recordPreset() {
     socket.emit('recordPreset');
-}
-
-function changePresetActive(presetID) {
-    socket.emit('changePresetActive', presetID);
 }
 
 function resetGroup(groupID) {
@@ -470,9 +473,9 @@ function openTab(tabName) {
     // Show the current tab, and add an "active" class to the button that opened the tab
     document.getElementById(tabName).style.display = "block";
     currentTab = tabName;
-    if (currentTab == "fixtures") {
+    /*if (currentTab == "fixtures") {
         setFixtures(backupFixtures);
-    }
+    }*/
     if (document.getElementsByClassName("tablinks-" + tabName)[0]) {
         document.getElementsByClassName("tablinks-" + tabName)[0].classList.add("active");
     }
@@ -505,12 +508,12 @@ function setFixtures(fixtures) {
                 fixtureValue = "";
             }
             var e = document.createElement('div');
-            /*e.addEventListener("mousedown", pressingDown, false);
+            e.addEventListener("mousedown", pressingDown, false);
             e.addEventListener("mouseup", notPressingDown, false);
             e.addEventListener("mouseleave", notPressingDown, false);
             e.addEventListener("touchstart", pressingDown, false);
             e.addEventListener("touchend", notPressingDown, false);
-            e.addEventListener("pressHold", doSomething, false);*/
+            e.addEventListener("pressHold", doSomething, false);
             e.className = "col-3 col-lg-1";
             e.innerHTML = "<div class=\"fixtureItem\" onclick=\"viewFixtureChannels('" + fixtures[f].id + "')\">" + fixtureValue + "<p>" + fixtures[f].shortName + fixtureLock + "</p></div>";
             fixturesList.appendChild(e);
