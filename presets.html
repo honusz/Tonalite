@@ -23,6 +23,9 @@
                         <p>{{preset.name}}</p>
                     </div>
                 </div>
+                <div v-if="presets.length == 0" class="col-12">
+                    <h5>No presets have been created!</h5>
+                </div>
             </div>
         </div>
     </div>

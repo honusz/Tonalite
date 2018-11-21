@@ -83,6 +83,9 @@
               <p>{{fixture.shortName}} <i v-if="fixture.hasLockedChannels" class="ml-1 far fa-lock-alt fa-sm"></i></p>
             </div>
           </div>
+          <div v-if="fixtures.length == 0" class="col-12">
+            <h5>There are no fixtures in this show!</h5>
+          </div>
         </div>
       </div>
     </div>
