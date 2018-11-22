@@ -1,9 +1,4 @@
 {
-    "pluginsConfig": {
-        "fontsettings": {
-            "theme": "night"
-        }
-    },
     "styles": {
         "website": "website.css"
     },

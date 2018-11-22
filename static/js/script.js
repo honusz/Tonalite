@@ -16,7 +16,8 @@ var app = new Vue({
         fixtures: [],
         cues: [],
         groups: [],
-        presets: []
+        presets: [],
+        tab: "fixtures"
     },
     methods: {
         changePresetActive: function (presetID) {

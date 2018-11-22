@@ -1,3 +1,6 @@
 .gitbook-link {
     display: none !important;
 }
+.pull-right.js-toolbar-action {
+    display: none !important;
+}
