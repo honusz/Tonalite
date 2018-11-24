@@ -29,6 +29,10 @@ body {
     font-size: 75%;
 }
 
+.presetViewItem {
+    font-size: 125%;
+}
+
 .fixtureValue {
     font-size: 1.5rem;
 }
