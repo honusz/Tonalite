@@ -79,8 +79,8 @@
         <div class="row" id="fixturesList">
           <div class="col-4 col-lg-2" v-for="fixture in fixtures">
             <div class="fixtureItem" v-on:click="viewFixtureChannels(fixture.id)">
-              <h3 v-if="fixture.channels[0].type == 'intensity'" class="fixtureValue">{{fixture.channels[0].displayValue}}</h3>
-              <p>{{fixture.shortName}} <i v-if="fixture.hasLockedChannels" class="ml-1 far fa-lock-alt fa-sm"></i></p>
+              <h3 v-if="fixture.channels[0].type === 'intensity'" class="fixtureValue">{{fixture.channels[0].displayValue}}</h3>
+              <p>{{fixture.shortName}} <i v-if="fixture.hasLockedChannels === true" class="ml-1 far fa-lock-alt fa-sm"></i></p>
             </div>
           </div>
           <div v-if="fixtures.length == 0" class="col-12">

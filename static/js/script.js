@@ -14,8 +14,6 @@ var app = new Vue({
     el: '#app',
     data: {
         fixtures: [],
-        cues: [],
-        groups: [],
         presets: []
     },
     methods: {
