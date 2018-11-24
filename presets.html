@@ -18,7 +18,7 @@
     <div id="app">
         <div class="container mt-5">
             <div class="row" id="presetsList">
-                <div class="col-4 col-lg-2" v-for="preset in presets">
+                <div class="col-4 col-lg-2" v-for="preset in presets" :key="preset.id">
                     <div :class="{ 'presetActive' : preset.active == true}" class="presetViewItem presetItem" v-on:click="changePresetActive(preset.id)">
                         <p>{{preset.name}}</p>
                     </div>
