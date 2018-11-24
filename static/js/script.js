@@ -27,11 +27,9 @@ var app = new Vue({
             socket.emit('getFixtureChannels', fixtureID);
         },
         lockedFixturechannels: function (locked) {
-            if (locked === true) {
+            if (locked === true)
                 return "<i class=\"ml-1 far fa-lock-alt fa-sm\"></i>";
-            } else {
-                return "";
-            }
+            return "";
         }
     }
 });
