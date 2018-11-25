@@ -5,16 +5,17 @@
 ![Tonalite groups](docs/images/group_added.png)
 ![Tonalite presets and grandmaster](docs/images/preset_added.png)
 
-Tonalite is a lighting control software that uses a web interface accessible from any device on the network such as a phone, tablet, or laptop. While there are more features coming soon, Tonalite can currently:
+Tonalite is lighting control software that uses a web interface accessible from any device on the network such as a phone, tablet, or laptop. While there are more features coming soon, Tonalite can currently:
 
 - Add fixtures and map them to DMX addresses
 - Control the value of each fixture's channels (attributes)
 - Add cues and cycle through them
 - Add groups to control multiple fixtures at once
+- Add presets for easy system overrides
   
-With effects coming soon, this makes Tonalite a directyo competetor to other well-known theater lighting consoles.
+With effects coming soon, this makes Tonalite a direct competetor to other well-known theater lighting consoles.
 
-Tonalite currently works with the `ArtNet`, `E1.31 (sACN)`, and `uDMX (using ArtNet)` DMX protocols.
+Tonalite currently works with `ArtNet`, `E1.31 (sACN)`, and `uDMX (using uDMXArtNet)` interfaces.
 
 You can read the full documentation [here](docs/documentation.pdf).
 
@@ -26,7 +27,7 @@ You will find the UI at `localhost:3000` by default.
 
 ## Build
 
-To build Tonalite, run `npm run build-(win/mac/linux)`
+To build Tonalite, run `npm run build-(win/linux)`
 
 To generate the documentation run `npm run build-docs`
 
