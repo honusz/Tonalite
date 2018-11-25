@@ -432,7 +432,7 @@ function resetShow() {
 }
 
 function saveSettings() {
-    socket.emit('saveSettings', { url: $("#serverURL").val(), port: $("#serverPort").val(), defaultUpTime: $("#defaultUpTime").val(), defaultDownTime: $("#defaultDownTime").val() });
+    socket.emit('saveSettings', { defaultUpTime: $("#defaultUpTime").val(), defaultDownTime: $("#defaultDownTime").val() });
     $('#openSettingsModal').modal("hide");
 }
 

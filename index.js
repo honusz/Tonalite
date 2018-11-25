@@ -1169,12 +1169,10 @@ io.on('connection', function (socket) {
     });
 
     socket.on('saveSettings', function (msg) {
-        SETTINGS.url = msg.url;
-        SETTINGS.port = msg.port;
         SETTINGS.defaultUpTime = msg.defaultUpTime;
         SETTINGS.defaultDownTime = msg.defaultDownTime;
         if (saveSettings()) {
-            socket.emit('message', { type: "info", content: "The Tonalite settings have been saved please reboot or restart if you have edited the server options." });
+            socket.emit('message', { type: "info", content: "The Tonalite settings have been saved!" });
         } else {
             socket.emit('message', { type: "error", content: "The Tonalite settings file could not be saved on disk." });
         }
