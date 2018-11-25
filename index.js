@@ -63,6 +63,7 @@ Features:
 - Preset Kiosk Page - Done - Done UI
 - Grandmaster - Done - Done UI
 - Blackout - Done - Done UI
+- Auto Mark
 */
 
 var SETTINGS = {
