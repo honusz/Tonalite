@@ -6,7 +6,7 @@ after_script:
   - npm install -g gitbook-cli
   - cd docs && gitbook install && cd ../
   - npm run build-docs
-  - npm run build-pdf-docs
+  - npm run build-docs-pdf
   - npm run build-linux
   - cp node_modules/sleep/build/Release/node_sleep.node node_sleep.node
   - cp docs/documentation.pdf documentation.pdf
