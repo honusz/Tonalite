@@ -2,7 +2,6 @@ var socket = io('http://' + document.domain + ':' + location.port);
 var fixturesList = document.getElementById('fixturesList');
 var groupFixtureIDs = document.getElementById('groupFixtureIDs');
 var currentTab = "fixtures";
-var backupFixtures = [];
 var currentCue = "";
 var timerID;
 var counter = 0;
@@ -14,7 +13,7 @@ var app = new Vue({
     el: '#app',
     data: {
         fixtures: [],
-        presets: []
+        presets: [],
     },
     methods: {
         changePresetActive: function (presetID) {
@@ -30,6 +29,9 @@ var app = new Vue({
             if (locked === true)
                 return "<i class=\"ml-1 far fa-lock-alt fa-sm\"></i>";
             return "";
+        },
+        ifMobile: function () {
+            return isMobile.any;
         }
     }
 });
@@ -84,15 +86,7 @@ socket.on('currentCue', function (value) {
 });
 
 socket.on('fixtures', function (fixtures) {
-    //console.log(fixtures);
     app.fixtures = fixtures;
-    /*if (currentTab == "fixtures") {
-        app.fixtures = fixtures;
-        setFixtures(fixtures);
-        backupFixtures = fixtures;
-    } else {
-        backupFixtures = fixtures;
-    }*/
 });
 
 socket.on('fixtureProfiles', function (profiles) {
@@ -446,6 +440,10 @@ function updateFirmware() {
     socket.emit('updateFirmware');
 }
 
+function saveShowToUSB() {
+    socket.emit('saveShowToUSB');
+}
+
 function closeAlert() {
     $("#alert").removeClass("show");
     if ($("#alert").hasClass("alert-info")) {
@@ -476,9 +474,6 @@ function openTab(tabName) {
     // Show the current tab, and add an "active" class to the button that opened the tab
     document.getElementById(tabName).style.display = "block";
     currentTab = tabName;
-    /*if (currentTab == "fixtures") {
-        setFixtures(backupFixtures);
-    }*/
     if (document.getElementsByClassName("tablinks-" + tabName)[0]) {
         document.getElementsByClassName("tablinks-" + tabName)[0].classList.add("active");
     }
@@ -493,41 +488,6 @@ function titleCase(str) {
 
 function upperCase(str) {
     return str.toUpperCase().replace(/-/g, " ");
-}
-
-function setFixtures(fixtures) {
-    fixturesList.innerHTML = "";
-    groupFixtureIDs.innerHTML = "";
-    if (fixtures.length !== 0) {
-        var f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
-            if (fixtures[f].hasLockedChannels) {
-                fixtureLock = "<i class=\"ml-1 far fa-lock-alt fa-sm\"></i>";
-            } else {
-                fixtureLock = "";
-            }
-            if (fixtures[f].channels[0].type === "intensity") {
-                fixtureValue = "<h3 class=\"fixtureValue\">" + fixtures[f].channels[0].displayValue + "</h3>";
-            } else {
-                fixtureValue = "";
-            }
-            var e = document.createElement('div');
-            e.addEventListener("mousedown", pressingDown, false);
-            e.addEventListener("mouseup", notPressingDown, false);
-            e.addEventListener("mouseleave", notPressingDown, false);
-            e.addEventListener("touchstart", pressingDown, false);
-            e.addEventListener("touchend", notPressingDown, false);
-            e.addEventListener("pressHold", doSomething, false);
-            e.className = "col-3 col-lg-1";
-            e.innerHTML = "<div class=\"fixtureItem\" onclick=\"viewFixtureChannels('" + fixtures[f].id + "')\">" + fixtureValue + "<p>" + fixtures[f].shortName + fixtureLock + "</p></div>";
-            fixturesList.appendChild(e);
-            var fi = document.createElement('option');
-            fi.value = fixtures[f].id;
-            fi.innerHTML = fixtures[f].shortName + " (" + fixtures[f].startDMXAddress + ")";
-            groupFixtureIDs.appendChild(fi);
-        }
-    } else {
-        $("#fixturesList").append("<div class=\"col-12\"><h5>There are no fixtures in this show!</h5></div>")
-    }
 }
 
 $('.custom-file-input').change(function () {
