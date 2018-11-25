@@ -1186,4 +1186,33 @@ io.on('connection', function (socket) {
             }
         });
     });
+
+    socket.on('saveShowToUSB', function () {
+        drivelist.list((error, drives) => {
+            var done = false;
+            if (error) {
+                logError(error);
+            }
+
+            drives.forEach((drive) => {
+                if (done == false) {
+                    if (drive.enumerator == 'USBSTOR') {
+                        console.log(drive.mountpoints[0].path);
+                        fs.writeFile(drive.mountpoints[0].path + "/" + moment().format() + ".tonalite", JSON.stringify([fixtures, cues, groups]), (err) => {
+                            if (err) {
+                                logError(err);
+                                return false;
+                            };
+                        });
+                        done = true;
+                    }
+                }
+            });
+            if (done == false) {
+                socket.emit('message', { type: "error", content: "The current show could not be saved onto a USB drive. Is there one connected?" });
+            } else {
+                socket.emit('message', { type: "info", content: "The current show was successfully saved to the connected USB drive!" });
+            }
+        });
+    });
 });
