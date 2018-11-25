@@ -90,359 +90,361 @@
         </div>
       </div>
     </div>
-  </div>
-  <div id="fixtureProfilesModal" class="modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-6">
-              <div class="form-group">
-                <label class="dark" for="newFixtureStartDMXAddress">Starting Address:</label>
-                <input type="number" class="form-control" max="512" min="1" id="newFixtureStartDMXAddress" placeholder="DMX Address"
-                  value="1">
+    <div id="fixtureProfilesModal" class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-6">
+                <div class="form-group">
+                  <label class="dark" for="newFixtureStartDMXAddress">Starting Address:</label>
+                  <input type="number" class="form-control" max="512" min="1" id="newFixtureStartDMXAddress"
+                    placeholder="DMX Address" value="1">
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group">
+                  <label class="dark" for="newFixtureCreationCount">Number To Create:</label>
+                  <input type="number" class="form-control" min="1" id="newFixtureCreationCount" placeholder="Creation Count"
+                    value="1">
+                </div>
               </div>
             </div>
-            <div class="col-6">
-              <div class="form-group">
-                <label class="dark" for="newFixtureCreationCount">Number To Create:</label>
-                <input type="number" class="form-control" min="1" id="newFixtureCreationCount" placeholder="Creation Count"
-                  value="1">
-              </div>
+            <ul class="list-group" id="fixtureProfilesList"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="fixtureChannelsPage" class="tabcontent">
+      <div class="container">
+        <div class="row topBtns">
+          <div class="col-6">
+            <h5 id="fixtureChannelsName">Fixture name</h5>
+          </div>
+          <div class="col-3">
+            <button id="fixtureSettingsBtn" class="btn btn-primary btn-block"><i class="far fa-cog d-sm-none d-inline-block"></i><span
+                class="d-none d-sm-block">Settings</span></button>
+          </div>
+          <div class="col-3">
+            <button id="fixtureResetBtn" class="btn btn-danger btn-block"><i class="far fa-redo d-sm-none d-inline-block"></i><span
+                class="d-none d-sm-block">Reset</span></button>
+          </div>
+        </div>
+        <div id="fixtureChannels"></div>
+      </div>
+    </div>
+    <div id="fixtureSettingsPage" class="tabcontent">
+      <div class="container">
+        <div class="row topBtns">
+          <div class="col-4">
+            <button id="fixtureChannelsBackBtn" class="btn btn-primary btn-block">Back</button>
+          </div>
+          <div class="col-4">
+            <button id="fixtureSaveBtn" class="btn btn-success btn-block">Save</button>
+          </div>
+          <div class="col-4">
+            <button id="fixtureDeleteBtn" class="btn btn-danger btn-block">Delete</button>
+          </div>
+        </div>
+        <div class="row" id="fixtureSettings">
+          <div class="col-12">
+            <div class="form-group">
+              <label for="fixtureNameInput">Name:</label>
+              <input class="form-control" type="text" id="fixtureNameInput" placeholder="Full Fixture Name">
             </div>
           </div>
-          <ul class="list-group" id="fixtureProfilesList"></ul>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div id="fixtureChannelsPage" class="tabcontent">
-    <div class="container">
-      <div class="row topBtns">
-        <div class="col-6">
-          <h5 id="fixtureChannelsName">Fixture name</h5>
-        </div>
-        <div class="col-3">
-          <button id="fixtureSettingsBtn" class="btn btn-primary btn-block"><i class="far fa-cog d-sm-none d-inline-block"></i><span
-              class="d-none d-sm-block">Settings</span></button>
-        </div>
-        <div class="col-3">
-          <button id="fixtureResetBtn" class="btn btn-danger btn-block"><i class="far fa-redo d-sm-none d-inline-block"></i><span
-              class="d-none d-sm-block">Reset</span></button>
-        </div>
-      </div>
-      <div id="fixtureChannels"></div>
-    </div>
-  </div>
-  <div id="fixtureSettingsPage" class="tabcontent">
-    <div class="container">
-      <div class="row topBtns">
-        <div class="col-4">
-          <button id="fixtureChannelsBackBtn" class="btn btn-primary btn-block">Back</button>
-        </div>
-        <div class="col-4">
-          <button id="fixtureSaveBtn" class="btn btn-success btn-block">Save</button>
-        </div>
-        <div class="col-4">
-          <button id="fixtureDeleteBtn" class="btn btn-danger btn-block">Delete</button>
-        </div>
-      </div>
-      <div class="row" id="fixtureSettings">
-        <div class="col-12">
-          <div class="form-group">
-            <label for="fixtureNameInput">Name:</label>
-            <input class="form-control" type="text" id="fixtureNameInput" placeholder="Full Fixture Name">
+          <div class="col-12">
+            <div class="form-group">
+              <label for="fixtureShortNameInput">Short Name:</label>
+              <input class="form-control" type="text" id="fixtureShortNameInput" placeholder="Short Fixture Name">
+            </div>
           </div>
-        </div>
-        <div class="col-12">
-          <div class="form-group">
-            <label for="fixtureShortNameInput">Short Name:</label>
-            <input class="form-control" type="text" id="fixtureShortNameInput" placeholder="Short Fixture Name">
-          </div>
-        </div>
-        <div class="col-12">
-          <div class="form-group">
-            <label for="fixtureDMXAddressInput">Starting DMX Address:</label>
-            <input class="form-control" type="number" id="fixtureDMXAddressInput" placeholder="Fixture Starting DMX Address">
+          <div class="col-12">
+            <div class="form-group">
+              <label for="fixtureDMXAddressInput">Starting DMX Address:</label>
+              <input class="form-control" type="number" id="fixtureDMXAddressInput" placeholder="Fixture Starting DMX Address">
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div id="cues" class="tabcontent">
-    <div class="container">
-      <div class="row topBtns">
-        <div class="col-4">
-          <button class="btn btn-primary btn-block" onclick="lastCue()"><i class="far fa-chevron-left"></i></button>
-        </div>
-        <div class="col-4">
-          <button id="cueActionBtn" class="btn btn-danger btn-block"></button>
-        </div>
-        <div class="col-4">
-          <button class="btn btn-primary btn-block" onclick="nextCue()"><i class="far fa-chevron-right"></i></button>
-        </div>
-      </div>
-      <div class="row" id="cuesList"></div>
-    </div>
-  </div>
-  <div id="cueSettingsPage" class="tabcontent">
-    <div class="container">
-      <div class="row topBtns">
-        <div class="col-3">
-          <button id="cueSaveBtn" class="btn btn-success btn-block">Save</button>
-        </div>
-        <div class="col-3">
-          <button id="cueDeleteBtn" class="btn btn-danger btn-block"><i class="far fa-trash-alt d-sm-none d-inline-block"></i><span
-              class="d-none d-sm-block">Delete</span></button>
-        </div>
-        <div class="col-3">
-          <button id="cueCloneBtn" class="btn btn-info btn-block"><i class="far fa-clone d-sm-none d-inline-block"></i><span
-              class="d-none d-sm-block">Clone</span></button>
-        </div>
-        <div class="col-3">
-          <button id="moveCueUpBtn" class="btn btn-success btn-block"><i class="far fa-chevron-up"></i></button>
-        </div>
-      </div>
-      <div class="row topBtns">
-        <div class="col-3">
-          <button id="gotoCueBtn" class="btn btn-primary btn-block">Go</button>
-        </div>
-        <div class="col-6">
-          <button id="cueUpdateBtn" class="btn btn-warning btn-block">Update Channels</button>
-        </div>
-        <div class="col-3">
-          <button id="moveCueDownBtn" class="btn btn-success btn-block"><i class="far fa-chevron-down"></i></button>
-        </div>
-      </div>
-      <div class="row" id="cueSettings">
-        <div class="col-12">
-          <div class="form-group">
-            <label for="cueNameInput">Name:</label>
-            <input class="form-control" type="text" id="cueNameInput" placeholder="Cue Name">
+    <div id="cues" class="tabcontent">
+      <div class="container">
+        <div class="row topBtns">
+          <div class="col-4">
+            <button class="btn btn-primary btn-block" onclick="lastCue()"><i class="far fa-chevron-left"></i></button>
+          </div>
+          <div class="col-4">
+            <button id="cueActionBtn" class="btn btn-danger btn-block"></button>
+          </div>
+          <div class="col-4">
+            <button class="btn btn-primary btn-block" onclick="nextCue()"><i class="far fa-chevron-right"></i></button>
           </div>
         </div>
-        <div class="col-12">
-          <div class="form-group">
-            <label for="cueUpTimeInput">Up Time:</label>
-            <input class="form-control" type="number" id="cueUpTimeInput" placeholder="Cue Up Length In Seconds">
-          </div>
-        </div>
-        <div class="col-12">
-          <div class="form-group">
-            <label for="cueDownTimeInput">Down Time:</label>
-            <input class="form-control" type="number" id="cueDownTimeInput" placeholder="Cue Down Length In Seconds">
-          </div>
-        </div>
-        <div class="col-12">
-          <div class="form-group">
-            <label for="cueFollowInput">Follow:</label>
-            <input class="form-control" type="number" min="-1" id="cueFollowInput" placeholder="Cue Follow Time In Seconds">
-          </div>
-        </div>
+        <div class="row" id="cuesList"></div>
       </div>
     </div>
-  </div>
-  <div id="groups" class="tabcontent">
-    <div class="container">
-      <div class="row topBtns">
-        <div class="col-6">
-          <button class="btn btn-success btn-block" onclick="addGroupModal()">Add Group</button>
-        </div>
-        <div class="col-6">
-          <button class="btn btn-danger btn-block" onclick="resetGroups()">Reset Values</button>
-        </div>
-      </div>
-      <div class="row" id="groupsList"></div>
-    </div>
-  </div>
-  <div id="groupSettingsPage" class="tabcontent">
-    <div class="container">
-      <div class="row topBtns">
-        <div class="col-4">
-          <button id="groupChannelsBackBtn" class="btn btn-primary btn-block">Back</button>
-        </div>
-        <div class="col-4">
-          <button id="groupSaveBtn" class="btn btn-success btn-block">Save</button>
-        </div>
-        <div class="col-4">
-          <button id="groupDeleteBtn" class="btn btn-danger btn-block">Delete</button>
-        </div>
-      </div>
-      <div class="row" id="groupSettings">
-        <div class="col-12">
-          <div class="form-group">
-            <label for="groupNameInput">Name:</label>
-            <input class="form-control" type="text" id="groupNameInput" placeholder="Group Name">
+    <div id="cueSettingsPage" class="tabcontent">
+      <div class="container">
+        <div class="row topBtns">
+          <div class="col-3">
+            <button id="cueSaveBtn" class="btn btn-success btn-block">Save</button>
           </div>
-          <div class="form-group">
-            <label for="groupShortNameInput">Short Name:</label>
-            <input class="form-control" type="text" id="groupShortNameInput" placeholder="Group Short Name">
+          <div class="col-3">
+            <button id="cueDeleteBtn" class="btn btn-danger btn-block"><i class="far fa-trash-alt d-sm-none d-inline-block"></i><span
+                class="d-none d-sm-block">Delete</span></button>
+          </div>
+          <div class="col-3">
+            <button id="cueCloneBtn" class="btn btn-info btn-block"><i class="far fa-clone d-sm-none d-inline-block"></i><span
+                class="d-none d-sm-block">Clone</span></button>
+          </div>
+          <div class="col-3">
+            <button id="moveCueUpBtn" class="btn btn-success btn-block"><i class="far fa-chevron-up"></i></button>
+          </div>
+        </div>
+        <div class="row topBtns">
+          <div class="col-3">
+            <button id="gotoCueBtn" class="btn btn-primary btn-block">Go</button>
+          </div>
+          <div class="col-6">
+            <button id="cueUpdateBtn" class="btn btn-warning btn-block">Update Channels</button>
+          </div>
+          <div class="col-3">
+            <button id="moveCueDownBtn" class="btn btn-success btn-block"><i class="far fa-chevron-down"></i></button>
+          </div>
+        </div>
+        <div class="row" id="cueSettings">
+          <div class="col-12">
+            <div class="form-group">
+              <label for="cueNameInput">Name:</label>
+              <input class="form-control" type="text" id="cueNameInput" placeholder="Cue Name">
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="form-group">
+              <label for="cueUpTimeInput">Up Time:</label>
+              <input class="form-control" type="number" id="cueUpTimeInput" placeholder="Cue Up Length In Seconds">
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="form-group">
+              <label for="cueDownTimeInput">Down Time:</label>
+              <input class="form-control" type="number" id="cueDownTimeInput" placeholder="Cue Down Length In Seconds">
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="form-group">
+              <label for="cueFollowInput">Follow:</label>
+              <input class="form-control" type="number" min="-1" id="cueFollowInput" placeholder="Cue Follow Time In Seconds">
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div id="groupChannelsPage" class="tabcontent">
-    <div class="container">
-      <div class="row topBtns">
-        <div class="col-6">
-          <h5 id="groupChannelsName">Group name</h5>
+    <div id="groups" class="tabcontent">
+      <div class="container">
+        <div class="row topBtns">
+          <div class="col-6">
+            <button class="btn btn-success btn-block" onclick="addGroupModal()">Add Group</button>
+          </div>
+          <div class="col-6">
+            <button class="btn btn-danger btn-block" onclick="resetGroups()">Reset Values</button>
+          </div>
         </div>
-        <div class="col-3">
-          <button id="groupSettingsBtn" class="btn btn-primary btn-block"><i class="far fa-cog d-sm-none d-inline-block"></i><span
-              class="d-none d-sm-block">Settings</span></button>
-        </div>
-        <div class="col-3">
-          <button id="groupResetBtn" class="btn btn-danger btn-block"><i class="far fa-redo d-sm-none d-inline-block"></i><span
-              class="d-none d-sm-block">Reset</span></button>
-        </div>
+        <div class="row" id="groupsList"></div>
       </div>
-      <div id="groupChannels"></div>
     </div>
-  </div>
-  <div id="presets" class="tabcontent">
-    <div class="container">
-      <div class="row topBtns">
-        <div class="col-12">
-          <button class="btn btn-success btn-block" onclick="recordPreset()">Add Preset</button>
+    <div id="groupSettingsPage" class="tabcontent">
+      <div class="container">
+        <div class="row topBtns">
+          <div class="col-4">
+            <button id="groupChannelsBackBtn" class="btn btn-primary btn-block">Back</button>
+          </div>
+          <div class="col-4">
+            <button id="groupSaveBtn" class="btn btn-success btn-block">Save</button>
+          </div>
+          <div class="col-4">
+            <button id="groupDeleteBtn" class="btn btn-danger btn-block">Delete</button>
+          </div>
+        </div>
+        <div class="row" id="groupSettings">
+          <div class="col-12">
+            <div class="form-group">
+              <label for="groupNameInput">Name:</label>
+              <input class="form-control" type="text" id="groupNameInput" placeholder="Group Name">
+            </div>
+            <div class="form-group">
+              <label for="groupShortNameInput">Short Name:</label>
+              <input class="form-control" type="text" id="groupShortNameInput" placeholder="Group Short Name">
+            </div>
+          </div>
         </div>
       </div>
+    </div>
+    <div id="groupChannelsPage" class="tabcontent">
+      <div class="container">
+        <div class="row topBtns">
+          <div class="col-6">
+            <h5 id="groupChannelsName">Group name</h5>
+          </div>
+          <div class="col-3">
+            <button id="groupSettingsBtn" class="btn btn-primary btn-block"><i class="far fa-cog d-sm-none d-inline-block"></i><span
+                class="d-none d-sm-block">Settings</span></button>
+          </div>
+          <div class="col-3">
+            <button id="groupResetBtn" class="btn btn-danger btn-block"><i class="far fa-redo d-sm-none d-inline-block"></i><span
+                class="d-none d-sm-block">Reset</span></button>
+          </div>
+        </div>
+        <div id="groupChannels"></div>
+      </div>
+    </div>
+    <div id="presets" class="tabcontent">
+      <div class="container">
+        <div class="row topBtns">
+          <div class="col-12">
+            <button class="btn btn-success btn-block" onclick="recordPreset()">Add Preset</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <button id="blackoutBtn" class="btn btn-primary" onclick="toggleBlackout()">Blackout</button>
+            <label class="ml-2" for="grandmaster">Grandmaster:</label>
+            <input type="range" class="custom-range" id="grandmaster" min="0" max="100" oninput="updateGrandmasterValue(this)">
+          </div>
+        </div>
+        <div class="row" id="presetsList">
+          <div class="col-4 col-lg-2" v-for="preset in presets" :key="preset.id">
+            <div :class="{ 'presetActive' : preset.active == true}" class="presetItem" v-on:click="viewPresetSettings(preset.id)">
+              <p>{{preset.name}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="presetSettingsPage" class="tabcontent">
+      <div class="container">
+        <div class="row topBtns">
+          <div class="col-4">
+            <button id="presetSaveBtn" class="btn btn-success btn-block">Save</button>
+          </div>
+          <div class="col-4">
+            <button id="presetDeleteBtn" class="btn btn-danger btn-block"><i class="far fa-trash-alt d-sm-none d-inline-block"></i><span
+                class="d-none d-sm-block">Delete</span></button>
+          </div>
+          <div class="col-4">
+            <button id="presetActiveBtn" class="btn btn-warning btn-block"></button>
+          </div>
+        </div>
+        <div class="row" id="presetSettings">
+          <div class="col-12">
+            <div class="form-group">
+              <label for="presetNameInput">Name:</label>
+              <input class="form-control" type="text" id="presetNameInput" placeholder="Preset Name">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tab">
       <div class="row">
-        <div class="col-12">
-          <button id="blackoutBtn" class="btn btn-primary" onclick="toggleBlackout()">Blackout</button>
-          <label class="ml-2" for="grandmaster">Grandmaster:</label>
-          <input type="range" class="custom-range" id="grandmaster" min="0" max="100" oninput="updateGrandmasterValue(this)">
+        <div class="col-3">
+          <div onclick="openTab('fixtures')">
+            <i class="tablinks tablinks-fixtures far fa-lightbulb" id="fixturesTab"></i>
+          </div>
         </div>
-      </div>
-      <div class="row" id="presetsList">
-        <div class="col-4 col-lg-2" v-for="preset in presets" :key="preset.id">
-          <div :class="{ 'presetActive' : preset.active == true}" class="presetItem" v-on:click="viewPresetSettings(preset.id)">
-            <p>{{preset.name}}</p>
+        <div class="col-3">
+          <div onclick="openTab('cues')">
+            <i class="tablinks tablinks-cues far fa-list"></i>
+          </div>
+        </div>
+        <div class="col-3">
+          <div onclick="openTab('groups')">
+            <i class="tablinks tablinks-groups far fa-layer-group"></i>
+          </div>
+        </div>
+        <div class="col-3">
+          <div onclick="openTab('presets')">
+            <i class="tablinks tablinks-presets far fa-swatchbook"></i>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div id="presetSettingsPage" class="tabcontent">
-    <div class="container">
-      <div class="row topBtns">
-        <div class="col-4">
-          <button id="presetSaveBtn" class="btn btn-success btn-block">Save</button>
-        </div>
-        <div class="col-4">
-          <button id="presetDeleteBtn" class="btn btn-danger btn-block"><i class="far fa-trash-alt d-sm-none d-inline-block"></i><span
-              class="d-none d-sm-block">Delete</span></button>
-        </div>
-        <div class="col-4">
-          <button id="presetActiveBtn" class="btn btn-warning btn-block"></button>
-        </div>
-      </div>
-      <div class="row" id="presetSettings">
-        <div class="col-12">
-          <div class="form-group">
-            <label for="presetNameInput">Name:</label>
-            <input class="form-control" type="text" id="presetNameInput" placeholder="Preset Name">
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  </div>
-  <div class="tab">
-    <div class="row">
-      <div class="col-3">
-        <div onclick="openTab('fixtures')">
-          <i class="tablinks tablinks-fixtures far fa-lightbulb" id="fixturesTab"></i>
-        </div>
-      </div>
-      <div class="col-3">
-        <div onclick="openTab('cues')">
-          <i class="tablinks tablinks-cues far fa-list"></i>
-        </div>
-      </div>
-      <div class="col-3">
-        <div onclick="openTab('groups')">
-          <i class="tablinks tablinks-groups far fa-layer-group"></i>
-        </div>
-      </div>
-      <div class="col-3">
-        <div onclick="openTab('presets')">
-          <i class="tablinks tablinks-presets far fa-swatchbook"></i>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div id="openShowModal" class="modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-body">
-          <p class="dark">Opening a new show file will overwrite the current show.</p>
-          <form action="/showFile" method='post' enctype="multipart/form-data">
-            <div class="form-group">
-              <div class="custom-file">
-                <input type="file" class="custom-file-input" name="showFile" id="showFile">
-                <label class="dark custom-file-label" for="showFile">Choose file</label>
+    <div id="openShowModal" class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <p class="dark">Opening a new show file will overwrite the current show.</p>
+            <form action="/showFile" method='post' enctype="multipart/form-data">
+              <div class="form-group">
+                <div class="custom-file">
+                  <input type="file" class="custom-file-input" name="showFile" id="showFile">
+                  <label class="dark custom-file-label" for="showFile">Choose file</label>
+                </div>
               </div>
-            </div>
-            <input type="submit" class="btn btn-success" value="Open Show File">
-          </form>
+              <input type="submit" class="btn btn-success" value="Open Show File">
+            </form>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div id="openFixtureDefinitionModal" class="modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-body">
-          <form action="/importFixtureDefinition" method='post' enctype="multipart/form-data">
-            <div class="form-group">
-              <div class="custom-file">
-                <input type="file" class="custom-file-input" name="fixtureDefinition" id="fixtureDefinition">
-                <label class="dark custom-file-label" for="fixtureDefinition">Choose file</label>
+    <div id="openFixtureDefinitionModal" class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <form action="/importFixtureDefinition" method='post' enctype="multipart/form-data">
+              <div class="form-group">
+                <div class="custom-file">
+                  <input type="file" class="custom-file-input" name="fixtureDefinition" id="fixtureDefinition">
+                  <label class="dark custom-file-label" for="fixtureDefinition">Choose file</label>
+                </div>
               </div>
+              <input type="submit" class="btn btn-success" value="Import Fixture Definition">
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="openSettingsModal" class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="form-group">
+              <label class="dark" for="defaultUpTime">Default Up Time:</label>
+              <input class="form-control" type="text" id="defaultUpTime" placeholder="Default Cue Up Time">
             </div>
-            <input type="submit" class="btn btn-success" value="Import Fixture Definition">
-          </form>
+            <div class="form-group">
+              <label class="dark" for="defaultDownTime">Default Down Time:</label>
+              <input class="form-control" type="text" id="defaultDownTime" placeholder="Default Cue Up Time">
+            </div>
+            <button class="btn btn-success" onclick="saveSettings()">Save Settings</button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div id="openSettingsModal" class="modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-body">
-          <div class="form-group">
-            <label class="dark" for="defaultUpTime">Default Up Time:</label>
-            <input class="form-control" type="text" id="defaultUpTime" placeholder="Default Cue Up Time">
+    <div id="addGroupModal" class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="form-group">
+              <label class="dark" for="groupFixtureIDs">Fixtures:</label>
+              <select class="form-control" multiple id="groupFixtureIDs" name="groupFixtures" size="5">
+                <option v-for="fixture in fixtures" :key="fixture.id" value="fixture.id">{{fixture.shortName}}
+                  ({{fixture.startDMXAddress}})</option>
+              </select>
+            </div>
+            <button class="btn btn-success" onclick="addGroup()">Add Group</button>
           </div>
-          <div class="form-group">
-            <label class="dark" for="defaultDownTime">Default Down Time:</label>
-            <input class="form-control" type="text" id="defaultDownTime" placeholder="Default Cue Up Time">
-          </div>
-          <button class="btn btn-success" onclick="saveSettings()">Save Settings</button>
-          </form>
         </div>
       </div>
     </div>
-  </div>
-  <div id="addGroupModal" class="modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-body">
-          <div class="form-group">
-            <label class="dark" for="groupFixtureIDs">Fixtures:</label>
-            <select class="form-control" multiple id="groupFixtureIDs" name="groupFixtures" size="5"></select>
-          </div>
-          <button class="btn btn-success" onclick="addGroup()">Add Group</button>
-        </div>
-      </div>
+    <div id="alert" class="fixed-bottom mb-5 alert alert-dismissible fade" role="alert">
+      <div id="alertText"></div>
+      <button type="button" class="close" onclick="closeAlert()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
     </div>
-  </div>
-  <div id="alert" class="fixed-bottom mb-5 alert alert-dismissible fade" role="alert">
-    <div id="alertText"></div>
-    <button type="button" class="close" onclick="closeAlert()" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
   </div>
   <script src="static/js/jquery-3.3.1.min.js"></script>
   <script src="static/js/popper.min.js"></script>

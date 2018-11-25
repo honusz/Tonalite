@@ -1165,7 +1165,7 @@ io.on('connection', function (socket) {
     });
 
     socket.on('getSettings', function () {
-        socket.emit('settings', SETTINGS);
+        socket.emit('settings', { defaultUpTime: SETTINGS.defaultUpTime, defaultDownTime: SETTINGS.defaultDownTime });
     });
 
     socket.on('saveSettings', function (msg) {

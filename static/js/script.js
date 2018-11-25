@@ -237,8 +237,6 @@ socket.on('groupChannels', function (msg) {
 });
 
 socket.on('settings', function (settings) {
-    $("#serverURL").val(settings.url);
-    $("#serverPort").val(settings.port);
     $("#defaultUpTime").val(settings.defaultUpTime);
     $("#defaultDownTime").val(settings.defaultDownTime);
     $('#openSettingsModal').modal("show");
