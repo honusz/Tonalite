@@ -49,6 +49,7 @@ Features:
 - Save Show - Done - Done UI
 - Open Show From File - Done - Done UI
 - Save Show To File - Done - Done UI
+- Save Show To USB - Done - Done UI
 - Import Fixture Definition File - Done - Done UI
 - View Docs - Done - Done UI
 - View Settings - Done - Done UI
