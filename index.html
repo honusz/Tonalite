@@ -35,7 +35,7 @@
               <div class="dropdown-divider"></div>
               <a v-if="ifMobile()" class="dropdown-item" href="/showFile">Save Show To File</a>
               <a v-if="ifMobile()" class="dropdown-item" onclick="openShowFileModal()">Open Show From File</a>
-              <a v-if="!ifMobile()" class="dropdown-item" onclick="saveShowToUSB()">Save Show To USB</a>
+              <a class="dropdown-item" onclick="saveShowToUSB()">Save Show To USB</a>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" onclick="openFixtureDefinitionModal()">Import Fixture Definition</a>
             </div>
