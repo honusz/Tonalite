@@ -398,6 +398,7 @@ function saveGroupSettings(groupID) {
 
 function addGroup() {
     socket.emit('addGroup', $("#groupFixtureIDs").val());
+    document.getElementById("groupFixtureIDs").selectedIndex = "-1";
     $('#addGroupModal').modal("hide");
 }
 
