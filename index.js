@@ -394,9 +394,6 @@ function calculateStack() {
             }
         }
     }
-    //let s = 0; const sMax = stack.length; for (; s < sMax; s++) {
-    // Calculate stack
-    //}
 };
 
 // Set the fixture values for each group equal to the group's channel value
