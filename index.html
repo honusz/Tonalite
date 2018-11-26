@@ -77,7 +77,7 @@
           </div>
         </div>
         <div class="row" id="fixturesList">
-          <div class="col-4 col-lg-2" v-for="fixture in fixtures" :key="fixture.id">
+          <div class="col-4 col-lg-2 mb-3" v-for="fixture in fixtures" :key="fixture.id">
             <div class="fixtureItem" v-on:click="viewFixtureChannels(fixture.id)">
               <h3 v-if="fixture.channels[0].type === 'intensity'" class="fixtureValue">{{fixture.channels[0].displayValue}}</h3>
               <p>{{fixture.shortName}} <span v-html="lockedFixturechannels(fixture.hasLockedChannels)"></span></p>
@@ -313,7 +313,7 @@
           </div>
         </div>
         <div class="row" id="presetsList">
-          <div class="col-4 col-lg-2" v-for="preset in presets" :key="preset.id">
+          <div class="col-4 col-lg-2 mb-3" v-for="preset in presets" :key="preset.id">
             <div :class="{ 'presetActive' : preset.active == true}" class="presetItem" v-on:click="viewPresetSettings(preset.id)">
               <p>{{preset.name}}</p>
             </div>

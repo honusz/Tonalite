@@ -21,8 +21,9 @@ body {
     border-radius: 5px;
     padding-top: 0.95rem;
     padding-bottom: 0.01rem;
-    margin-bottom: 0.65rem;
+    margin-bottom: 0rem;
     text-align: center;
+    height: 100%;
 }
 
 .fixtureItem {
