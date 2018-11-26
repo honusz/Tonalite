@@ -72,7 +72,8 @@ var SETTINGS = {
     url: "localhost", // http web UI location
     port: 3000,
     defaultUpTime: 3,
-    defaultDownTime: 3
+    defaultDownTime: 3,
+    desktop: true // show open show from file if desktop
 }
 
 var STARTED = false;
@@ -568,6 +569,7 @@ io.on('connection', function (socket) {
     socket.emit('presets', cleanPresets());
     socket.emit('blackout', blackout);
     socket.emit('grandmaster', grandmaster);
+    socket.emit('desktop', SETTINGS.desktop);
 
     if (currentCue == -1) {
         socket.emit('cueActionBtn', false);

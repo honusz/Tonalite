@@ -14,6 +14,7 @@ var app = new Vue({
     data: {
         fixtures: [],
         presets: [],
+        desktop: false
     },
     methods: {
         changePresetActive: function (presetID) {
@@ -241,6 +242,11 @@ socket.on('settings', function (settings) {
     $("#defaultDownTime").val(settings.defaultDownTime);
     $('#openSettingsModal').modal("show");
 });
+
+socket.on('desktop', function (desktop) {
+    app.desktop = desktop;
+});
+
 
 function resetFixtures() {
     if (confirm("Are you sure you want to reset all fixture channel values?")) {
