@@ -188,13 +188,15 @@ function updateFirmware(callback) {
         }
 
         drives.forEach((drive) => {
-            fs.exists(drive.mountpoints[0].path + "/tonalite.zip", function (exists) {
-                if (exists) {
-                    fs.createReadStream(drive.mountpoints[0].path + "/tonalite.zip").pipe(unzipper.Extract({ path: process.cwd() }));
-                    uploadComplete = true;
-                    return callback(uploadComplete);
-                }
-            });
+            if (drive.enumerator == 'USBSTOR') {
+                fs.exists(drive.mountpoints[0].path + "/tonalite.zip", function (exists) {
+                    if (exists) {
+                        fs.createReadStream(drive.mountpoints[0].path + "/tonalite.zip").pipe(unzipper.Extract({ path: process.cwd() }));
+                        uploadComplete = true;
+                        return callback(uploadComplete);
+                    }
+                });
+            }
         });
     });
 }
