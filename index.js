@@ -78,7 +78,7 @@ var SETTINGS = {
 
 var STARTED = false;
 
-const VERSION = "2.0";
+const VERSION = "2.0.0";
 
 fs.exists(process.cwd() + '/settings.json', function (exists) {
     if (exists == false) {
@@ -595,7 +595,7 @@ io.on('connection', function (socket) {
     socket.emit('presets', cleanPresets());
     socket.emit('blackout', blackout);
     socket.emit('grandmaster', grandmaster);
-    socket.emit('desktop', SETTINGS.desktop);
+    socket.emit('meta', { desktop: SETTINGS.desktop, version: VERSION });
 
     if (currentCue == -1) {
         socket.emit('cueActionBtn', false);

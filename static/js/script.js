@@ -14,7 +14,8 @@ var app = new Vue({
     data: {
         fixtures: [],
         presets: [],
-        desktop: false
+        desktop: false,
+        version: "2.0.0"
     },
     methods: {
         changePresetActive: function (presetID) {
@@ -243,8 +244,9 @@ socket.on('settings', function (settings) {
     $('#openSettingsModal').modal("show");
 });
 
-socket.on('desktop', function (desktop) {
-    app.desktop = desktop;
+socket.on('meta', function (metadata) {
+    app.desktop = metadata.desktop;
+    app.version = metadata.version;
 });
 
 
@@ -422,6 +424,10 @@ function toggleBlackout() {
 
 function openShowFileModal() {
     $('#openShowModal').modal("show");
+}
+
+function openAboutModal() {
+    $('#openAboutModal').modal("show");
 }
 
 function openSettingsModal() {
