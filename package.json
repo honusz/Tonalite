@@ -32,7 +32,6 @@
     "express": "^4.16.4",
     "express-fileupload": "^1.0.0",
     "moment": "^2.22.2",
-    "onoff": "^3.2.2",
     "sanic.js": "^1.0.1",
     "serve-favicon": "^2.5.0",
     "sleep": "^5.2.3",

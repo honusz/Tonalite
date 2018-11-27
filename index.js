@@ -159,13 +159,6 @@ function openSettings() {
 
             // Output DMX frames 40 times a second
             setInterval(dmxLoop, 25);
-
-            // If on the raspberry pi, turn on an led to show that the program is started
-            if (SETTINGS.device == "rpi") {
-                const Gpio = require('onoff').Gpio;
-                const led = new Gpio(17, 'out');
-                led.writeSync(1);
-            }
         }
     });
 }
