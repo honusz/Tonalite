@@ -1210,6 +1210,14 @@ io.on('connection', function (socket) {
         });
     });
 
+    socket.on('importFixtures', function () {
+        importFixtures(function (result) {
+            if (result) {
+                socket.emit('message', { type: "info", content: "The fixtures have been imported!" });
+            }
+        });
+    });
+
     socket.on('saveShowToUSB', function () {
         drivelist.list((error, drives) => {
             var done = false;
