@@ -21,4 +21,5 @@
     * [Recording Presets](presets/recording_presets.md)
     * [Preset Settings](presets/preset_settings.md)
     * [Activating Presets](presets/activating_presets.md)
+* [Grandmaster and Blackout](grandmaster_and_blackout.md)
 * [Keyboard Shortcuts](keyboard_shortcuts.md)
