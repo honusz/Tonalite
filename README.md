@@ -37,7 +37,7 @@ You need `NodeJS` installed. You also need `Calibre` if you want to generate the
 
 https://www.illutzmination.de/udmxartnet.html?&L=1
 
-## Setting Up a Raspberry Pi As A Server
+## Setting Up A Raspberry Pi As A Server
 
 Flash raspbian onto the sd card and leave it connected to the linux computer.
 
@@ -62,7 +62,7 @@ network={
 }
 ```
 
-Eject the sd card, insert it into the RPIZW and boot it up.
+Eject the sd card, insert it into the RPi and boot it up.
 
 Wait about 90 seconds.
 
@@ -70,7 +70,7 @@ Wait about 90 seconds.
 
 `ssh pi@raspberrypi.local`
 
-### On the RPIZW
+### On the RPi
 
 `sudo apt-get update`
 
@@ -166,13 +166,13 @@ sudo systemctl start dnsmasq
 
 right before `exit 0`
 
-Remove the sd card and reinsert it into the RPIZW.
+Remove the sd card and reinsert it into the RPi.
 
-give the RPIZW about 90 seconds to start, and then check for wifi networks. The `Tonalite` should show up. Connect to the network.
+give the RPi about 90 seconds to start, and then check for wifi networks. The `Tonalite` should show up. Connect to the network.
 
 `ssh pi@raspberrypi.local`
 
-### Back on the RPIZW
+### Back on the RPi
 
 `sudo nano /etc/rc.local`
 
