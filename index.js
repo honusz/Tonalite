@@ -56,7 +56,7 @@ Features:
 - Save Settings - Done - Done UI
 - Update Firmware - Done - Done UI
 - View Presets - Done - Done UI
-- Add Preset - Done - Done UI
+- Record Preset - Done - Done UI
 - Edit Preset - Done - Done UI
 - Activate/Deactivate Preset - Done UI
 - Remove Preset - Done - Done UI

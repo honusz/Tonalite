@@ -11,7 +11,7 @@ Tonalite is lighting control software that uses a web interface accessible from 
 - Control the value of each fixture's channels (attributes)
 - Add cues and cycle through them
 - Add groups to control multiple fixtures at once
-- Add presets for easy system overrides
+- Record presets for easy system overrides
   
 With effects coming soon, this makes Tonalite a direct competetor to other well-known theater lighting consoles.
 
