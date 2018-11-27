@@ -480,7 +480,7 @@ function dmxLoop() {
         slotsData = channels;
         client.send(packet);
     } else {
-        artnet.set(1, channels);
+        artnet.set(channels);
     }
 };
 
