@@ -46,7 +46,8 @@
       "static/**/*",
       "docs/dist/**/*",
       "index.min.html",
-      "presets.min.html"
+      "presets.min.html",
+      "open-source-licenses.txt"
     ]
   }
 }

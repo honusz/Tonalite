@@ -142,7 +142,7 @@ function openSettings() {
                 if (SETTINGS.desktop === false)
                     msg = "Embeded";
                 console.log(`Tonalite ${msg} v${VERSION} - DMX Lighting Control System`);
-                console.log('The web UI can be found at http://' + SETTINGS.url + ':' + SETTINGS.port);
+                console.log(`The web UI can be found at http://${SETTINGS.url}:${SETTINGS.port}`);
             });
 
             if (SETTINGS.output == "udmx") {
@@ -535,6 +535,10 @@ app.get('/', function (req, res) {
 
 app.get('/presets', function (req, res) {
     res.sendFile(__dirname + '/presets.min.html');
+});
+
+app.get('/open-source-licenses', function (req, res) {
+    res.sendFile(__dirname + '/open-source-licenses.txt');
 });
 
 app.get('/showFile', function (req, res) {
