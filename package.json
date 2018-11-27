@@ -9,6 +9,7 @@
     "test": "echo \"Warning: no test specified\" && exit 0",
     "build-linux": "pkg . -t node10-linux",
     "build-win": "pkg . -t node10-win",
+    "build-macos": "pkg . -t node10-macos",
     "build-docs-pdf": "cd docs && gitbook pdf . documentation.pdf && cd ../",
     "build-docs": "cd docs && gitbook build . dist/ && cd ../"
   },

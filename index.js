@@ -152,10 +152,9 @@ function openSettings() {
                     ls = spawn(process.cwd() + '/uDMXArtnet/uDMXArtnet_PI_minimal_32', ['-i', '192.168.4.1']);
                 } else if (SETTINGS.device == "win") {
                     ls = spawn(process.cwd() + '/uDMXArtnet/uDMXArtnet_Minimal.exe');
+                } else {
+                    console.log("Selected platform not supported by uDMX, falling back to ArtNet.");
                 }
-                ls.on('close', (code) => {
-                    console.log('udmx child process exited with code ' + code);
-                });
             }
 
             // Output DMX frames 40 times a second
