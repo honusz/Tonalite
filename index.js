@@ -138,7 +138,10 @@ function openSettings() {
             });
 
             http.listen(SETTINGS.port, SETTINGS.url, function () {
-                console.log(`Tonalite v${VERSION} - DMX Lighting Control System`);
+                var msg = "Desktop";
+                if (SETTINGS.desktop === false)
+                    msg = "Embeded";
+                console.log(`Tonalite ${msg} v${VERSION} - DMX Lighting Control System`);
                 console.log('The web UI can be found at http://' + SETTINGS.url + ':' + SETTINGS.port);
             });
 
