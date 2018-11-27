@@ -50,7 +50,7 @@ Features:
 - Open Show From File - Done - Done UI
 - Save Show To File - Done - Done UI
 - Save Show To USB - Done - Done UI
-- Import Fixture Definition File - Done - Done UI
+- Import Fixture Definition From File - Done - Done UI
 - View Docs - Done - Done UI
 - View Settings - Done - Done UI
 - Save Settings - Done - Done UI
