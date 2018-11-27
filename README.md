@@ -37,7 +37,7 @@ You need `NodeJS` installed. You also need `Calibre` if you want to generate the
 
 https://www.illutzmination.de/udmxartnet.html?&L=1
 
-## Setting Up a Raspberry Pi Zero W
+## Setting Up a Raspberry Pi As A Server
 
 Flash raspbian onto the sd card and leave it connected to the linux computer.
 
