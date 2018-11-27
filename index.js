@@ -203,19 +203,27 @@ function importFixtures(callback) {
         if (error) {
             logError(error);
         }
-
         drives.forEach((drive) => {
             if (drive.enumerator == 'USBSTOR') {
+                fs.readdir(drive.mountpoints[0].path, (err, files) => {
+                    files.forEach(file => {
+                        fs.copyFile(drive.mountpoints[0].path + "/" + file, process.cwd() + "/fixtures/" + file, (err) => {
+                            if (err) throw err;
+                            importComplete = true;
+                        });
+                    });
+                });
+
                 fs.exists(drive.mountpoints[0].path + "/fixtures.zip", function (exists) {
                     if (exists) {
                         fs.createReadStream(drive.mountpoints[0].path + "/fixtures.zip").pipe(unzipper.Extract({ path: process.cwd() }));
                         importComplete = true;
-                        return callback(importComplete);
                     }
                 });
             }
         });
     });
+    return callback(importComplete);
 }
 
 function logError(msg) {
