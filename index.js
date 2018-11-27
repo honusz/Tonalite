@@ -73,7 +73,7 @@ var SETTINGS = {
     port: 3000,
     defaultUpTime: 3,
     defaultDownTime: 3,
-    desktop: true // show open show from file if desktop
+    desktop: true // desktop vs embeded
 }
 
 var STARTED = false;
@@ -194,6 +194,28 @@ function updateFirmware(callback) {
                         fs.createReadStream(drive.mountpoints[0].path + "/tonalite.zip").pipe(unzipper.Extract({ path: process.cwd() }));
                         uploadComplete = true;
                         return callback(uploadComplete);
+                    }
+                });
+            }
+        });
+    });
+}
+
+function importFixtures(callback) {
+    var importComplete = false;
+
+    drivelist.list((error, drives) => {
+        if (error) {
+            logError(error);
+        }
+
+        drives.forEach((drive) => {
+            if (drive.enumerator == 'USBSTOR') {
+                fs.exists(drive.mountpoints[0].path + "/fixtures.zip", function (exists) {
+                    if (exists) {
+                        fs.createReadStream(drive.mountpoints[0].path + "/fixtures.zip").pipe(unzipper.Extract({ path: process.cwd() }));
+                        importComplete = true;
+                        return callback(importComplete);
                     }
                 });
             }
