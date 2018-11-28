@@ -2,6 +2,7 @@
     "name": "Generic RGBA Fixture",
     "shortName": "RGBA",
     "manufacturer": "Generic",
+    "type": "static",
     "channels": [
         {
             "type": "color",

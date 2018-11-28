@@ -2,6 +2,7 @@
     "name": "Generic Dimmer",
     "shortName": "Dimmer",
     "manufacturer": "Generic",
+    "type": "static",
     "channels": [
         {
             "type": "intensity",
