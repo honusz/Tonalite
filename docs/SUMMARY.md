@@ -19,7 +19,6 @@
     * [Changing Group Settings](groups/changing_group_settings.md)
 * [Presets](presets/README.md)
     * [Recording Presets](presets/recording_presets.md)
-    * [Preset Settings](presets/preset_settings.md)
-    * [Activating Presets](presets/activating_presets.md)
+    * [Changing Preset Settings](presets/changing_preset_settings.md)
 * [Grandmaster and Blackout](grandmaster_and_blackout.md)
 * [Keyboard Shortcuts](keyboard_shortcuts.md)
