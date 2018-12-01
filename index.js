@@ -67,13 +67,13 @@ Features:
 */
 
 var SETTINGS = {
-    output: "udmx", // e131, udmx, artnet
     device: "linux", // linux, rpi, win
     url: "localhost", // http web UI location
     port: 3000,
     defaultUpTime: 3,
     defaultDownTime: 3,
-    desktop: true // desktop vs embeded
+    desktop: true, // desktop vs embeded
+    udmx: false
 }
 
 var STARTED = false;
@@ -115,21 +115,18 @@ function openSettings() {
         if (STARTED == false) {
             STARTED = true;
 
-            // If e1.31 selected, run that, but run artnet otherwise
-            if (SETTINGS.output == "e131") {
-                e131 = require('e131');
-                client = new e131.Client(1);
-                packet = client.createPacket(512);
-                slotsData = packet.getSlotsData();
-                channels = slotsData;
+            e131 = require('e131');
+            client = new e131.Client(1);
+            packet = client.createPacket(512);
+            slotsData = packet.getSlotsData();
+            channels = slotsData;
+
+            if (SETTINGS.url != "localhost") {
+                artnet = require('artnet')({ iface: SETTINGS.url, host: '255.255.255.255' });
             } else {
-                if (SETTINGS.url != "localhost") {
-                    artnet = require('artnet')({ iface: SETTINGS.url, host: '255.255.255.255' });
-                } else {
-                    artnet = require('artnet')({ host: '255.255.255.255' });
-                }
-                channels = new Array(512).fill(0);
+                artnet = require('artnet')({ host: '255.255.255.255' });
             }
+            //channels = new Array(512).fill(0);
 
             fs.exists(process.cwd() + '/presets.json', function (exists) {
                 if (exists == true) {
@@ -145,12 +142,12 @@ function openSettings() {
                 console.log(`The web UI can be found at http://${SETTINGS.url}:${SETTINGS.port}`);
             });
 
-            if (SETTINGS.output == "udmx") {
-                if (SETTINGS.device == "linux") {
+            if (SETTINGS.udmx === true) {
+                if (SETTINGS.device === "linux") {
                     ls = spawn(process.cwd() + '/uDMXArtnet/uDMXArtnet_minimal_64');
-                } else if (SETTINGS.device == "rpi") {
+                } else if (SETTINGS.device === "rpi") {
                     ls = spawn(process.cwd() + '/uDMXArtnet/uDMXArtnet_PI_minimal_32', ['-i', '192.168.4.1']);
-                } else if (SETTINGS.device == "win") {
+                } else if (SETTINGS.device === "win") {
                     ls = spawn(process.cwd() + '/uDMXArtnet/uDMXArtnet_Minimal.exe');
                 } else {
                     console.log("Selected platform not supported by uDMX, falling back to ArtNet.");
@@ -475,14 +472,9 @@ function dmxLoop() {
             channels[c] = Math.round((channels[c] / 100.0) * grandmaster);
         }
     }
-
-    // If e1.31 is selected, output to that, if not, use artnet
-    if (SETTINGS.output === "e131") {
-        slotsData = channels;
-        client.send(packet);
-    } else {
-        artnet.set(channels);
-    }
+    slotsData = channels;
+    client.send(packet);
+    artnet.set(channels);
 };
 
 // Load the fixtures, cues, and groups from file
@@ -1196,12 +1188,13 @@ io.on('connection', function (socket) {
     });
 
     socket.on('getSettings', function () {
-        socket.emit('settings', { defaultUpTime: SETTINGS.defaultUpTime, defaultDownTime: SETTINGS.defaultDownTime });
+        socket.emit('settings', { defaultUpTime: SETTINGS.defaultUpTime, defaultDownTime: SETTINGS.defaultDownTime, udmx: SETTINGS.udmx });
     });
 
     socket.on('saveSettings', function (msg) {
         SETTINGS.defaultUpTime = msg.defaultUpTime;
         SETTINGS.defaultDownTime = msg.defaultDownTime;
+        SETTINGS.udmx = msg.udmx;
         if (saveSettings()) {
             socket.emit('message', { type: "info", content: "The Tonalite settings have been saved!" });
         } else {

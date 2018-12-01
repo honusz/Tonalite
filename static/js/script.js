@@ -241,6 +241,7 @@ socket.on('groupChannels', function (msg) {
 socket.on('settings', function (settings) {
     $("#defaultUpTime").val(settings.defaultUpTime);
     $("#defaultDownTime").val(settings.defaultDownTime);
+    $("#useUDMX").prop('indeterminate', settings.udmx);
     $('#openSettingsModal').modal("show");
 });
 
@@ -443,7 +444,7 @@ function resetShow() {
 }
 
 function saveSettings() {
-    socket.emit('saveSettings', { defaultUpTime: $("#defaultUpTime").val(), defaultDownTime: $("#defaultDownTime").val() });
+    socket.emit('saveSettings', { defaultUpTime: $("#defaultUpTime").val(), defaultDownTime: $("#defaultDownTime").val(), udmx: $("#useUDMX").prop('indeterminate') });
     $('#openSettingsModal').modal("hide");
 }
 
