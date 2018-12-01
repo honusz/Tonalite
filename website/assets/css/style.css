@@ -47,9 +47,9 @@ body {
 }
 
 .logo {
-    max-width: 100px;
+    max-width: 150px;
     padding-left: 0;
-    padding-top: 5px;
+    padding-top: 0px;
 }
 
 .header-btn {
@@ -447,12 +447,16 @@ ul {
     border: none;
 }
 
+a.submit-btn {
+    margin-bottom: 0px;
+    padding-top: 0.5rem;
+}
+
 .submit-btn {
-    background-color: #25F18B;
+    background-color: #22cf79;
     border-radius: 10px;
-    color: #fff;
+    color: #4b4b4b;
     height: 51px;
-    width: 120px;
     margin-top: 20px;
     margin-left: 3px;
     -webkit-transition-duration: 0.4s;
@@ -462,7 +466,7 @@ ul {
 
 .submit-btn:hover {
     background-color: #6affb4;
-    color: white;
+    color: #4b4b4b;
     border-radius: 20px;
     -webkit-box-shadow: -1px 9px 46px -17px rgba(43, 43, 43, 1);
     -moz-box-shadow: -1px 9px 46px -17px rgba(43, 43, 43, 1);

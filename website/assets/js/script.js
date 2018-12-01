@@ -40,37 +40,6 @@ $(document).ready(function () {
         }
     });
 
-    //Subscribe to newsletter
-    $('#email-form').on('submit', function (e) {
-        e.preventDefault();
-
-
-        $('#newsletter-spinner').css("display", "inline-block");
-
-        var data = {
-            email: $('#newsletter-email-input').val()
-        }
-
-        $.ajax({
-            url: "/mailchimp.php",
-            type: 'POST',
-            data: data,
-            success: function (data) {
-
-                console.log(data);
-                $('#newsletter-spinner').css("display", "none");
-                $('#newsletter-loading-div').html("Success! Cool things are on their way")
-                $('#newsletter-email-input').val("")
-
-                window.location.href = '/nova.zip';
-            },
-            error: function (error) {
-                console.log(error);
-                $('#newsletter-spinner').fadeOut()
-            }
-        });
-    })
-
 
 //smooth scrolling
 

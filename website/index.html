@@ -27,12 +27,13 @@
 <div class="hero-background">
     <div class="container">
         <div class="header-container header">
-            <a class="navbar-brand logo" href="#"> <img class="logo" src="assets/images/logo.svg"/> </a>
-            <a href="#email-form">
+            <a class="navbar-brand logo" href="#"> <img class="logo" src="assets/images/logo.png"/> </a>
+            <a href="#download">
                 <button class="header-btn">Download FREE!</button>
             </a>
             <div class="header-right">
                 <a class="navbar-item" href="#features">Features</a>
+                <a class="navbar-item" href="#about">About</a>
                 <a class="navbar-item" href="#pricing">Pricing</a>
             </div>
         </div>
@@ -46,7 +47,7 @@
             <div class="hero-right col-sm-6 col-sm-6">
                 <h1 class="header-headline bold">Wireless DMX Lighting Control<br></h1>
                 <h4 class="header-running-text light">Powerful theater lighting control in your hand. No need to be stuck in a booth anymore.</h4>
-                <a href="#email-form">
+                <a href="#download">
                     <button class="hero-btn"> Download FREE!</button>
                 </a>
             </div><!--hero-left-->
@@ -79,7 +80,7 @@
                 <img class="feature-img" src="assets/images/responsive.svg">
             </div>
             <h5 class="feature-head-text feature-no-display">UNIVERSAL</h5>
-            <p class="feature-subtext light feature-no-display">Available on any device with a web browser on small or large screens.</p>
+            <p class="feature-subtext light feature-no-display">Available on any device with a web browser no matter what screen size. Touch optional.</p>
         </div>
 
         <div class="col-sm-4 feature">
@@ -94,9 +95,8 @@
             <div class="feature-icon feature-no-display feature-display-last">
                 <img class="bullet-img" src="assets/images/design.svg">
             </div>
-            <h5 class="feature-head-text feature-no-display feature-display-last"> SLICK AND BEAUTIFUL DESIGN </h5>
-            <p class="feature-subtext light feature-no-display feature-display-last"> Trendy and fresh design, fits any
-                website.</p>
+            <h5 class="feature-head-text feature-no-display feature-display-last">Industry Standard</h5>
+            <p class="feature-subtext light feature-no-display feature-display-last">Outputs ArtNet or sACN and can control the channels of any connected DMX device.</p>
         </div>
     </div> <!--features-container-->
 </div> <!--features-section-->
@@ -104,7 +104,7 @@
 <!-- White-Section
   ================================================== -->
 
-<div class="white-section row">
+<div class="white-section row" id="about">
 
     <div class="imac col-sm-6">
         <img class="imac-screen img-responsive" src="assets/images/imac.png">
@@ -115,13 +115,11 @@
 
         <div class="white-section-text">
 
-            <h2 class="imac-section-header light">SIMPLE AND BEAUTIFUL</h2>
+            <h2 class="imac-section-header light">ABOUT TONALITE</h2>
 
             <div class="imac-section-desc">
 
-            <span>  Use Nova theme for your next web project.
-                It is completely customizable so you can change any of the sections to fit your needs.
-                Nova Theme is Free for any kind of use, personal and commercial. Have fun and good luck!</span>
+            <span>Tonalite was created to fix the problem of motion. That is, I had my lighting board at the back of the theater, and the lights in front. As the only lighting person, it was getting hard to keep running back and forth. Tonalite solves this issue because it is a web interface that connects to any device with a web browser so you can take it anywhere you want. It has the same feature set as other big-name competetors, and it has architectural presets built-in for permanent installations.</span>
             </div>
         </div>
     </div>
@@ -132,8 +130,8 @@
   ================================================== -->
 <div id="pricing" class="pricing-background">
 
-    <h2 class="pricing-section-header light text-center">CHOOSE YOUR PRICING PLAN</h2>
-    <h4 class=" pricing-section-sub text-center light">Pick any of our super affordable pricing plans</h4>
+    <h2 class="pricing-section-header light text-center">PICK YOUR INSTALLATION</h2>
+    <h4 class=" pricing-section-sub text-center light">use a computer or our touchscreen controler station</h4>
 
     <div class="pricing-table row">
         <div class="col-sm-6">
@@ -144,11 +142,12 @@
                 <ul class="plan-features">
                     <li>512 Channels of DMX</li>
                     <li>Unlimited Cues and Groups</li>
-                    <li>ArtNet and sACN Support</li>
+                    <li>ArtNet, sACN, and uDMX</li>
+                    <li>Windows, macOS, and Linux</li>
                 </ul>
                 <div class="plan-price-div text-center">
                     <div class="choose-plan-div">
-                        <a class="plan-btn light" href="#email-form">
+                        <a class="plan-btn light" href="#download">
                             Download
                         </a>
                     </div>
@@ -162,9 +161,10 @@
                 <h4 class="plan-cost bold">250</h4>
                 <h5 class="monthly">per unit</h5>
                 <ul class="plan-features">
-                    <li>Full Server</li>
+                    <li>Full Tonalite Server</li>
                     <li>Integrated Touch Screen</li>
                     <li>1 Cable for Power and Data</li>
+                    <li>Connect Many Together At Once</li>
                 </ul>
                 <div class="plan-price-div text-center">
                     <div class="choose-plan-div">
@@ -185,23 +185,16 @@
 <!-- Email-Section
   ================================================== -->
 
-<div class="blue-section">
-    <h3 class="blue-section-header bold"> Download FREE!</h3>
-    <h4 class="blue-section-subtext light">Take it for a ride for any of your projects!</h4>
+<div id="download" class="blue-section">
+    <h3 class="blue-section-header bold">Download v2.0.0 Beta FREE!</h3>
+    <h4 class="blue-section-subtext light">Run lighting shows anywhere.</h4>
 
-    <div class="email-form-div">
-        <form id="email-form" class="form-group email-form" action="mailchimp.php" method="post">
-            <input type="email" class="form-control email-input" name="email" id="newsletter-email-input"
-                   placeholder="Enter your email">
-            <button type="submit" class="btn submit-btn">Download</button>
-            <div id="newsletter-spinner">
-                <i class="fa fa-cog fa-spin" style="font-size:24px"></i>
-            </div>
-        </form>
+    <div class="email-form-div"> 
+        <a href="#"><button class="btn submit-btn">Download for Windows</button></a>
+        <a href="#"><button class="btn submit-btn">Download for macOS</button></a>
+        <a href="#"><button class="btn submit-btn">Download for Linux</button></a>
     </div>
     <!--email-form-div-->
-
-    <div id="newsletter-loading-div"></div>
     <!--email-form-->
 </div>
 <!--blue-section-->
@@ -217,20 +210,22 @@
             <div class="col-sm-2"></div>
 
             <div class="col-sm-8 webscope">
-                <span class="webscope-text"> A free template by </span>
-                <a href="https://webscopeapp.com"> <img src="assets/images/webscope.svg"/> </a>
+                <span class="webscope-text"> Copyright 2018 </span>
+                <a href="http://jmroper.com"> John Roper</a>
             </div>
             <!--webscope-->
 
-            <div class="col-sm-2">
+            <div class="col-sm-2"></div>
+
+            <!--<div class="col-sm-2">
                 <div class="social-links">
                     <a href="https://twitter.com/webscopeapp"> <img class="social-link"
                                                                     src="assets/images/twitter.svg"/> </a>
                     <a href="https://www.facebook.com/webscopeapp/?ref=aymt_homepage_panel"> <img
                             src="assets/images/facebook.svg"/> </a>
                 </div>
-                <!--social-links-->
-            </div>
+                
+            </div>-->
             <!--social-links-parent-->
 
         </div>
