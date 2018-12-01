@@ -22,3 +22,4 @@
     * [Changing Preset Settings](presets/changing_preset_settings.md)
 * [Grandmaster and Blackout](grandmaster_and_blackout.md)
 * [Keyboard Shortcuts](keyboard_shortcuts.md)
+* [Configuration](configuration.md)
