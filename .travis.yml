@@ -24,11 +24,7 @@ after_script:
   - rm README.md
   - rm -rf static
   - rm -rf node_modules
-  - rm -rf docs/cues
-  - rm -rf docs/fixtures
-  - rm -rf docs/groups
-  - rm -rf docs/images
-  - rm -rf docs/presets
-  - rm -rf docs/dist
   - rm -rf docs
+  - rm -rf website
   - zip -9 ${TRAVIS_BUILD_DIR}/tonalite-linux.zip ${TRAVIS_BUILD_DIR} -r
+  - ls
