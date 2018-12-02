@@ -116,7 +116,7 @@ function openSettings() {
             STARTED = true;
 
             e131 = require('e131');
-            client = new e131.Client(1);
+            client = new e131.Client(SETTINGS.url);
             packet = client.createPacket(512);
             slotsData = packet.getSlotsData();
             channels = slotsData;
