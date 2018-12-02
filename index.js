@@ -67,7 +67,7 @@ Features:
 */
 
 var SETTINGS = {
-    device: "linux", // linux, rpi, win
+    device: "linux", // linux, rpi, win, macos
     url: "localhost", // http web UI location
     port: 3000,
     defaultUpTime: 3,
