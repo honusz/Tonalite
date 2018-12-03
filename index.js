@@ -74,8 +74,8 @@ var SETTINGS = {
     defaultDownTime: 3,
     desktop: true, // desktop vs embeded
     udmx: false,
-    sacnIP: '127.0.0.1', // sACN output IP
-    artnetIP: '127.0.0.1' // ArtNet output IP
+    sacnIP: null, // sACN output IP
+    artnetIP: null // ArtNet output IP
 }
 
 var STARTED = false;

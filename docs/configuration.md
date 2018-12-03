@@ -61,6 +61,14 @@ Restart required after change.
 
 The IP on which to output sACN data.
 
+Default: `null`
+
+When the value is `null`, sACN will choose where to output automatically.
+
 ## artnetIP
 
 The IP on which to output ArtNet data.
+
+Default: `null`
+
+When the value is `null`, ArtNet will choose where to output automatically.
