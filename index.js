@@ -80,7 +80,7 @@ var SETTINGS = {
 
 var STARTED = false;
 
-const VERSION = "2.0.0 Beta";
+const VERSION = "2.0.0 Beta 2";
 
 fs.exists(process.cwd() + '/settings.json', function (exists) {
     if (exists == false) {

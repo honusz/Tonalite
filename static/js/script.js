@@ -15,7 +15,7 @@ var app = new Vue({
         fixtures: [],
         presets: [],
         desktop: false,
-        version: "2.0.0 Beta"
+        version: "2.0.0 Beta 2"
     },
     methods: {
         changePresetActive: function (presetID) {
