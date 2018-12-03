@@ -56,3 +56,11 @@ Options:
 - `false` - disables uDMX-Artnet
 
 Restart required after change.
+
+## sacnIP
+
+The IP on which to output sACN data.
+
+## artnetIP
+
+The IP on which to output ArtNet data.

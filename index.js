@@ -73,7 +73,9 @@ var SETTINGS = {
     defaultUpTime: 3,
     defaultDownTime: 3,
     desktop: true, // desktop vs embeded
-    udmx: false
+    udmx: false,
+    sacnIP: '127.0.0.1', // sACN output IP
+    artnetIP: '127.0.0.1' // ArtNet output IP
 }
 
 var STARTED = false;
@@ -104,10 +106,11 @@ var packet = null;
 var slotsData = null;
 var channels = null;
 var artnet = null;
+var cp = null;
 
 // Load the Tonalite settings from file
 function openSettings() {
-    fs.readFile(process.cwd() + '/settings.json', (err, data) => {
+    fs.readFile(process.cwd() + '/settings.json', function (err, data) {
         if (err) logError(err);
         var settings = JSON.parse(data);
         SETTINGS = settings;
@@ -116,17 +119,13 @@ function openSettings() {
             STARTED = true;
 
             e131 = require('e131');
-            client = new e131.Client(SETTINGS.url);
+            client = new e131.Client(SETTINGS.sacnIP);
             packet = client.createPacket(512);
             slotsData = packet.getSlotsData();
             channels = slotsData;
+            cp = cp;
 
-            if (SETTINGS.url != "localhost") {
-                artnet = require('artnet')({ iface: SETTINGS.url, host: '255.255.255.255' });
-            } else {
-                artnet = require('artnet')({ host: '255.255.255.255' });
-            }
-            //channels = new Array(512).fill(0);
+            artnet = require('artnet')({ iface: SETTINGS.artnetIP, host: '255.255.255.255' });
 
             fs.exists(process.cwd() + '/presets.json', function (exists) {
                 if (exists == true) {
@@ -144,11 +143,11 @@ function openSettings() {
 
             if (SETTINGS.udmx === true) {
                 if (SETTINGS.device === "linux") {
-                    ls = spawn(process.cwd() + '/uDMXArtnet/uDMXArtnet_minimal_64');
+                    cp = spawn(process.cwd() + '/uDMXArtnet/uDMXArtnet_minimal_64');
                 } else if (SETTINGS.device === "rpi") {
-                    ls = spawn(process.cwd() + '/uDMXArtnet/uDMXArtnet_PI_minimal_32', ['-i', '192.168.4.1']);
+                    cp = spawn(process.cwd() + '/uDMXArtnet/uDMXArtnet_PI_minimal_32', ['-i', '192.168.4.1']);
                 } else if (SETTINGS.device === "win") {
-                    ls = spawn(process.cwd() + '/uDMXArtnet/uDMXArtnet_Minimal.exe');
+                    cp = spawn(process.cwd() + '/uDMXArtnet/uDMXArtnet_Minimal.exe');
                 } else {
                     console.log("Selected platform not supported by uDMX, falling back to ArtNet.");
                 }
@@ -1216,6 +1215,13 @@ io.on('connection', function (socket) {
                 socket.emit('message', { type: "info", content: "The fixtures have been imported!" });
             }
         });
+    });
+
+    socket.on('shutdown', function () {
+        if (SETTINGS.desktop === true) {
+            cp.kill()
+            process.exit();
+        }
     });
 
     socket.on('saveShowToUSB', function () {

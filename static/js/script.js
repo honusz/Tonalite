@@ -456,6 +456,10 @@ function saveShowToUSB() {
     socket.emit('saveShowToUSB');
 }
 
+function shutdown() {
+    socket.emit('shutdown');
+}
+
 function closeAlert() {
     $("#alert").removeClass("show");
     if ($("#alert").hasClass("alert-info")) {
