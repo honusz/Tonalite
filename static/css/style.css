@@ -157,3 +157,7 @@ body {
     cursor: pointer;
     background-color: #fa5252;
 }
+
+.red {
+    color: #f03e3e;
+}
