@@ -252,17 +252,13 @@ socket.on('meta', function (metadata) {
     app.version = metadata.version;
 });
 
-/*
 socket.on('connect', function () {
-    if (disconnectModal.style.display == "block") {
-        disconnectModal.style.display = "none";
-    }
+    $('#serverDisconnectedModal').modal("hide");
 });
 
 socket.on('connect_error', function () {
-    disconnectModal.style.display = "block";
+    $('#serverDisconnectedModal').modal("show");
 });
-*/
 
 function resetFixtures() {
     if (confirm("Are you sure you want to reset all fixture channel values?")) {
