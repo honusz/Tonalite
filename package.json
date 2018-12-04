@@ -35,11 +35,11 @@
     "sanic.js": "^1.0.1",
     "serve-favicon": "^2.5.0",
     "sleep": "^5.2.3",
-    "socket.io": "^2.1.1",
+    "socket.io": "^2.2.0",
     "unzipper": "^0.9.4"
   },
   "devDependencies": {
-    "pkg": "^4.3.4"
+    "pkg": "^4.3.5"
   },
   "pkg": {
     "assets": [
