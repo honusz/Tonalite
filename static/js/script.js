@@ -242,6 +242,8 @@ socket.on('settings', function (settings) {
     $("#defaultUpTime").val(settings.defaultUpTime);
     $("#defaultDownTime").val(settings.defaultDownTime);
     $("#useUDMX").prop('indeterminate', settings.udmx);
+    $("#sacnIP").val(settings.sacnIP);
+    $("#artnetIP").val(settings.artnetIP);
     $('#openSettingsModal').modal("show");
 });
 
@@ -444,7 +446,7 @@ function resetShow() {
 }
 
 function saveSettings() {
-    socket.emit('saveSettings', { defaultUpTime: $("#defaultUpTime").val(), defaultDownTime: $("#defaultDownTime").val(), udmx: $("#useUDMX").prop('indeterminate') });
+    socket.emit('saveSettings', { defaultUpTime: $("#defaultUpTime").val(), defaultDownTime: $("#defaultDownTime").val(), udmx: $("#useUDMX").prop('indeterminate'), sacnIP: $("#sacnIP").val(), artnetIP: $("#artnetIP").val() });
     $('#openSettingsModal').modal("hide");
 }
 

@@ -74,8 +74,8 @@ var SETTINGS = {
     defaultDownTime: 3,
     desktop: true, // desktop vs embeded
     udmx: false,
-    sacnIP: null, // sACN output IP
-    artnetIP: null // ArtNet output IP
+    artnetIP: null, // ArtNet output IP
+    sacnIP: null // sACN output IP
 }
 
 var STARTED = false;
@@ -1187,15 +1187,25 @@ io.on('connection', function (socket) {
     });
 
     socket.on('getSettings', function () {
-        socket.emit('settings', { defaultUpTime: SETTINGS.defaultUpTime, defaultDownTime: SETTINGS.defaultDownTime, udmx: SETTINGS.udmx });
+        socket.emit('settings', SETTINGS);
     });
 
     socket.on('saveSettings', function (msg) {
         SETTINGS.defaultUpTime = msg.defaultUpTime;
         SETTINGS.defaultDownTime = msg.defaultDownTime;
         SETTINGS.udmx = msg.udmx;
+        if (msg.artnetIP != "") {
+            SETTINGS.artnetIP = msg.artnetIP;
+        } else {
+            SETTINGS.artnetIP = null;
+        }
+        if (msg.sacnIP != "") {
+            SETTINGS.sacnIP = msg.sacnIP;
+        } else {
+            SETTINGS.sacnIP = null;
+        }
         if (saveSettings()) {
-            socket.emit('message', { type: "info", content: "The Tonalite settings have been saved!" });
+            socket.emit('message', { type: "info", content: "The Tonalite settings have been saved! Restart if you changed the IP of uDMX settings." });
         } else {
             socket.emit('message', { type: "error", content: "The Tonalite settings file could not be saved on disk." });
         }
