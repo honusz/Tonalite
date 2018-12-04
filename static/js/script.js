@@ -252,6 +252,17 @@ socket.on('meta', function (metadata) {
     app.version = metadata.version;
 });
 
+/*
+socket.on('connect', function () {
+    if (disconnectModal.style.display == "block") {
+        disconnectModal.style.display = "none";
+    }
+});
+
+socket.on('connect_error', function () {
+    disconnectModal.style.display = "block";
+});
+*/
 
 function resetFixtures() {
     if (confirm("Are you sure you want to reset all fixture channel values?")) {
