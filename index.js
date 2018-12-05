@@ -1236,7 +1236,9 @@ io.on('connection', function (socket) {
 
     socket.on('shutdown', function () {
         if (SETTINGS.desktop === true) {
-            cp.kill()
+            if (SETTINGS.udmx === true) {
+                cp.kill();
+            }
             process.exit();
         }
     });
