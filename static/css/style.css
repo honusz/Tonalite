@@ -1,5 +1,8 @@
+html {
+    background-color: #212529 !important;
+}
 body {
-    background-color: #212529;
+    background-color: #212529 !important;
     color: #F8F9FA;
 }
 
