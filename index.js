@@ -526,7 +526,7 @@ app.use('/docs', express.static(__dirname + '/docs/dist'));
 
 app.use(fileUpload());
 app.use(compression());
-app.use(favicon(__dirname + '/static/favicon.ico'));
+app.use(favicon(__dirname + '/static/img/favicon.ico'));
 
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.min.html');
