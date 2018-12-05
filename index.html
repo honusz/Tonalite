@@ -80,7 +80,7 @@
             <button class="btn btn-success btn-block" onclick="addFixtureModal()">Add Fixture</button>
           </div>
           <div class="col-6">
-            <button class="btn btn-danger btn-block" onclick="resetFixtures()">Reset Values</button>
+            <button :disabled="fixtures.length == 0" class="btn btn-danger btn-block" onclick="resetFixtures()">Reset Values</button>
           </div>
         </div>
         <div class="row" id="fixturesList">
@@ -251,10 +251,10 @@
       <div class="container">
         <div class="row topBtns">
           <div class="col-6">
-            <button class="btn btn-success btn-block" onclick="addGroupModal()">Add Group</button>
+            <button :disabled="fixtures.length == 0" class="btn btn-success btn-block" onclick="addGroupModal()">Add Group</button>
           </div>
           <div class="col-6">
-            <button class="btn btn-danger btn-block" onclick="resetGroups()">Reset Values</button>
+            <button :disabled="groups.length == 0" class="btn btn-danger btn-block" onclick="resetGroups()">Reset Values</button>
           </div>
         </div>
         <div class="row" id="groupsList">
