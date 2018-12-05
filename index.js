@@ -1191,9 +1191,17 @@ io.on('connection', function (socket) {
         socket.emit('settings', SETTINGS);
     });
 
+    socket.on('closeSettings', function () {
+        if (saveSettings()) {
+            socket.emit('message', { type: "info", content: "The Tonalite settings have been saved! Restart if you changed the IP of uDMX settings." });
+        } else {
+            socket.emit('message', { type: "error", content: "The Tonalite settings file could not be saved on disk." });
+        }
+    });
+
     socket.on('saveSettings', function (msg) {
-        SETTINGS.defaultUpTime = msg.defaultUpTime;
-        SETTINGS.defaultDownTime = msg.defaultDownTime;
+        SETTINGS.defaultUpTime = parseInt(msg.defaultUpTime);
+        SETTINGS.defaultDownTime = parseInt(msg.defaultDownTime);
         SETTINGS.udmx = msg.udmx;
         if (msg.artnetIP != "") {
             SETTINGS.artnetIP = msg.artnetIP;
@@ -1205,9 +1213,7 @@ io.on('connection', function (socket) {
         } else {
             SETTINGS.sacnIP = null;
         }
-        if (saveSettings()) {
-            socket.emit('message', { type: "info", content: "The Tonalite settings have been saved! Restart if you changed the IP of uDMX settings." });
-        } else {
+        if (saveSettings() == false) {
             socket.emit('message', { type: "error", content: "The Tonalite settings file could not be saved on disk." });
         }
     });

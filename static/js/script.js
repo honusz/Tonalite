@@ -444,9 +444,13 @@ function resetShow() {
     }
 }
 
-function saveSettings() {
-    socket.emit('saveSettings', { defaultUpTime: $("#defaultUpTime").val(), defaultDownTime: $("#defaultDownTime").val(), udmx: $("#useUDMX").prop('indeterminate'), sacnIP: $("#sacnIP").val(), artnetIP: $("#artnetIP").val() });
+function closeSettings() {
+    socket.emit('closeSettings');
     $('#openSettingsModal').modal("hide");
+}
+
+function saveSettingsBackground() {
+    socket.emit('saveSettings', { defaultUpTime: $("#defaultUpTime").val(), defaultDownTime: $("#defaultDownTime").val(), udmx: $("#useUDMX").prop('checked'), sacnIP: $("#sacnIP").val(), artnetIP: $("#artnetIP").val() });
 }
 
 function updateFirmware() {
