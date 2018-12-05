@@ -975,33 +975,38 @@ io.on('connection', function (socket) {
     });
 
     socket.on('addGroup', function (fixtureIDs) {
-        var newGroup = {
-            id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
-            name: "Group " + (groups.length + 1),
-            shortName: "Group " + (groups.length + 1),
-            ids: fixtureIDs,
-            channels: []
-        };
-        var channelCats = [];
-        newGroup.ids.forEach(function (fixtureID) {
-            var fixture = fixtures[fixtures.map(el => el.id).indexOf(fixtureID)];
-            fixture.channels.forEach(function (channel) {
-                var newChannel = JSON.parse(JSON.stringify(channel));
-                if (!channelCats.includes(newChannel.type + ":" + newChannel.subtype)) {
-                    newChannel.value = newChannel.defaultValue;
-                    if (newChannel.subtype != "") {
-                        newChannel.name = titleCase(newChannel.subtype);
-                    } else {
-                        newChannel.name = titleCase(newChannel.type);
+        // fix this
+        if (fixtureIDs != []) {
+            var newGroup = {
+                id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
+                name: "Group " + (groups.length + 1),
+                shortName: "Group " + (groups.length + 1),
+                ids: fixtureIDs,
+                channels: []
+            };
+            var channelCats = [];
+            newGroup.ids.forEach(function (fixtureID) {
+                var fixture = fixtures[fixtures.map(el => el.id).indexOf(fixtureID)];
+                fixture.channels.forEach(function (channel) {
+                    var newChannel = JSON.parse(JSON.stringify(channel));
+                    if (!channelCats.includes(newChannel.type + ":" + newChannel.subtype)) {
+                        newChannel.value = newChannel.defaultValue;
+                        if (newChannel.subtype != "") {
+                            newChannel.name = titleCase(newChannel.subtype);
+                        } else {
+                            newChannel.name = titleCase(newChannel.type);
+                        }
+                        newGroup.channels.push(newChannel);
+                        channelCats.push(newChannel.type + ":" + newChannel.subtype);
                     }
-                    newGroup.channels.push(newChannel);
-                    channelCats.push(newChannel.type + ":" + newChannel.subtype);
-                }
+                });
             });
-        });
-        groups.push(newGroup);
-        io.emit('groups', cleanGroups());
-        saveShow();
+            groups.push(newGroup);
+            io.emit('groups', cleanGroups());
+            saveShow();
+        } else {
+            console.log(fixtureIDs);
+        }
     });
 
     socket.on('getGroupChannels', function (groupID) {

@@ -257,7 +257,16 @@
             <button class="btn btn-danger btn-block" onclick="resetGroups()">Reset Values</button>
           </div>
         </div>
-        <div class="row" id="groupsList"></div>
+        <div class="row" id="groupsList">
+          <div class="col-4 col-lg-2 mb-3" v-for="group in groups" :key="group.id">
+            <div class="groupItem" v-on:click="viewGroupChannels(group.id)">
+              <p>{{group.shortName}}</p>
+            </div>
+          </div>
+          <div v-if="groups.length == 0" class="col-12">
+            <h5>There are no groups in this show!</h5>
+          </div>
+        </div>
       </div>
     </div>
     <div id="groupSettingsPage" class="tabcontent">
@@ -324,6 +333,9 @@
             <div :class="{ 'presetActive' : preset.active == true}" class="presetItem" v-on:click="viewPresetSettings(preset.id)">
               <p>{{preset.name}}</p>
             </div>
+          </div>
+          <div v-if="presets.length == 0" class="col-12">
+            <h5>There are no presets in this show!</h5>
           </div>
         </div>
       </div>

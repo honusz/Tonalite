@@ -13,6 +13,7 @@ var app = new Vue({
     el: '#app',
     data: {
         fixtures: [],
+        groups: [],
         presets: [],
         desktop: false,
         version: "2.0.0 Beta 2"
@@ -26,6 +27,9 @@ var app = new Vue({
         },
         viewFixtureChannels: function (fixtureID) {
             socket.emit('getFixtureChannels', fixtureID);
+        },
+        viewGroupChannels: function (groupID) {
+            socket.emit('getGroupChannels', groupID);
         },
         lockedFixturechannels: function (locked) {
             if (locked === true)
@@ -207,20 +211,12 @@ socket.on('cueActionBtn', function (btnMode) {
 });
 
 socket.on('groups', function (groups) {
-    $("#groupsList").empty();
-    //console.log(groups);
-    if (groups.length != 0) {
-        groups.forEach(function (group) {
-            $("#groupsList").append("<div class=\"col-4 col-lg-2 mb-3\"><div class=\"groupItem\" onclick=\"viewGroupChannels('" + group.id + "')\"><p>" + group.shortName + "</p></div></div>");
-        });
-    } else {
-        $("#groupsList").append("<div class=\"col-12\"><h5>There are no groups in this show!</h5></div>");
-    }
+    app.groups = groups;
 });
 
 socket.on('groupSettings', function (group) {
     openTab('groupSettingsPage');
-    $("#groupChannelsBackBtn").off().on("click", function () { viewGroupChannels(group.id); });
+    $("#groupChannelsBackBtn").off().on("click", function () { app.viewGroupChannels(group.id); });
     $("#groupDeleteBtn").off().on("click", function () { removeGroup(group.id); });
     $("#groupSaveBtn").off().on("click", function () { saveGroupSettings(group.id); });
     $("#groupNameInput").val(group.name);
@@ -393,10 +389,6 @@ function resetGroups() {
 
 function addGroupModal() {
     $('#addGroupModal').modal("show");
-}
-
-function viewGroupChannels(groupID) {
-    socket.emit('getGroupChannels', groupID);
 }
 
 function updateGroupChannelValue(self, groupID, channelID) {
