@@ -84,20 +84,25 @@ body {
     background: #343A40;
     text-align: center;
     font-size: 2rem;
-    padding-top: 0.15rem;
+    padding-top: 0.25rem;
 }
 
 .tabcontent {
     margin-bottom: 3.5rem;
 }
 
-.tablinks:hover {
+.tablinks:hover, .tabtext:hover {
     cursor: pointer;
     color: #a5d8ff;
 }
 
-.tablinks.active {
+.tablinks.active, .tabtext.active {
     color: #74c0fc;
+}
+
+.tabtext {
+    font-size: 0.8rem;
+    display: block;
 }
 
 #fixtureChannels, #groupChannels {

@@ -488,12 +488,26 @@ function openTab(tabName) {
         }
     }
 
+    if (document.getElementsByClassName("tabtext-" + tabName)[0]) {
+        // Get all elements with class="tabtext" and remove the class "active"
+        tabtext = document.getElementsByClassName("tabtext");
+        for (i = 0; i < tabtext.length; i++) {
+            tabtext[i].classList.remove("active");
+        }
+    }
+
     // Show the current tab, and add an "active" class to the button that opened the tab
     document.getElementById(tabName).style.display = "block";
     currentTab = tabName;
+
     if (document.getElementsByClassName("tablinks-" + tabName)[0]) {
         document.getElementsByClassName("tablinks-" + tabName)[0].classList.add("active");
     }
+
+    if (document.getElementsByClassName("tabtext-" + tabName)[0]) {
+        document.getElementsByClassName("tabtext-" + tabName)[0].classList.add("active");
+    }
+
     closeAlert();
 }
 

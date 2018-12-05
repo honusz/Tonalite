@@ -80,7 +80,8 @@
             <button class="btn btn-success btn-block" onclick="addFixtureModal()">Add Fixture</button>
           </div>
           <div class="col-6">
-            <button :disabled="fixtures.length == 0" class="btn btn-danger btn-block" onclick="resetFixtures()">Reset Values</button>
+            <button :disabled="fixtures.length == 0" class="btn btn-danger btn-block" onclick="resetFixtures()">Reset
+              Values</button>
           </div>
         </div>
         <div class="row" id="fixturesList">
@@ -251,10 +252,12 @@
       <div class="container">
         <div class="row topBtns">
           <div class="col-6">
-            <button :disabled="fixtures.length == 0" class="btn btn-success btn-block" onclick="addGroupModal()">Add Group</button>
+            <button :disabled="fixtures.length == 0" class="btn btn-success btn-block" onclick="addGroupModal()">Add
+              Group</button>
           </div>
           <div class="col-6">
-            <button :disabled="groups.length == 0" class="btn btn-danger btn-block" onclick="resetGroups()">Reset Values</button>
+            <button :disabled="groups.length == 0" class="btn btn-danger btn-block" onclick="resetGroups()">Reset
+              Values</button>
           </div>
         </div>
         <div class="row" id="groupsList">
@@ -368,22 +371,22 @@
       <div class="row">
         <div class="col-3">
           <div onclick="openTab('fixtures')">
-            <i class="tablinks tablinks-fixtures far fa-lightbulb" id="fixturesTab"></i>
+            <i class="tablinks tablinks-fixtures far fa-lightbulb" id="fixturesTab"></i><span class="tabtext tabtext-fixtures">Fixtures</span>
           </div>
         </div>
         <div class="col-3">
           <div onclick="openTab('cues')">
-            <i class="tablinks tablinks-cues far fa-list"></i>
+            <i class="tablinks tablinks-cues far fa-list"></i><span class="tabtext tabtext-cues">Cues</span>
           </div>
         </div>
         <div class="col-3">
           <div onclick="openTab('groups')">
-            <i class="tablinks tablinks-groups far fa-layer-group"></i>
+            <i class="tablinks tablinks-groups far fa-layer-group"></i><span class="tabtext tabtext-groups">Groups</span>
           </div>
         </div>
         <div class="col-3">
           <div onclick="openTab('presets')">
-            <i class="tablinks tablinks-presets far fa-swatchbook"></i>
+            <i class="tablinks tablinks-presets far fa-swatchbook"></i><span class="tabtext tabtext-presets">Presets</span>
           </div>
         </div>
       </div>
