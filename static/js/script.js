@@ -480,19 +480,11 @@ function openTab(tabName) {
         tabcontent[i].style.display = "none";
     }
 
-    if (document.getElementsByClassName("tablinks-" + tabName)[0]) {
+    if (document.getElementsByClassName("tabitem-" + tabName)[0]) {
         // Get all elements with class="tablinks" and remove the class "active"
-        tablinks = document.getElementsByClassName("tablinks");
+        tablinks = document.getElementsByClassName("tabitem");
         for (i = 0; i < tablinks.length; i++) {
             tablinks[i].classList.remove("active");
-        }
-    }
-
-    if (document.getElementsByClassName("tabtext-" + tabName)[0]) {
-        // Get all elements with class="tabtext" and remove the class "active"
-        tabtext = document.getElementsByClassName("tabtext");
-        for (i = 0; i < tabtext.length; i++) {
-            tabtext[i].classList.remove("active");
         }
     }
 
@@ -500,12 +492,8 @@ function openTab(tabName) {
     document.getElementById(tabName).style.display = "block";
     currentTab = tabName;
 
-    if (document.getElementsByClassName("tablinks-" + tabName)[0]) {
-        document.getElementsByClassName("tablinks-" + tabName)[0].classList.add("active");
-    }
-
-    if (document.getElementsByClassName("tabtext-" + tabName)[0]) {
-        document.getElementsByClassName("tabtext-" + tabName)[0].classList.add("active");
+    if (document.getElementsByClassName("tabitem-" + tabName)[0]) {
+        document.getElementsByClassName("tabitem-" + tabName)[0].classList.add("active");
     }
 
     closeAlert();

@@ -91,18 +91,19 @@ body {
     margin-bottom: 3.5rem;
 }
 
-.tablinks:hover, .tabtext:hover {
+.tabitem:hover {
     cursor: pointer;
     color: #a5d8ff;
 }
 
-.tablinks.active, .tabtext.active {
+.tabitem.active {
     color: #74c0fc;
 }
 
 .tabtext {
     font-size: 0.8rem;
     display: block;
+    color: #F8F9FA;
 }
 
 #fixtureChannels, #groupChannels {
