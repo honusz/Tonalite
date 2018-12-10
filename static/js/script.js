@@ -56,6 +56,10 @@ function launchFullScreen(element) {
         element.mozRequestFullScreen();
     } else if (element.webkitRequestFullScreen) {
         element.webkitRequestFullScreen();
+    } else if (element.msRequestFullScreen) {
+        element.msRequestFullScreen();
+    } else {
+        element.webkitEnterFullScreen();
     }
 }
 
