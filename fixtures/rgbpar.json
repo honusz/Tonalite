@@ -1,0 +1,78 @@
+{
+    "name": "Generic RGB Par",
+    "shortName": "RGB",
+    "manufacturer": "Generic",
+    "type": "static",
+    "channels": [
+        {
+            "type": "intensity",
+            "subtype": "",
+            "name": "Intensity",
+            "max": 255,
+            "min": 0,
+            "displayMax": 100,
+            "displayMin": 0,
+            "value": 0,
+            "displayValue": 0,
+            "defaultValue": 0,
+            "dmxAddressOffset": 0,
+            "locked": false
+        },
+        {
+            "type": "color",
+            "subtype": "red",
+            "name": "Red",
+            "max": 255,
+            "min": 0,
+            "displayMax": 100,
+            "displayMin": 0,
+            "value": 0,
+            "displayValue": 0,
+            "defaultValue": 0,
+            "dmxAddressOffset": 6,
+            "locked": false
+        },
+        {
+            "type": "color",
+            "subtype": "green",
+            "name": "Green",
+            "max": 255,
+            "min": 0,
+            "displayMax": 100,
+            "displayMin": 0,
+            "value": 0,
+            "displayValue": 0,
+            "defaultValue": 0,
+            "dmxAddressOffset": 5,
+            "locked": false
+        },
+        {
+            "type": "color",
+            "subtype": "blue",
+            "name": "Blue",
+            "max": 255,
+            "min": 0,
+            "displayMax": 100,
+            "displayMin": 0,
+            "value": 0,
+            "displayValue": 0,
+            "defaultValue": 0,
+            "dmxAddressOffset": 4,
+            "locked": false
+        },
+        {
+            "type": "intensity",
+            "subtype": "flicker",
+            "name": "Flicker",
+            "max": 255,
+            "min": 0,
+            "displayMax": 100,
+            "displayMin": 0,
+            "value": 0,
+            "displayValue": 0,
+            "defaultValue": 0,
+            "dmxAddressOffset": 1,
+            "locked": false
+        }
+    ]
+}
