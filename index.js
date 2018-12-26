@@ -1116,7 +1116,7 @@ io.on('connection', function (socket) {
         presets.push(newPreset);
         io.emit('presets', cleanPresets());
         savePresets();
-        socket.emit('message', { type: "error", content: "The preset has been recorded!" });
+        socket.emit('message', { type: "info", content: "The preset has been recorded!" });
     });
 
     socket.on('updatePreset', function (presetID) {

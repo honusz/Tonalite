@@ -91,7 +91,7 @@ body {
 }
 
 .tabcontent {
-    margin-bottom: 4.75rem;
+    margin-bottom: 5rem;
 }
 
 .tabitem:hover {
@@ -169,4 +169,8 @@ body {
 
 .red {
     color: #f03e3e;
+}
+
+body::-webkit-scrollbar {
+    width: 0em;
 }
