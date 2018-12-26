@@ -541,7 +541,7 @@ app.get('/open-source-licenses', function (req, res) {
 });
 
 app.get('/showFile', function (req, res) {
-    res.download(process.cwd() + '/show.json', moment().format() + '.tonalite', {headers: {'Content-Disposition': 'attachment', 'Content-Type': 'application/octet-stream'}});
+    res.download(process.cwd() + '/show.json', moment().format() + '.tonalite', { headers: { 'Content-Disposition': 'attachment', 'Content-Type': 'application/octet-stream' } });
 });
 
 // Upload Show File

@@ -1,12 +1,14 @@
 html {
     background-color: #212529 !important;
 }
+
 body {
     background-color: #212529 !important;
     color: #F8F9FA;
 }
 
-.nav-item.dropdown, .dropdown-item:hover {
+.nav-item.dropdown,
+.dropdown-item:hover {
     cursor: pointer;
 }
 
@@ -109,7 +111,8 @@ body {
     color: #F8F9FA;
 }
 
-#fixtureChannels, #groupChannels {
+#fixtureChannels,
+#groupChannels {
     margin-bottom: 3rem;
 }
 
@@ -156,10 +159,12 @@ body {
     margin-top: 1.0rem;
 }
 
-.topBtns.sticky-top { top: 4.5rem; }
+.topBtns.sticky-top {
+    top: 4.5rem;
+}
 
 .presetActive {
-    background-color:#fa5252;
+    background-color: #fa5252;
 }
 
 .presetActive:hover {
