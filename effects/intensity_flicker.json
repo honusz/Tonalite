@@ -1,7 +1,0 @@
-{
-    "name": "Intensity Flicker",
-    "steps": [1, 50, 45, 80, 1],
-    "step_time": 25,
-    "step_index": 0,
-    "step": 0
-}
