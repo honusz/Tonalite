@@ -35,7 +35,15 @@ To generate the documentation run `npm run build-docs`
 
 You need `NodeJS` installed. You also need `Calibre` if you want to generate the PDF documentation.
 
+## Resources
+
 https://www.illutzmination.de/udmxartnet.html?&L=1
+
+https://github.com/dhocker/udmx-pyusb
+
+https://obrienlabs.net/setup-raspberry-pi-kiosk-chromium/
+
+https://scribles.net/customizing-boot-up-screen-on-raspberry-pi/
 
 https://raspberrypi.stackexchange.com/questions/66169/auto-mount-usb-stick-on-plug-in-without-uuid
 
