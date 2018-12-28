@@ -88,7 +88,7 @@ body {
     width: 100%;
     background: #343A40;
     text-align: center;
-    font-size: 2rem;
+    font-size: 1.5rem;
     padding-top: 0.5rem;
 }
 
@@ -106,7 +106,7 @@ body {
 }
 
 .tabtext {
-    font-size: 1rem;
+    font-size: 1.25rem;
     display: block;
     color: #F8F9FA;
 }
