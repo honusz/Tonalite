@@ -1286,7 +1286,7 @@ io.on('connection', function (socket) {
 
     socket.on('reboot', function () {
         if (SETTINGS.desktop === false && SETTINGS.device === "rpi") {
-            var cp = spawn('sudo reboot');
+            var cp = spawn('reboot');
         }
     });
 
