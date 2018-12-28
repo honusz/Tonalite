@@ -1284,6 +1284,12 @@ io.on('connection', function (socket) {
         }
     });
 
+    socket.on('reboot', function () {
+        if (SETTINGS.desktop === false && SETTINGS.device === "rpi") {
+            var cp = spawn('sudo reboot');
+        }
+    });
+
     socket.on('saveShowToUSB', function () {
         drivelist.list((error, drives) => {
             var done = false;

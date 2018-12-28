@@ -113,7 +113,7 @@ socket.on('shows', function (shows) {
     $('#showFilesModal').modal("show");
     $("#showsList").empty();
     var s = 0; const sMax = shows[0].length; for (; s < sMax; s++) {
-        $("#showsList").append("<li class=\"list-group-item showFileItem\" onclick=\"openShowFromUSB('" + shows[0][s] + "', '" + shows[1] + "')\">" + upperCase(shows[0][s].slice(0, -9)) + "</li>");
+        $("#showsList").append("<li class=\"list-group-item showFileItem\" onclick=\"openShowFromUSB('" + shows[0][s] + "', '" + shows[1] + "')\">" + shows[0][s].slice(0, -9) + "</li>");
     }
 });
 
