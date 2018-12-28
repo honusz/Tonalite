@@ -75,3 +75,6 @@ tonalite
 tonalite.exe
 
 docs/dist
+
+build
+*.log
