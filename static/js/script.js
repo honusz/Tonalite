@@ -100,12 +100,21 @@ socket.on('fixtures', function (fixtures) {
 });
 
 socket.on('fixtureProfiles', function (profiles) {
+    $('#fixtureProfilesModal').modal("show");
     $("#fixtureProfilesList").empty();
     var p = 0; const pMax = profiles[0].length; for (; p < pMax; p++) {
         $("#fixtureProfilesList").append("<li class=\"list-group-item fixtureProfileItem\" onclick=\"addFixture('" + profiles[0][p] + "')\">" + upperCase(profiles[0][p]) + "</li>");
     }
     $("#newFixtureStartDMXAddress").val(profiles[1]);
     $("#newFixtureCreationCount").val(1);
+});
+
+socket.on('shows', function (shows) {
+    $('#showFilesModal').modal("show");
+    $("#showsList").empty();
+    var s = 0; const sMax = shows.length; for (; s < sMax; s++) {
+        $("#showsList").append("<li class=\"list-group-item showFileItem\" onclick=\"openShow('" + shows[s] + "')\">" + upperCase(shows[s].split.slice(0, -9)) + "</li>");
+    }
 });
 
 socket.on('fixtureChannels', function (msg) {
@@ -274,7 +283,10 @@ function resetFixture(fixtureID) {
 
 function addFixtureModal() {
     socket.emit('getFixtureProfiles');
-    $('#fixtureProfilesModal').modal("show");
+}
+
+function getShowModal() {
+    socket.emit('getShowsFromUSB');
 }
 
 function openFixtureDefinitionModal() {

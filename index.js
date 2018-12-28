@@ -629,6 +629,34 @@ io.on('connection', function (socket) {
         });
     });
 
+    socket.on('getShowsFromUSB', function () {
+        if (SETTINGS.desktop === false) {
+            drivelist.list((error, drives) => {
+                var done = false;
+                if (error) {
+                    logError(error);
+                }
+                drives.forEach((drive) => {
+                    if (done == false) {
+                        if (drive.enumerator == 'USBSTOR') {
+                            fs.readdir(drive.mountpoints[0].path, (err, files) => {
+                                var showsList = [];
+                                files.forEach(file => {
+                                    showsList.push(file);
+                                });
+                                socket.emit('showsFromUSB', showsList);
+                            });
+                            done = true;
+                        }
+                    }
+                });
+                if (done == false) {
+                    socket.emit('message', { type: "error", content: "Shows could not be read of of a USB drive. Is there one connected?" });
+                }
+            });
+        }
+    });
+
     socket.on('addFixture', function (msg) {
         var startDMXAddress = msg.startDMXAddress;
         fixtures.forEach(function (fixture) {
@@ -1253,7 +1281,6 @@ io.on('connection', function (socket) {
             drives.forEach((drive) => {
                 if (done == false) {
                     if (drive.enumerator == 'USBSTOR') {
-                        console.log(drive.mountpoints[0].path);
                         fs.writeFile(drive.mountpoints[0].path + "/" + moment().format() + ".tonalite", JSON.stringify([fixtures, cues, groups]), (err) => {
                             if (err) {
                                 logError(err);

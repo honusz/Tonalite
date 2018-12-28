@@ -40,6 +40,7 @@
               <div v-if="ifMobile() || desktop" class="dropdown-divider"></div>
               <a v-if="ifMobile() || desktop" class="dropdown-item" href="/showFile">Save Show To File</a>
               <a v-if="ifMobile() || desktop" class="dropdown-item" onclick="openShowFileModal()">Open Show From File</a>
+              <a v-if="!desktop" class="dropdown-item" onclick="getShowModal()">Open Show From USB</a>
               <div class="dropdown-divider"></div>
               <a v-if="ifMobile() || desktop" class="dropdown-item" onclick="openFixtureDefinitionModal()">Import
                 Fixture Definition From File</a>
@@ -122,6 +123,15 @@
               </div>
             </div>
             <ul class="list-group" id="fixtureProfilesList"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="showFilesModal" class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <ul class="list-group" id="showsList"></ul>
           </div>
         </div>
       </div>
