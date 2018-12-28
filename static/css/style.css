@@ -179,3 +179,7 @@ body {
 body::-webkit-scrollbar {
     width: 0em;
 }
+
+.showFileItem:hover {
+    cursor: pointer;
+}

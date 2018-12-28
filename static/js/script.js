@@ -112,8 +112,8 @@ socket.on('fixtureProfiles', function (profiles) {
 socket.on('shows', function (shows) {
     $('#showFilesModal').modal("show");
     $("#showsList").empty();
-    var s = 0; const sMax = shows.length; for (; s < sMax; s++) {
-        $("#showsList").append("<li class=\"list-group-item showFileItem\" onclick=\"openShowFromUSB('" + shows[s] + "')\">" + upperCase(shows[s].slice(0, -9)) + "</li>");
+    var s = 0; const sMax = shows[0].length; for (; s < sMax; s++) {
+        $("#showsList").append("<li class=\"list-group-item showFileItem\" onclick=\"openShowFromUSB('" + shows[0][s] + "', '" + shows[1] + "')\">" + upperCase(shows[0][s].slice(0, -9)) + "</li>");
     }
 });
 
@@ -479,6 +479,15 @@ function saveShowToUSB() {
 
 function shutdown() {
     socket.emit('shutdown');
+}
+
+function reboot() {
+    socket.emit('reboot');
+}
+
+function openShowFromUSB(showFile, usbPath) {
+    socket.emit('openShowFromUSB', [showFile, usbPath]);
+    $('#showFilesModal').modal("hide");
 }
 
 function closeAlert() {

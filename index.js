@@ -477,8 +477,8 @@ function dmxLoop() {
 };
 
 // Load the fixtures, cues, and groups from file
-function openShow() {
-    fs.readFile(process.cwd() + '/show.json', (err, data) => {
+function openShow(file = "show.json") {
+    fs.readFile(process.cwd() + '/' + file, (err, data) => {
         if (err) logError(err);
         let show = JSON.parse(data);
         fixtures = show[0];
@@ -599,6 +599,17 @@ io.on('connection', function (socket) {
         socket.emit('cueActionBtn', true);
     }
 
+    socket.on('openShowFromUSB', function (data) {
+        fs.copyFile(data[1] + '/' + data[0], process.cwd() + '/show.json', function (err) {
+            if (err) {
+                logError(err);
+                socket.emit('message', { type: "error", content: "The show could not be opened!" });
+            }
+            openShow();
+            io.emit('message', { type: "info", content: "The show has been opened!" });
+        });
+    });
+
     socket.on('resetShow', function () {
         fixtures = [];
         cues = [];
@@ -646,7 +657,7 @@ io.on('connection', function (socket) {
                                         showsList.push(file);
                                     }
                                 });
-                                socket.emit('shows', showsList);
+                                socket.emit('shows', [showsList, drive.mountpoints[0].path]);
                             });
                             done = true;
                         }
