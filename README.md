@@ -45,6 +45,8 @@ https://obrienlabs.net/setup-raspberry-pi-kiosk-chromium/
 
 https://scribles.net/customizing-boot-up-screen-on-raspberry-pi/
 
+https://ubuntuforums.org/showthread.php?t=1935099
+
 https://raspberrypi.stackexchange.com/questions/66169/auto-mount-usb-stick-on-plug-in-without-uuid
 
 ## Setting Up A Raspberry Pi As A Server
