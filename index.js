@@ -1234,7 +1234,7 @@ io.on('connection', function (socket) {
 
     socket.on('closeSettings', function () {
         if (saveSettings()) {
-            socket.emit('message', { type: "info", content: "The Tonalite settings have been saved! Restart if you changed the IP of uDMX settings." });
+            socket.emit('message', { type: "info", content: "The Tonalite settings have been saved! Reboot if you changed the IP or uDMX settings." });
         } else {
             socket.emit('message', { type: "error", content: "The Tonalite settings file could not be saved on disk." });
         }
@@ -1262,7 +1262,7 @@ io.on('connection', function (socket) {
     socket.on('updateFirmware', function () {
         updateFirmware(function (result) {
             if (result) {
-                socket.emit('message', { type: "info", content: "The Tonalite firmware has been updated. Please restart the server." });
+                socket.emit('message', { type: "info", content: "The Tonalite firmware has been updated. Please reboot the server." });
             }
         });
     });

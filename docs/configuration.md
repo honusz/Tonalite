@@ -13,19 +13,19 @@ Options:
 - `macos` - macOS 64bit
 - `rpi` - Raspberry Pi
 
-Restart required after change.
+Reboot required after change.
 
 ## url
 
 The IP address of the web server that runs the control page. This is also used as the ArtNet and sACN output IPs.
 
-Restart required after change.
+Reboot required after change.
 
 ## port
 
 The IP port of the web server that runs the control page.
 
-Restart required after change.
+Reboot required after change.
 
 ## defaultUpTime
 
@@ -44,7 +44,7 @@ Options:
 - `true` - Tonalite is running in desktop mode
 - `false` - Tonalite is running in embeded mode (used for the touchscreen model)
   
-Restart required after change.
+Reboot required after change.
 
 ## udmx
 
@@ -55,7 +55,7 @@ Options:
 - `true` - Enables uDMX-Artnet
 - `false` - disables uDMX-Artnet
 
-Restart required after change.
+Reboot required after change.
 
 ## artnetIP
 
