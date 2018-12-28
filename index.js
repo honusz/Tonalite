@@ -604,9 +604,10 @@ io.on('connection', function (socket) {
             if (err) {
                 logError(err);
                 socket.emit('message', { type: "error", content: "The show could not be opened!" });
+            } else {
+                openShow();
+                io.emit('message', { type: "info", content: "The show has been opened!" });
             }
-            openShow();
-            io.emit('message', { type: "info", content: "The show has been opened!" });
         });
     });
 
