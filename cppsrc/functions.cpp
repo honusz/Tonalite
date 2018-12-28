@@ -25,6 +25,5 @@ Napi::Object functions::Init(Napi::Env env, Napi::Object exports)
 {
 
   exports.Set("mapRange", Napi::Function::New(env, functions::MapRangeWrapped));
- 
   return exports;
 }
