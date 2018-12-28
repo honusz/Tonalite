@@ -1285,9 +1285,8 @@ io.on('connection', function (socket) {
     });
 
     socket.on('reboot', function () {
-        if (SETTINGS.desktop === false && SETTINGS.device === "rpi") {
+
             var cp = spawn('reboot');
-        }
     });
 
     socket.on('saveShowToUSB', function () {

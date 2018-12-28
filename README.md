@@ -37,6 +37,8 @@ You need `NodeJS` installed. You also need `Calibre` if you want to generate the
 
 https://www.illutzmination.de/udmxartnet.html?&L=1
 
+https://raspberrypi.stackexchange.com/questions/66169/auto-mount-usb-stick-on-plug-in-without-uuid
+
 ## Setting Up A Raspberry Pi As A Server
 
 Flash raspbian onto the sd card and leave it connected to the linux computer.
