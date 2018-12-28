@@ -179,7 +179,7 @@ function updateFirmware(callback) {
         }
 
         drives.forEach((drive) => {
-            if (drive.enumerator == 'USBSTOR') {
+            if (drive.enumerator == 'USBSTOR' || drive.isUSB === true) {
                 fs.exists(drive.mountpoints[0].path + "/tonalite.zip", function (exists) {
                     if (exists) {
                         fs.createReadStream(drive.mountpoints[0].path + "/tonalite.zip").pipe(unzipper.Extract({ path: process.cwd() }));
@@ -200,7 +200,7 @@ function importFixtures(callback) {
             logError(error);
         }
         drives.forEach((drive) => {
-            if (drive.enumerator == 'USBSTOR') {
+            if (drive.enumerator == 'USBSTOR' || drive.isUSB === true) {
                 fs.readdir(drive.mountpoints[0].path, (err, files) => {
                     files.forEach(file => {
                         fs.copyFile(drive.mountpoints[0].path + "/" + file, process.cwd() + "/fixtures/" + file, (err) => {
@@ -638,13 +638,15 @@ io.on('connection', function (socket) {
                 }
                 drives.forEach((drive) => {
                     if (done == false) {
-                        if (drive.enumerator == 'USBSTOR') {
+                        if (drive.enumerator == 'USBSTOR' || drive.isUSB === true) {
                             fs.readdir(drive.mountpoints[0].path, (err, files) => {
                                 var showsList = [];
                                 files.forEach(file => {
-                                    showsList.push(file);
+                                    if (file.slice(-8) === "tonalite") {
+                                        showsList.push(file);
+                                    }
                                 });
-                                socket.emit('showsFromUSB', showsList);
+                                socket.emit('shows', showsList);
                             });
                             done = true;
                         }
@@ -1280,14 +1282,15 @@ io.on('connection', function (socket) {
 
             drives.forEach((drive) => {
                 if (done == false) {
-                    if (drive.enumerator == 'USBSTOR') {
+                    if (drive.enumerator == 'USBSTOR' || drive.isUSB === true) {
                         fs.writeFile(drive.mountpoints[0].path + "/" + moment().format() + ".tonalite", JSON.stringify([fixtures, cues, groups]), (err) => {
                             if (err) {
                                 logError(err);
+                                done = false;
                                 return false;
                             };
+                            done = true;
                         });
-                        done = true;
                     }
                 }
             });
