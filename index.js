@@ -614,7 +614,6 @@ io.on('connection', function (socket) {
     });
 
     socket.on('getFixtureProfiles', function () {
-        var fixturesList = [];
         var startDMXAddress = 1;
         fixtures.forEach(function (fixture) {
             if (fixture.startDMXAddress == startDMXAddress) {
@@ -622,6 +621,7 @@ io.on('connection', function (socket) {
             }
         });
         fs.readdir(process.cwd() + "/fixtures", (err, files) => {
+            var fixturesList = [];
             files.forEach(file => {
                 fixturesList.push(file.slice(0, -5));
             });
