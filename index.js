@@ -204,7 +204,7 @@ function importFixtures(callback) {
                 fs.readdir(drive.mountpoints[0].path, (err, files) => {
                     files.forEach(file => {
                         fs.copyFile(drive.mountpoints[0].path + "/" + file, process.cwd() + "/fixtures/" + file, (err) => {
-                            if (err) throw err;
+                            if (err) logError(err);
                             importComplete = true;
                         });
                     });
@@ -1259,6 +1259,8 @@ io.on('connection', function (socket) {
         updateFirmware(function (result) {
             if (result) {
                 socket.emit('message', { type: "info", content: "The Tonalite firmware has been updated. Please reboot the server." });
+            } else {
+                socket.emit('message', { type: "info", content: "The Tonalite firmware could not be updated. Is a USB connected?" });
             }
         });
     });
@@ -1266,7 +1268,9 @@ io.on('connection', function (socket) {
     socket.on('importFixtures', function () {
         importFixtures(function (result) {
             if (result) {
-                socket.emit('message', { type: "info", content: "The fixtures have been imported!" });
+                socket.emit('message', { type: "info", content: "The fixture profiles have been imported from USB!" });
+            } else {
+                socket.emit('message', { type: "error", content: "The fixture profiles could not be imported! Is a USB connected?" });
             }
         });
     });
