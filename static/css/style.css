@@ -183,3 +183,8 @@ body::-webkit-scrollbar {
 .showFileItem:hover {
     cursor: pointer;
 }
+
+.multiselect-container {
+    max-height: 15rem;
+    overflow-y: scroll;
+}
