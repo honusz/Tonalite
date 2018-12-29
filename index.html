@@ -448,32 +448,48 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-body">
-            <div class="form-group">
-              <label class="dark" for="defaultUpTime">Default Up Time:</label>
-              <input v-on:input="saveSettingsBackground()" class="form-control" type="number" id="defaultUpTime"
-                placeholder="Default Cue Up Time">
-            </div>
-            <div class="form-group">
-              <label class="dark" for="defaultDownTime">Default Down Time:</label>
-              <input v-on:input="saveSettingsBackground()" class="form-control" type="number" id="defaultDownTime"
-                placeholder="Default Cue Up Time">
-            </div>
-            <div class="form-group">
-              <div class="custom-control custom-checkbox">
-                <input v-on:input="saveSettingsBackground()" :disabled="!desktop" type="checkbox" class="custom-control-input"
-                  id="useUDMX">
-                <label class="custom-control-label dark" for="useUDMX">Use uDMX?</label>
+            <div class="row">
+              <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                  <label class="dark" for="defaultUpTime">Default Up Time:</label>
+                  <input v-on:input="saveSettingsBackground()" class="form-control" type="number" id="defaultUpTime"
+                    placeholder="Default Cue Up Time">
+                </div>
+              </div>
+              <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                  <label class="dark" for="defaultDownTime">Default Down Time:</label>
+                  <input v-on:input="saveSettingsBackground()" class="form-control" type="number" id="defaultDownTime"
+                    placeholder="Default Cue Up Time">
+                </div>
               </div>
             </div>
-            <div class="form-group">
-              <label class="dark" for="artnetIP">ArtNet IP:</label>
-              <input v-on:input="saveSettingsBackground()" :disabled="!desktop" class="form-control" type="text" id="artnetIP"
-                placeholder="ArtNet IP is null">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <div class="custom-control custom-checkbox">
+                    <input v-on:input="saveSettingsBackground()" :disabled="!desktop" type="checkbox" class="custom-control-input"
+                      id="useUDMX">
+                    <label class="custom-control-label dark" for="useUDMX">Use uDMX?</label>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="form-group">
-              <label class="dark" for="sacnIP">sACN IP:</label>
-              <input v-on:input="saveSettingsBackground()" :disabled="!desktop" class="form-control" type="text" id="sacnIP"
-                placeholder="sACN IP is null">
+            <div class="row">
+              <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                  <label class="dark" for="artnetIP">ArtNet IP:</label>
+                  <input v-on:input="saveSettingsBackground()" :disabled="!desktop" class="form-control" type="text" id="artnetIP"
+                    placeholder="ArtNet IP is null">
+                </div>
+              </div>
+              <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                  <label class="dark" for="sacnIP">sACN IP:</label>
+                  <input v-on:input="saveSettingsBackground()" :disabled="!desktop" class="form-control" type="text" id="sacnIP"
+                    placeholder="sACN IP is null">
+                </div>
+              </div>
             </div>
             <button class="btn btn-success" onclick="closeSettings()">Close</button>
           </div>
