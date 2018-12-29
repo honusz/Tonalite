@@ -1282,10 +1282,10 @@ io.on('connection', function (socket) {
 
     socket.on('reboot', function () {
 
-            var cp = spawn('reboot');
+        var cp = spawn('reboot');
     });
 
-    socket.on('saveShowToUSB', function () {
+    socket.on('saveShowToUSB', function (showName) {
         drivelist.list((error, drives) => {
             var done = false;
             if (error) {
@@ -1295,22 +1295,24 @@ io.on('connection', function (socket) {
             drives.forEach((drive) => {
                 if (done == false) {
                     if (drive.enumerator == 'USBSTOR' || drive.isUSB === true) {
-                        fs.writeFile(drive.mountpoints[0].path + "/" + moment().format() + ".tonalite", JSON.stringify([fixtures, cues, groups]), (err) => {
-                            if (err) {
-                                logError(err);
-                                done = false;
-                                return false;
-                            };
-                            done = true;
+                        var filepath = drive.mountpoints[0].path + "/" + showName + ".tonalite";
+                        fs.exists(filepath, function (exists) {
+                            if (exists) {
+                                socket.emit('message', { type: "error", content: "A show file with that name already exists!" });
+                            } else {
+                                fs.writeFile(filepath, JSON.stringify([fixtures, cues, groups]), (err) => {
+                                    if (err) {
+                                        logError(err);
+                                        done = false;
+                                        socket.emit('message', { type: "error", content: "The current show could not be saved onto a USB drive. Is there one connected?" });
+                                    };
+                                    socket.emit('message', { type: "info", content: "The current show was successfully saved to the connected USB drive!" });
+                                });
+                            }
                         });
                     }
                 }
             });
-            if (done == false) {
-                socket.emit('message', { type: "error", content: "The current show could not be saved onto a USB drive. Is there one connected?" });
-            } else {
-                socket.emit('message', { type: "info", content: "The current show was successfully saved to the connected USB drive!" });
-            }
         });
     });
 });
