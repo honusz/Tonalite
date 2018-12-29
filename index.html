@@ -12,6 +12,7 @@
   <script defer src="static/js/fontawesome.min.js"></script>
 
   <link rel="stylesheet" href="static/css/bootstrap.min.css">
+  <link rel="stylesheet" href="static/css/bootstrap-multiselect.css">
   <link rel="stylesheet" href="static/css/style.min.css">
 
   <link rel="apple-touch-icon" href="static/img/icon.png">
@@ -484,7 +485,7 @@
         <div class="modal-content">
           <div class="modal-body">
             <div class="form-group">
-              <label class="dark" for="groupFixtureIDs">Fixtures:</label>
+              <label class="dark mr-2" for="groupFixtureIDs">Fixtures:</label>
               <select class="form-control" multiple id="groupFixtureIDs" name="groupFixtures" size="5">
                 <option v-for="fixture in fixtures" :key="fixture.id" :value="fixture.id">{{fixture.shortName}}
                   ({{fixture.startDMXAddress}})</option>
@@ -532,9 +533,15 @@
   <script src="static/js/bootstrap.min.js"></script>
   <script src="static/js/socket.io.js"></script>
   <script src="static/js/mousetrap.min.js"></script>
+  <script src="static/js/bootstrap-multiselect.js"></script>
   <script src="static/js/isMobile.min.js"></script>
   <script src="static/js/vue.js"></script>
   <script src="static/js/script.min.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $('#groupFixtureIDs').multiselect();
+    });
+  </script>
 </body>
 
 </html>
