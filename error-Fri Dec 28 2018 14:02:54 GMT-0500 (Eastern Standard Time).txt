@@ -1,0 +1,1 @@
+Error: EINVAL: invalid argument, open '/media/pi/files1/2018-12-28T14:02:54-05:00.tonalite'
