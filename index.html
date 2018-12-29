@@ -502,7 +502,7 @@
           <div class="modal-body">
             <div class="form-group">
               <label class="dark mr-2" for="groupFixtureIDs">Fixtures:</label>
-              <select class="form-control" multiple id="groupFixtureIDs" name="groupFixtures" size="5">
+              <select class="form-control" multiple id="groupFixtureIDs" name="groupFixtureIDs" size="5">
                 <option v-for="fixture in fixtures" :key="fixture.id" :value="fixture.id">{{fixture.shortName}}
                   ({{fixture.startDMXAddress}})</option>
               </select>

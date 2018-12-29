@@ -16,6 +16,11 @@ var app = new Vue({
         desktop: false,
         version: "2.0.0 Beta 2"
     },
+    computed: {
+        fixtures: function () {
+            $('#groupFixtureIDs').multiselect('rebuild');
+        }
+    },
     methods: {
         changePresetActive: function (presetID) {
             socket.emit('changePresetActive', presetID);
@@ -473,7 +478,9 @@ function updateFirmware() {
 
 function saveShowToUSB() {
     var showName = prompt("Show Name: ");
-    socket.emit('saveShowToUSB', showName);
+    if (prompt != "") {
+        socket.emit('saveShowToUSB', showName);
+    }
 }
 
 function shutdown() {
