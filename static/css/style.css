@@ -206,12 +206,21 @@ body::-webkit-scrollbar {
 
 .custom-range::-webkit-slider-thumb {
     height: 2rem;
+    margin-top: -0.75rem;
+    border-radius: 0.75rem;
+    background-color: #fd7e14;
 }
 
 .custom-range::-moz-range-thumb {
     height: 2rem;
+    margin-top: -0.75rem;
+    border-radius: 0.75rem;
+    background-color: #fd7e14;
 }
 
 .custom-range::-ms-thumb {
     height: 2rem;
+    margin-top: -0.75rem;
+    border-radius: 0.75rem;
+    background-color: #fd7e14;
 }
