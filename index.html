@@ -520,7 +520,7 @@
             <p class="mb-0">Developed by <span v-if="!desktop">John Roper</span><a href="http://jmroper.com" v-if="desktop">John
                 Roper</a></p>
             <p v-if="ifMobile() || desktop" class="mb-0"><small><a href="/open-source-licenses">Open Source Licenses</a></small></p>
-            <p v-if="!desktop" class="mb-0"><small>OSS Licences Available Online</small></p>
+            <p v-if="!desktop && !ifMobile()" class="mb-0"><small>OSS Licences Available Online</small></p>
           </div>
         </div>
       </div>
