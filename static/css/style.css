@@ -122,7 +122,9 @@ body {
 }
 
 .list-group-item,
-.dark {
+.dark,
+.bootbox-body,
+.modal-title {
     color: #343A40;
 }
 

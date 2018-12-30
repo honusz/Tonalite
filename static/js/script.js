@@ -477,12 +477,13 @@ function updateFirmware() {
 }
 
 function saveShowToUSB() {
-    var showName = prompt("Show Name: ");
-    if (prompt != "") {
-        socket.emit('saveShowToUSB', showName);
-    } else {
-        alert("You must enter a show name!");
-    }
+    bootbox.prompt("Show Name: ", function (result) {
+        if (result != "") {
+            socket.emit('saveShowToUSB', result);
+        } else {
+            bootbox.alert("You must enter a show name!");
+        }
+    });
 }
 
 function shutdown() {
