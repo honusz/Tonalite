@@ -1,7 +1,7 @@
 {
-    "name": "Costech Stage Par",
+    "name": "Generic RGB Fixture With Control",
     "shortName": "RGB",
-    "manufacturer": "Costech",
+    "manufacturer": "Generic",
     "type": "static",
     "channels": [
         {
@@ -29,7 +29,7 @@
             "value": 0,
             "displayValue": 0,
             "defaultValue": 0,
-            "dmxAddressOffset": 6,
+            "dmxAddressOffset": 1,
             "locked": false
         },
         {
@@ -43,7 +43,7 @@
             "value": 0,
             "displayValue": 0,
             "defaultValue": 0,
-            "dmxAddressOffset": 5,
+            "dmxAddressOffset": 2,
             "locked": false
         },
         {
@@ -57,7 +57,7 @@
             "value": 0,
             "displayValue": 0,
             "defaultValue": 0,
-            "dmxAddressOffset": 4,
+            "dmxAddressOffset": 3,
             "locked": false
         },
         {
@@ -71,7 +71,7 @@
             "value": 0,
             "displayValue": 0,
             "defaultValue": 0,
-            "dmxAddressOffset": 1,
+            "dmxAddressOffset": 4,
             "locked": false
         }
     ]
