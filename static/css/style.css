@@ -196,3 +196,8 @@ body::-webkit-scrollbar {
 .btn-full {
     width: 100%;
 }
+
+#fixtureProfilesList {
+    max-height: 15rem;
+    overflow-y: scroll;
+}
