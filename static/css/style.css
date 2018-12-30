@@ -188,3 +188,11 @@ body::-webkit-scrollbar {
     max-height: 15rem;
     overflow-y: scroll;
 }
+
+.multiselect {
+    width: 15rem;
+}
+
+.btn-full {
+    width: 100%;
+}
