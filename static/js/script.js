@@ -480,6 +480,8 @@ function saveShowToUSB() {
     var showName = prompt("Show Name: ");
     if (prompt != "") {
         socket.emit('saveShowToUSB', showName);
+    } else {
+        alert("You must enter a show name!");
     }
 }
 
