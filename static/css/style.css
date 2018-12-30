@@ -203,3 +203,15 @@ body::-webkit-scrollbar {
     max-height: 15rem;
     overflow-y: scroll;
 }
+
+.custom-range::-webkit-slider-thumb {
+    height: 2rem;
+}
+
+.custom-range::-moz-range-thumb {
+    height: 2rem;
+}
+
+.custom-range::-ms-thumb {
+    height: 2rem;
+}
