@@ -12,6 +12,7 @@ const drivelist = require('drivelist');
 const unzipper = require('unzipper');
 require('sanic.js').changeMyWorld();
 const cppaddon = require('./build/Release/cppaddon.node');
+const { Worker, isMainThread, parentPort, workerData } = require('worker_threads');
 /*
 Features:
 - Get Fixtures - Done - Done UI
