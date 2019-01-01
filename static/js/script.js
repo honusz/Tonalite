@@ -136,7 +136,7 @@ socket.on('fixtureChannels', function (msg) {
     var div = "<div class=\"fixtureChips\"><h5>Fixture Chips:</h5><div class=\"row\">";
 
     var ch = 0; const chMax = msg.chips.length; for (; ch < chMax; ch++) {
-        div += "<div class=\"col-2\"><div class=\"fixtureChip\" style=\"background-color: "+msg.chips[ch].color+"\"></div></div>";
+        div += "<div class=\"col-1\"><div class=\"fixtureChip\" style=\"background-color: " + msg.chips[ch].color + "\" onclick=\"useFixtureChip(this, '" + msg.id + "', " + ch + ")\"></div></div>";
     }
     div += "</div></div>";
     $("#fixtureChannels").append(div);
@@ -318,6 +318,10 @@ function updateFixtureChannelValue(self, fixtureID, channelID) {
 
 function updateFixtureChannelLock(self, fixtureID, channelID) {
     socket.emit('changeFixtureChannelLock', { id: fixtureID, cid: channelID });
+}
+
+function useFixtureChip(self, fixtureID, chipID) {
+    socket.emit('useFixtureChip', { id: fixtureID, cid: chipID });
 }
 
 function removeFixture(fixtureID) {

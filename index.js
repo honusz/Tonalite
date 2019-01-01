@@ -807,6 +807,22 @@ io.on('connection', function (socket) {
         }
     });
 
+    socket.on('useFixtureChip', function (msg) {
+        if (fixtures.length != 0) {
+            var fixture = fixtures[fixtures.map(el => el.id).indexOf(msg.id)];
+            var chip = fixture.chips[msg.cid];
+            fixture.channels.forEach(function (chan, id) {
+                chan.value = chip.channels[id];
+                chan.displayValue = chan.value;
+            });
+            socket.emit('fixtureChannels', { id: fixture.id, name: fixture.name, channels: fixture.channels, chips: fixture.chips });
+            io.emit('fixtures', cleanFixtures());
+            saveShow();
+        } else {
+            socket.emit('message', { type: "error", content: "No fixtures exist!" });
+        }
+    });
+
     socket.on('recordCue', function () {
         if (fixtures.length != 0) {
             var newCue = {
