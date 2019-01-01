@@ -224,3 +224,17 @@ body::-webkit-scrollbar {
     border-radius: 0.75rem;
     background-color: #fd7e14;
 }
+
+.custom-range {
+    margin-top: 1.5rem;
+}
+
+.fixtureChips {
+    margin-top: 0.5rem;
+}
+
+.fixtureChip {
+    height: 9vw;
+    width: 100%;
+    border-radius: 0.25rem;
+}

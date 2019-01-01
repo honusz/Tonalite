@@ -133,6 +133,13 @@ socket.on('fixtureChannels', function (msg) {
             $("#fixtureChannels").append("<button class=\"btn btn-info\" onclick=\"updateFixtureChannelLock(this, '" + msg.id + "', " + c + ")\"><i class=\"far fa-lock-open-alt fa-sm \"></i></button><label class=\"ml-2\" for=\"" + msg.channels[c].type + "\">" + msg.channels[c].name + ":</label><input type=\"range\" class=\"custom-range\" id=\"" + msg.channels[c].type + "\" max=\"" + msg.channels[c].displayMax + "\" min=\"" + msg.channels[c].displayMin + "\" value=\"" + msg.channels[c].value + "\" oninput=\"updateFixtureChannelValue(this, '" + msg.id + "', " + c + ")\">");
         }
     }
+    var div = "<div class=\"fixtureChips\"><h5>Fixture Chips:</h5><div class=\"row\">";
+
+    var ch = 0; const chMax = msg.chips.length; for (; ch < chMax; ch++) {
+        div += "<div class=\"col-2\"><div class=\"fixtureChip\" style=\"background-color: "+msg.chips[ch].color+"\"></div></div>";
+    }
+    div += "</div></div>";
+    $("#fixtureChannels").append(div);
 });
 
 socket.on('fixtureSettings', function (fixture) {

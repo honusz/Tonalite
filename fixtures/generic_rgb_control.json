@@ -74,5 +74,6 @@
             "dmxAddressOffset": 4,
             "locked": false
         }
-    ]
+    ],
+    "chips": []
 }

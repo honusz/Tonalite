@@ -74,5 +74,19 @@
             "dmxAddressOffset": 1,
             "locked": false
         }
+    ],
+    "chips": [
+        {
+            "color": "#ff6b6b",
+            "channels": [255, 255, 0, 0, 0]
+        },
+        {
+            "color": "#51cf66",
+            "channels": [255, 0, 255, 0, 0]
+        },
+        {
+            "color": "#339af0",
+            "channels": [255, 0, 0, 255, 0]
+        }
     ]
 }

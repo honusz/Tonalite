@@ -740,7 +740,7 @@ io.on('connection', function (socket) {
     socket.on('getFixtureChannels', function (fixtureID) {
         if (fixtures.length != 0) {
             var fixture = fixtures[fixtures.map(el => el.id).indexOf(fixtureID)];
-            socket.emit('fixtureChannels', { id: fixture.id, name: fixture.name, channels: fixture.channels });
+            socket.emit('fixtureChannels', { id: fixture.id, name: fixture.name, channels: fixture.channels, chips: fixture.chips });
         } else {
             socket.emit('message', { type: "error", content: "No fixtures exist!" });
         }
@@ -766,7 +766,7 @@ io.on('connection', function (socket) {
                     channel.displayValue = channel.value;
                 }
             });
-            socket.emit('fixtureChannels', { id: fixture.id, name: fixture.name, channels: fixture.channels });
+            socket.emit('fixtureChannels', { id: fixture.id, name: fixture.name, channels: fixture.channels, chips: fixture.chips });
             io.emit('fixtures', cleanFixtures());
             socket.emit('message', { type: "info", content: "Fixture values reset!" });
             saveShow();
@@ -799,7 +799,7 @@ io.on('connection', function (socket) {
                     fixture.hasLockedChannels = true;
                 }
             });
-            socket.emit('fixtureChannels', { id: fixture.id, name: fixture.name, channels: fixture.channels });
+            socket.emit('fixtureChannels', { id: fixture.id, name: fixture.name, channels: fixture.channels, chips: fixture.chips });
             io.emit('fixtures', cleanFixtures());
             saveShow();
         } else {
