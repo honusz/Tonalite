@@ -47,5 +47,62 @@
             "locked": false
         }
     ],
-    "chips": []
+    "chips": [
+        {
+            "color": "#ff6b6b",
+            "channels": [
+                100,
+                0,
+                0
+            ]
+        },
+        {
+            "color": "#51cf66",
+            "channels": [
+                0,
+                100,
+                0
+            ]
+        },
+        {
+            "color": "#339af0",
+            "channels": [
+                0,
+                0,
+                100
+            ]
+        },
+        {
+            "color": "#f8f9fa",
+            "channels": [
+                100,
+                100,
+                100
+            ]
+        },
+        {
+            "color": "#cc5de8",
+            "channels": [
+                100,
+                0,
+                100
+            ]
+        },
+        {
+            "color": "#fcc419",
+            "channels": [
+                100,
+                100,
+                0
+            ]
+        },
+        {
+            "color": "#22b8cf",
+            "channels": [
+                0,
+                100,
+                100
+            ]
+        }
+    ]
 }
