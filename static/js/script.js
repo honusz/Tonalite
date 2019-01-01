@@ -282,7 +282,7 @@ socket.on('connect_error', function () {
 });
 
 function resetFixtures() {
-    if (confirm("Are you sure you want to reset all fixture channel values?")) {
+    if (confirm("Are you sure you want to reset all fixture channel values?") === true) {
         socket.emit('resetFixtures');
     }
 };

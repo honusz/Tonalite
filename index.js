@@ -623,9 +623,7 @@ io.on('connection', function (socket) {
     socket.on('getFixtureProfiles', function () {
         var startDMXAddress = 1;
         fixtures.forEach(function (fixture) {
-            if (fixture.startDMXAddress == startDMXAddress) {
-                startDMXAddress = fixture.numChannels + 1;
-            }
+            startDMXAddress += fixture.numChannels;
         });
         fs.readdir(process.cwd() + "/fixtures", (err, files) => {
             var fixturesList = [];
