@@ -90,11 +90,11 @@ Wait about 90 seconds.
 
 `sudo apt-get install dnsmasq hostapd git libusb-dev libusb-1.0-0-dev`
 
-`curl -o node-v11.0.0-linux-armv6l.tar.xz https://nodejs.org/dist/v11.0.0/node-v11.0.0-linux-armv6l.tar.xz`
+`curl -o node-v11.6.0-linux-armv6l.tar.xz https://nodejs.org/dist/v11.6.0/node-v11.6.0-linux-armv6l.tar.xz`
 
-`tar -xf node-v11.0.0-linux-armv6l.tar.xz`
+`tar -xf node-v11.6.0-linux-armv6l.tar.xz`
 
-`sudo cp -r node-v11.0.0-linux-armv6l/* /usr/local/`
+`sudo cp -r node-v11.6.0-linux-armv6l/* /usr/local/`
 
 `git clone https://github.com/johnroper100/Tonalite.git`
 
