@@ -188,6 +188,7 @@ body::-webkit-scrollbar {
 
 .multiselect-container {
     max-height: 15rem;
+    height: 2rem;
     overflow-y: scroll;
 }
 
