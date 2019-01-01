@@ -3,6 +3,7 @@
     "shortName": "RGB",
     "manufacturer": "Generic",
     "type": "static",
+    "numChannels": 5,
     "channels": [
         {
             "type": "intensity",

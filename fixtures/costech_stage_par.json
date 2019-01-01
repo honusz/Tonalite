@@ -3,6 +3,7 @@
     "shortName": "RGB",
     "manufacturer": "Costech",
     "type": "static",
+    "numChannels": 7,
     "channels": [
         {
             "type": "intensity",
@@ -143,6 +144,16 @@
                 0,
                 100,
                 100,
+                0
+            ]
+        },
+        {
+            "color": "#212529",
+            "channels": [
+                0,
+                0,
+                0,
+                0,
                 0
             ]
         }

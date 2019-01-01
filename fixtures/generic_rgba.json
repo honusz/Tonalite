@@ -3,6 +3,7 @@
     "shortName": "RGBA",
     "manufacturer": "Generic",
     "type": "static",
+    "numChannels": 4,
     "channels": [
         {
             "type": "color",
