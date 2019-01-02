@@ -14,7 +14,7 @@ var app = new Vue({
         groups: [],
         presets: [],
         desktop: false,
-        version: "2.0.0 Beta 2"
+        version: "2.0.0 Beta 3"
     },
     computed: {
         fixtures: function () {
