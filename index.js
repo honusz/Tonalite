@@ -809,10 +809,10 @@ io.on('connection', function (socket) {
         if (fixtures.length != 0) {
             var fixture = fixtures[fixtures.map(el => el.id).indexOf(msg.id)];
             var chip = fixture.chips[msg.cid];
-            fixture.channels.forEach(function (chan, id) {
-                chan.value = chip.channels[id];
-                chan.displayValue = chan.value;
-            });
+            let c = 0; const cMax = chip.channels.length; for (; c < cMax; c++) {
+                fixture.channels[chip.channels[c][0]].value = chip.channels[c][1];
+                fixture.channels[chip.channels[c][0]].displayValue = chip.channels[c][1];
+            }
             socket.emit('fixtureChannels', { id: fixture.id, name: fixture.name, channels: fixture.channels, chips: fixture.chips });
             io.emit('fixtures', cleanFixtures());
             saveShow();
