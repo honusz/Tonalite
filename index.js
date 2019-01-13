@@ -681,6 +681,7 @@ io.on('connection', function (socket) {
                 fixture.id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
                 fixtures.push(JSON.parse(JSON.stringify(fixture)));
                 startDMXAddress += fixture.channels.length;
+                delete require.cache[require.resolve(process.cwd() + "/fixtures/" + msg.fixtureName + ".json")]
             }
             io.emit('fixtures', cleanFixtures());
             saveShow();
