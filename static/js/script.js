@@ -282,15 +282,19 @@ socket.on('connect_error', function () {
 });
 
 function resetFixtures() {
-    if (confirm("Are you sure you want to reset all fixture channel values?") === true) {
-        socket.emit('resetFixtures');
-    }
+    bootbox.confirm("Are you sure you want to reset all fixture channel values?", function (result) {
+        if (result === true) {
+            socket.emit('resetFixtures');
+        }
+    });
 };
 
 function resetFixture(fixtureID) {
-    if (confirm("Are you sure you want to reset this fixture's channel values?")) {
-        socket.emit('resetFixture', fixtureID);
-    }
+    bootbox.confirm("Are you sure you want to reset this fixture's channel values?", function (result) {
+        if (result === true) {
+            socket.emit('resetFixture', fixtureID);
+        }
+    });
 };
 
 function addFixtureModal() {
@@ -327,10 +331,12 @@ function useFixtureChip(self, fixtureID, chipID) {
 }
 
 function removeFixture(fixtureID) {
-    if (confirm("Are you sure you want to delete this fixture?")) {
-        socket.emit('removeFixture', fixtureID);
-        openTab('fixtures');
-    }
+    bootbox.confirm("Are you sure you want to delete this fixture?", function (result) {
+        if (result === true) {
+            socket.emit('removeFixture', fixtureID);
+            openTab('fixtures');
+        }
+    });
 }
 
 function saveFixtureSettings(fixtureID) {
@@ -338,10 +344,12 @@ function saveFixtureSettings(fixtureID) {
 }
 
 function removeCue(cueID) {
-    if (confirm("Are you sure you want to delete this cue?")) {
-        socket.emit('removeCue', cueID);
-        openTab('cues');
-    }
+    bootbox.confirm("Are you sure you want to delete this cue?", function (result) {
+        if (result === true) {
+            socket.emit('removeCue', cueID);
+            openTab('cues');
+        }
+    });
 }
 
 function saveCueSettings(cueID) {
@@ -389,10 +397,12 @@ function moveCueDown(cueID) {
 }
 
 function removePreset(presetID) {
-    if (confirm("Are you sure you want to delete this preset?")) {
-        socket.emit('removePreset', presetID);
-        openTab('presets');
-    }
+    bootbox.confirm("Are you sure you want to delete this preset?", function (result) {
+        if (result === true) {
+            socket.emit('removePreset', presetID);
+            openTab('presets');
+        }
+    });
 }
 
 function viewPresetSettings(presetID) {
@@ -408,15 +418,19 @@ function recordPreset() {
 }
 
 function resetGroup(groupID) {
-    if (confirm("Are you sure you want to reset this group's channel values?")) {
-        socket.emit('resetGroup', groupID);
-    }
+    bootbox.confirm("Are you sure you want to reset this group's channel values?", function (result) {
+        if (result === true) {
+            socket.emit('resetGroup', groupID);
+        }
+    });
 };
 
 function resetGroups() {
-    if (confirm("Are you sure you want to reset all group channel values?")) {
-        socket.emit('resetGroups');
-    }
+    bootbox.confirm("Are you sure you want to reset all group channel values?", function (result) {
+        if (result === true) {
+            socket.emit('resetGroups');
+        }
+    });
 };
 
 function addGroupModal() {
@@ -428,10 +442,12 @@ function updateGroupChannelValue(self, groupID, channelID) {
 }
 
 function removeGroup(groupID) {
-    if (confirm("Are you sure you want to delete this group?")) {
-        socket.emit('removeGroup', groupID);
-        openTab('groups');
-    }
+    bootbox.confirm("Are you sure you want to delete this group?", function (result) {
+        if (result === true) {
+            socket.emit('removeGroup', groupID);
+            openTab('groups');
+        }
+    });
 }
 
 function saveGroupSettings(groupID) {
@@ -470,10 +486,12 @@ function openSettingsModal() {
 }
 
 function resetShow() {
-    if (confirm("Are you sure you want a new show? This will reset everything.")) {
-        socket.emit('resetShow');
-        openTab('fixtures');
-    }
+    bootbox.confirm("Are you sure you want a new show? This will reset everything.", function (result) {
+        if (result === true) {
+            socket.emit('resetShow');
+            openTab('fixtures');
+        }
+    });
 }
 
 function closeSettings() {
