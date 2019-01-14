@@ -221,6 +221,10 @@ body::-webkit-scrollbar {
     overflow-y: scroll;
 }
 
+.fixtureProfileItem:hover {
+    cursor: pointer;
+}
+
 .custom-range::-webkit-slider-thumb {
     height: 2rem;
     margin-top: -0.75rem;
