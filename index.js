@@ -321,6 +321,16 @@ function calculateChannels() {
     }
 };
 
+function calculateChannelsList() {
+    chans = [];
+    let f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
+        let c = 0; const cMax = fixtures[f].channels.length; for (; c < cMax; c++) {
+            chans[(fixtures[f].startDMXAddress - 1) + fixtures[f].channels[c].dmxAddressOffset] = cppaddon.mapRange(fixtures[f].channels[c].value, fixtures[f].channels[c].displayMin, fixtures[f].channels[c].displayMax, fixtures[f].channels[c].min, fixtures[f].channels[c].max);
+        }
+    }
+    return chans;
+};
+
 // Set the cue's output channel values to the correct values from the fixtures. This is basically saving the cue.
 function calculateCue(cue) {
     var outputChannels = new Array(512).fill(0);
@@ -1163,7 +1173,7 @@ io.on('connection', function (socket) {
             id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
             name: "Preset " + (presets.length + 1),
             active: false,
-            channels: JSON.parse(JSON.stringify(channels))
+            channels: JSON.parse(JSON.stringify(calculateChannelsList()))
         };
         presets.push(newPreset);
         io.emit('presets', cleanPresets());
@@ -1223,7 +1233,6 @@ io.on('connection', function (socket) {
             socket.emit('presetSettings', preset);
             socket.emit('presets', cleanPresets());
             io.emit('presets', cleanPresets());
-            savePresets();
         } else {
             socket.emit('message', { type: "error", content: "No presets exist!" });
         }
