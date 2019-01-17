@@ -465,10 +465,10 @@ function resetGroups() {
 
 // This is the output dmx loop. It gathers the channels and calculates what the output values should be.
 function dmxLoop() {
-    // Reset DMX values
+    /*// Reset DMX values
     let c = 0; const cMax = channels.length; for (; c < cMax; c++) {
         channels[c] = 0;
-    }
+    }*/
     if (blackout === false) {
         calculateChannels();
         calculateStack();
@@ -632,9 +632,10 @@ io.on('connection', function (socket) {
 
     socket.on('getFixtureProfiles', function () {
         var startDMXAddress = 1;
-        fixtures.forEach(function (fixture) {
-            startDMXAddress += fixture.numChannels;
-        });
+
+        let f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
+            startDMXAddress += fixtures[f].numChannels;
+        }
         fs.readdir(process.cwd() + "/fixtures", (err, files) => {
             var fixturesList = [];
             files.forEach(file => {
@@ -676,11 +677,11 @@ io.on('connection', function (socket) {
 
     socket.on('addFixture', function (msg) {
         var startDMXAddress = msg.startDMXAddress;
-        fixtures.forEach(function (fixture) {
-            if (fixture.startDMXAddress == startDMXAddress) {
+        let f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
+            if (fixtures[f].startDMXAddress == startDMXAddress) {
                 startDMXAddress = null;
             }
-        });
+        }
         if (startDMXAddress) {
             let i = 0; const iMax = msg.creationCount; for (; i < iMax; i++) {
                 // Add a fixture using the fixture spec file in the fixtures folder
@@ -702,14 +703,14 @@ io.on('connection', function (socket) {
 
     socket.on('removeFixture', function (fixtureID) {
         if (fixtures.length != 0) {
-            cues.forEach(function (cue) {
-                if (cue.fixtures.some(e => e.id === fixtureID)) {
-                    cue.fixtures.splice(cue.fixtures.map(el => el.id).indexOf(fixtureID), 1);
-                    if (cue.fixtures.length == 0) {
-                        cues.splice(cues.map(el => el.id).indexOf(cue.id), 1);
+            let c = 0; const cMax = cues.length; for (; c < cMax; c++) {
+                if (cues[c].fixtures.some(e => e.id === fixtureID)) {
+                    cues[c].fixtures.splice(cues[c].fixtures.map(el => el.id).indexOf(fixtureID), 1);
+                    if (cues[c].fixtures.length == 0) {
+                        cues.splice(cues.map(el => el.id).indexOf(cues[c].id), 1);
                     }
                 }
-            });
+            }
             fixtures[fixtures.map(el => el.id).indexOf(fixtureID)].channels.forEach(function (channel) {
                 channels[(fixtures[fixtures.map(el => el.id).indexOf(fixtureID)].startDMXAddress - 1) + channel.dmxAddressOffset] = 0;
             });
@@ -769,12 +770,12 @@ io.on('connection', function (socket) {
     socket.on('resetFixture', function (fixtureID) {
         if (fixtures.length != 0) {
             var fixture = fixtures[fixtures.map(el => el.id).indexOf(fixtureID)];
-            fixture.channels.forEach(function (channel) {
-                if (channel.locked != true) {
-                    channel.value = channel.defaultValue;
-                    channel.displayValue = channel.value;
+            let c = 0; const cMax = fixture.channels.length; for (; c < cMax; c++) {
+                if (fixture.channels[c].locked != true) {
+                    fixture.channels[c].value = fixture.channels[c].defaultValue;
+                    fixture.channels[c].displayValue = fixture.channels[c].value;
                 }
-            });
+            }
             socket.emit('fixtureChannels', { id: fixture.id, name: fixture.name, channels: fixture.channels, chips: fixture.chips });
             io.emit('fixtures', cleanFixtures());
             socket.emit('message', { type: "info", content: "Fixture values reset!" });
@@ -803,11 +804,11 @@ io.on('connection', function (socket) {
             var channel = fixture.channels[msg.cid];
             channel.locked = !channel.locked;
             fixture.hasLockedChannels = false;
-            fixture.channels.forEach(function (chan) {
-                if (chan.locked) {
+            let c = 0; const cMax = fixture.channels.length; for (; c < cMax; c++) {
+                if (fixture.channels[c].locked) {
                     fixture.hasLockedChannels = true;
                 }
-            });
+            }
             socket.emit('fixtureChannels', { id: fixture.id, name: fixture.name, channels: fixture.channels, chips: fixture.chips });
             io.emit('fixtures', cleanFixtures());
             saveShow();
