@@ -335,8 +335,8 @@ function calculateChannelsList() {
 function calculateCue(cue) {
     var outputChannels = new Array(512).fill(0);
     let f = 0; const fMax = cue.fixtures.length; for (; f < fMax; f++) {
+        var startFixture = fixtures[fixtures.map(el => el.id).indexOf(cue.fixtures[f].id)];
         let c = 0; const cMax = cue.fixtures[f].channels.length; for (; c < cMax; c++) {
-            var startFixture = fixtures[fixtures.map(el => el.id).indexOf(cue.fixtures[f].id)];
             if (startFixture.channels[c].locked === false) {
                 var startChannel = cppaddon.mapRange(startFixture.channels[c].value, startFixture.channels[c].displayMin, startFixture.channels[c].displayMax, startFixture.channels[c].min, startFixture.channels[c].max);
                 var endChannel = cppaddon.mapRange(cue.fixtures[f].channels[c].value, cue.fixtures[f].channels[c].displayMin, cue.fixtures[f].channels[c].displayMax, cue.fixtures[f].channels[c].min, cue.fixtures[f].channels[c].max);
@@ -401,8 +401,8 @@ function calculateStack() {
             }
             // Set the fixture's display and real values to the correct values from the cue
             let f = 0; const fMax = cue.fixtures.length; for (; f < fMax; f++) {
+                var startFixtureChannels = fixtures[fixtures.map(el => el.id).indexOf(cue.fixtures[f].id)].channels;
                 let c = 0; const cMax = cue.fixtures[f].channels.length; for (; c < cMax; c++) {
-                    var startFixtureChannels = fixtures[fixtures.map(el => el.id).indexOf(cue.fixtures[f].id)].channels;
                     if (startFixtureChannels[c].locked === false) {
                         startFixtureChannels[c].value = cue.fixtures[f].channels[c].value;
                         startFixtureChannels[c].displayValue = cue.fixtures[f].channels[c].value;
@@ -415,8 +415,8 @@ function calculateStack() {
     }
     // Allow presets to overide everything else for channels in which they have higher values
     let p = 0; const pMax = presets.length; for (; p < pMax; p++) {
-        let c = 0; const cMax = presets[p].channels.length; for (; c < cMax; c++) {
-            if (presets[p].active) {
+        if (presets[p].active) {
+            let c = 0; const cMax = presets[p].channels.length; for (; c < cMax; c++) {
                 if (presets[p].channels[c] > channels[c]) {
                     channels[c] = presets[p].channels[c];
                 }
