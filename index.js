@@ -945,6 +945,14 @@ io.on('connection', function (socket) {
             } else {
                 lastCue = 0;
             }
+            let f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
+                var fixtureChannels = fixtures[fixtures.map(el => el.id).indexOf(fixtures[f].id)].channels;
+                let c = 0; const cMax = fixtures[f].channels.length; for (; c < cMax; c++) {
+                    if (fixtureChannels[c].locked === false) {
+                        fixtureChannels[c].value = fixtureChannels[c].displayValue;
+                    }
+                }
+            }
             currentCue = lastCue;
             cues[lastCue].active = true;
             currentCueID = cues[lastCue].id;
@@ -971,6 +979,14 @@ io.on('connection', function (socket) {
             } else {
                 lastCue = cues.length - 1;
             }
+            let f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
+                var fixtureChannels = fixtures[fixtures.map(el => el.id).indexOf(fixtures[f].id)].channels;
+                let c = 0; const cMax = fixtures[f].channels.length; for (; c < cMax; c++) {
+                    if (fixtureChannels[c].locked === false) {
+                        fixtureChannels[c].value = fixtureChannels[c].displayValue;
+                    }
+                }
+            }
             currentCue = lastCue;
             cues[lastCue].active = true;
             currentCueID = cues[lastCue].id;
@@ -984,6 +1000,14 @@ io.on('connection', function (socket) {
 
     socket.on('stopCue', function () {
         if (cues.length != 0) {
+            let f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
+                var fixtureChannels = fixtures[fixtures.map(el => el.id).indexOf(fixtures[f].id)].channels;
+                let c = 0; const cMax = fixtures[f].channels.length; for (; c < cMax; c++) {
+                    if (fixtureChannels[c].locked === false) {
+                        fixtureChannels[c].value = fixtureChannels[c].displayValue;
+                    }
+                }
+            }
             currentCue = -1;
             cues[lastCue].upStep = cues[lastCue].upTime * 40;
             cues[lastCue].downStep = cues[lastCue].downTime * 40;
@@ -1003,6 +1027,14 @@ io.on('connection', function (socket) {
                 cues[lastCue].downStep = cues[lastCue].downTime * 40;
                 cues[lastCue].active = false;
                 cues[lastCue].following = false;
+            }
+            let f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
+                var fixtureChannels = fixtures[fixtures.map(el => el.id).indexOf(fixtures[f].id)].channels;
+                let c = 0; const cMax = fixtures[f].channels.length; for (; c < cMax; c++) {
+                    if (fixtureChannels[c].locked === false) {
+                        fixtureChannels[c].value = fixtureChannels[c].displayValue;
+                    }
+                }
             }
             lastCue = cues.map(el => el.id).indexOf(cueID);
             currentCue = lastCue;
