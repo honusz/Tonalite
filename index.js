@@ -64,6 +64,7 @@ Features:
 - Grandmaster - Done - Done UI
 - Blackout - Done - Done UI
 - Auto Mark
+- Fine Control
 */
 
 var SETTINGS = {
