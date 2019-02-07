@@ -63,7 +63,7 @@ Features:
 - Preset Kiosk Page - Done - Done UI
 - Grandmaster - Done - Done UI
 - Blackout - Done - Done UI
-- Auto Mark
+- Auto Mark - Done
 - Fine Control
 */
 
@@ -75,6 +75,7 @@ var SETTINGS = {
     defaultDownTime: 3,
     desktop: true, // desktop vs embeded
     udmx: false,
+    automark: true,
     artnetIP: null, // ArtNet output IP
     sacnIP: null // sACN output IP
 }
@@ -420,7 +421,7 @@ function calculateStack() {
             f = 0; const fMax1 = nextCue.fixtures.length; for (; f < fMax1; f++) {
                 startFixtureChannels = fixtures[fixtures.map(el => el.id).indexOf(nextCue.fixtures[f].id)].channels;
                 if (startFixtureChannels[0].type == "intensity" && startFixtureChannels[0].subtype == "intensity") {
-                    if (startFixtureChannels[0].value == 0 && nextCue.fixtures[f].channels[0] > 0) {
+                    if (startFixtureChannels[0].value === 0 && nextCue.fixtures[f].channels[0] !== 0) {
                         c = 0; const cMax1 = nextCue.fixtures[f].channels.length; for (; c < cMax1; c++) {
                             if (startFixtureChannels[c].locked === false && startFixtureChannels[c].type != "intensity" && startFixtureChannels[c].subtype != "intensity") {
                                 startFixtureChannels[c].value = nextCue.fixtures[f].channels[c].value;
@@ -1319,6 +1320,7 @@ io.on('connection', function (socket) {
         SETTINGS.defaultUpTime = parseInt(msg.defaultUpTime);
         SETTINGS.defaultDownTime = parseInt(msg.defaultDownTime);
         SETTINGS.udmx = msg.udmx;
+        SETTINGS.automark = msg.automark;
         if (msg.artnetIP != "") {
             SETTINGS.artnetIP = msg.artnetIP;
         } else {

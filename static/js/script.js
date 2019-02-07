@@ -263,6 +263,7 @@ socket.on('settings', function (settings) {
     $("#defaultUpTime").val(settings.defaultUpTime);
     $("#defaultDownTime").val(settings.defaultDownTime);
     $("#useUDMX").prop('indeterminate', settings.udmx);
+    $("#useAutomark").prop('indeterminate', settings.automark);
     $("#sacnIP").val(settings.sacnIP);
     $("#artnetIP").val(settings.artnetIP);
     $('#openSettingsModal').modal("show");
@@ -500,7 +501,7 @@ function closeSettings() {
 }
 
 function saveSettingsBackground() {
-    socket.emit('saveSettings', { defaultUpTime: $("#defaultUpTime").val(), defaultDownTime: $("#defaultDownTime").val(), udmx: $("#useUDMX").prop('checked'), sacnIP: $("#sacnIP").val(), artnetIP: $("#artnetIP").val() });
+    socket.emit('saveSettings', { defaultUpTime: $("#defaultUpTime").val(), defaultDownTime: $("#defaultDownTime").val(), udmx: $("#useUDMX").prop('checked'), automark: $("#useAutomark").prop('checked'), sacnIP: $("#sacnIP").val(), artnetIP: $("#artnetIP").val() });
 }
 
 function updateFirmware() {
