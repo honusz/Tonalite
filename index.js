@@ -63,7 +63,7 @@ Features:
 - Preset Kiosk Page - Done - Done UI
 - Grandmaster - Done - Done UI
 - Blackout - Done - Done UI
-- Auto Mark - Done
+- Auto Mark - Done - Done UI
 - Fine Control
 */
 
@@ -412,20 +412,21 @@ function calculateStack() {
                 }
             }
 
-
-            if (lastCue + 1 === cues.length) {
-                var nextCue = cues[0];
-            } else {
-                var nextCue = cues[lastCue + 1];
-            }
-            f = 0; const fMax1 = nextCue.fixtures.length; for (; f < fMax1; f++) {
-                startFixtureChannels = fixtures[fixtures.map(el => el.id).indexOf(nextCue.fixtures[f].id)].channels;
-                if (startFixtureChannels[0].type == "intensity" && startFixtureChannels[0].subtype == "intensity") {
-                    if (startFixtureChannels[0].value === 0 && nextCue.fixtures[f].channels[0] !== 0) {
-                        c = 0; const cMax1 = nextCue.fixtures[f].channels.length; for (; c < cMax1; c++) {
-                            if (startFixtureChannels[c].locked === false && startFixtureChannels[c].type != "intensity" && startFixtureChannels[c].subtype != "intensity") {
-                                startFixtureChannels[c].value = nextCue.fixtures[f].channels[c].value;
-                                //startFixtureChannels[c].displayValue = nextCue.fixtures[f].channels[c].value;
+            if (SETTINGS.automark === true) {
+                if (lastCue + 1 === cues.length) {
+                    var nextCue = cues[0];
+                } else {
+                    var nextCue = cues[lastCue + 1];
+                }
+                f = 0; const fMax1 = nextCue.fixtures.length; for (; f < fMax1; f++) {
+                    startFixtureChannels = fixtures[fixtures.map(el => el.id).indexOf(nextCue.fixtures[f].id)].channels;
+                    if (startFixtureChannels[0].type == "intensity" && startFixtureChannels[0].subtype == "intensity") {
+                        if (startFixtureChannels[0].value === 0 && nextCue.fixtures[f].channels[0] !== 0) {
+                            c = 0; const cMax1 = nextCue.fixtures[f].channels.length; for (; c < cMax1; c++) {
+                                if (startFixtureChannels[c].locked === false && startFixtureChannels[c].type != "intensity" && startFixtureChannels[c].subtype != "intensity") {
+                                    startFixtureChannels[c].value = nextCue.fixtures[f].channels[c].value;
+                                    //startFixtureChannels[c].displayValue = nextCue.fixtures[f].channels[c].value;
+                                }
                             }
                         }
                     }
