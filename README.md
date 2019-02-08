@@ -23,6 +23,8 @@ You can read the full documentation [here](docs/documentation.pdf).
 
 ## Run
 
+Install the uDMX rules: `sudo cp 98-uDMX-usb.rules /etc/udev/rules.d`
+
 To start Tonalite locally, run `npm start`
 
 You will find the UI at `localhost:3000` by default.
