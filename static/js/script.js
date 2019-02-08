@@ -14,7 +14,8 @@ var app = new Vue({
         groups: [],
         presets: [],
         desktop: false,
-        version: "2.0.0 Beta 3"
+        version: "2.0.0 Beta 3",
+        qrcode: ""
     },
     computed: {
         fixtures: function () {
@@ -272,6 +273,7 @@ socket.on('settings', function (settings) {
 socket.on('meta', function (metadata) {
     app.desktop = metadata.desktop;
     app.version = metadata.version;
+    app.qrcode = metadata.qrcode;
 });
 
 socket.on('connect', function () {

@@ -12,6 +12,7 @@ const drivelist = require('drivelist');
 const unzipper = require('unzipper');
 require('sanic.js').changeMyWorld();
 const cppaddon = require('./build/Release/cppaddon.node');
+const QRCode = require('qrcode');
 /*
 Features:
 - Get Fixtures - Done - Done UI
@@ -620,7 +621,11 @@ io.on('connection', function (socket) {
     socket.emit('presets', cleanPresets());
     socket.emit('blackout', blackout);
     socket.emit('grandmaster', grandmaster);
-    socket.emit('meta', { desktop: SETTINGS.desktop, version: VERSION });
+
+    QRCode.toDataURL(`http://${SETTINGS.url}:${SETTINGS.port}`, function (err, url) {
+        socket.emit('meta', { desktop: SETTINGS.desktop, version: VERSION, qrcode: url });
+    });
+
 
     if (currentCue == -1) {
         socket.emit('cueActionBtn', false);

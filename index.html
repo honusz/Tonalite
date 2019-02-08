@@ -31,8 +31,8 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
-              aria-expanded="false">
+            <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
               File
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -41,7 +41,8 @@
               <a v-if="!desktop" class="dropdown-item" onclick="getShowModal()">Open Show From USB</a>
               <div v-if="ifMobile() || desktop" class="dropdown-divider"></div>
               <a v-if="ifMobile() || desktop" class="dropdown-item" href="/showFile">Save Show To File</a>
-              <a v-if="ifMobile() || desktop" class="dropdown-item" onclick="openShowFileModal()">Open Show From File</a>
+              <a v-if="ifMobile() || desktop" class="dropdown-item" onclick="openShowFileModal()">Open Show From
+                File</a>
               <div class="dropdown-divider"></div>
               <a v-if="ifMobile() || desktop" class="dropdown-item" onclick="openFixtureDefinitionModal()">Import
                 Fixture Definition From File</a>
@@ -53,29 +54,31 @@
             </div>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
-              aria-expanded="false">
+            <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
               Edit
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" onclick="openSettingsModal()">Settings</a>
               <a v-if="!desktop" class="dropdown-item" onclick="updateFirmware()">Update Firmware</a>
               <div class="dropdown-divider"></div>
-              <a v-if="ifMobile() || desktop" class="dropdown-item" onclick="launchFullScreen(document.documentElement)">Full
+              <a v-if="ifMobile() || desktop" class="dropdown-item"
+                onclick="launchFullScreen(document.documentElement)">Full
                 Screen</a>
               <a class="dropdown-item" href="/presets">Presets View</a>
             </div>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
-              aria-expanded="false">
+            <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
               Help
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" onclick="openAboutModal()">About Tonalite</a>
               <a class="dropdown-item" href="/docs">Documentation</a>
               <a v-if="ifMobile() || desktop" class="dropdown-item" href="http://jmroper.com/tonalite">Website</a>
-              <a v-if="ifMobile() || desktop" class="dropdown-item" href="mailto(johnroper100@gmail.com)">Send An Email</a>
+              <a v-if="ifMobile() || desktop" class="dropdown-item" href="mailto(johnroper100@gmail.com)">Send An
+                Email</a>
             </div>
           </li>
         </ul>
@@ -95,7 +98,8 @@
         <div class="row" id="fixturesList">
           <div class="col-4 col-sm-3 col-lg-2 mb-3" v-for="fixture in fixtures" :key="fixture.id">
             <div class="fixtureItem" v-on:click="viewFixtureChannels(fixture.id)">
-              <h3 v-if="fixture.channels[0].type === 'intensity'" class="fixtureValue">{{fixture.channels[0].displayValue}}</h3>
+              <h3 v-if="fixture.channels[0].type === 'intensity'" class="fixtureValue">
+                {{fixture.channels[0].displayValue}}</h3>
               <p>{{fixture.shortName}} <span v-html="lockedFixturechannels(fixture.hasLockedChannels)"></span></p>
             </div>
           </div>
@@ -120,15 +124,16 @@
               <div class="col-6">
                 <div class="form-group">
                   <label class="dark" for="newFixtureCreationCount">Number To Create:</label>
-                  <input type="number" class="form-control" min="1" id="newFixtureCreationCount" placeholder="Creation Count"
-                    value="1">
+                  <input type="number" class="form-control" min="1" id="newFixtureCreationCount"
+                    placeholder="Creation Count" value="1">
                 </div>
               </div>
             </div>
             <div class="row">
               <div class="col-12">
                 <div class="form-group">
-                  <input type="text" class="form-control" id="searchFixtureProfiles" onkeyup="searchFixtureProfiles()" placeholder="Search:">
+                  <input type="text" class="form-control" id="searchFixtureProfiles" onkeyup="searchFixtureProfiles()"
+                    placeholder="Search:">
                 </div>
               </div>
             </div>
@@ -154,12 +159,12 @@
             <h5 id="fixtureChannelsName">Fixture name</h5>
           </div>
           <div class="col-3">
-            <button id="fixtureSettingsBtn" class="btn btn-primary btn-block"><i class="far fa-cog d-sm-none d-inline-block"></i><span
-                class="d-none d-sm-block">Settings</span></button>
+            <button id="fixtureSettingsBtn" class="btn btn-primary btn-block"><i
+                class="far fa-cog d-sm-none d-inline-block"></i><span class="d-none d-sm-block">Settings</span></button>
           </div>
           <div class="col-3">
-            <button id="fixtureResetBtn" class="btn btn-danger btn-block"><i class="far fa-redo d-sm-none d-inline-block"></i><span
-                class="d-none d-sm-block">Reset</span></button>
+            <button id="fixtureResetBtn" class="btn btn-danger btn-block"><i
+                class="far fa-redo d-sm-none d-inline-block"></i><span class="d-none d-sm-block">Reset</span></button>
           </div>
         </div>
         <div id="fixtureChannels"></div>
@@ -194,7 +199,8 @@
           <div class="col-12">
             <div class="form-group">
               <label for="fixtureDMXAddressInput">Starting DMX Address:</label>
-              <input class="form-control" type="number" id="fixtureDMXAddressInput" placeholder="Fixture Starting DMX Address">
+              <input class="form-control" type="number" id="fixtureDMXAddressInput"
+                placeholder="Fixture Starting DMX Address">
             </div>
           </div>
         </div>
@@ -223,12 +229,13 @@
             <button id="cueSaveBtn" class="btn btn-success btn-block">Save</button>
           </div>
           <div class="col-3">
-            <button id="cueDeleteBtn" class="btn btn-danger btn-block"><i class="far fa-trash-alt d-sm-none d-inline-block"></i><span
+            <button id="cueDeleteBtn" class="btn btn-danger btn-block"><i
+                class="far fa-trash-alt d-sm-none d-inline-block"></i><span
                 class="d-none d-sm-block">Delete</span></button>
           </div>
           <div class="col-3">
-            <button id="cueCloneBtn" class="btn btn-info btn-block"><i class="far fa-clone d-sm-none d-inline-block"></i><span
-                class="d-none d-sm-block">Clone</span></button>
+            <button id="cueCloneBtn" class="btn btn-info btn-block"><i
+                class="far fa-clone d-sm-none d-inline-block"></i><span class="d-none d-sm-block">Clone</span></button>
           </div>
           <div class="col-3">
             <button id="moveCueUpBtn" class="btn btn-success btn-block"><i class="far fa-chevron-up"></i></button>
@@ -267,7 +274,8 @@
           <div class="col-12">
             <div class="form-group">
               <label for="cueFollowInput">Follow:</label>
-              <input class="form-control" type="number" min="-1" id="cueFollowInput" placeholder="Cue Follow Time In Seconds">
+              <input class="form-control" type="number" min="-1" id="cueFollowInput"
+                placeholder="Cue Follow Time In Seconds">
             </div>
           </div>
         </div>
@@ -331,12 +339,12 @@
             <h5 id="groupChannelsName">Group name</h5>
           </div>
           <div class="col-3">
-            <button id="groupSettingsBtn" class="btn btn-primary btn-block"><i class="far fa-cog d-sm-none d-inline-block"></i><span
-                class="d-none d-sm-block">Settings</span></button>
+            <button id="groupSettingsBtn" class="btn btn-primary btn-block"><i
+                class="far fa-cog d-sm-none d-inline-block"></i><span class="d-none d-sm-block">Settings</span></button>
           </div>
           <div class="col-3">
-            <button id="groupResetBtn" class="btn btn-danger btn-block"><i class="far fa-redo d-sm-none d-inline-block"></i><span
-                class="d-none d-sm-block">Reset</span></button>
+            <button id="groupResetBtn" class="btn btn-danger btn-block"><i
+                class="far fa-redo d-sm-none d-inline-block"></i><span class="d-none d-sm-block">Reset</span></button>
           </div>
         </div>
         <div id="groupChannels"></div>
@@ -353,12 +361,14 @@
           <div class="col-12">
             <button id="blackoutBtn" class="btn btn-primary" onclick="toggleBlackout()">Blackout</button>
             <label class="ml-2" for="grandmaster">Grandmaster:</label>
-            <input type="range" class="custom-range" id="grandmaster" min="0" max="100" oninput="updateGrandmasterValue(this)">
+            <input type="range" class="custom-range" id="grandmaster" min="0" max="100"
+              oninput="updateGrandmasterValue(this)">
           </div>
         </div>
         <div class="row" id="presetsList">
           <div class="col-4 col-lg-2 mb-3" v-for="preset in presets" :key="preset.id">
-            <div :class="{ 'presetActive' : preset.active == true}" class="presetItem" v-on:click="viewPresetSettings(preset.id)">
+            <div :class="{ 'presetActive' : preset.active == true}" class="presetItem"
+              v-on:click="viewPresetSettings(preset.id)">
               <p>{{preset.name}}</p>
             </div>
           </div>
@@ -375,7 +385,8 @@
             <button id="presetSaveBtn" class="btn btn-success btn-block">Save</button>
           </div>
           <div class="col-4">
-            <button id="presetDeleteBtn" class="btn btn-danger btn-block"><i class="far fa-trash-alt d-sm-none d-inline-block"></i><span
+            <button id="presetDeleteBtn" class="btn btn-danger btn-block"><i
+                class="far fa-trash-alt d-sm-none d-inline-block"></i><span
                 class="d-none d-sm-block">Delete</span></button>
           </div>
           <div class="col-4">
@@ -475,8 +486,8 @@
               <div class="col-md-12">
                 <div class="form-group">
                   <div class="custom-control custom-checkbox">
-                    <input v-on:input="saveSettingsBackground()" :disabled="!desktop" type="checkbox" class="custom-control-input"
-                      id="useUDMX">
+                    <input v-on:input="saveSettingsBackground()" :disabled="!desktop" type="checkbox"
+                      class="custom-control-input" id="useUDMX">
                     <label class="custom-control-label dark" for="useUDMX">Use uDMX?</label>
                   </div>
                 </div>
@@ -497,15 +508,15 @@
               <div class="col-md-6 col-sm-12">
                 <div class="form-group">
                   <label class="dark" for="artnetIP">ArtNet IP:</label>
-                  <input v-on:input="saveSettingsBackground()" :disabled="!desktop" class="form-control" type="text" id="artnetIP"
-                    placeholder="ArtNet IP is localhost">
+                  <input v-on:input="saveSettingsBackground()" :disabled="!desktop" class="form-control" type="text"
+                    id="artnetIP" placeholder="ArtNet IP is localhost">
                 </div>
               </div>
               <div class="col-md-6 col-sm-12">
                 <div class="form-group">
                   <label class="dark" for="sacnIP">sACN IP:</label>
-                  <input v-on:input="saveSettingsBackground()" :disabled="!desktop" class="form-control" type="text" id="sacnIP"
-                    placeholder="sACN IP is localhost">
+                  <input v-on:input="saveSettingsBackground()" :disabled="!desktop" class="form-control" type="text"
+                    id="sacnIP" placeholder="sACN IP is localhost">
                 </div>
               </div>
             </div>
@@ -535,15 +546,19 @@
         <div class="modal-content">
           <div class="modal-body text-center dark">
             <h5>Tonalite v{{version}} - Lighting Control System</h5>
-            <p class="mb-0">Developed by <span v-if="!desktop">John Roper</span><a href="http://jmroper.com" v-if="desktop">John
+            <p class="mb-0">Developed by <span v-if="!desktop">John Roper</span><a href="http://jmroper.com"
+                v-if="desktop">John
                 Roper</a></p>
-            <p v-if="ifMobile() || desktop" class="mb-0"><small><a href="/open-source-licenses">Open Source Licenses</a></small></p>
+            <p v-if="ifMobile() || desktop" class="mb-0"><small><a href="/open-source-licenses">Open Source
+                  Licenses</a></small></p>
             <p v-if="!desktop && !ifMobile()" class="mb-0"><small>OSS Licences Available Online</small></p>
+            <img :src="qrcode"><br>
           </div>
         </div>
       </div>
     </div>
-    <div id="serverDisconnectedModal" data-backdrop="static" data-keyboard="false" class="modal" tabindex="-1" role="dialog">
+    <div id="serverDisconnectedModal" data-backdrop="static" data-keyboard="false" class="modal" tabindex="-1"
+      role="dialog">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-body text-center dark">
