@@ -37,7 +37,7 @@ To generate the documentation run `npm run build-docs`
 
 ## Dependency Instructions
 
-You need `NodeJS` installed. You also need `Calibre` if you want to generate the PDF documentation.
+You need `NodeJS` and `gitbook-cli` installed. You also need `Calibre` if you want to generate the PDF documentation.
 
 ## Resources
 
