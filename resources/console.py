@@ -2,13 +2,14 @@ import time
 from signal import pause
 
 import socketio
-from gpiozero import Button
+from gpiozero import Button, Led
 
 sio = socketio.Client()
 
 nextBtn = Button(16)
 lastBtn = Button(21)
 stopRecordBtn = Button(20)
+stopRecordLed = Led(4)
 
 nextFixtureBtn = Button(19)
 lastFixtureBtn = Button(26)
@@ -174,8 +175,10 @@ def getCurrentFixture(data):
 @sio.on('cueActionBtn')
 def cueActionBtn(data):
     if data == True:
+        stopRecordLed.on()
         stopRecordBtn.when_pressed == sendStopCue
     else:
+        stopRecordLed.off()
         stopRecordBtn.when_pressed == sendRecordCue
 
 
