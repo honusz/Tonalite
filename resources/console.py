@@ -131,6 +131,33 @@ def chan6EncDownRising():
 chan6EncUp.when_pressed = chan6EncUpRising
 chan6EncDown.when_pressed = chan6EncDownRising
 
+def changeChanLock(chan):
+    sio.emit('changeFixtureChannelLock', {'id': fixtures[currentFixture]['id'], 'cid': chan})
+
+def chan1BtnClick():
+    changeChanLock(1)
+chan1Btn.when_pressed = chan1BtnClick
+
+def chan2BtnClick():
+    changeChanLock(2)
+chan2Btn.when_pressed = chan2BtnClick
+
+def chan3BtnClick():
+    changeChanLock(3)
+chan3Btn.when_pressed = chan3BtnClick
+
+def chan4BtnClick():
+    changeChanLock(4)
+chan4Btn.when_pressed = chan4BtnClick
+
+def chan5BtnClick():
+    changeChanLock(5)
+chan5Btn.when_pressed = chan5BtnClick
+
+def chan6BtnClick():
+    changeChanLock(6)
+chan6Btn.when_pressed = chan6BtnClick
+
 @sio.on('connect')
 def on_connect():
     print("connected to server")
