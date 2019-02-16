@@ -79,45 +79,55 @@ lastBtn.when_pressed = sendLastCue
 nextFixtureBtn.when_pressed = sendGetNextFixtureChans
 lastFixtureBtn.when_pressed = sendGetLastFixtureChans
 
+def changeChanValue(chan, direction):
+    if direction == 1:
+        if currentFixtureChans[chan]['value'] < currentFixtureChans[chan]['max']:
+            currentFixtureChans[chan]['value'] = currentFixtureChans[chan]['value'] + 1
+    elif direction == -1:
+        if currentFixtureChans[chan]['value'] > 0:
+            currentFixtureChans[chan]['value'] = currentFixtureChans[chan]['value'] - 1
+    sio.emit('changeFixtureChannelValue', {'id': fixtures[currentFixture]['id'], 'cid': chan, 'value': currentFixtureChans[chan]['value']})
+    
+
 def chan1EncUpRising():
-    if chan1EncUp.is_pressed: print(-1)
+    if chan1EncUp.is_pressed: changeChanValue(1, -1)
 def chan1EncDownRising():
-    if chan1EncDown.is_pressed: print(1)
+    if chan1EncDown.is_pressed: changeChanValue(1, 1)
 chan1EncUp.when_pressed = chan1EncUpRising
 chan1EncDown.when_pressed = chan1EncDownRising
 
 def chan2EncUpRising():
-    if chan2EncUp.is_pressed: print(-1)
+    if chan2EncUp.is_pressed: changeChanValue(2, -1)
 def chan2EncDownRising():
-    if chan2EncDown.is_pressed: print(1)
+    if chan2EncDown.is_pressed: changeChanValue(2, 1)
 chan2EncUp.when_pressed = chan2EncUpRising
 chan2EncDown.when_pressed = chan2EncDownRising
 
 def chan3EncUpRising():
-    if chan3EncUp.is_pressed: print(-1)
+    if chan3EncUp.is_pressed: changeChanValue(3, -1)
 def chan3EncDownRising():
-    if chan3EncDown.is_pressed: print(1)
+    if chan3EncDown.is_pressed: changeChanValue(3, 1)
 chan3EncUp.when_pressed = chan3EncUpRising
 chan3EncDown.when_pressed = chan3EncDownRising
 
 def chan4EncUpRising():
-    if chan4EncUp.is_pressed: print(-1)
+    if chan4EncUp.is_pressed: changeChanValue(4, -1)
 def chan4EncDownRising():
-    if chan4EncDown.is_pressed: print(1)
+    if chan4EncDown.is_pressed: changeChanValue(4, 1)
 chan4EncUp.when_pressed = chan4EncUpRising
 chan4EncDown.when_pressed = chan4EncDownRising
 
 def chan5EncUpRising():
-    if chan5EncUp.is_pressed: print(-1)
+    if chan5EncUp.is_pressed: changeChanValue(5, -1)
 def chan5EncDownRising():
-    if chan5EncDown.is_pressed: print(1)
+    if chan5EncDown.is_pressed: changeChanValue(5, 1)
 chan5EncUp.when_pressed = chan5EncUpRising
 chan5EncDown.when_pressed = chan5EncDownRising
 
 def chan6EncUpRising():
-    if chan6EncUp.is_pressed: print(-1)
+    if chan6EncUp.is_pressed: changeChanValue(6, -1)
 def chan6EncDownRising():
-    if chan6EncDown.is_pressed: print(1)
+    if chan6EncDown.is_pressed: changeChanValue(6, 1)
 chan6EncUp.when_pressed = chan6EncUpRising
 chan6EncDown.when_pressed = chan6EncDownRising
 
