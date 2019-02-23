@@ -2,7 +2,6 @@ var socket = io('http://' + document.domain + ':' + location.port);
 var fixturesList = document.getElementById('fixturesList');
 var groupFixtureIDs = document.getElementById('groupFixtureIDs');
 var currentTab = "fixtures";
-var currentCue = "";
 var timerID;
 var counter = 0;
 document.getElementById("fixturesTab").click();
@@ -13,9 +12,12 @@ var app = new Vue({
         fixtures: [],
         groups: [],
         presets: [],
+        cues: [],
         desktop: false,
         version: "2.0.0 Beta 3",
-        qrcode: ""
+        qrcode: "",
+        currentCue: "",
+        blackout: false
     },
     computed: {
         fixtures: function () {
@@ -34,6 +36,9 @@ var app = new Vue({
         },
         viewGroupChannels: function (groupID) {
             socket.emit('getGroupChannels', groupID);
+        },
+        viewCueSettings: function (cueID) {
+            socket.emit('getCueSettings', cueID);
         },
         lockedFixturechannels: function (locked) {
             if (locked === true)
@@ -82,13 +87,7 @@ socket.on('message', function (msg) {
 });
 
 socket.on('blackout', function (msg) {
-    if (msg == true) {
-        $("#blackoutBtn").removeClass("btn-primary");
-        $("#blackoutBtn").addClass("btn-danger");
-    } else {
-        $("#blackoutBtn").removeClass("btn-danger");
-        $("#blackoutBtn").addClass("btn-primary");
-    }
+    app.blackout = msg;
 });
 
 socket.on('grandmaster', function (value) {
@@ -96,7 +95,7 @@ socket.on('grandmaster', function (value) {
 });
 
 socket.on('currentCue', function (value) {
-    currentCue = value;
+    app.currentCue = value;
 });
 
 socket.on('fixtures', function (fixtures) {
@@ -156,46 +155,12 @@ socket.on('fixtureSettings', function (fixture) {
 });
 
 socket.on('cues', function (cues) {
-    $("#cuesList").empty();
-    //console.log(cues);
-    if (cues.length != 0) {
-        var c = 0; const cMax = cues.length; for (; c < cMax; c++) {
-            if (cues[c].active == true) {
-                style = "style=\"background-color:#f59f00\"";
-                currentCue = cues[c].id;
-            } else {
-                if (cues[c].id == currentCue) {
-                    style = "style=\"background-color:#099268\"";
-                } else {
-                    style = "";
-                }
-            }
-            $("#cuesList").append("<div class=\"col-4 col-lg-2 mb-3\"><div class=\"cueItem\" " + style + "onclick=\"viewCueSettings('" + cues[c].id + "')\"><p>" + cues[c].name + "</p></div></div>");
-        }
-    } else {
-        $("#cuesList").append("<div class=\"col-12\"><h5>There are no cues in this show!</h5></div>");
-    }
+    app.cues = cues;
 });
 
 socket.on('presets', function (presets) {
     app.presets = presets;
 });
-/*socket.on('presets', function (presets) {
-    $("#presetsList").empty();
-    //console.log(presets);
-    if (presets.length != 0) {
-        var p = 0; const pMax = presets.length; for (; p < pMax; p++) {
-            if (presets[p].active == true) {
-                style = "style=\"background-color:#fa5252\"";
-            } else {
-                style = "";
-            }
-            $("#presetsList").append("<div class=\"col-4 col-lg-2\"><div class=\"presetItem\" " + style + "onclick=\"viewPresetSettings('" + presets[p].id + "')\"><p>" + presets[p].name + "</p></div></div>");
-        }
-    } else {
-        $("#presetsList").append("<div class=\"col-12\"><h5>There are no presets in this show!</h5></div>");
-    }
-});*/
 
 socket.on('presetSettings', function (preset) {
     openTab('presetSettingsPage');
@@ -385,10 +350,6 @@ function updateCue(cueID) {
 
 function cloneCue(cueID) {
     socket.emit('cloneCue', cueID);
-}
-
-function viewCueSettings(cueID) {
-    socket.emit('getCueSettings', cueID);
 }
 
 function moveCueUp(cueID) {

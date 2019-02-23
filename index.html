@@ -219,7 +219,18 @@
             <button class="btn btn-primary btn-block" onclick="nextCue()"><i class="far fa-chevron-right"></i></button>
           </div>
         </div>
-        <div class="row" id="cuesList"></div>
+        <div class="row" id="cuesList">
+          <div class="col-4 col-lg-2 mb-3" v-for="cue in cues" :key="cue.id">
+            <div class="cueItem"
+              :class="{ 'cueActive' : cue.active == true, 'cueCurrent' : cue.id == currentCue && cue.active != true}"
+              v-on:click="viewCueSettings(cue.id)">
+              <p>{{cue.name}}</p>
+            </div>
+          </div>
+          <div v-if="cues.length == 0" class="col-12">
+            <h5>There are no cues in this show!</h5>
+          </div>
+        </div>
       </div>
     </div>
     <div id="cueSettingsPage" class="tabcontent">
@@ -359,7 +370,9 @@
         </div>
         <div class="row">
           <div class="col-12">
-            <button id="blackoutBtn" class="btn btn-primary" onclick="toggleBlackout()">Blackout</button>
+            <button id="blackoutBtn" class="btn"
+              :class="{ 'btn-primary' : blackout == false, 'btn-danger' : blackout == true}"
+              onclick="toggleBlackout()">Blackout</button>
             <label class="ml-2" for="grandmaster">Grandmaster:</label>
             <input type="range" class="custom-range" id="grandmaster" min="0" max="100"
               oninput="updateGrandmasterValue(this)">
@@ -584,7 +597,7 @@
   <script src="static/js/bootstrap-multiselect.js"></script>
   <script src="static/js/bootbox.min.js"></script>
   <script src="static/js/isMobile.min.js"></script>
-  <script src="static/js/vue.js"></script>
+  <script src="static/js/vue-dev.js"></script>
   <script src="static/js/script.min.js"></script>
   <script type="text/javascript">
     $(document).ready(function () {

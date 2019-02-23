@@ -174,6 +174,24 @@ body {
     background-color: #fa5252;
 }
 
+.cueActive {
+    background-color: #f59f00;
+}
+
+.cueActive:hover {
+    cursor: pointer;
+    background-color: #fa5252;
+}
+
+.cueCurrent {
+    background-color: #099268;
+}
+
+.cueCurrent:hover {
+    cursor: pointer;
+    background-color: #fa5252;
+}
+
 .red {
     color: #f03e3e;
 }
