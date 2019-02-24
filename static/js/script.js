@@ -104,7 +104,6 @@ socket.on('message', function (msg) {
     } else {
         $("#alert").addClass("alert-danger");
     }
-    //console.log(msg.type + ': ' + msg.content);
 });
 
 socket.on('blackout', function (msg) {
@@ -121,6 +120,7 @@ socket.on('currentCue', function (value) {
 
 socket.on('fixtures', function (fixtures) {
     app.fixtures = fixtures;
+    $('#groupFixtureIDs').multiselect('rebuild');
 });
 
 socket.on('fixtureProfiles', function (profiles) {
