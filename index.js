@@ -1176,7 +1176,7 @@ io.on('connection', function (socket) {
             io.emit('fixtures', cleanFixtures());
             saveShow();
         } else {
-            socket.emit('message', { type: "error", content: "No fixtures or groups exist!" });
+            socket.emit('message', { type: "error", content: "No fixtures and/or groups exist!" });
         }
     });
 
@@ -1237,21 +1237,25 @@ io.on('connection', function (socket) {
             socket.emit('message', { type: "info", content: "Group values have been reset!" });
             saveShow();
         } else {
-            socket.emit('message', { type: "error", content: "No fixtures exist!" });
+            socket.emit('message', { type: "error", content: "No groups exist!" });
         }
     });
 
     socket.on('recordPreset', function () {
-        var newPreset = {
-            id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
-            name: "Preset " + (presets.length + 1),
-            active: false,
-            channels: JSON.parse(JSON.stringify(calculateChannelsList()))
-        };
-        presets.push(newPreset);
-        io.emit('presets', cleanPresets());
-        savePresets();
-        socket.emit('message', { type: "info", content: "The preset has been recorded!" });
+        if (fixtures.length != 0) {
+            var newPreset = {
+                id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
+                name: "Preset " + (presets.length + 1),
+                active: false,
+                channels: JSON.parse(JSON.stringify(calculateChannelsList()))
+            };
+            presets.push(newPreset);
+            io.emit('presets', cleanPresets());
+            savePresets();
+            socket.emit('message', { type: "info", content: "The preset has been recorded!" });
+        } else {
+            socket.emit('message', { type: "error", content: "No fixtures exist!" });
+        }
     });
 
     socket.on('updatePreset', function (presetID) {
