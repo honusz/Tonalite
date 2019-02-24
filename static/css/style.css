@@ -283,3 +283,7 @@ body::-webkit-scrollbar {
 .fixtureChip:hover {
     cursor: pointer;
 }
+
+.bootbox > .modal-dialog > .modal-content > .modal-header {
+    display: block;
+}

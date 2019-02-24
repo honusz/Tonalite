@@ -14,12 +14,15 @@ var app = new Vue({
         presets: [],
         cues: [],
         showFiles: [],
+        fixtureProfiles: [],
         usbPath: "",
         desktop: false,
         version: "2.0.0 Beta 3",
         qrcode: "",
         currentCue: "",
         blackout: false,
+        startDMXAddress: 1,
+        newFixtureCreationCount: 1
     },
     computed: {
         fixtures: function () {
@@ -53,6 +56,18 @@ var app = new Vue({
         },
         ifMobile: function () {
             return isMobile.any;
+        },
+        addFixture: function (fixture) {
+            socket.emit('addFixture', { fixtureName: fixture, startDMXAddress: parseInt($('#newFixtureStartDMXAddress').val()), creationCount: parseInt($('#newFixtureCreationCount').val()) });
+            $('#fixtureProfilesModal').modal("hide");
+        },
+        upperCase: function (str) {
+            return str.toUpperCase().replace(/-/g, " ");
+        },
+        titleCase: function (str) {
+            return str.toLowerCase().split(' ').map(function (word) {
+                return (word.charAt(0).toUpperCase() + word.slice(1));
+            }).join(' ');
         }
     }
 });
@@ -109,13 +124,10 @@ socket.on('fixtures', function (fixtures) {
 });
 
 socket.on('fixtureProfiles', function (profiles) {
+    app.newFixtureCreationCount = 1;
+    app.startDMXAddress = profiles[1];
+    app.fixtureProfiles = profiles[0];
     $('#fixtureProfilesModal').modal("show");
-    $("#fixtureProfilesList").empty();
-    var p = 0; const pMax = profiles[0].length; for (; p < pMax; p++) {
-        $("#fixtureProfilesList").append("<li class=\"list-group-item fixtureProfileItem\" onclick=\"addFixture('" + profiles[0][p] + "')\">" + upperCase(profiles[0][p]) + "</li>");
-    }
-    $("#newFixtureStartDMXAddress").val(profiles[1]);
-    $("#newFixtureCreationCount").val(1);
 });
 
 socket.on('shows', function (shows) {
@@ -279,11 +291,6 @@ function getShowModal() {
 
 function openFixtureDefinitionModal() {
     $('#openFixtureDefinitionModal').modal("show");
-}
-
-function addFixture(fixture) {
-    socket.emit('addFixture', { fixtureName: fixture, startDMXAddress: parseInt($('#newFixtureStartDMXAddress').val()), creationCount: parseInt($('#newFixtureCreationCount').val()) });
-    $('#fixtureProfilesModal').modal("hide");
 }
 
 function viewFixtureSettings(fixtureID) {
@@ -477,7 +484,7 @@ function updateFirmware() {
 
 function saveShowToUSB() {
     bootbox.prompt("Show Name: ", function (result) {
-        if (result != "") {
+        if (result.trim() != "") {
             socket.emit('saveShowToUSB', result);
         } else {
             bootbox.alert("You must enter a show name!");
@@ -529,16 +536,6 @@ function openTab(tabName) {
     }
 
     closeAlert();
-}
-
-function titleCase(str) {
-    return str.toLowerCase().split(' ').map(function (word) {
-        return (word.charAt(0).toUpperCase() + word.slice(1));
-    }).join(' ');
-}
-
-function upperCase(str) {
-    return str.toUpperCase().replace(/-/g, " ");
 }
 
 function searchFixtureProfiles() {
