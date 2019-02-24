@@ -147,7 +147,12 @@
         <div class="modal-content">
           <div class="modal-body">
             <h5 class="dark">All show files on the USB:</h5>
-            <ul class="list-group" id="showsList"></ul>
+            <ul class="list-group" id="showsList" v-for="show in showFiles">
+              <li class="list-group-item showFileItem" v-on:click="openShowFromUSB(show)">{{show.slice(0, -9)}}</li>
+            </ul>
+            <div v-if="showFiles.length == 0" class="text-danger">
+              There are no shows on the connected USB drive!
+            </div>
           </div>
         </div>
       </div>

@@ -13,11 +13,13 @@ var app = new Vue({
         groups: [],
         presets: [],
         cues: [],
+        showFiles: [],
+        usbPath: "",
         desktop: false,
         version: "2.0.0 Beta 3",
         qrcode: "",
         currentCue: "",
-        blackout: false
+        blackout: false,
     },
     computed: {
         fixtures: function () {
@@ -44,6 +46,10 @@ var app = new Vue({
             if (locked === true)
                 return "<i class=\"ml-1 far fa-lock-alt fa-sm\"></i>";
             return "";
+        },
+        openShowFromUSB: function (showFile) {
+            socket.emit('openShowFromUSB', [showFile, app.usbPath]);
+            $('#showFilesModal').modal("hide");
         },
         ifMobile: function () {
             return isMobile.any;
@@ -113,11 +119,9 @@ socket.on('fixtureProfiles', function (profiles) {
 });
 
 socket.on('shows', function (shows) {
+    app.showFiles = shows[0];
+    app.usbPath = shows[1];
     $('#showFilesModal').modal("show");
-    $("#showsList").empty();
-    var s = 0; const sMax = shows[0].length; for (; s < sMax; s++) {
-        $("#showsList").append("<li class=\"list-group-item showFileItem\" onclick=\"openShowFromUSB('" + shows[0][s] + "', '" + shows[1] + "')\">" + shows[0][s].slice(0, -9) + "</li>");
-    }
 });
 
 socket.on('fixtureChannels', function (msg) {
@@ -487,11 +491,6 @@ function shutdown() {
 
 function reboot() {
     socket.emit('reboot');
-}
-
-function openShowFromUSB(showFile, usbPath) {
-    socket.emit('openShowFromUSB', [showFile, usbPath]);
-    $('#showFilesModal').modal("hide");
 }
 
 function closeAlert() {
