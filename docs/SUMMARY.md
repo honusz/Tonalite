@@ -14,7 +14,7 @@
     * [Moving Between Cues](cues/moving_between_cues.md)
 * [Groups](groups/README.md)
     * [Adding Groups](groups/adding_groups.md)
-    * [Resetting Group Channel Values](group/resetting_group_channel_values.md)
+    * [Resetting Group Channel Values](groups/resetting_group_channel_values.md)
     * [Channels](groups/channels/README.md)
     * [Changing Group Settings](groups/changing_group_settings.md)
 * [Presets](presets/README.md)
@@ -23,3 +23,4 @@
 * [Grandmaster and Blackout](grandmaster_and_blackout.md)
 * [Keyboard Shortcuts](keyboard_shortcuts.md)
 * [Configuration](configuration.md)
+
