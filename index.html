@@ -221,13 +221,13 @@
       <div class="container">
         <div class="row topBtns">
           <div class="col-4">
-            <button class="btn btn-primary btn-block" onclick="lastCue()"><i class="far fa-chevron-left"></i></button>
+            <button :disabled="cues.length == 0" class="btn btn-primary btn-block" onclick="lastCue()"><i class="far fa-chevron-left"></i></button>
           </div>
           <div class="col-4">
-            <button id="cueActionBtn" class="btn btn-danger btn-block"></button>
+            <button :disabled="fixtures.length == 0" id="cueActionBtn" class="btn btn-danger btn-block"></button>
           </div>
           <div class="col-4">
-            <button class="btn btn-primary btn-block" onclick="nextCue()"><i class="far fa-chevron-right"></i></button>
+            <button :disabled="cues.length == 0" class="btn btn-primary btn-block" onclick="nextCue()"><i class="far fa-chevron-right"></i></button>
           </div>
         </div>
         <div class="row" id="cuesList">
@@ -376,7 +376,7 @@
       <div class="container">
         <div class="row topBtns">
           <div class="col-12">
-            <button class="btn btn-success btn-block" onclick="recordPreset()">Record Preset</button>
+            <button :disabled="fixtures.length == 0" class="btn btn-success btn-block" onclick="recordPreset()">Record Preset</button>
           </div>
         </div>
         <div class="row">
