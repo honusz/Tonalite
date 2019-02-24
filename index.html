@@ -84,7 +84,7 @@
         </ul>
       </div>
     </nav>
-    <div id="fixtures" class="tabcontent" v-if="currentTab == 'fixtures'">
+    <div id="fixtures" class="tabcontent">
       <div class="container">
         <div class="row topBtns">
           <div class="col-6">
@@ -138,8 +138,7 @@
               </div>
             </div>
             <ul class="list-group" id="fixtureProfilesList">
-              <li class="list-group-item fixtureProfileItem" v-for="profile in fixtureProfiles"
-                v-on:click="addFixture(profile)">{{upperCase(profile)}}
+              <li class="list-group-item fixtureProfileItem" v-for="profile in fixtureProfiles" v-on:click="addFixture(profile)">{{upperCase(profile)}}
               </li>
             </ul>
             <div v-if="fixtureProfiles.length == 0" class="text-danger">
@@ -155,8 +154,7 @@
           <div class="modal-body">
             <h5 class="dark">All show files on the USB:</h5>
             <ul class="list-group" id="showsList">
-              <li class="list-group-item showFileItem" v-for="show in showFiles" v-on:click="openShowFromUSB(show)">
-                {{show.slice(0, -9)}}</li>
+              <li class="list-group-item showFileItem" v-for="show in showFiles" v-on:click="openShowFromUSB(show)">{{show.slice(0, -9)}}</li>
             </ul>
             <div v-if="showFiles.length == 0" class="text-danger">
               There are no shows on the connected USB drive!
@@ -165,42 +163,25 @@
         </div>
       </div>
     </div>
-    <div id="fixtureChannelsPage" class="tabcontent" v-if="currentTab == 'fixtureChannelsPage'">
+    <div id="fixtureChannelsPage" class="tabcontent">
       <div class="container">
         <div class="row topBtns">
           <div class="col-6">
-            <h5 id="fixtureChannelsName" v-text="fixtureChannels.name"></h5>
+            <h5 id="fixtureChannelsName">Fixture name</h5>
           </div>
           <div class="col-3">
-            <button id="fixtureSettingsBtn" v-on:click="viewFixtureSettings()" class="btn btn-primary btn-block"><i
+            <button id="fixtureSettingsBtn" class="btn btn-primary btn-block"><i
                 class="far fa-cog d-sm-none d-inline-block"></i><span class="d-none d-sm-block">Settings</span></button>
           </div>
           <div class="col-3">
-            <button id="fixtureResetBtn" v-on:click="resetFixture()" class="btn btn-danger btn-block"><i
+            <button id="fixtureResetBtn" class="btn btn-danger btn-block"><i
                 class="far fa-redo d-sm-none d-inline-block"></i><span class="d-none d-sm-block">Reset</span></button>
           </div>
         </div>
-        <div id="fixtureChannels">
-          <div v-for="(channel, index) in fixtureChannels.channels" :key="index">
-            {{channel}}
-              <button class="btn btn-info" v-on:click="updateFixtureChannelLock(index)">
-                <i class="far fa-sm" v-bind:class="{ 'fa-lock-alt' : channel.locked == true, 'fa-lock-open-alt' : channel.locked == false}"></i>
-              </button>
-              <label class="ml-2" v-bind:for="channel.type">{{channel.name}}</label>
-              <input type="range" class="custom-range" v-bind:id="channel.type" v-bind:max="channel.displayMax" v-bind:min="channel.displayMin" v-model="channel.value" v-on:input="updateFixtureChannelValue(index)">
-          </div>
-          <div class="fixtureChips" v-if="fixtureChannels.chips.length > 0">
-            <h5>Fixture Chips:</h5>
-            <div class="row">
-                <div class="col-1" v-for="(chip, index) in fixtureChannels.chips" :key="index">
-                  <div class="fixtureChip" v-bind:style="{ backgroundColor: chip.color}" v-on:click="useFixtureChip(index)"></div>
-                </div>
-            </div>
-          </div>
-        </div>
+        <div id="fixtureChannels"></div>
       </div>
     </div>
-    <div id="fixtureSettingsPage" class="tabcontent" v-if="currentTab == 'fixtureSettingsPage'">
+    <div id="fixtureSettingsPage" class="tabcontent">
       <div class="container">
         <div class="row topBtns">
           <div class="col-4">
@@ -236,23 +217,17 @@
         </div>
       </div>
     </div>
-    <div id="cues" class="tabcontent" v-if="currentTab == 'cues'">
+    <div id="cues" class="tabcontent">
       <div class="container">
         <div class="row topBtns">
           <div class="col-4">
-            <button :disabled="cues.length == 0" class="btn btn-primary btn-block" v-on:click="lastCue()"><i
-                class="far fa-chevron-left"></i></button>
+            <button :disabled="cues.length == 0" class="btn btn-primary btn-block" onclick="lastCue()"><i class="far fa-chevron-left"></i></button>
           </div>
           <div class="col-4">
-            <button :disabled="fixtures.length == 0" id="cueActionBtn" class="btn btn-danger btn-block"
-              v-on:click="cueActionBtn == false ? recordCue() : cueActionBtn == true ? stopCue() : ''">
-              <div v-if="cueActionBtn == false">Record</div>
-              <div v-else>Stop</div>
-            </button>
+            <button :disabled="fixtures.length == 0" id="cueActionBtn" class="btn btn-danger btn-block"></button>
           </div>
           <div class="col-4">
-            <button :disabled="cues.length == 0" class="btn btn-primary btn-block" v-on:click="nextCue()"><i
-                class="far fa-chevron-right"></i></button>
+            <button :disabled="cues.length == 0" class="btn btn-primary btn-block" onclick="nextCue()"><i class="far fa-chevron-right"></i></button>
           </div>
         </div>
         <div class="row" id="cuesList">
@@ -269,7 +244,7 @@
         </div>
       </div>
     </div>
-    <div id="cueSettingsPage" class="tabcontent" v-if="currentTab == 'cueSettingsPage'">
+    <div id="cueSettingsPage" class="tabcontent">
       <div class="container">
         <div class="row topBtns">
           <div class="col-3">
@@ -328,7 +303,7 @@
         </div>
       </div>
     </div>
-    <div id="groups" class="tabcontent" v-if="currentTab == 'groups'">
+    <div id="groups" class="tabcontent">
       <div class="container">
         <div class="row topBtns">
           <div class="col-6">
@@ -352,7 +327,7 @@
         </div>
       </div>
     </div>
-    <div id="groupSettingsPage" class="tabcontent" v-if="currentTab == 'groupSettingsPage'">
+    <div id="groupSettingsPage" class="tabcontent">
       <div class="container">
         <div class="row topBtns">
           <div class="col-4">
@@ -379,7 +354,7 @@
         </div>
       </div>
     </div>
-    <div id="groupChannelsPage" class="tabcontent" v-if="currentTab == 'groupChannelsPage'">
+    <div id="groupChannelsPage" class="tabcontent">
       <div class="container">
         <div class="row topBtns">
           <div class="col-6">
@@ -397,12 +372,11 @@
         <div id="groupChannels"></div>
       </div>
     </div>
-    <div id="presets" class="tabcontent" v-if="currentTab == 'presets'">
+    <div id="presets" class="tabcontent">
       <div class="container">
         <div class="row topBtns">
           <div class="col-12">
-            <button :disabled="fixtures.length == 0" class="btn btn-success btn-block" onclick="recordPreset()">Record
-              Preset</button>
+            <button :disabled="fixtures.length == 0" class="btn btn-success btn-block" onclick="recordPreset()">Record Preset</button>
           </div>
         </div>
         <div class="row">
@@ -412,7 +386,7 @@
               onclick="toggleBlackout()">Blackout</button>
             <label class="ml-2" for="grandmaster">Grandmaster:</label>
             <input type="range" class="custom-range" id="grandmaster" min="0" max="100"
-              v-on:input="updateGrandmasterValue()" v-model="grandmaster">
+              oninput="updateGrandmasterValue(this)">
           </div>
         </div>
         <div class="row" id="presetsList">
@@ -428,7 +402,7 @@
         </div>
       </div>
     </div>
-    <div id="presetSettingsPage" class="tabcontent" v-if="currentTab == 'presetSettingsPage'">
+    <div id="presetSettingsPage" class="tabcontent">
       <div class="container">
         <div class="row topBtns">
           <div class="col-4">
@@ -455,22 +429,22 @@
     </div>
     <div class="tab">
       <div class="row">
-        <div class="col-3" v-on:click="openTab('fixtures')">
+        <div class="col-3" onclick="openTab('fixtures')">
           <div class="tabitem tabitem-fixtures">
             <i class="tablinks far fa-lightbulb" id="fixturesTab"></i><span class="tabtext">Fixtures</span>
           </div>
         </div>
-        <div class="col-3" v-on:click="openTab('cues')">
+        <div class="col-3" onclick="openTab('cues')">
           <div class="tabitem tabitem-cues">
             <i class="tablinks far fa-list"></i><span class="tabtext">Cues</span>
           </div>
         </div>
-        <div class="col-3" v-on:click="openTab('groups')">
+        <div class="col-3" onclick="openTab('groups')">
           <div class="tabitem tabitem-groups">
             <i class="tablinks far fa-layer-group"></i><span class="tabtext">Groups</span>
           </div>
         </div>
-        <div class="col-3" v-on:click="openTab('presets')">
+        <div class="col-3" onclick="openTab('presets')">
           <div class="tabitem tabitem-presets">
             <i class="tablinks far fa-swatchbook"></i><span class="tabtext">Presets</span>
           </div>
@@ -634,7 +608,7 @@
   <script src="static/js/bootstrap-multiselect.js"></script>
   <script src="static/js/bootbox.min.js"></script>
   <script src="static/js/isMobile.min.js"></script>
-  <script src="static/js/vue-dev.js"></script>
+  <script src="static/js/vue.js"></script>
   <script src="static/js/script.min.js"></script>
   <script type="text/javascript">
     $(document).ready(function () {

@@ -1,6 +1,7 @@
 var socket = io('http://' + document.domain + ':' + location.port);
 var fixturesList = document.getElementById('fixturesList');
 var groupFixtureIDs = document.getElementById('groupFixtureIDs');
+var currentTab = "fixtures";
 var timerID;
 var counter = 0;
 document.getElementById("fixturesTab").click();
@@ -21,11 +22,7 @@ var app = new Vue({
         currentCue: "",
         blackout: false,
         startDMXAddress: 1,
-        newFixtureCreationCount: 1,
-        currentTab: "fixtures",
-        cueActionBtn: false,
-        grandmaster: 0.0,
-        fixtureChannels: { id: "", name: "", channels: [], chips: [] }
+        newFixtureCreationCount: 1
     },
     computed: {
         fixtures: function () {
@@ -71,51 +68,13 @@ var app = new Vue({
             return str.toLowerCase().split(' ').map(function (word) {
                 return (word.charAt(0).toUpperCase() + word.slice(1));
             }).join(' ');
-        },
-        openTab: function (tabName) {
-            app.currentTab = tabName;
-            closeAlert();
-        },
-        recordCue: function () {
-            socket.emit('recordCue');
-        },
-        nextCue: function () {
-            socket.emit('nextCue');
-        },
-        lastCue: function () {
-            socket.emit('lastCue');
-        },
-        stopCue: function () {
-            socket.emit('stopCue');
-        },
-        updateGrandmasterValue: function () {
-            socket.emit('changeGrandmasterValue', parseInt(app.grandmaster));
-        },
-        resetFixture: function () {
-            bootbox.confirm("Are you sure you want to reset this fixture's channel values?", function (result) {
-                if (result === true) {
-                    socket.emit('resetFixture', app.fixtureChannels.id);
-                }
-            });
-        },
-        viewFixtureSettings: function () {
-            socket.emit('getFixtureSettings', app.fixtureChannels.id);
-        },
-        updateFixtureChannelValue: function (channelID) {
-            socket.emit('changeFixtureChannelValue', { id: app.fixtureChannels.id, cid: channelID, value: parseInt(app.fixtureChannels.channels[channelID].value) });
-        },
-        updateFixtureChannelLock: function (channelID) {
-            socket.emit('changeFixtureChannelLock', { id: app.fixtureChannels.id, cid: channelID });
-        },
-        useFixtureChip: function (chipID) {
-            socket.emit('useFixtureChip', { id: app.fixtureChannels.id, cid: chipID });
         }
     }
 });
 
-Mousetrap.bind('r', function () { app.recordCue(); });
-Mousetrap.bind('right', function () { app.nextCue(); });
-Mousetrap.bind('left', function () { app.lastCue(); });
+Mousetrap.bind('r', function () { recordCue(); });
+Mousetrap.bind('right', function () { nextCue(); });
+Mousetrap.bind('left', function () { lastCue(); });
 Mousetrap.bind('ctrl+n', function () { resetShow(); return false; });
 Mousetrap.bind('shift+a', function () { addFixtureModal(); return false; });
 Mousetrap.bind('ctrl+s', function () { window.location = "/showFile"; return false; });
@@ -152,7 +111,7 @@ socket.on('blackout', function (msg) {
 });
 
 socket.on('grandmaster', function (value) {
-    app.grandmaster = value;
+    $("#grandmaster").val(value);
 });
 
 socket.on('currentCue', function (value) {
@@ -178,16 +137,32 @@ socket.on('shows', function (shows) {
 });
 
 socket.on('fixtureChannels', function (msg) {
-    Vue.set(app.fixtureChannels, 'channels', msg.channels);
-    Vue.set(app.fixtureChannels, 'name', msg.name);
-    Vue.set(app.fixtureChannels, 'id', msg.id);
-    Vue.set(app.fixtureChannels, 'chips', msg.chips);
-    app.openTab('fixtureChannelsPage');
+    openTab('fixtureChannelsPage');
+    $("#fixtureChannels").empty();
+    $("#fixtureChannelsName").text(msg.name);
+    $("#fixtureSettingsBtn").off().on("click", function () { viewFixtureSettings(msg.id); });
+    $("#fixtureResetBtn").off().on("click", function () { resetFixture(msg.id); });
+    var c = 0; const cMax = msg.channels.length; for (; c < cMax; c++) {
+        if (msg.channels[c].locked) {
+            $("#fixtureChannels").append("<button class=\"btn btn-info\" onclick=\"updateFixtureChannelLock(this, '" + msg.id + "', " + c + ")\"><i class=\"far fa-lock-alt fa-sm\"></i></button><label class=\"ml-2\" for=\"" + msg.channels[c].type + "\">" + msg.channels[c].name + ":</label><input type=\"range\" class=\"custom-range\" id=\"" + msg.channels[c].type + "\" max=\"" + msg.channels[c].displayMax + "\" min=\"" + msg.channels[c].displayMin + "\" value=\"" + msg.channels[c].value + "\" oninput=\"updateFixtureChannelValue(this, '" + msg.id + "', " + c + ")\">");
+        } else {
+            $("#fixtureChannels").append("<button class=\"btn btn-info\" onclick=\"updateFixtureChannelLock(this, '" + msg.id + "', " + c + ")\"><i class=\"far fa-lock-open-alt fa-sm \"></i></button><label class=\"ml-2\" for=\"" + msg.channels[c].type + "\">" + msg.channels[c].name + ":</label><input type=\"range\" class=\"custom-range\" id=\"" + msg.channels[c].type + "\" max=\"" + msg.channels[c].displayMax + "\" min=\"" + msg.channels[c].displayMin + "\" value=\"" + msg.channels[c].value + "\" oninput=\"updateFixtureChannelValue(this, '" + msg.id + "', " + c + ")\">");
+        }
+    }
+    if (msg.chips.length != 0) {
+        var div = "<div class=\"fixtureChips\"><h5>Fixture Chips:</h5><div class=\"row\">";
+
+        var ch = 0; const chMax = msg.chips.length; for (; ch < chMax; ch++) {
+            div += "<div class=\"col-1\"><div class=\"fixtureChip\" style=\"background-color: " + msg.chips[ch].color + "\" onclick=\"useFixtureChip(this, '" + msg.id + "', " + ch + ")\"></div></div>";
+        }
+        div += "</div></div>";
+        $("#fixtureChannels").append(div);
+    }
 });
 
 socket.on('fixtureSettings', function (fixture) {
-    app.openTab('fixtureSettingsPage');
-    $("#fixtureChannelsBackBtn").off().on("click", function () { app.viewFixtureChannels(); });
+    openTab('fixtureSettingsPage');
+    $("#fixtureChannelsBackBtn").off().on("click", function () { app.viewFixtureChannels(fixture.id); });
     $("#fixtureDeleteBtn").off().on("click", function () { removeFixture(fixture.id); });
     $("#fixtureSaveBtn").off().on("click", function () { saveFixtureSettings(fixture.id); });
     $("#fixtureNameInput").val(fixture.name);
@@ -204,8 +179,7 @@ socket.on('presets', function (presets) {
 });
 
 socket.on('presetSettings', function (preset) {
-
-    app.openTab('presetSettingsPage');
+    openTab('presetSettingsPage');
     $("#presetDeleteBtn").off().on("click", function () { removePreset(preset.id); });
     $("#presetSaveBtn").off().on("click", function () { savePresetSettings(preset.id); });
     $("#presetActiveBtn").off().on("click", function () { app.changePresetActive(preset.id); });
@@ -218,7 +192,7 @@ socket.on('presetSettings', function (preset) {
 });
 
 socket.on('cueSettings', function (cue) {
-    app.openTab('cueSettingsPage');
+    openTab('cueSettingsPage');
     $("#cueDeleteBtn").off().on("click", function () { removeCue(cue.id); });
     $("#cueSaveBtn").off().on("click", function () { saveCueSettings(cue.id); });
     $("#gotoCueBtn").off().on("click", function () { gotoCue(cue.id); });
@@ -233,7 +207,14 @@ socket.on('cueSettings', function (cue) {
 });
 
 socket.on('cueActionBtn', function (btnMode) {
-    app.cueActionBtn = btnMode;
+    $("#cueActionBtn").empty();
+    if (btnMode == false) {
+        $("#cueActionBtn").off().on("click", function () { recordCue(); });
+        $("#cueActionBtn").append("Record");
+    } else {
+        $("#cueActionBtn").off().on("click", function () { stopCue(); });
+        $("#cueActionBtn").append("Stop");
+    }
 });
 
 socket.on('groups', function (groups) {
@@ -241,7 +222,7 @@ socket.on('groups', function (groups) {
 });
 
 socket.on('groupSettings', function (group) {
-    app.openTab('groupSettingsPage');
+    openTab('groupSettingsPage');
     $("#groupChannelsBackBtn").off().on("click", function () { app.viewGroupChannels(group.id); });
     $("#groupDeleteBtn").off().on("click", function () { removeGroup(group.id); });
     $("#groupSaveBtn").off().on("click", function () { saveGroupSettings(group.id); });
@@ -250,7 +231,7 @@ socket.on('groupSettings', function (group) {
 });
 
 socket.on('groupChannels', function (msg) {
-    app.openTab('groupChannelsPage');
+    openTab('groupChannelsPage');
     $("#groupChannels").empty();
     $("#groupChannelsName").text(msg.name);
     $("#groupSettingsBtn").off().on("click", function () { viewGroupSettings(msg.id); });
@@ -292,6 +273,14 @@ function resetFixtures() {
     });
 };
 
+function resetFixture(fixtureID) {
+    bootbox.confirm("Are you sure you want to reset this fixture's channel values?", function (result) {
+        if (result === true) {
+            socket.emit('resetFixture', fixtureID);
+        }
+    });
+};
+
 function addFixtureModal() {
     socket.emit('getFixtureProfiles');
 }
@@ -304,11 +293,27 @@ function openFixtureDefinitionModal() {
     $('#openFixtureDefinitionModal').modal("show");
 }
 
+function viewFixtureSettings(fixtureID) {
+    socket.emit('getFixtureSettings', fixtureID);
+}
+
+function updateFixtureChannelValue(self, fixtureID, channelID) {
+    socket.emit('changeFixtureChannelValue', { id: fixtureID, cid: channelID, value: parseInt(self.value) });
+}
+
+function updateFixtureChannelLock(self, fixtureID, channelID) {
+    socket.emit('changeFixtureChannelLock', { id: fixtureID, cid: channelID });
+}
+
+function useFixtureChip(self, fixtureID, chipID) {
+    socket.emit('useFixtureChip', { id: fixtureID, cid: chipID });
+}
+
 function removeFixture(fixtureID) {
     bootbox.confirm("Are you sure you want to delete this fixture?", function (result) {
         if (result === true) {
             socket.emit('removeFixture', fixtureID);
-            app.openTab('fixtures');
+            openTab('fixtures');
         }
     });
 }
@@ -321,13 +326,29 @@ function removeCue(cueID) {
     bootbox.confirm("Are you sure you want to delete this cue?", function (result) {
         if (result === true) {
             socket.emit('removeCue', cueID);
-            app.openTab('cues');
+            openTab('cues');
         }
     });
 }
 
 function saveCueSettings(cueID) {
     socket.emit('editCueSettings', { id: cueID, name: $("#cueNameInput").val(), upTime: $("#cueUpTimeInput").val(), downTime: $("#cueDownTimeInput").val(), follow: $("#cueFollowInput").val() });
+}
+
+function recordCue() {
+    socket.emit('recordCue');
+}
+
+function nextCue() {
+    socket.emit('nextCue');
+}
+
+function lastCue() {
+    socket.emit('lastCue');
+}
+
+function stopCue() {
+    socket.emit('stopCue');
 }
 
 function gotoCue(cueID) {
@@ -354,7 +375,7 @@ function removePreset(presetID) {
     bootbox.confirm("Are you sure you want to delete this preset?", function (result) {
         if (result === true) {
             socket.emit('removePreset', presetID);
-            app.openTab('presets');
+            openTab('presets');
         }
     });
 }
@@ -399,7 +420,7 @@ function removeGroup(groupID) {
     bootbox.confirm("Are you sure you want to delete this group?", function (result) {
         if (result === true) {
             socket.emit('removeGroup', groupID);
-            app.openTab('groups');
+            openTab('groups');
         }
     });
 }
@@ -416,6 +437,10 @@ function addGroup() {
 
 function viewGroupSettings(groupID) {
     socket.emit('getGroupSettings', groupID);
+}
+
+function updateGrandmasterValue(self) {
+    socket.emit('changeGrandmasterValue', parseInt(self.value));
 }
 
 function toggleBlackout() {
@@ -439,7 +464,7 @@ function resetShow() {
     bootbox.confirm("Are you sure you want a new show? This will reset everything.", function (result) {
         if (result === true) {
             socket.emit('resetShow');
-            app.openTab('fixtures');
+            openTab('fixtures');
         }
     });
 }
@@ -484,9 +509,15 @@ function closeAlert() {
     }
 }
 
-function openTabOld(tabName) {
+function openTab(tabName) {
     // Declare all variables
     var i, tabcontent, tablinks;
+
+    // Get all elements with class="tabcontent" and hide them
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
 
     if (document.getElementsByClassName("tabitem-" + tabName)[0]) {
         // Get all elements with class="tablinks" and remove the class "active"
@@ -495,6 +526,10 @@ function openTabOld(tabName) {
             tablinks[i].classList.remove("active");
         }
     }
+
+    // Show the current tab, and add an "active" class to the button that opened the tab
+    document.getElementById(tabName).style.display = "block";
+    currentTab = tabName;
 
     if (document.getElementsByClassName("tabitem-" + tabName)[0]) {
         document.getElementsByClassName("tabitem-" + tabName)[0].classList.add("active");
@@ -526,7 +561,3 @@ $('.custom-file-input').change(function () {
     var fileName = $(this).val().split('\\').pop();
     $(this).next('.custom-file-label').html(fileName);
 });
-
-Vue.nextTick(function () {
-    $('#groupFixtureIDs').multiselect('rebuild');
-})
