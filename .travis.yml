@@ -9,6 +9,7 @@ after_script:
   - npm run build-docs-pdf
   - npm run build-linux
   - cp node_modules/sleep/build/Release/node_sleep.node node_sleep.node
+  - cp build/Release/cppaddon.node cppaddon.node
   - cp docs/documentation.pdf documentation.pdf
   - rm .gitignore
   - rm .travis.yml
