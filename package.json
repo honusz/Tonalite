@@ -9,10 +9,10 @@
     "test": "echo \"Warning: no test specified\" && exit 0",
     "build-addon": "node-gyp rebuild",
     "clean-addon": "node-gyp clean",
-    "build-linux": "pkg . -t node10-linux",
-    "build-win": "pkg . -t node10-win",
-    "build-macos": "pkg . -t node10-macos",
-    "build-docs-pdf": "cd docs && gitbook pdf . documentation.pdf && cd ../",
+    "build-linux": "nexe --build index.js --resource \"static/**/*\" \"docs/dist/**/*\" \"index.min.html\" \"presets.min.html\" \"open-source-licenses.txt\"",
+    "build-win": "nexe --build index.js --resource \"static/**/*\" \"docs/dist/**/*\" \"index.min.html\" \"presets.min.html\" \"open-source-licenses.txt\"",
+    "build-macos": "nexe --build index.js --resource \"static/**/*\" \"docs/dist/**/*\" \"index.min.html\" \"presets.min.html\" \"open-source-licenses.txt\"",
+    "build-docs-pdf": "cd docs && gitbook build . dist/ && gitbook pdf . documentation.pdf && cd ../",
     "build-docs": "cd docs && gitbook build . dist/ && cd ../"
   },
   "repository": {
@@ -34,7 +34,6 @@
     "express": "^4.16.4",
     "express-fileupload": "^1.0.0",
     "moment": "^2.24.0",
-    "node-addon-api": "^1.6.2",
     "qrcode": "^1.3.3",
     "sanic.js": "^1.1.0",
     "serve-favicon": "^2.5.0",
@@ -43,17 +42,10 @@
     "unzipper": "^0.9.11"
   },
   "devDependencies": {
+    "nexe": "^2.0.0-rc.34",
+    "node-addon-api": "^1.6.2",
     "node-gyp": "^3.8.0",
-    "pkg": "^4.3.7"
-  },
-  "pkg": {
-    "assets": [
-      "static/**/*",
-      "docs/dist/**/*",
-      "index.min.html",
-      "presets.min.html",
-      "open-source-licenses.txt"
-    ]
+    "typescript": "^3.3.3333"
   },
   "gypfile": true
 }
