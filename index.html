@@ -138,7 +138,8 @@
               </div>
             </div>
             <ul class="list-group" id="fixtureProfilesList">
-              <li class="list-group-item fixtureProfileItem" v-for="profile in fixtureProfiles" v-on:click="addFixture(profile)">{{upperCase(profile)}}
+              <li class="list-group-item fixtureProfileItem" v-for="profile in fixtureProfiles"
+                v-on:click="addFixture(profile)">{{upperCase(profile)}}
               </li>
             </ul>
             <div v-if="fixtureProfiles.length == 0" class="text-danger">
@@ -154,7 +155,8 @@
           <div class="modal-body">
             <h5 class="dark">All show files on the USB:</h5>
             <ul class="list-group" id="showsList">
-              <li class="list-group-item showFileItem" v-for="show in showFiles" v-on:click="openShowFromUSB(show)">{{show.slice(0, -9)}}</li>
+              <li class="list-group-item showFileItem" v-for="show in showFiles" v-on:click="openShowFromUSB(show)">
+                {{show.slice(0, -9)}}</li>
             </ul>
             <div v-if="showFiles.length == 0" class="text-danger">
               There are no shows on the connected USB drive!
@@ -221,13 +223,15 @@
       <div class="container">
         <div class="row topBtns">
           <div class="col-4">
-            <button :disabled="cues.length == 0" class="btn btn-primary btn-block" onclick="lastCue()"><i class="far fa-chevron-left"></i></button>
+            <button :disabled="cues.length == 0" class="btn btn-primary btn-block" onclick="lastCue()"><i
+                class="far fa-chevron-left"></i></button>
           </div>
           <div class="col-4">
             <button :disabled="fixtures.length == 0" id="cueActionBtn" class="btn btn-danger btn-block"></button>
           </div>
           <div class="col-4">
-            <button :disabled="cues.length == 0" class="btn btn-primary btn-block" onclick="nextCue()"><i class="far fa-chevron-right"></i></button>
+            <button :disabled="cues.length == 0" class="btn btn-primary btn-block" onclick="nextCue()"><i
+                class="far fa-chevron-right"></i></button>
           </div>
         </div>
         <div class="row" id="cuesList">
@@ -376,7 +380,8 @@
       <div class="container">
         <div class="row topBtns">
           <div class="col-12">
-            <button :disabled="fixtures.length == 0" class="btn btn-success btn-block" onclick="recordPreset()">Record Preset</button>
+            <button :disabled="fixtures.length == 0" class="btn btn-success btn-block" onclick="recordPreset()">Record
+              Preset</button>
           </div>
         </div>
         <div class="row">
