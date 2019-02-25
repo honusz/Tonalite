@@ -1,6 +1,6 @@
 {
-    "name": "Generic RGB Fixture With Control",
-    "shortName": "RGB",
+    "name": "RGB with Control",
+    "shortName": "",
     "manufacturer": "Generic",
     "type": "static",
     "numChannels": 5,

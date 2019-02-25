@@ -1,6 +1,6 @@
 {
-    "name": "Generic RGB Fixture",
-    "shortName": "RGB",
+    "name": "RGB",
+    "shortName": "",
     "manufacturer": "Generic",
     "type": "static",
     "numChannels": 3,

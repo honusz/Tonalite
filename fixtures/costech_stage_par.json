@@ -1,6 +1,6 @@
 {
-    "name": "Costech Stage Par",
-    "shortName": "RGB",
+    "name": "StagePar",
+    "shortName": "",
     "manufacturer": "Costech",
     "type": "static",
     "numChannels": 7,

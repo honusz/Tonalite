@@ -1,7 +1,7 @@
 {
-    "name": "Mini LED Moving Head",
-    "shortName": "Mini Led",
-    "manufacturer": "professional stage lighting",
+    "name": "MiniLED Moving Head",
+    "shortName": "",
+    "manufacturer": "Professional Stage Lighting",
     "type": "moving",
     "numChannels": 9,
     "channels": [

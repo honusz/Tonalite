@@ -1,6 +1,6 @@
 {
-    "name": "Generic RGBA Fixture",
-    "shortName": "RGBA",
+    "name": "RGBA",
+    "shortName": "",
     "manufacturer": "Generic",
     "type": "static",
     "numChannels": 4,

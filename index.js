@@ -670,7 +670,8 @@ io.on('connection', function (socket) {
         fs.readdir(process.cwd() + "/fixtures", (err, files) => {
             var fixturesList = [];
             files.forEach(file => {
-                fixturesList.push(file.slice(0, -5));
+                var fixture = require(process.cwd() + "/fixtures/" + file);
+                fixturesList.push([fixture.name, fixture.manufacturer, file.slice(0, -5)]);
             });
             socket.emit('fixtureProfiles', [fixturesList, startDMXAddress]);
         });
@@ -719,6 +720,9 @@ io.on('connection', function (socket) {
                 var fixture = require(process.cwd() + "/fixtures/" + msg.fixtureName + ".json");
                 fixture.startDMXAddress = startDMXAddress;
                 fixture.hasLockedChannels = false;
+                if (fixture.shortName == "") {
+                    fixture.shortName = fixture.name.split(" ")[0];
+                }
                 // Assign a random id for easy access to this fixture
                 fixture.id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
                 fixtures.push(JSON.parse(JSON.stringify(fixture)));
@@ -767,8 +771,12 @@ io.on('connection', function (socket) {
     socket.on('editFixtureSettings', function (msg) {
         if (fixtures.length != 0) {
             var fixture = fixtures[fixtures.map(el => el.id).indexOf(msg.id)];
+            if (msg.shortName == "" || msg.shortName == fixture.name) {
+                fixture.shortName = msg.name.split(" ")[0];
+            } else {
+                fixture.shortName = msg.shortName;
+            }
             fixture.name = msg.name;
-            fixture.shortName = msg.shortName;
             fixture.startDMXAddress = msg.startDMXAddress;
             socket.emit('fixtureSettings', fixture);
             socket.emit('message', { type: "info", content: "Fixture settings have been updated!" });

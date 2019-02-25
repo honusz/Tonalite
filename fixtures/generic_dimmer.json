@@ -1,6 +1,6 @@
 {
-    "name": "Generic Dimmer",
-    "shortName": "Dimmer",
+    "name": "Dimmer",
+    "shortName": "",
     "manufacturer": "Generic",
     "type": "static",
     "numChannels": 1,
