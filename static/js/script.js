@@ -2,8 +2,6 @@ var socket = io('http://' + document.domain + ':' + location.port);
 var fixturesList = document.getElementById('fixturesList');
 var groupFixtureIDs = document.getElementById('groupFixtureIDs');
 var currentTab = "fixtures";
-var timerID;
-var counter = 0;
 document.getElementById("fixturesTab").click();
 
 var app = new Vue({
