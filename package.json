@@ -9,7 +9,7 @@
     "test": "echo \"Warning: no test specified\" && exit 0",
     "build-addon": "node-gyp rebuild",
     "clean-addon": "node-gyp clean",
-    "build-linux": "nexe --build index.js --resource \"static/**/*\" \"docs/dist/**/*\" \"index.min.html\" \"presets.min.html\" \"open-source-licenses.txt\"",
+    "build-linux": "nexe --build index.js -o tonalite -r \"static/**/*\" \"docs/dist/**/*\" \"index.min.html\" \"presets.min.html\" \"open-source-licenses.txt\"",
     "build-win": "nexe --build index.js --resource \"static/**/*\" \"docs/dist/**/*\" \"index.min.html\" \"presets.min.html\" \"open-source-licenses.txt\"",
     "build-macos": "nexe --build index.js --resource \"static/**/*\" \"docs/dist/**/*\" \"index.min.html\" \"presets.min.html\" \"open-source-licenses.txt\"",
     "build-docs-pdf": "cd docs && gitbook build . dist/ && gitbook pdf . documentation.pdf && cd ../",
@@ -42,7 +42,7 @@
     "unzipper": "^0.9.11"
   },
   "devDependencies": {
-    "nexe": "^2.0.0-rc.34",
+    "nexe": "^3.0.0-beta.15",
     "node-addon-api": "^1.6.2",
     "node-gyp": "^3.8.0",
     "typescript": "^3.3.3333"
