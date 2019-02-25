@@ -100,7 +100,7 @@
             <div class="fixtureItem" v-on:click="viewFixtureChannels(fixture.id)">
               <h3 v-if="fixture.channels[0].type === 'intensity'" class="fixtureValue">
                 {{fixture.channels[0].displayValue}}</h3>
-              <p>{{fixture.shortName}} <span v-html="lockedFixturechannels(fixture.hasLockedChannels)"></span></p>
+              <p>{{fixture.shortName}} ({{fixture.startDMXAddress}}) <span v-html="lockedFixturechannels(fixture.hasLockedChannels)"></span></p>
             </div>
           </div>
           <div v-if="fixtures.length == 0" class="col-12">
