@@ -100,7 +100,8 @@
             <div class="fixtureItem" v-on:click="viewFixtureChannels(fixture.id)">
               <h3 v-if="fixture.channels[0].type === 'intensity'" class="fixtureValue">
                 {{fixture.channels[0].displayValue}}</h3>
-              <p>{{fixture.shortName}} ({{fixture.startDMXAddress}}) <span v-html="lockedFixturechannels(fixture.hasLockedChannels)"></span></p>
+              <p>{{fixture.shortName}} ({{fixture.startDMXAddress}}) <span
+                  v-html="lockedFixturechannels(fixture.hasLockedChannels)"></span></p>
             </div>
           </div>
           <div v-if="fixtures.length == 0" class="col-12">
@@ -380,7 +381,7 @@
       <div class="container">
         <div class="row topBtns">
           <div class="col-12">
-            <button :disabled="fixtures.length == 0" class="btn btn-success btn-block" onclick="recordPreset()">Record
+            <button :disabled="fixtures.length == 0" class="btn btn-success btn-block" v-on:click="recordPreset()">Record
               Preset</button>
           </div>
         </div>
@@ -388,10 +389,10 @@
           <div class="col-12">
             <button id="blackoutBtn" class="btn"
               :class="{ 'btn-primary' : blackout == false, 'btn-danger' : blackout == true}"
-              onclick="toggleBlackout()">Blackout</button>
+              v-on:click="toggleBlackout()">Blackout</button>
             <label class="ml-2" for="grandmaster">Grandmaster:</label>
             <input type="range" class="custom-range" id="grandmaster" min="0" max="100"
-              oninput="updateGrandmasterValue(this)">
+              v-on:input="updateGrandmasterValue()" v-model="grandmaster">
           </div>
         </div>
         <div class="row" id="presetsList">
@@ -549,7 +550,7 @@
                 </div>
               </div>
             </div>
-            <button class="btn btn-success" onclick="closeSettings()">Close</button>
+            <button class="btn btn-success" v-on:click="closeSettings()">Close</button>
           </div>
         </div>
       </div>

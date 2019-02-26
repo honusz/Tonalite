@@ -20,7 +20,8 @@ var app = new Vue({
         currentCue: "",
         blackout: false,
         startDMXAddress: 1,
-        newFixtureCreationCount: 1
+        newFixtureCreationCount: 1,
+        grandmaster: 0.0
     },
     methods: {
         changePresetActive: function (presetID) {
@@ -61,6 +62,19 @@ var app = new Vue({
             return str.toLowerCase().split(' ').map(function (word) {
                 return (word.charAt(0).toUpperCase() + word.slice(1));
             }).join(' ');
+        },
+        updateGrandmasterValue: function () {
+            socket.emit('changeGrandmasterValue', parseInt(app.grandmaster));
+        },
+        toggleBlackout: function () {
+            socket.emit('toggleBlackout');
+        },
+        recordPreset: function () {
+            socket.emit('recordPreset');
+        },
+        closeSettings: function () {
+            socket.emit('closeSettings');
+            $('#openSettingsModal').modal("hide");
         }
     }
 });
@@ -104,7 +118,7 @@ socket.on('blackout', function (msg) {
 });
 
 socket.on('grandmaster', function (value) {
-    $("#grandmaster").val(value);
+    app.grandmaster = value;
 });
 
 socket.on('currentCue', function (value) {
@@ -380,10 +394,6 @@ function savePresetSettings(presetID) {
     socket.emit('editPresetSettings', { id: presetID, name: $("#presetNameInput").val() });
 }
 
-function recordPreset() {
-    socket.emit('recordPreset');
-}
-
 function resetGroup(groupID) {
     bootbox.confirm("Are you sure you want to reset this group's channel values?", function (result) {
         if (result === true) {
@@ -431,14 +441,6 @@ function viewGroupSettings(groupID) {
     socket.emit('getGroupSettings', groupID);
 }
 
-function updateGrandmasterValue(self) {
-    socket.emit('changeGrandmasterValue', parseInt(self.value));
-}
-
-function toggleBlackout() {
-    socket.emit('toggleBlackout');
-}
-
 function openShowFileModal() {
     $('#openShowModal').modal("show");
 }
@@ -459,11 +461,6 @@ function resetShow() {
             openTab('fixtures');
         }
     });
-}
-
-function closeSettings() {
-    socket.emit('closeSettings');
-    $('#openSettingsModal').modal("hide");
 }
 
 function saveSettingsBackground() {
