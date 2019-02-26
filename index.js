@@ -348,13 +348,13 @@ function calculateCue(cue) {
                     // Make sure that the step does not dip below 0 (finished)
                     if (cue.upStep >= 0) {
                         outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].channels[c].dmxAddressOffset] = endChannel + (((startChannel - endChannel) / (cue.upTime * 40)) * cue.upStep);
-                        fixtures[fixtures.map(el => el.id).indexOf(cue.fixtures[f].id)].channels[c].displayValue = Math.round(cue.fixtures[f].channels[c].value + (((startFixture.channels[c].value - cue.fixtures[f].channels[c].value) / (cue.upTime * 40)) * cue.upStep));
+                        fixtures[fixtures.map(el => el.id).indexOf(cue.fixtures[f].id)].channels[c].displayValue = cue.fixtures[f].channels[c].value + (((startFixture.channels[c].value - cue.fixtures[f].channels[c].value) / (cue.upTime * 40)) * cue.upStep);
                     }
                 } else {
                     // Make sure that the step does not dip below 0 (finished)
                     if (cue.downStep >= 0) {
                         outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].channels[c].dmxAddressOffset] = endChannel + (((startChannel - endChannel) / (cue.downTime * 40)) * cue.downStep);
-                        fixtures[fixtures.map(el => el.id).indexOf(cue.fixtures[f].id)].channels[c].displayValue = Math.round(cue.fixtures[f].channels[c].value + (((startFixture.channels[c].value - cue.fixtures[f].channels[c].value) / (cue.downTime * 40)) * cue.downStep));
+                        fixtures[fixtures.map(el => el.id).indexOf(cue.fixtures[f].id)].channels[c].displayValue = cue.fixtures[f].channels[c].value + (((startFixture.channels[c].value - cue.fixtures[f].channels[c].value) / (cue.downTime * 40)) * cue.downStep);
                     }
                 }
             } else {
@@ -498,7 +498,7 @@ function dmxLoop() {
         calculateChannels();
         calculateStack();
         let c = 0; const cMax = channels.length; for (; c < cMax; c++) {
-            channels[c] = Math.round((channels[c] / 100.0) * grandmaster);
+            channels[c] = (channels[c] / 100.0) * grandmaster;
         }
     }
     slotsData = channels;
@@ -1166,7 +1166,7 @@ io.on('connection', function (socket) {
                         }
                     });
                 });
-                channel.value = Math.round(valAvg / valAvgCount);
+                channel.value = valAvg / valAvgCount;
             });
             socket.emit('groupChannels', { id: group.id, name: group.name, channels: group.channels });
         } else {
