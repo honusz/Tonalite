@@ -22,11 +22,6 @@ var app = new Vue({
         startDMXAddress: 1,
         newFixtureCreationCount: 1
     },
-    computed: {
-        fixtures: function () {
-            $('#groupFixtureIDs').multiselect('rebuild');
-        }
-    },
     methods: {
         changePresetActive: function (presetID) {
             socket.emit('changePresetActive', presetID);
@@ -118,7 +113,6 @@ socket.on('currentCue', function (value) {
 
 socket.on('fixtures', function (fixtures) {
     app.fixtures = fixtures;
-    $('#groupFixtureIDs').multiselect('rebuild');
 });
 
 socket.on('fixtureProfiles', function (profiles) {
@@ -534,6 +528,9 @@ function openTab(tabName) {
     }
 
     closeAlert();
+    if (tabName == 'groups') {
+        $('#groupFixtureIDs').multiselect('rebuild');
+    }
 }
 
 function searchFixtureProfiles() {
