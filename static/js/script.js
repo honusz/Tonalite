@@ -1,6 +1,4 @@
 var socket = io('http://' + document.domain + ':' + location.port);
-var fixturesList = document.getElementById('fixturesList');
-var groupFixtureIDs = document.getElementById('groupFixtureIDs');
 var currentTab = "fixtures";
 document.getElementById("fixturesTab").click();
 
@@ -133,6 +131,8 @@ socket.on('fixtureProfiles', function (profiles) {
     app.newFixtureCreationCount = 1;
     app.startDMXAddress = profiles[1];
     app.fixtureProfiles = profiles[0];
+    $('#searchFixtureProfiles').val("");
+    searchFixtureProfiles();
     $('#fixtureProfilesModal').modal("show");
 });
 
@@ -411,6 +411,7 @@ function resetGroups() {
 };
 
 function addGroupModal() {
+    $('#groupFixtureIDs').multiselect('deselectAll');
     $('#addGroupModal').modal("show");
 }
 
