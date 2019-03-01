@@ -78,6 +78,7 @@ var SETTINGS = {
     udmx: false,
     automark: true,
     artnetIP: null, // ArtNet output IP
+    artnetHost: '255.255.255.0', // Artnet network host
     sacnIP: null // sACN output IP
 }
 
@@ -128,7 +129,7 @@ function openSettings() {
             channels = slotsData;
             cp = cp;
 
-            artnet = require('artnet')({ iface: SETTINGS.artnetIP, host: '255.255.255.255' });
+            artnet = require('artnet')({ iface: SETTINGS.artnetIP, host: SETTINGS.artnetHost });
 
             fs.exists(process.cwd() + '/presets.json', function (exists) {
                 if (exists == true) {
