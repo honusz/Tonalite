@@ -772,7 +772,7 @@ io.on('connection', function (socket) {
     socket.on('editFixtureSettings', function (msg) {
         if (fixtures.length != 0) {
             var fixture = fixtures[fixtures.map(el => el.id).indexOf(msg.id)];
-            if (msg.shortName == "" || msg.shortName == fixture.name) {
+            if (msg.shortName == "" || msg.shortName == fixture.name.split(" ")[0]) {
                 fixture.shortName = msg.name.split(" ")[0];
             } else {
                 fixture.shortName = msg.shortName;
