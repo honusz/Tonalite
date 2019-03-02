@@ -255,6 +255,7 @@ function cleanFixtures() {
             delete newFixtures[f].channels[c].min;
             delete newFixtures[f].channels[c].defaultValue;
             delete newFixtures[f].channels[c].dmxAddressOffset;
+            newFixtures[f].channels[c].displayValue = Math.round(newFixtures[f].channels[c].displayValue);
         }
     }
     return newFixtures;
