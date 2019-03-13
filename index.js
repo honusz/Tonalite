@@ -1202,7 +1202,7 @@ io.on('connection', function (socket) {
         if (groups.length != 0) {
             var group = groups[groups.map(el => el.id).indexOf(msg.id)];
             if (msg.shortName == "" || msg.shortName == group.name.split(" ")[0]) {
-                geoup.shortName = msg.name.split(" ")[0];
+                group.shortName = msg.name.split(" ")[0];
             } else {
                 group.shortName = msg.shortName;
             }
