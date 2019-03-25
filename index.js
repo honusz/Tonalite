@@ -423,13 +423,13 @@ function calculateStack() {
                 }
                 f = 0; const fMax1 = nextCue.fixtures.length; for (; f < fMax1; f++) {
                     startFixtureChannels = fixtures[fixtures.map(el => el.id).indexOf(nextCue.fixtures[f].id)].channels;
-                    nextCueFixtures = nextCue.fixtures[f].channels;
+                    nextCueFixtureChannels = nextCue.fixtures[f].channels;
                     if (startFixtureChannels[0].type == "intensity" && startFixtureChannels[0].subtype == "intensity") {
-                        if (startFixtureChannels[0].value === 0 && nextCueFixtures.channels[0].value !== 0) {
-                            c = 0; const cMax1 = nextCueFixtures.channels.length; for (; c < cMax1; c++) {
+                        if (startFixtureChannels[0].value === 0 && nextCueFixtureChannels[0].value !== 0) {
+                            c = 0; const cMax1 = nextCueFixtureChannels.length; for (; c < cMax1; c++) {
                                 if (startFixtureChannels[c].locked === false && startFixtureChannels[c].type != "intensity" && startFixtureChannels[c].subtype != "intensity") {
-                                    startFixtureChannels[c].value = nextCueFixtures.channels[c].value;
-                                    startFixtureChannels[c].displayValue = nextCueFixtures.channels[c].value;
+                                    startFixtureChannels[c].value = nextCueFixtureChannels[c].value;
+                                    startFixtureChannels[c].displayValue = nextCueFixtureChannels[c].value;
                                 }
                             }
                         }
