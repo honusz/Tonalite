@@ -78,6 +78,7 @@ var app = new Vue({
 });
 
 Mousetrap.bind('r', function () { recordCue(); });
+Mousetrap.bind('end', function () { stopCue(); });
 Mousetrap.bind('right', function () { nextCue(); });
 Mousetrap.bind('left', function () { lastCue(); });
 Mousetrap.bind('ctrl+n', function () { resetShow(); return false; });
