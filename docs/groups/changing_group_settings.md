@@ -23,8 +23,4 @@ Remove the group from the show. You will be prompted to make sure you really wan
 
 ### Name
 
-The full name of the group. This can be any length needed to be descriptive.
-
-### Short Name
-
-A shorter version of the group's name for display in the interface.
+The full name of the group. This can be any length needed to be descriptive though we suggest that you keep it short so as to fit into the interface easily.

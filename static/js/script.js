@@ -233,7 +233,6 @@ socket.on('groupSettings', function (group) {
     $("#groupDeleteBtn").off().on("click", function () { removeGroup(group.id); });
     $("#groupSaveBtn").off().on("click", function () { saveGroupSettings(group.id); });
     $("#groupNameInput").val(group.name);
-    $("#groupShortNameInput").val(group.shortName);
 });
 
 socket.on('groupChannels', function (msg) {
@@ -429,7 +428,7 @@ function removeGroup(groupID) {
 }
 
 function saveGroupSettings(groupID) {
-    socket.emit('editGroupSettings', { id: groupID, name: $("#groupNameInput").val(), shortName: $("#groupShortNameInput").val(), fixtureIDs: $("#groupFixtureIDsInput").val() });
+    socket.emit('editGroupSettings', { id: groupID, name: $("#groupNameInput").val(), fixtureIDs: $("#groupFixtureIDsInput").val() });
 }
 
 function addGroup() {

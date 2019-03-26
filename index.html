@@ -323,7 +323,7 @@
         <div class="row" id="groupsList">
           <div class="col-4 col-lg-2 mb-3" v-for="group in groups" :key="group.id">
             <div class="groupItem" v-on:click="viewGroupChannels(group.id)">
-              <p>{{group.shortName}}</p>
+              <p>{{group.name}}</p>
             </div>
           </div>
           <div v-if="groups.length == 0" class="col-12">
@@ -350,10 +350,6 @@
             <div class="form-group">
               <label for="groupNameInput">Name:</label>
               <input class="form-control" type="text" id="groupNameInput" placeholder="Group Name">
-            </div>
-            <div class="form-group">
-              <label for="groupShortNameInput">Short Name:</label>
-              <input class="form-control" type="text" id="groupShortNameInput" placeholder="Group Short Name">
             </div>
           </div>
         </div>
