@@ -5,6 +5,7 @@ There are a number of keyboard shortcuts built into Tonalite to make it easier t
 | Key         | Action      |
 |:-----------:|:-----------:|
 | R           | Record Cue  |
+| End         | Stop Cue    |
 | Right Arrow | Next Cue    |
 | Left Arrow  | Last Cue    |
 | SHIFT+A     | Add Fixture |
