@@ -78,7 +78,7 @@ var SETTINGS = {
     udmx: false,
     automark: true,
     artnetIP: null, // ArtNet output IP
-    artnetHost: '255.255.255.0', // Artnet network host
+    artnetHost: '255.255.255.255', // Artnet network host
     sacnIP: null // sACN output IP
 }
 
@@ -943,6 +943,12 @@ io.on('connection', function (socket) {
             cue.name = msg.name;
             cue.upTime = msg.upTime;
             cue.downTime = msg.downTime;
+            if (cue.upTime == 0) {
+                cue.upTime = 0.001;
+            }
+            if (cue.downTime == 0) {
+                cue.downTime = 0.001;
+            }
             if (msg.follow < -1) {
                 cue.follow = -1;
             } else {
