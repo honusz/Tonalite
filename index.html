@@ -47,6 +47,7 @@
               <a v-if="ifMobile() || desktop" class="dropdown-item" onclick="openFixtureDefinitionModal()">Import
                 Fixture Definition From File</a>
               <a v-if="!desktop" class="dropdown-item" onclick="importFixtures()">Import Fixtures From USB</a>
+              <a class="dropdown-item" onclick="updateFixtureProfiles()">Update Show Fixture Profiles</a>
               <div v-if="desktop" class="dropdown-divider"></div>
               <a v-if="desktop" class="dropdown-item" onclick="shutdown()">Shutdown</a>
               <div v-if="!ifMobile() && !desktop" class="dropdown-divider"></div>

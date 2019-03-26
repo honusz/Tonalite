@@ -1392,6 +1392,26 @@ io.on('connection', function (socket) {
         });
     });
 
+    socket.on('updateFixtureProfiles', function () {
+        fs.readdir(process.cwd() + "/fixtures", (err, files) => {
+            files.forEach(file => {
+                var fixtureProfile = require(process.cwd() + "/fixtures/" + file);
+                fixtures.forEach(function (fixture) {
+                    if (fixture.profileID == fixtureProfile.profileID) {
+                        fixture.manufacturer = fixtureProfile.manufacturer;
+                        fixture.type = fixtureProfile.type;
+                        fixture.chips = fixtureProfile.chips;
+                        if (fixture.channels.length == fixtureProfile.channels.length) {
+                            let c = 0; const cMax = fixture.channels.length; for (; c < cMax; c++) {
+                                fixture.channels[c] = fixtureProfile.channels[c];
+                            }
+                        }
+                    }
+                });
+            });
+        });
+    });
+
     socket.on('shutdown', function () {
         if (SETTINGS.desktop === true) {
             if (SETTINGS.udmx === true) {
