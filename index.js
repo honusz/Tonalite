@@ -145,7 +145,7 @@ function openSettings() {
                 console.log(`The web UI can be found at http://${SETTINGS.url}:${SETTINGS.port}`);
             });
 
-            if (SETTINGS.udmx === true) {
+            if (SETTINGS.udmx == true) {
                 if (SETTINGS.device === "linux") {
                     cp = spawn(process.cwd() + '/uDMXArtnet/uDMXArtnet_minimal_64');
                 } else if (SETTINGS.device === "rpi") {
@@ -793,7 +793,7 @@ io.on('connection', function (socket) {
     socket.on('getFixtureChannels', function (fixtureID) {
         if (fixtures.length != 0) {
             var fixture = fixtures[fixtures.map(el => el.id).indexOf(fixtureID)];
-            socket.emit('fixtureChannels', { id: fixture.id, name: fixture.name, channels: fixture.channels, chips: fixture.chips });
+            socket.emit('fixtureChannels', { id: fixture.id, name: fixture.name, startDMXAddress: fixture.startDMXAddress, channels: fixture.channels, chips: fixture.chips });
         } else {
             socket.emit('message', { type: "error", content: "No fixtures exist!" });
         }
@@ -1125,10 +1125,13 @@ io.on('connection', function (socket) {
             var newGroup = {
                 id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
                 name: "Group " + (groups.length + 1),
-                shortName: "Group " + (groups.length + 1),
+                shortName: "",
                 ids: fixtureIDs,
                 channels: []
             };
+            if (newGroup.shortName == "") {
+                newGroup.shortName = newGroup.name.split(" ")[0];
+            }
             var channelCats = [];
             newGroup.ids.forEach(function (fixtureID) {
                 var fixture = fixtures[fixtures.map(el => el.id).indexOf(fixtureID)];
