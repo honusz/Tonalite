@@ -321,7 +321,7 @@ function cleanPresets() {
 function calculateChannels() {
     let f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
         let c = 0; const cMax = fixtures[f].channels.length; for (; c < cMax; c++) {
-            channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].channels[c].dmxAddressOffset] = cppaddon.mapRange(fixtures[f].channels[c].value, fixtures[f].channels[c].displayMin, fixtures[f].channels[c].displayMax, fixtures[f].channels[c].min, fixtures[f].channels[c].max);
+            channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].channels[c].dmxAddressOffset] = Math.floor(cppaddon.mapRange(fixtures[f].channels[c].value, fixtures[f].channels[c].displayMin, fixtures[f].channels[c].displayMax, fixtures[f].channels[c].min, fixtures[f].channels[c].max));
         }
     }
 };
@@ -330,7 +330,7 @@ function calculateChannelsList() {
     chans = [];
     let f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
         let c = 0; const cMax = fixtures[f].channels.length; for (; c < cMax; c++) {
-            chans[(fixtures[f].startDMXAddress - 1) + fixtures[f].channels[c].dmxAddressOffset] = cppaddon.mapRange(fixtures[f].channels[c].value, fixtures[f].channels[c].displayMin, fixtures[f].channels[c].displayMax, fixtures[f].channels[c].min, fixtures[f].channels[c].max);
+            chans[(fixtures[f].startDMXAddress - 1) + fixtures[f].channels[c].dmxAddressOffset] = Math.floor(cppaddon.mapRange(fixtures[f].channels[c].value, fixtures[f].channels[c].displayMin, fixtures[f].channels[c].displayMax, fixtures[f].channels[c].min, fixtures[f].channels[c].max));
         }
     }
     return chans;
@@ -343,8 +343,8 @@ function calculateCue(cue) {
         var startFixture = fixtures[fixtures.map(el => el.id).indexOf(cue.fixtures[f].id)];
         let c = 0; const cMax = cue.fixtures[f].channels.length; for (; c < cMax; c++) {
             if (startFixture.channels[c].locked === false) {
-                var startChannel = cppaddon.mapRange(startFixture.channels[c].value, startFixture.channels[c].displayMin, startFixture.channels[c].displayMax, startFixture.channels[c].min, startFixture.channels[c].max);
-                var endChannel = cppaddon.mapRange(cue.fixtures[f].channels[c].value, cue.fixtures[f].channels[c].displayMin, cue.fixtures[f].channels[c].displayMax, cue.fixtures[f].channels[c].min, cue.fixtures[f].channels[c].max);
+                var startChannel = Math.floor(cppaddon.mapRange(startFixture.channels[c].value, startFixture.channels[c].displayMin, startFixture.channels[c].displayMax, startFixture.channels[c].min, startFixture.channels[c].max));
+                var endChannel = Math.floor(cppaddon.mapRange(cue.fixtures[f].channels[c].value, cue.fixtures[f].channels[c].displayMin, cue.fixtures[f].channels[c].displayMax, cue.fixtures[f].channels[c].min, cue.fixtures[f].channels[c].max));
                 // If the end channel is greater than the start channel, the value is going in, out is going out if less
                 if (endChannel >= startChannel) {
                     // Make sure that the step does not dip below 0 (finished)
@@ -360,7 +360,7 @@ function calculateCue(cue) {
                     }
                 }
             } else {
-                var startChannel = cppaddon.mapRange(startFixture.channels[c].value, startFixture.channels[c].displayMin, startFixture.channels[c].displayMax, startFixture.channels[c].min, startFixture.channels[c].max);
+                var startChannel = Math.floor(cppaddon.mapRange(startFixture.channels[c].value, startFixture.channels[c].displayMin, startFixture.channels[c].displayMax, startFixture.channels[c].min, startFixture.channels[c].max));
                 outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].channels[c].dmxAddressOffset] = startChannel;
             }
         }
