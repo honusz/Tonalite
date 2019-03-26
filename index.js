@@ -804,7 +804,7 @@ io.on('connection', function (socket) {
             resetFixtures();
             io.emit('fixtures', cleanFixtures());
             socket.emit('message', { type: "info", content: "Fixture values have been reset!" });
-            saveShow();
+            //saveShow();
         } else {
             socket.emit('message', { type: "error", content: "No fixtures exist!" });
         }
@@ -822,7 +822,7 @@ io.on('connection', function (socket) {
             socket.emit('fixtureChannels', { id: fixture.id, name: fixture.name, channels: fixture.channels, chips: fixture.chips });
             io.emit('fixtures', cleanFixtures());
             socket.emit('message', { type: "info", content: "Fixture values reset!" });
-            saveShow();
+            //saveShow();
         } else {
             socket.emit('message', { type: "error", content: "No fixtures exist!" });
         }
@@ -835,7 +835,7 @@ io.on('connection', function (socket) {
             channel.value = parseInt(msg.value);
             channel.displayValue = channel.value;
             io.emit('fixtures', cleanFixtures());
-            saveShow();
+            //saveShow();
         } else {
             socket.emit('message', { type: "error", content: "No fixtures exist!" });
         }
@@ -854,7 +854,7 @@ io.on('connection', function (socket) {
             }
             socket.emit('fixtureChannels', { id: fixture.id, name: fixture.name, channels: fixture.channels, chips: fixture.chips });
             io.emit('fixtures', cleanFixtures());
-            saveShow();
+            //saveShow();
         } else {
             socket.emit('message', { type: "error", content: "No fixtures exist!" });
         }
@@ -870,7 +870,7 @@ io.on('connection', function (socket) {
             }
             socket.emit('fixtureChannels', { id: fixture.id, name: fixture.name, channels: fixture.channels, chips: fixture.chips });
             io.emit('fixtures', cleanFixtures());
-            saveShow();
+            //saveShow();
         } else {
             socket.emit('message', { type: "error", content: "No fixtures exist!" });
         }
@@ -1190,7 +1190,7 @@ io.on('connection', function (socket) {
             channel.displayValue = channel.value;
             setFixtureGroupValues(group, channel);
             io.emit('fixtures', cleanFixtures());
-            saveShow();
+            //saveShow();
         } else {
             socket.emit('message', { type: "error", content: "No fixtures and/or groups exist!" });
         }
@@ -1239,7 +1239,7 @@ io.on('connection', function (socket) {
             socket.emit('groupChannels', { id: group.id, name: group.name, channels: group.channels });
             io.emit('fixtures', cleanFixtures());
             socket.emit('message', { type: "info", content: "Group channels reset!" });
-            saveShow();
+            //saveShow();
         } else {
             socket.emit('message', { type: "error", content: "No groups exist!" });
         }
@@ -1250,7 +1250,7 @@ io.on('connection', function (socket) {
             resetGroups();
             io.emit('fixtures', cleanFixtures());
             socket.emit('message', { type: "info", content: "Group values have been reset!" });
-            saveShow();
+            //saveShow();
         } else {
             socket.emit('message', { type: "error", content: "No groups exist!" });
         }
