@@ -711,14 +711,14 @@ io.on('connection', function (socket) {
     });
 
     socket.on('addFixture', function (msg) {
-        var startDMXAddress = msg.startDMXAddress;
+        var startDMXAddress = parseInt(msg.startDMXAddress);
         let f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
             if (fixtures[f].startDMXAddress == startDMXAddress) {
                 startDMXAddress = null;
             }
         }
         if (startDMXAddress) {
-            let i = 0; const iMax = msg.creationCount; for (; i < iMax; i++) {
+            let i = 0; const iMax = parseInt(msg.creationCount); for (; i < iMax; i++) {
                 // Add a fixture using the fixture spec file in the fixtures folder
                 var fixture = require(process.cwd() + "/fixtures/" + msg.fixtureName + ".json");
                 fixture.startDMXAddress = startDMXAddress;
@@ -832,7 +832,7 @@ io.on('connection', function (socket) {
         if (fixtures.length != 0) {
             var fixture = fixtures[fixtures.map(el => el.id).indexOf(msg.id)];
             var channel = fixture.channels[msg.cid];
-            channel.value = msg.value;
+            channel.value = parseInt(msg.value);
             channel.displayValue = channel.value;
             io.emit('fixtures', cleanFixtures());
             saveShow();
@@ -1186,7 +1186,7 @@ io.on('connection', function (socket) {
         if (fixtures.length != 0 && groups.length != 0) {
             var group = groups[groups.map(el => el.id).indexOf(msg.id)];
             var channel = group.channels[msg.cid];
-            channel.value = msg.value;
+            channel.value = parseInt(msg.value);
             channel.displayValue = channel.value;
             setFixtureGroupValues(group, channel);
             io.emit('fixtures', cleanFixtures());
@@ -1336,7 +1336,7 @@ io.on('connection', function (socket) {
     });
 
     socket.on('changeGrandmasterValue', function (value) {
-        grandmaster = value;
+        grandmaster = parseInt(value);
         socket.broadcast.emit('grandmaster', grandmaster);
     });
 

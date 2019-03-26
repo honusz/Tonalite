@@ -50,7 +50,7 @@ var app = new Vue({
             return isMobile.any;
         },
         addFixture: function (fixture) {
-            socket.emit('addFixture', { fixtureName: fixture, startDMXAddress: parseInt($('#newFixtureStartDMXAddress').val()), creationCount: parseInt($('#newFixtureCreationCount').val()) });
+            socket.emit('addFixture', { fixtureName: fixture, startDMXAddress: $('#newFixtureStartDMXAddress').val(), creationCount: $('#newFixtureCreationCount').val() });
             $('#fixtureProfilesModal').modal("hide");
         },
         upperCase: function (str) {
@@ -62,7 +62,7 @@ var app = new Vue({
             }).join(' ');
         },
         updateGrandmasterValue: function () {
-            socket.emit('changeGrandmasterValue', parseInt(app.grandmaster));
+            socket.emit('changeGrandmasterValue', app.grandmaster);
         },
         toggleBlackout: function () {
             socket.emit('toggleBlackout');
@@ -303,7 +303,7 @@ function viewFixtureSettings(fixtureID) {
 }
 
 function updateFixtureChannelValue(self, fixtureID, channelID) {
-    socket.emit('changeFixtureChannelValue', { id: fixtureID, cid: channelID, value: parseInt(self.value) });
+    socket.emit('changeFixtureChannelValue', { id: fixtureID, cid: channelID, value: self.value });
 }
 
 function updateFixtureChannelLock(self, fixtureID, channelID) {
@@ -415,7 +415,7 @@ function addGroupModal() {
 }
 
 function updateGroupChannelValue(self, groupID, channelID) {
-    socket.emit('changeGroupChannelValue', { id: groupID, cid: channelID, value: parseInt(self.value) });
+    socket.emit('changeGroupChannelValue', { id: groupID, cid: channelID, value: self.value });
 }
 
 function removeGroup(groupID) {
