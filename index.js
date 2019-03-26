@@ -1410,6 +1410,7 @@ io.on('connection', function (socket) {
                 });
             });
         });
+        saveShow();
     });
 
     socket.on('shutdown', function () {
