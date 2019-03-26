@@ -4,6 +4,7 @@
     "manufacturer": "Robe",
     "type": "moving",
     "numChannels": 14,
+    "profileID": "d044otzb4557g9yqvn12vw",
     "channels": [
         {
             "type": "intensity",

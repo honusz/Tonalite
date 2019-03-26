@@ -4,6 +4,7 @@
     "manufacturer": "Generic",
     "type": "static",
     "numChannels": 4,
+    "profileID": "toligthwn7l1dnm9evld8",
     "channels": [
         {
             "type": "color",

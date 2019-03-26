@@ -4,6 +4,7 @@
     "manufacturer": "Costech",
     "type": "static",
     "numChannels": 7,
+    "profileID": "06d73y86srvt0g6tuglpo3e5",
     "channels": [
         {
             "type": "intensity",

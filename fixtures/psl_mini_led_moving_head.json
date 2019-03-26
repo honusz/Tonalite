@@ -4,6 +4,7 @@
     "manufacturer": "Professional Stage Lighting",
     "type": "moving",
     "numChannels": 9,
+    "profileID": "8yvt087ku34rju6lpimls",
     "channels": [
         {
             "type": "intensity",
