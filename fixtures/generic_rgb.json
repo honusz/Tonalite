@@ -14,8 +14,6 @@
             "min": 0,
             "displayMax": 100,
             "displayMin": 0,
-            "value": 0,
-            "displayValue": 0,
             "defaultValue": 0,
             "dmxAddressOffset": 0,
             "locked": false
@@ -28,8 +26,6 @@
             "min": 0,
             "displayMax": 100,
             "displayMin": 0,
-            "value": 0,
-            "displayValue": 0,
             "defaultValue": 0,
             "dmxAddressOffset": 1,
             "locked": false
@@ -42,8 +38,6 @@
             "min": 0,
             "displayMax": 100,
             "displayMin": 0,
-            "value": 0,
-            "displayValue": 0,
             "defaultValue": 0,
             "dmxAddressOffset": 2,
             "locked": false

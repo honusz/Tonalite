@@ -723,6 +723,10 @@ io.on('connection', function (socket) {
                 var fixture = require(process.cwd() + "/fixtures/" + msg.fixtureName + ".json");
                 fixture.startDMXAddress = startDMXAddress;
                 fixture.hasLockedChannels = false;
+                let c = 0; const cMax = fixture.channels.length; for (; c < cMax; c++) {
+                    fixture.channels[c].value = fixture.channels[c].defaultValue;
+                    fixture.channels[c].displayValue = fixture.channels[c].defaultValue;
+                }
                 if (fixture.shortName == "") {
                     fixture.shortName = fixture.name.split(" ")[0];
                 }
@@ -1404,6 +1408,8 @@ io.on('connection', function (socket) {
                         if (fixture.channels.length == fixtureProfile.channels.length) {
                             let c = 0; const cMax = fixture.channels.length; for (; c < cMax; c++) {
                                 fixture.channels[c] = fixtureProfile.channels[c];
+                                fixture.channels[c].value = fixture.channels[c].defaultValue;
+                                fixture.channels[c].displayValue = fixture.channels[c].defaultValue;
                             }
                         }
                     }
