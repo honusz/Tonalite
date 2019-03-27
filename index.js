@@ -129,7 +129,7 @@ function openSettings() {
             channels = slotsData;
             cp = cp;
 
-            artnet = require('artnet')({ iface: SETTINGS.artnetIP, host: SETTINGS.artnetHost });
+            artnet = require('artnet')({ iface: SETTINGS.artnetIP, host: SETTINGS.artnetHost, sendAll: true });
 
             fs.exists(process.cwd() + '/presets.json', function (exists) {
                 if (exists == true) {
