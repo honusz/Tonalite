@@ -823,7 +823,7 @@ io.on('connection', function (socket) {
                     fixture.channels[c].displayValue = fixture.channels[c].value;
                 }
             }
-            socket.emit('fixtureChannels', { id: fixture.id, name: fixture.name, channels: fixture.channels, chips: fixture.chips });
+            socket.emit('fixtureChannels', { id: fixture.id, name: fixture.name, startDMXAddress: fixture.startDMXAddress, channels: fixture.channels, chips: fixture.chips });
             io.emit('fixtures', cleanFixtures());
             socket.emit('message', { type: "info", content: "Fixture values reset!" });
             //saveShow();
@@ -856,7 +856,7 @@ io.on('connection', function (socket) {
                     fixture.hasLockedChannels = true;
                 }
             }
-            socket.emit('fixtureChannels', { id: fixture.id, name: fixture.name, channels: fixture.channels, chips: fixture.chips });
+            socket.emit('fixtureChannels', { id: fixture.id, name: fixture.name, startDMXAddress: fixture.startDMXAddress, channels: fixture.channels, chips: fixture.chips });
             io.emit('fixtures', cleanFixtures());
             //saveShow();
         } else {
@@ -872,7 +872,7 @@ io.on('connection', function (socket) {
                 fixture.channels[chip.channels[c][0]].value = chip.channels[c][1];
                 fixture.channels[chip.channels[c][0]].displayValue = chip.channels[c][1];
             }
-            socket.emit('fixtureChannels', { id: fixture.id, name: fixture.name, channels: fixture.channels, chips: fixture.chips });
+            socket.emit('fixtureChannels', { id: fixture.id, name: fixture.name, startDMXAddress: fixture.startDMXAddress, channels: fixture.channels, chips: fixture.chips });
             io.emit('fixtures', cleanFixtures());
             //saveShow();
         } else {
