@@ -717,6 +717,9 @@ io.on('connection', function (socket) {
             if (fixtures[f].startDMXAddress == startDMXAddress) {
                 startDMXAddress = null;
             }
+            if (startDMXAddress >= fixtures[f].startDMXAddress && startDMXAddress < fixtures[f].startDMXAddress+fixtures[f].numChannels) {
+                startDMXAddress = null;
+            }
         }
         if (startDMXAddress) {
             let i = 0; const iMax = parseInt(msg.creationCount); for (; i < iMax; i++) {
@@ -734,7 +737,7 @@ io.on('connection', function (socket) {
                 // Assign a random id for easy access to this fixture
                 fixture.id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
                 fixtures.push(JSON.parse(JSON.stringify(fixture)));
-                startDMXAddress += fixture.channels.length;
+                startDMXAddress += fixture.numChannels;
                 delete require.cache[require.resolve(process.cwd() + "/fixtures/" + msg.fixtureName + ".json")]
             }
             io.emit('fixtures', cleanFixtures());
