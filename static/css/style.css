@@ -161,6 +161,10 @@ body {
     margin-top: 1.0rem;
 }
 
+.preset-range {
+    margin-top: 0rem !important;
+}
+
 .topBtns.sticky-top {
     top: 4.5rem;
 }

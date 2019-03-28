@@ -32,6 +32,27 @@
                     <h5>No presets have been created!</h5>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-12">
+                    <label for="grandmaster">Grandmaster:</label>
+                    <input type="range" class="custom-range preset-range" id="grandmaster" min="0" max="100"
+                        v-on:input="updateGrandmasterValue()" v-model="grandmaster">
+                </div>
+            </div>
+        </div>
+
+        <div id="serverDisconnectedModal" data-backdrop="static" data-keyboard="false" class="modal" tabindex="-1"
+            role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body text-center dark">
+                        <h5 class="red">Tonalite Server Disconnected!</h5>
+                        <p>If you have not stopped it manually, there may have been an error or you may be on the
+                            wrong IP. Try rebooting the <span v-if="desktop"></span>server</span><span
+                                v-if="!desktop">console</span>.</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <script src="static/js/jquery-3.3.1.min.js"></script>
