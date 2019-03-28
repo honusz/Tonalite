@@ -325,9 +325,17 @@ function calculateChannels() {
             channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].channels[c].dmxAddressOffset] = Math.floor(cppaddon.mapRange(fixtures[f].channels[c].value, fixtures[f].channels[c].displayMin, fixtures[f].channels[c].displayMax, fixtures[f].channels[c].min, fixtures[f].channels[c].max));
         }
     }
-    return channels;
 };
 
+function calculateChannelsList() {
+    chans = [];
+    let f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
+        let c = 0; const cMax = fixtures[f].channels.length; for (; c < cMax; c++) {
+            chans[(fixtures[f].startDMXAddress - 1) + fixtures[f].channels[c].dmxAddressOffset] = Math.floor(cppaddon.mapRange(fixtures[f].channels[c].value, fixtures[f].channels[c].displayMin, fixtures[f].channels[c].displayMax, fixtures[f].channels[c].min, fixtures[f].channels[c].max));
+        }
+    }
+    return chans;
+};
 
 // Set the cue's output channel values to the correct values from the fixtures. This is basically saving the cue.
 function calculateCue(cue) {
@@ -709,9 +717,6 @@ io.on('connection', function (socket) {
             if (fixtures[f].startDMXAddress == startDMXAddress) {
                 startDMXAddress = null;
             }
-            if (startDMXAddress >= fixtures[f].startDMXAddress && startDMXAddress < fixtures[f].startDMXAddress+fixtures[f].numChannels) {
-                startDMXAddress = null;
-            }
         }
         if (startDMXAddress) {
             let i = 0; const iMax = parseInt(msg.creationCount); for (; i < iMax; i++) {
@@ -729,7 +734,7 @@ io.on('connection', function (socket) {
                 // Assign a random id for easy access to this fixture
                 fixture.id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
                 fixtures.push(JSON.parse(JSON.stringify(fixture)));
-                startDMXAddress += fixture.numChannels;
+                startDMXAddress += fixture.channels.length;
                 delete require.cache[require.resolve(process.cwd() + "/fixtures/" + msg.fixtureName + ".json")]
             }
             io.emit('fixtures', cleanFixtures());
@@ -1262,7 +1267,7 @@ io.on('connection', function (socket) {
                 id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
                 name: "Preset " + (presets.length + 1),
                 active: false,
-                channels: JSON.parse(JSON.stringify(calculateChannels()))
+                channels: JSON.parse(JSON.stringify(calculateChannelsList()))
             };
             presets.push(newPreset);
             io.emit('presets', cleanPresets());
