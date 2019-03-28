@@ -268,6 +268,7 @@ function cleanFixturesForCue() {
         delete newFixtures[f].shortName;
         delete newFixtures[f].manufacturer;
         delete newFixtures[f].hasLockedChannels;
+        delete newFixtures[f].type;
         let c = 0; const cMax = newFixtures[f].channels.length; for (; c < cMax; c++) {
             delete newFixtures[f].channels[c].type;
             delete newFixtures[f].channels[c].subtype;
