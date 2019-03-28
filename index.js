@@ -717,7 +717,7 @@ io.on('connection', function (socket) {
             if (fixtures[f].startDMXAddress == startDMXAddress) {
                 startDMXAddress = null;
             }
-            if (startDMXAddress >= fixtures[f].startDMXAddress && startDMXAddress < fixtures[f].startDMXAddress+fixtures[f].numChannels) {
+            if (startDMXAddress >= fixtures[f].startDMXAddress && startDMXAddress < fixtures[f].startDMXAddress + fixtures[f].numChannels) {
                 startDMXAddress = null;
             }
         }
@@ -1341,6 +1341,22 @@ io.on('connection', function (socket) {
     socket.on('toggleBlackout', function () {
         blackout = !blackout;
         io.emit('blackout', blackout);
+    });
+
+    socket.on('keypadCommand', function (command) {
+        cmd = command.split("");
+        if (cmd.length >= 4) {
+            if (cmd[0] == "chan") {
+                chan = parseInt(cmd[1]);
+                if (cmd[2] == "@") {
+                    let f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
+                        if (chan >= fixtures[f].startDMXAddress && chan < fixtures[f].startDMXAddress+fixtures[f].numChannels) {
+                            
+                        }
+                    }
+                }
+            }
+        }
     });
 
     socket.on('changeGrandmasterValue', function (value) {
