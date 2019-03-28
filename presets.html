@@ -19,8 +19,9 @@
 
 <body>
     <div id="app">
-        <a href="/" class="btn btn-small btn-light"><i class="far fa-pencil-alt"></i></a>
-        <div class="container mt-5">
+        <a href="/" class="mt-1 ml-1 btn btn-small btn-light"><i class="far fa-pencil-alt"></i></a>
+        <button class="mt-1 btn btn-small btn-light" onclick="resetFixtures()"><i class="far fa-sync"></i></button>
+        <div class="container mt-3">
             <div class="row" id="presetsList">
                 <div class="col-4 col-lg-2 mb-3" v-for="preset in presets" :key="preset.id">
                     <div :class="{ 'presetActive' : preset.active == true}" class="presetViewItem presetItem"
@@ -60,6 +61,7 @@
     <script src="static/js/bootstrap.min.js"></script>
     <script src="static/js/socket.io.js"></script>
     <script src="static/js/vue.js"></script>
+    <script src="static/js/bootbox.min.js"></script>
     <script src="static/js/presets_script.min.js"></script>
 </body>
 

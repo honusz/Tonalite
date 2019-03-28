@@ -36,3 +36,11 @@ socket.on('grandmaster', function (value) {
 socket.on('presets', function (presets) {
     app.presets = presets;
 });
+
+function resetFixtures() {
+    bootbox.confirm("Are you sure you want to reset all fixture channel values?", function (result) {
+        if (result === true) {
+            socket.emit('resetFixtures');
+        }
+    });
+};
