@@ -16,7 +16,9 @@
             "displayMin": 0,
             "defaultValue": 0,
             "dmxAddressOffset": 0,
-            "locked": false
+            "locked": false,
+            "hidden": false,
+            "isFine": false
         }
     ],
     "chips": []

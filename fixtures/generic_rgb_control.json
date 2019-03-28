@@ -16,7 +16,9 @@
             "displayMin": 0,
             "defaultValue": 0,
             "dmxAddressOffset": 0,
-            "locked": false
+            "locked": false,
+            "hidden": false,
+            "isFine": false
         },
         {
             "type": "color",
@@ -28,7 +30,9 @@
             "displayMin": 0,
             "defaultValue": 0,
             "dmxAddressOffset": 1,
-            "locked": false
+            "locked": false,
+            "hidden": false,
+            "isFine": false
         },
         {
             "type": "color",
@@ -40,7 +44,9 @@
             "displayMin": 0,
             "defaultValue": 0,
             "dmxAddressOffset": 2,
-            "locked": false
+            "locked": false,
+            "hidden": false,
+            "isFine": false
         },
         {
             "type": "color",
@@ -52,7 +58,9 @@
             "displayMin": 0,
             "defaultValue": 0,
             "dmxAddressOffset": 3,
-            "locked": false
+            "locked": false,
+            "hidden": false,
+            "isFine": false
         },
         {
             "type": "intensity",
@@ -64,7 +72,9 @@
             "displayMin": 0,
             "defaultValue": 0,
             "dmxAddressOffset": 4,
-            "locked": false
+            "locked": false,
+            "hidden": false,
+            "isFine": false
         }
     ],
     "chips": [

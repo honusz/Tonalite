@@ -255,6 +255,8 @@ function cleanFixtures() {
             delete newFixtures[f].channels[c].min;
             delete newFixtures[f].channels[c].defaultValue;
             delete newFixtures[f].channels[c].dmxAddressOffset;
+            delete newFixtures[f].channels[c].isFine;
+            delete newFixtures[f].channels[c].hidden;
             newFixtures[f].channels[c].displayValue = Math.round(newFixtures[f].channels[c].displayValue);
         }
     }
@@ -276,6 +278,7 @@ function cleanFixturesForCue() {
             delete newFixtures[f].channels[c].displayValue;
             delete newFixtures[f].channels[c].defaultValue;
             delete newFixtures[f].channels[c].locked;
+            delete newFixtures[f].channels[c].hidden;
         }
     }
     return newFixtures;
@@ -1351,7 +1354,7 @@ io.on('connection', function (socket) {
                 if (cmd[2] == "@") {
                     let f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
                         if (chan >= fixtures[f].startDMXAddress && chan < fixtures[f].startDMXAddress+fixtures[f].numChannels) {
-                            
+
                         }
                     }
                 }
