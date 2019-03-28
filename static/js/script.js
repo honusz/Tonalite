@@ -146,15 +146,34 @@ socket.on('shows', function (shows) {
 socket.on('fixtureChannels', function (msg) {
     openTab('fixtureChannelsPage');
     $("#fixtureChannels").empty();
+    $("#fixtureChannelsHidden").empty();
     $("#fixtureChannelsName").text(msg.name + " (" + msg.startDMXAddress + ")");
     $("#fixtureSettingsBtn").off().on("click", function () { viewFixtureSettings(msg.id); });
     $("#fixtureResetBtn").off().on("click", function () { resetFixture(msg.id); });
+    hiddenChannels = false;
     var c = 0; const cMax = msg.channels.length; for (; c < cMax; c++) {
-        if (msg.channels[c].locked) {
-            $("#fixtureChannels").append("<button class=\"btn btn-info\" onclick=\"updateFixtureChannelLock(this, '" + msg.id + "', " + c + ")\"><i class=\"far fa-lock-alt fa-sm\"></i></button><label class=\"ml-2\" for=\"" + msg.channels[c].type + "\">" + msg.channels[c].name + ":</label><input type=\"range\" class=\"custom-range\" id=\"" + msg.channels[c].type + "\" max=\"" + msg.channels[c].displayMax + "\" min=\"" + msg.channels[c].displayMin + "\" value=\"" + msg.channels[c].value + "\" oninput=\"updateFixtureChannelValue(this, '" + msg.id + "', " + c + ")\">");
+        chanString = "";
+        if (msg.channels[c].hidden == false) {
+            if (msg.channels[c].locked) {
+                chanString += "<button class=\"btn btn-info\" onclick=\"updateFixtureChannelLock(this, '" + msg.id + "', " + c + ")\"><i class=\"far fa-lock-alt fa-sm\"></i></button>";
+            } else {
+                chanString += "<button class=\"btn btn-info\" onclick=\"updateFixtureChannelLock(this, '" + msg.id + "', " + c + ")\"><i class=\"far fa-lock-open-alt fa-sm \"></i></button>";
+            }
+            chanString += "<label class=\"ml-2\" ";
         } else {
-            $("#fixtureChannels").append("<button class=\"btn btn-info\" onclick=\"updateFixtureChannelLock(this, '" + msg.id + "', " + c + ")\"><i class=\"far fa-lock-open-alt fa-sm \"></i></button><label class=\"ml-2\" for=\"" + msg.channels[c].type + "\">" + msg.channels[c].name + ":</label><input type=\"range\" class=\"custom-range\" id=\"" + msg.channels[c].type + "\" max=\"" + msg.channels[c].displayMax + "\" min=\"" + msg.channels[c].displayMin + "\" value=\"" + msg.channels[c].value + "\" oninput=\"updateFixtureChannelValue(this, '" + msg.id + "', " + c + ")\">");
+            chanString += "<label ";
         }
+        chanString += "for=\"" + msg.channels[c].type + "\">" + msg.channels[c].name + ":</label><input type=\"range\" class=\"custom-range\" id=\"" + msg.channels[c].type + "\" max=\"" + msg.channels[c].displayMax + "\" min=\"" + msg.channels[c].displayMin + "\" value=\"" + msg.channels[c].value + "\" oninput=\"updateFixtureChannelValue(this, '" + msg.id + "', " + c + ")\">";
+        if (msg.channels[c].hidden == false) {
+            $("#fixtureChannels").append(chanString);
+        } else {
+            hiddenChannels = true;
+            $("#fixtureChannelsHidden").append(chanString);
+        }
+
+    }
+    if (hiddenChannels == false) {
+        $("#fixtureChannelsHidden").append("There are no hidden channels");
     }
     if (msg.chips.length != 0) {
         var div = "<div class=\"fixtureChips\"><h5>Fixture Chips:</h5><div class=\"row\">";
