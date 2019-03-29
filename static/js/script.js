@@ -151,7 +151,7 @@ socket.on('fixtureChannels', function (msg) {
     $("#fixtureChannelsName").text(msg.name + " (" + msg.startDMXAddress + ")");
     $("#fixtureSettingsBtn").off().on("click", function () { viewFixtureSettings(msg.id); });
     $("#fixtureResetBtn").off().on("click", function () { resetFixture(msg.id); });
-    hiddenChannels = false;
+    var hiddenChannels = false;
     var c = 0; const cMax = msg.channels.length; for (; c < cMax; c++) {
         chanString = "";
         if (msg.channels[c].hidden == false) {
@@ -173,9 +173,7 @@ socket.on('fixtureChannels', function (msg) {
         }
 
     }
-    if (hiddenChannels == false) {
-        $("#fixtureChannelsHidden").append("There are no hidden channels");
-    }
+    
     if (msg.chips.length != 0) {
         var div = "<div class=\"fixtureChips\"><h5>Fixture Chips:</h5><div class=\"row\">";
 
@@ -263,11 +261,22 @@ socket.on('groupSettings', function (msg) {
 socket.on('groupChannels', function (msg) {
     openTab('groupChannelsPage');
     $("#groupChannels").empty();
+    $("#groupChannelsHidden").empty();
+    $("#groupHiddenChansCollapse").collapse('hide');
     $("#groupChannelsName").text(msg.name);
     $("#groupSettingsBtn").off().on("click", function () { viewGroupSettings(msg.id); });
     $("#groupResetBtn").off().on("click", function () { resetGroup(msg.id); });
+    var hiddenChannels = false;
     let c = 0; const cMax = msg.channels.length; for (; c < cMax; c++) {
-        $("#groupChannels").append("<label class=\"ml-2\" for=\"" + msg.channels[c].type + "\">" + msg.channels[c].name + ":</label><input type=\"range\" class=\"custom-range\" id=\"groupChan" + c + "\" max=\"" + msg.channels[c].displayMax + "\" min=\"" + msg.channels[c].displayMin + "\" value=\"" + msg.channels[c].value + "\" oninput=\"updateGroupChannelValue(this, '" + msg.id + "', " + c + ")\">");
+        if (msg.channels[c].hidden == false) {
+            $("#groupChannels").append("<label class=\"ml-2\" for=\"" + msg.channels[c].type + "\">" + msg.channels[c].name + ":</label><input type=\"range\" class=\"custom-range\" id=\"groupChan" + c + "\" max=\"" + msg.channels[c].displayMax + "\" min=\"" + msg.channels[c].displayMin + "\" value=\"" + msg.channels[c].value + "\" oninput=\"updateGroupChannelValue(this, '" + msg.id + "', " + c + ")\">");
+        } else {
+            hiddenChannels = true;
+            $("#groupChannelsHidden").append("<label class=\"ml-2\" for=\"" + msg.channels[c].type + "\">" + msg.channels[c].name + ":</label><input type=\"range\" class=\"custom-range\" id=\"groupChan" + c + "\" max=\"" + msg.channels[c].displayMax + "\" min=\"" + msg.channels[c].displayMin + "\" value=\"" + msg.channels[c].value + "\" oninput=\"updateGroupChannelValue(this, '" + msg.id + "', " + c + ")\">");
+        }
+    }
+    if (hiddenChannels == false) {
+        $("#groupChannelsHidden").append("There are no hidden channels");
     }
 });
 
