@@ -1160,7 +1160,7 @@ io.on('connection', function (socket) {
                 var fixture = fixtures[fixtures.map(el => el.id).indexOf(fixtureID)];
                 fixture.channels.forEach(function (channel) {
                     var newChannel = JSON.parse(JSON.stringify(channel));
-                    if (!channelCats.includes(newChannel.type + ":" + newChannel.subtype)) {
+                    if (!channelCats.includes(newChannel.name + ":" + newChannel.type + ":" + newChannel.subtype)) {
                         newChannel.value = newChannel.defaultValue;
                         if (newChannel.subtype != "") {
                             newChannel.name = titleCase(newChannel.subtype);
@@ -1168,7 +1168,7 @@ io.on('connection', function (socket) {
                             newChannel.name = titleCase(newChannel.type);
                         }
                         newGroup.channels.push(newChannel);
-                        channelCats.push(newChannel.type + ":" + newChannel.subtype);
+                        channelCats.push(newChannel.name + ":" + newChannel.type + ":" + newChannel.subtype);
                     }
                 });
             });
@@ -1446,26 +1446,26 @@ io.on('connection', function (socket) {
                         }
                     }
                 });
-                groups.forEach(function (group) {
-                    group.channels = [];
-                    var channelCats = [];
-                    group.ids.forEach(function (fixtureID) {
-                        var fixture = fixtures[fixtures.map(el => el.id).indexOf(fixtureID)];
-                        fixture.channels.forEach(function (channel) {
-                            var newChannel = JSON.parse(JSON.stringify(channel));
-                            if (!channelCats.includes(newChannel.type + ":" + newChannel.subtype)) {
-                                newChannel.value = newChannel.defaultValue;
-                                if (newChannel.subtype != "") {
-                                    newChannel.name = titleCase(newChannel.subtype);
-                                } else {
-                                    newChannel.name = titleCase(newChannel.type);
-                                }
-                                group.channels.push(newChannel);
-                                channelCats.push(newChannel.type + ":" + newChannel.subtype);
-                            }
-                        });
-                    });
-                })
+            });
+        });
+        groups.forEach(function (group) {
+            group.channels = [];
+            var channelCats = [];
+            group.ids.forEach(function (fixtureID) {
+                var fixture = fixtures[fixtures.map(el => el.id).indexOf(fixtureID)];
+                fixture.channels.forEach(function (channel) {
+                    var newChannel = JSON.parse(JSON.stringify(channel));
+                    if (!channelCats.includes(newChannel.name + ":" + newChannel.type + ":" + newChannel.subtype)) {
+                        newChannel.value = newChannel.defaultValue;
+                        if (newChannel.subtype != "") {
+                            newChannel.name = titleCase(newChannel.subtype);
+                        } else {
+                            newChannel.name = titleCase(newChannel.type);
+                        }
+                        group.channels.push(newChannel);
+                        channelCats.push(newChannel.name + ":" + newChannel.type + ":" + newChannel.subtype);
+                    }
+                });
             });
         });
         saveShow();
