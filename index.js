@@ -1440,8 +1440,32 @@ io.on('connection', function (socket) {
                         fixture.chips = fixtureProfile.chips;
                         fixture.numChannels = fixtureProfile.numChannels;
                         fixture.channels = fixtureProfile.channels;
+                        let c = 0; const cMax = fixture.channels.length; for (; c < cMax; c++) {
+                            fixture.channels[c].value = fixture.channels[c].defaultValue;
+                            fixture.channels[c].displayValue = fixture.channels[c].defaultValue;
+                        }
                     }
                 });
+                groups.forEach(function (group) {
+                    group.channels = [];
+                    var channelCats = [];
+                    group.ids.forEach(function (fixtureID) {
+                        var fixture = fixtures[fixtures.map(el => el.id).indexOf(fixtureID)];
+                        fixture.channels.forEach(function (channel) {
+                            var newChannel = JSON.parse(JSON.stringify(channel));
+                            if (!channelCats.includes(newChannel.type + ":" + newChannel.subtype)) {
+                                newChannel.value = newChannel.defaultValue;
+                                if (newChannel.subtype != "") {
+                                    newChannel.name = titleCase(newChannel.subtype);
+                                } else {
+                                    newChannel.name = titleCase(newChannel.type);
+                                }
+                                group.channels.push(newChannel);
+                                channelCats.push(newChannel.type + ":" + newChannel.subtype);
+                            }
+                        });
+                    });
+                })
             });
         });
         saveShow();
