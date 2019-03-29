@@ -253,6 +253,10 @@ socket.on('groupSettings', function (msg) {
     $("#groupDeleteBtn").off().on("click", function () { removeGroup(msg.group.id); });
     $("#groupSaveBtn").off().on("click", function () { saveGroupSettings(msg.group.id); });
     $("#groupNameInput").val(msg.group.name);
+    $("#groupFixtures").empty();
+    msg.groupFixtures.forEach(function (fixture) {
+        $("#groupFixtures").append(fixture[0] + " (" + fixture[1] + ")<br>");
+    });
 });
 
 socket.on('groupChannels', function (msg) {

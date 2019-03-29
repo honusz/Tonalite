@@ -321,6 +321,16 @@ function cleanPresets() {
     return newPresets;
 }
 
+function getGroupFixtures(groupID) {
+    var group = groups[groups.map(el => el.id).indexOf(groupID)];
+    var fixtureStarts = [];
+    let i = 0; const iMax = group.ids.length; for (; i < iMax; i++) {
+        var fixture = fixtures[fixtures.map(el => el.id).indexOf(group.ids[i])];
+        fixtureStarts.push([fixture.name, fixture.startDMXAddress]);
+    }
+    return fixtureStarts;
+}
+
 // Set the output channel values to those of the current fixture values
 function calculateChannels() {
     let f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
@@ -331,7 +341,7 @@ function calculateChannels() {
 };
 
 function calculateChannelsList() {
-    chans = [];
+    var chans = [];
     let f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
         let c = 0; const cMax = fixtures[f].channels.length; for (; c < cMax; c++) {
             chans[(fixtures[f].startDMXAddress - 1) + fixtures[f].channels[c].dmxAddressOffset] = Math.floor(cppaddon.mapRange(fixtures[f].channels[c].value, fixtures[f].channels[c].displayMin, fixtures[f].channels[c].displayMax, fixtures[f].channels[c].min, fixtures[f].channels[c].max));
@@ -1209,7 +1219,7 @@ io.on('connection', function (socket) {
 
     socket.on('getGroupSettings', function (groupID) {
         if (groups.length != 0) {
-            socket.emit('groupSettings', { group: groups[groups.map(el => el.id).indexOf(groupID)] });
+            socket.emit('groupSettings', { group: groups[groups.map(el => el.id).indexOf(groupID)], groupFixtures: getGroupFixtures(groupID) });
         } else {
             socket.emit('message', { type: "error", content: "No groups exist!" });
         }
@@ -1219,7 +1229,7 @@ io.on('connection', function (socket) {
         if (groups.length != 0) {
             var group = groups[groups.map(el => el.id).indexOf(msg.id)];
             group.name = msg.name;
-            socket.emit('groupSettings', { group: group });
+            socket.emit('groupSettings', { group: group, groupFixtures: getGroupFixtures(group.id) });
             socket.emit('message', { type: "info", content: "Group settings have been updated!" });
             io.emit('groups', cleanGroups());
             saveShow();

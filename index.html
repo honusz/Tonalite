@@ -183,13 +183,15 @@
           </div>
         </div>
         <div id="fixtureChannels"></div>
-        <button class="btn btn-primary mb-1" type="button" data-toggle="collapse" data-target="#fixturehiddenChansCollapse" aria-expanded="false" aria-controls="fixturehiddenChansCollapse">
+        <button class="btn btn-primary mb-1" type="button" data-toggle="collapse"
+          data-target="#fixturehiddenChansCollapse" aria-expanded="false" aria-controls="fixturehiddenChansCollapse">
           View Hidden Channels
         </button>
         <div class="collapse" id="fixturehiddenChansCollapse">
-          <div class="card card-body bg-dark"><div class="row">
-            <div id="fixtureChannelsHidden"></div>
-          </div></div>
+          <div class="card card-body bg-dark">
+            <div class="row pl-2 pr-2" id="fixtureChannelsHidden">
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -362,6 +364,8 @@
             </div>
           </div>
         </div>
+        <b>Group Fixtures:</b>
+        <div id="groupFixtures"></div>
       </div>
     </div>
     <div id="groupChannelsPage" class="tabcontent">
@@ -386,7 +390,8 @@
       <div class="container">
         <div class="row topBtns">
           <div class="col-12">
-            <button :disabled="fixtures.length == 0" class="btn btn-success btn-block" v-on:click="recordPreset()">Record
+            <button :disabled="fixtures.length == 0" class="btn btn-success btn-block"
+              v-on:click="recordPreset()">Record
               Preset</button>
           </div>
         </div>
