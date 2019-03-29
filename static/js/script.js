@@ -247,12 +247,12 @@ socket.on('groups', function (groups) {
     app.groups = groups;
 });
 
-socket.on('groupSettings', function (group) {
+socket.on('groupSettings', function (msg) {
     openTab('groupSettingsPage');
-    $("#groupChannelsBackBtn").off().on("click", function () { app.viewGroupChannels(group.id); });
-    $("#groupDeleteBtn").off().on("click", function () { removeGroup(group.id); });
-    $("#groupSaveBtn").off().on("click", function () { saveGroupSettings(group.id); });
-    $("#groupNameInput").val(group.name);
+    $("#groupChannelsBackBtn").off().on("click", function () { app.viewGroupChannels(msg.group.id); });
+    $("#groupDeleteBtn").off().on("click", function () { removeGroup(msg.group.id); });
+    $("#groupSaveBtn").off().on("click", function () { saveGroupSettings(msg.group.id); });
+    $("#groupNameInput").val(msg.group.name);
 });
 
 socket.on('groupChannels', function (msg) {

@@ -1209,7 +1209,7 @@ io.on('connection', function (socket) {
 
     socket.on('getGroupSettings', function (groupID) {
         if (groups.length != 0) {
-            socket.emit('groupSettings', groups[groups.map(el => el.id).indexOf(groupID)]);
+            socket.emit('groupSettings', { group: groups[groups.map(el => el.id).indexOf(groupID)] });
         } else {
             socket.emit('message', { type: "error", content: "No groups exist!" });
         }
@@ -1219,7 +1219,7 @@ io.on('connection', function (socket) {
         if (groups.length != 0) {
             var group = groups[groups.map(el => el.id).indexOf(msg.id)];
             group.name = msg.name;
-            socket.emit('groupSettings', group);
+            socket.emit('groupSettings', { group: group });
             socket.emit('message', { type: "info", content: "Group settings have been updated!" });
             io.emit('groups', cleanGroups());
             saveShow();
@@ -1353,7 +1353,7 @@ io.on('connection', function (socket) {
                 chan = parseInt(cmd[1]);
                 if (cmd[2] == "@") {
                     let f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
-                        if (chan >= fixtures[f].startDMXAddress && chan < fixtures[f].startDMXAddress+fixtures[f].numChannels) {
+                        if (chan >= fixtures[f].startDMXAddress && chan < fixtures[f].startDMXAddress + fixtures[f].numChannels) {
 
                         }
                     }
@@ -1428,13 +1428,13 @@ io.on('connection', function (socket) {
                         fixture.manufacturer = fixtureProfile.manufacturer;
                         fixture.type = fixtureProfile.type;
                         fixture.chips = fixtureProfile.chips;
-                        if (fixture.channels.length == fixtureProfile.channels.length) {
+                        /*if (fixture.channels.length == fixtureProfile.channels.length) {
                             let c = 0; const cMax = fixture.channels.length; for (; c < cMax; c++) {
                                 fixture.channels[c] = fixtureProfile.channels[c];
                                 fixture.channels[c].value = fixture.channels[c].defaultValue;
                                 fixture.channels[c].displayValue = fixture.channels[c].defaultValue;
                             }
-                        }
+                        }*/
                     }
                 });
             });
