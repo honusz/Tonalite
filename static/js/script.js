@@ -254,9 +254,9 @@ socket.on('groupSettings', function (msg) {
     $("#groupSaveBtn").off().on("click", function () { saveGroupSettings(msg.group.id); });
     $("#groupNameInput").val(msg.group.name);
     $("#groupFixtures").empty();
-    msg.groupFixtures.forEach(function (fixture) {
-        $("#groupFixtures").append(fixture[0] + " (" + fixture[1] + ")<br>");
-    });
+    let f = 0; const fMax = msg.groupFixtures.length; for (; f < fMax; f++) {
+        $("#groupFixtures").append(msg.groupFixtures[f][0] + " (" + msg.groupFixtures[f][1] + ")<br>");
+    }
 });
 
 socket.on('groupChannels', function (msg) {
@@ -265,9 +265,9 @@ socket.on('groupChannels', function (msg) {
     $("#groupChannelsName").text(msg.name);
     $("#groupSettingsBtn").off().on("click", function () { viewGroupSettings(msg.id); });
     $("#groupResetBtn").off().on("click", function () { resetGroup(msg.id); });
-    msg.channels.forEach(function (channel, i) {
-        $("#groupChannels").append("<label class=\"ml-2\" for=\"" + channel.type + "\">" + channel.name + ":</label><input type=\"range\" class=\"custom-range\" id=\"" + channel.type + "\" max=\"" + channel.displayMax + "\" min=\"" + channel.displayMin + "\" value=\"" + channel.value + "\" oninput=\"updateGroupChannelValue(this, '" + msg.id + "', " + i + ")\">");
-    });
+    let c = 0; const cMax = msg.channels.length; for (; c < cMax; c++) {
+        $("#groupChannels").append("<label class=\"ml-2\" for=\"" + msg.channels[c].type + "\">" + msg.channels[c].name + ":</label><input type=\"range\" class=\"custom-range\" id=\"groupChan" + c + "\" max=\"" + msg.channels[c].displayMax + "\" min=\"" + msg.channels[c].displayMin + "\" value=\"" + msg.channels[c].value + "\" oninput=\"updateGroupChannelValue(this, '" + msg.id + "', " + c + ")\">");
+    }
 });
 
 socket.on('settings', function (settings) {

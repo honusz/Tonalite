@@ -770,9 +770,10 @@ io.on('connection', function (socket) {
                     }
                 }
             }
-            fixtures[fixtures.map(el => el.id).indexOf(fixtureID)].channels.forEach(function (channel) {
-                channels[(fixtures[fixtures.map(el => el.id).indexOf(fixtureID)].startDMXAddress - 1) + channel.dmxAddressOffset] = 0;
-            });
+            var fixture = fixtures[fixtures.map(el => el.id).indexOf(fixtureID)];
+            let c = 0; const cMax = fixture.channels.length; for (; c < cMax; c++) {
+                fixture.channels[c][(fixture.startDMXAddress - 1) + fixture.channels[c].dmxAddressOffset] = 0;
+            }
             fixtures.splice(fixtures.map(el => el.id).indexOf(fixtureID), 1);
             socket.emit('message', { type: "info", content: "Fixture has been removed!" });
             io.emit('fixtures', cleanFixtures());
@@ -1156,17 +1157,17 @@ io.on('connection', function (socket) {
                 channels: []
             };
             var channelCats = [];
-            newGroup.ids.forEach(function (fixtureID) {
-                var fixture = fixtures[fixtures.map(el => el.id).indexOf(fixtureID)];
-                fixture.channels.forEach(function (channel) {
-                    var newChannel = JSON.parse(JSON.stringify(channel));
+            let i = 0; const iMax = newGroup.ids.length; for (; i < iMax; i++) {
+                var fixture = fixtures[fixtures.map(el => el.id).indexOf(newGroup.ids[i])];
+                let c = 0; const cMax = fixture.channels.length; for (; c < cMax; c++) {
+                    var newChannel = JSON.parse(JSON.stringify(fixture.channels[c]));
                     if (!channelCats.includes(newChannel.name + ":" + newChannel.type + ":" + newChannel.subtype)) {
                         newChannel.value = newChannel.defaultValue;
                         newGroup.channels.push(newChannel);
                         channelCats.push(newChannel.name + ":" + newChannel.type + ":" + newChannel.subtype);
                     }
-                });
-            });
+                }
+            }
             groups.push(newGroup);
             io.emit('groups', cleanGroups());
             saveShow();
@@ -1178,20 +1179,20 @@ io.on('connection', function (socket) {
     socket.on('getGroupChannels', function (groupID) {
         if (groups.length != 0) {
             var group = groups[groups.map(el => el.id).indexOf(groupID)];
-            group.channels.forEach(function (channel) {
+            let c = 0; const cMax = group.channels.length; for (; c < cMax; c++) {
                 var valAvg = 0;
                 var valAvgCount = 0;
-                group.ids.forEach(function (id) {
-                    var fixture = fixtures[fixtures.map(el => el.id).indexOf(id)];
-                    fixture.channels.forEach(function (chan) {
-                        if (chan.type === channel.type && chan.subtype === channel.subtype) {
-                            valAvg = valAvg + chan.value;
+                let i = 0; const iMax = group.ids.length; for (; i < iMax; i++) {
+                    var fixture = fixtures[fixtures.map(el => el.id).indexOf(group.ids[i])];
+                    let fc = 0; const fcMax = fixture.channels.length; for (; fc < fcMax; fc++) {
+                        if (fixture.channels[fc].name === group.channels[c].name && fixture.channels[fc].type === group.channels[c].type && fixture.channels[fc].subtype === group.channels[c].subtype) {
+                            valAvg = valAvg + fixture.channels[fc].value;
                             valAvgCount++;
                         }
-                    });
-                });
-                channel.value = valAvg / valAvgCount;
-            });
+                    }
+                }
+                group.channels[c].value = valAvg / valAvgCount;
+            }
             socket.emit('groupChannels', { id: group.id, name: group.name, channels: group.channels });
         } else {
             socket.emit('message', { type: "error", content: "No groups exist!" });
@@ -1247,11 +1248,11 @@ io.on('connection', function (socket) {
     socket.on('resetGroup', function (groupID) {
         if (groups.length != 0) {
             var group = groups[groups.map(el => el.id).indexOf(groupID)];
-            group.channels.forEach(function (channel) {
-                channel.value = channel.defaultValue;
-                channel.displayValue = channel.value;
-                setFixtureGroupValues(group, channel);
-            });
+            let c = 0; const cMax = group.channels.length; for (; c < cMax; c++) {
+                group.channels[c].value = group.channels[c].defaultValue;
+                group.channels[c].displayValue = group.channels[c].value;
+                setFixtureGroupValues(group, group.channels[c]);
+            }
             socket.emit('groupChannels', { id: group.id, name: group.name, channels: group.channels });
             io.emit('fixtures', cleanFixtures());
             socket.emit('message', { type: "info", content: "Group channels reset!" });
