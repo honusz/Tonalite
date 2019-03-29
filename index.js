@@ -472,7 +472,7 @@ function setFixtureGroupValues(group, channel) {
     let i = 0; const iMax = group.ids.length; for (; i < iMax; i++) {
         var fixture = fixtures[fixtures.map(el => el.id).indexOf(group.ids[i])];
         let c = 0; const cMax = fixture.channels.length; for (; c < cMax; c++) {
-            if (fixture.channels[c].type === channel.type && fixture.channels[c].subtype === channel.subtype) {
+            if (fixture.channels[c].name === channel.name && fixture.channels[c].type === channel.type && fixture.channels[c].subtype === channel.subtype) {
                 if (fixture.channels[c].locked != true) {
                     fixture.channels[c].value = channel.value;
                     fixture.channels[c].displayValue = fixture.channels[c].value;
@@ -1162,11 +1162,6 @@ io.on('connection', function (socket) {
                     var newChannel = JSON.parse(JSON.stringify(channel));
                     if (!channelCats.includes(newChannel.name + ":" + newChannel.type + ":" + newChannel.subtype)) {
                         newChannel.value = newChannel.defaultValue;
-                        if (newChannel.subtype != "") {
-                            newChannel.name = titleCase(newChannel.subtype);
-                        } else {
-                            newChannel.name = titleCase(newChannel.type);
-                        }
                         newGroup.channels.push(newChannel);
                         channelCats.push(newChannel.name + ":" + newChannel.type + ":" + newChannel.subtype);
                     }
@@ -1450,6 +1445,7 @@ io.on('connection', function (socket) {
         });
         groups.forEach(function (group) {
             group.channels = [];
+            console.log(group.channels);
             var channelCats = [];
             group.ids.forEach(function (fixtureID) {
                 var fixture = fixtures[fixtures.map(el => el.id).indexOf(fixtureID)];
@@ -1457,11 +1453,6 @@ io.on('connection', function (socket) {
                     var newChannel = JSON.parse(JSON.stringify(channel));
                     if (!channelCats.includes(newChannel.name + ":" + newChannel.type + ":" + newChannel.subtype)) {
                         newChannel.value = newChannel.defaultValue;
-                        if (newChannel.subtype != "") {
-                            newChannel.name = titleCase(newChannel.subtype);
-                        } else {
-                            newChannel.name = titleCase(newChannel.type);
-                        }
                         group.channels.push(newChannel);
                         channelCats.push(newChannel.name + ":" + newChannel.type + ":" + newChannel.subtype);
                     }
