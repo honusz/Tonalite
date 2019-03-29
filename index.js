@@ -1438,13 +1438,8 @@ io.on('connection', function (socket) {
                         fixture.manufacturer = fixtureProfile.manufacturer;
                         fixture.type = fixtureProfile.type;
                         fixture.chips = fixtureProfile.chips;
-                        /*if (fixture.channels.length == fixtureProfile.channels.length) {
-                            let c = 0; const cMax = fixture.channels.length; for (; c < cMax; c++) {
-                                fixture.channels[c] = fixtureProfile.channels[c];
-                                fixture.channels[c].value = fixture.channels[c].defaultValue;
-                                fixture.channels[c].displayValue = fixture.channels[c].defaultValue;
-                            }
-                        }*/
+                        fixture.numChannels = fixtureProfile.numChannels;
+                        fixture.channels = fixtureProfile.channels;
                     }
                 });
             });
