@@ -1,5 +1,5 @@
 {
-    "name": "MiniLED Moving Head",
+    "name": "MiniLED Moving Head Mode 1",
     "shortName": "",
     "manufacturer": "Professional Stage Lighting",
     "type": "moving",
@@ -102,6 +102,34 @@
             "dmxAddressOffset": 6,
             "locked": false,
             "hidden": false,
+            "isFine": false
+        },
+        {
+            "type": "control",
+            "subtype": "speed",
+            "name": "Pan/Tilt Speed",
+            "max": 255,
+            "min": 0,
+            "displayMax": 100,
+            "displayMin": 0,
+            "defaultValue": 0,
+            "dmxAddressOffset": 7,
+            "locked": false,
+            "hidden": true,
+            "isFine": false
+        },
+        {
+            "type": "control",
+            "subtype": "macro",
+            "name": "Reset",
+            "max": 255,
+            "min": 0,
+            "displayMax": 100,
+            "displayMin": 0,
+            "defaultValue": 0,
+            "dmxAddressOffset": 8,
+            "locked": false,
+            "hidden": true,
             "isFine": false
         }
     ],
