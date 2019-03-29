@@ -147,6 +147,7 @@ socket.on('fixtureChannels', function (msg) {
     openTab('fixtureChannelsPage');
     $("#fixtureChannels").empty();
     $("#fixtureChannelsHidden").empty();
+    $("#fixtureHiddenChansCollapse").collapse('hide');
     $("#fixtureChannelsName").text(msg.name + " (" + msg.startDMXAddress + ")");
     $("#fixtureSettingsBtn").off().on("click", function () { viewFixtureSettings(msg.id); });
     $("#fixtureResetBtn").off().on("click", function () { resetFixture(msg.id); });
