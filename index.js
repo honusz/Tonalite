@@ -1445,7 +1445,6 @@ io.on('connection', function (socket) {
         });
         groups.forEach(function (group) {
             group.channels = [];
-            console.log(group.channels);
             var channelCats = [];
             group.ids.forEach(function (fixtureID) {
                 var fixture = fixtures[fixtures.map(el => el.id).indexOf(fixtureID)];
