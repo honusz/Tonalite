@@ -6,6 +6,7 @@ var app = new Vue({
     el: '#app',
     data: {
         fixtures: [],
+        backupFixtures: [],
         groups: [],
         presets: [],
         cues: [],
@@ -125,7 +126,10 @@ socket.on('currentCue', function (value) {
 });
 
 socket.on('fixtures', function (fixtures) {
-    app.fixtures = fixtures;
+    app.backupFixtures = fixtures;
+    if (currentTab === "fixtures") {
+        app.fixtures = fixtures;
+    }
 });
 
 socket.on('fixtureProfiles', function (profiles) {
@@ -562,6 +566,9 @@ function openTab(tabName) {
     // Show the current tab, and add an "active" class to the button that opened the tab
     document.getElementById(tabName).style.display = "block";
     currentTab = tabName;
+    if (currentTab == "fixtures") {
+        app.fixtures = app.backupFixtures;
+    }
 
     if (document.getElementsByClassName("tabitem-" + tabName)[0]) {
         document.getElementsByClassName("tabitem-" + tabName)[0].classList.add("active");
