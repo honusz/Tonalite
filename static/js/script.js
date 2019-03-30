@@ -177,7 +177,7 @@ socket.on('fixtureChannels', function (msg) {
         }
 
     }
-    
+
     if (msg.chips.length != 0) {
         var div = "<div class=\"fixtureChips\"><h5>Fixture Chips:</h5><div class=\"row\">";
 
