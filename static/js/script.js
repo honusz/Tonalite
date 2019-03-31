@@ -226,7 +226,8 @@ socket.on('cueSettings', function (cue) {
     $("#cueSaveBtn").off().on("click", function () { saveCueSettings(cue.id); });
     $("#gotoCueBtn").off().on("click", function () { gotoCue(cue.id); });
     $("#cueUpdateBtn").off().on("click", function () { updateCue(cue.id); });
-    $("#cueCloneBtn").off().on("click", function () { cloneCue(cue.id); });
+    $("#cueCloneEndBtn").off().on("click", function () { cloneCueEnd(cue.id); });
+    $("#cueCloneNextBtn").off().on("click", function () { cloneCueNext(cue.id); });
     $("#moveCueUpBtn").off().on("click", function () { moveCueUp(cue.id); });
     $("#moveCueDownBtn").off().on("click", function () { moveCueDown(cue.id); });
     $("#cueNameInput").val(cue.name);
@@ -402,8 +403,12 @@ function updateCue(cueID) {
     socket.emit('updateCue', cueID);
 }
 
-function cloneCue(cueID) {
-    socket.emit('cloneCue', cueID);
+function cloneCueEnd(cueID) {
+    socket.emit('cloneCueEnd', cueID);
+}
+
+function cloneCueNext(cueID) {
+    socket.emit('cloneCueNext', cueID);
 }
 
 function moveCueUp(cueID) {

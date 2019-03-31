@@ -233,12 +233,21 @@ function logError(msg) {
     });
 }
 
-function moveArrayItem(array, element, delta) {
-    var index = element;
-    var newIndex = index + delta;
-    if (newIndex < 0 || newIndex === array.length) return; // Already at the top or bottom.
-    var indexes = [index, newIndex].sort(); // Sort the indixes
-    array.splice(indexes[0], 2, array[indexes[1]], array[indexes[0]]); // Replace from lowest index, two elements, reverting the order
+function moveArrayItem(arr, old_index, new_index) {
+    while (old_index < 0) {
+        old_index += arr.length;
+    }
+    while (new_index < 0) {
+        new_index += arr.length;
+    }
+    if (new_index >= arr.length) {
+        var k = new_index - arr.length;
+        while ((k--) + 1) {
+            arr.push(undefined);
+        }
+    }
+    arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
+    return arr;
 };
 
 function titleCase(str) {
@@ -936,12 +945,28 @@ io.on('connection', function (socket) {
         }
     });
 
-    socket.on('cloneCue', function (cueID) {
+    socket.on('cloneCueEnd', function (cueID) {
         if (cues.length != 0) {
             var newCue = JSON.parse(JSON.stringify(cues[cues.map(el => el.id).indexOf(cueID)]));
             newCue.id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
             cues.push(newCue);
-            socket.emit('cueSettings', newCue);
+            socket.emit('cueSettings', cues[cues.map(el => el.id).indexOf(cueID)]);
+            io.emit('currentCue', currentCueID);
+            io.emit('cues', cleanCues());
+            socket.emit('message', { type: "info", content: "Cue has been cloned!" });
+            saveShow();
+        } else {
+            socket.emit('message', { type: "error", content: "No cues exist!" });
+        }
+    });
+
+    socket.on('cloneCueNext', function (cueID) {
+        if (cues.length != 0) {
+            var newCue = JSON.parse(JSON.stringify(cues[cues.map(el => el.id).indexOf(cueID)]));
+            newCue.id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+            cues.push(newCue);
+            moveArrayItem(cues, cues.map(el => el.id).indexOf(newCue.id), cues.map(el => el.id).indexOf(cueID) + 1);
+            socket.emit('cueSettings', cues[cues.map(el => el.id).indexOf(cueID)]);
             io.emit('currentCue', currentCueID);
             io.emit('cues', cleanCues());
             socket.emit('message', { type: "info", content: "Cue has been cloned!" });
@@ -1129,7 +1154,7 @@ io.on('connection', function (socket) {
 
     socket.on('moveCueUp', function (cueID) {
         if (cues.length != 0) {
-            moveArrayItem(cues, cues.map(el => el.id).indexOf(cueID), -1);
+            moveArrayItem(cues, cues.map(el => el.id).indexOf(cueID), cues.map(el => el.id).indexOf(cueID) - 1);
             io.emit('currentCue', currentCueID);
             io.emit('cues', cleanCues());
             socket.emit('message', { type: "info", content: "Cue moved up." });
@@ -1141,7 +1166,7 @@ io.on('connection', function (socket) {
 
     socket.on('moveCueDown', function (cueID) {
         if (cues.length != 0) {
-            moveArrayItem(cues, cues.map(el => el.id).indexOf(cueID), 1);
+            moveArrayItem(cues, cues.map(el => el.id).indexOf(cueID), cues.map(el => el.id).indexOf(cueID) + 1);
             io.emit('currentCue', currentCueID);
             io.emit('cues', cleanCues());
             socket.emit('message', { type: "info", content: "Cue moved down." });
