@@ -771,8 +771,8 @@ io.on('connection', function (socket) {
                 }
             }
             var fixture = fixtures[fixtures.map(el => el.id).indexOf(fixtureID)];
-            let c = 0; const cMax = fixture.channels.length; for (; c < cMax; c++) {
-                fixture.channels[c][(fixture.startDMXAddress - 1) + fixture.channels[c].dmxAddressOffset] = 0;
+            let cc = 0; const ccMax = fixture.channels.length; for (; cc < ccMax; cc++) {
+                fixture.channels[cc][(fixture.startDMXAddress - 1) + fixture.channels[cc].dmxAddressOffset] = 0;
             }
             fixtures.splice(fixtures.map(el => el.id).indexOf(fixtureID), 1);
             socket.emit('message', { type: "info", content: "Fixture has been removed!" });
