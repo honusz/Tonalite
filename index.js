@@ -13,6 +13,7 @@ const unzipper = require('unzipper');
 require('sanic.js').changeMyWorld();
 const cppaddon = require('./build/Release/cppaddon.node');
 const QRCode = require('qrcode');
+
 /*
 Features:
 - Get Fixtures - Done - Done UI
