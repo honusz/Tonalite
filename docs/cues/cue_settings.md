@@ -14,7 +14,7 @@ Save the changes you have made to this cue. Make sure you always press this butt
 
 Remove this cue from the show. You will be prompted to make sure that you really want to do this.
 
-### Clone
+### Clone End
 
 Make a duplicate of this cue and place it at the end of the cue list. The new cloned cue will have the same settings and fixture values as the cue that is being cloned.
 
@@ -25,6 +25,10 @@ Transition to this cue specific cue in the time stated in the cue's `Length` set
 ### Update Channels
 
 Update this cue to use the current values of the show's fixture's channels.
+
+### Clone Next
+
+Make a duplicate of this cue and place it after this cue in the cue list. The new cloned cue will have the same settings and fixture values as the cue that is being cloned.
 
 ### Up
 
