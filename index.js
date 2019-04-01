@@ -30,7 +30,8 @@ Features:
 - Get Cue Settings - Done - Done UI
 - Update Cue - Done - Done UI
 - Edit Cue Settings - Done - Done UI
-- Clone Cue - Done - Done UI
+- Clone Cue Last - Done - Done UI
+- Clone Cue Next - Done - Done UI
 - Move Cue Up - Done - Done UI
 - Move Cue Down - Done - Done UI
 - Remove Cue - Done - Done UI
