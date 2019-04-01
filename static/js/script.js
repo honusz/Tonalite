@@ -1,12 +1,11 @@
 var socket = io('http://' + document.domain + ':' + location.port);
 var currentTab = "fixtures";
 document.getElementById("fixturesTab").click();
-
+var backupFixtures = [];
 var app = new Vue({
     el: '#app',
     data: {
         fixtures: [],
-        backupFixtures: [],
         groups: [],
         presets: [],
         cues: [],
@@ -126,7 +125,7 @@ socket.on('currentCue', function (value) {
 });
 
 socket.on('fixtures', function (fixtures) {
-    app.backupFixtures = fixtures;
+    backupFixtures = fixtures;
     if (currentTab === "fixtures") {
         app.fixtures = fixtures;
     }
@@ -583,7 +582,7 @@ function openTab(tabName) {
     document.getElementById(tabName).style.display = "block";
     currentTab = tabName;
     if (currentTab == "fixtures") {
-        app.fixtures = app.backupFixtures;
+        app.fixtures = backupFixtures;
     }
 
     if (document.getElementsByClassName("tabitem-" + tabName)[0]) {
