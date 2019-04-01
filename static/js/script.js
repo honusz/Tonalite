@@ -259,7 +259,10 @@ socket.on('groupSettings', function (msg) {
     $("#groupNameInput").val(msg.group.name);
     $("#groupFixtures").empty();
     let f = 0; const fMax = msg.groupFixtures.length; for (; f < fMax; f++) {
-        $("#groupFixtures").append(msg.groupFixtures[f][0] + " (" + msg.groupFixtures[f][1] + ")<br>");
+        $("#groupFixtures").append(msg.groupFixtures[f][0] + " (" + msg.groupFixtures[f][1] + ")");
+        if (msg.groupFixtures.length > 1) {
+            $("#groupFixtures").append(" <button class=\"btn btn-danger btn-sm mb-1\" onclick=\"removeGroupFixture('" + msg.group.id + "','" + msg.groupFixtures[f][2] + "')\"><i class=\"far fa-sm fa-trash-alt\"></i></button><br>");
+        }
     }
 });
 
@@ -495,6 +498,14 @@ function openAboutModal() {
 function openSettingsModal() {
     socket.emit('getSettings');
     $('#openSettingsModal').modal("show");
+}
+
+function removeGroupFixture(groupID, fixtureID) {
+    bootbox.confirm("Are you sure you want to remove this fixture from this group?", function (result) {
+        if (result === true) {
+            socket.emit('removeGroupFixture', { group: groupID, fixture: fixtureID });
+        }
+    });
 }
 
 function resetShow() {

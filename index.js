@@ -49,6 +49,7 @@ Features:
 - Remove Group - Done - Done UI
 - Reset Group - Done - Done UI
 - Reset Groups - Done - Done UI
+- Remove Group Fixture - Done - Done UI
 - Save Show - Done - Done UI
 - Open Show From File - Done - Done UI
 - Save Show To File - Done - Done UI
@@ -337,7 +338,7 @@ function getGroupFixtures(groupID) {
     var fixtureStarts = [];
     let i = 0; const iMax = group.ids.length; for (; i < iMax; i++) {
         var fixture = fixtures[fixtures.map(el => el.id).indexOf(group.ids[i])];
-        fixtureStarts.push([fixture.name, fixture.startDMXAddress]);
+        fixtureStarts.push([fixture.name, fixture.startDMXAddress, fixture.id]);
     }
     return fixtureStarts;
 }
@@ -1287,6 +1288,18 @@ io.on('connection', function (socket) {
             io.emit('fixtures', cleanFixtures());
             socket.emit('message', { type: "info", content: "Group channels reset!" });
             //saveShow();
+        } else {
+            socket.emit('message', { type: "error", content: "No groups exist!" });
+        }
+    });
+
+    socket.on('removeGroupFixture', function (msg) {
+        if (groups.length != 0) {
+            var group = groups[groups.map(el => el.id).indexOf(msg.group)];
+            group.ids.splice(group.ids.map(el => el).indexOf(msg.fixture), 1);
+            socket.emit('groupSettings', { group: group, groupFixtures: getGroupFixtures(group.id) });
+            socket.emit('message', { type: "info", content: "Fixture removed from group!" });
+            saveShow();
         } else {
             socket.emit('message', { type: "error", content: "No groups exist!" });
         }
