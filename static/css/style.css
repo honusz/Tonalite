@@ -287,6 +287,6 @@ body::-webkit-scrollbar {
     display: block;
 }
 
-.dropdown-menu {
-    z-index: 1021 !important;
+.navbar {
+    z-index: 1050 !important;
 }
