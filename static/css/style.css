@@ -286,3 +286,7 @@ body::-webkit-scrollbar {
 .bootbox > .modal-dialog > .modal-content > .modal-header {
     display: block;
 }
+
+.dropdown-menu {
+    z-index: 1021 !important;
+}

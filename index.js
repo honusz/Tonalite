@@ -1022,7 +1022,7 @@ io.on('connection', function (socket) {
     socket.on('removeCue', function (cueID) {
         if (cues.length != 0) {
             cues.splice(cues.map(el => el.id).indexOf(cueID), 1);
-            if (currentCue == cueID) {
+            if (currentCue == cueID || lastCue == cueID) {
                 lastCue = "";
                 currentCue = lastCue;
                 io.emit('cueActionBtn', false);
