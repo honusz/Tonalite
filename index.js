@@ -742,8 +742,9 @@ io.on('connection', function (socket) {
             if (fixtures[f].startDMXAddress == startDMXAddress) {
                 startDMXAddress = null;
             }
-            if (startDMXAddress >= fixtures[f].startDMXAddress && startDMXAddress < fixtures[f].startDMXAddress + fixtures[f].numChannels) {
+            if (startDMXAddress >= fixtures[f].startDMXAddress && startDMXAddress < parseInt(fixtures[f].startDMXAddress) + parseInt(fixtures[f].numChannels)) {
                 startDMXAddress = null;
+                
             }
         }
         if (startDMXAddress) {
