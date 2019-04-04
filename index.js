@@ -275,23 +275,29 @@ function cleanFixtures() {
     return newFixtures;
 }
 
+function cleanFixtureForCue(fixture) {
+    var newFixture = JSON.parse(JSON.stringify(fixture));
+    delete newFixture.name;
+    delete newFixture.shortName;
+    delete newFixture.manufacturer;
+    delete newFixture.hasLockedChannels;
+    delete newFixture.type;
+    let c = 0; const cMax = newFixture.channels.length; for (; c < cMax; c++) {
+        delete newFixture.channels[c].type;
+        delete newFixture.channels[c].subtype;
+        delete newFixture.channels[c].name;
+        delete newFixture.channels[c].displayValue;
+        delete newFixture.channels[c].defaultValue;
+        delete newFixture.channels[c].locked;
+        delete newFixture.channels[c].hidden;
+    }
+    return newFixture;
+}
+
 function cleanFixturesForCue() {
-    var newFixtures = JSON.parse(JSON.stringify(fixtures));
-    let f = 0; const fMax = newFixtures.length; for (; f < fMax; f++) {
-        delete newFixtures[f].name;
-        delete newFixtures[f].shortName;
-        delete newFixtures[f].manufacturer;
-        delete newFixtures[f].hasLockedChannels;
-        delete newFixtures[f].type;
-        let c = 0; const cMax = newFixtures[f].channels.length; for (; c < cMax; c++) {
-            delete newFixtures[f].channels[c].type;
-            delete newFixtures[f].channels[c].subtype;
-            delete newFixtures[f].channels[c].name;
-            delete newFixtures[f].channels[c].displayValue;
-            delete newFixtures[f].channels[c].defaultValue;
-            delete newFixtures[f].channels[c].locked;
-            delete newFixtures[f].channels[c].hidden;
-        }
+    var newFixtures = [];
+    let f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
+        newFixtures.push(cleanFixtureForCue(fixtures[f]));
     }
     return newFixtures;
 }
@@ -744,7 +750,7 @@ io.on('connection', function (socket) {
             }
             if (startDMXAddress >= fixtures[f].startDMXAddress && startDMXAddress < parseInt(fixtures[f].startDMXAddress) + parseInt(fixtures[f].numChannels)) {
                 startDMXAddress = null;
-                
+
             }
         }
         if (startDMXAddress) {
@@ -763,6 +769,9 @@ io.on('connection', function (socket) {
                 // Assign a random id for easy access to this fixture
                 fixture.id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
                 fixtures.push(JSON.parse(JSON.stringify(fixture)));
+                let cc = 0; const ccMax = cues.length; for (; cc < ccMax; cc++) {
+                    cues[cc].fixtures.push(cleanFixtureForCue(fixture));
+                }
                 startDMXAddress += fixture.numChannels;
                 delete require.cache[require.resolve(process.cwd() + "/fixtures/" + msg.fixtureName + ".json")]
             }
