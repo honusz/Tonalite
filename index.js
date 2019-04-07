@@ -1071,7 +1071,7 @@ io.on('connection', function (socket) {
                 var fixtureParameters = fixtures[fixtures.map(el => el.id).indexOf(fixtures[f].id)].parameters;
                 let c = 0; const cMax = fixtures[f].parameters.length; for (; c < cMax; c++) {
                     if (fixtureParameters[c].locked === false) {
-                        fixtureParameters[c].value = fixtureParameters[c].displayValue;
+                        fixtureParameters[c].value = cppaddon.mapRange(fixtureParameters[c].displayValue, 0, 100, fixtureParameters[c].min, fixtureParameters[c].max);
                     }
                 }
             }
@@ -1105,7 +1105,7 @@ io.on('connection', function (socket) {
                 var fixtureParameters = fixtures[fixtures.map(el => el.id).indexOf(fixtures[f].id)].parameters;
                 let c = 0; const cMax = fixtures[f].parameters.length; for (; c < cMax; c++) {
                     if (fixtureParameters[c].locked === false) {
-                        fixtureParameters[c].value = fixtureParameters[c].displayValue;
+                        fixtureParameters[c].value = cppaddon.mapRange(fixtureParameters[c].displayValue, 0, 100, fixtureParameters[c].min, fixtureParameters[c].max);
                     }
                 }
             }
@@ -1126,7 +1126,7 @@ io.on('connection', function (socket) {
                 var fixtureParameters = fixtures[fixtures.map(el => el.id).indexOf(fixtures[f].id)].parameters;
                 let c = 0; const cMax = fixtures[f].parameters.length; for (; c < cMax; c++) {
                     if (fixtureParameters[c].locked === false) {
-                        fixtureParameters[c].value = fixtureParameters[c].displayValue;
+                        fixtureParameters[c].value = cppaddon.mapRange(fixtureParameters[c].displayValue, 0, 100, fixtureParameters[c].min, fixtureParameters[c].max);
                     }
                 }
             }
@@ -1155,7 +1155,7 @@ io.on('connection', function (socket) {
                 var fixtureParameters = fixtures[fixtures.map(el => el.id).indexOf(fixtures[f].id)].parameters;
                 let c = 0; const cMax = fixtures[f].parameters.length; for (; c < cMax; c++) {
                     if (fixtureParameters[c].locked === false) {
-                        fixtureParameters[c].value = fixtureParameters[c].displayValue;
+                        fixtureParameters[c].value = cppaddon.mapRange(fixtureParameters[c].displayValue, 0, 100, fixtureParameters[c].min, fixtureParameters[c].max);
                     }
                 }
             }
