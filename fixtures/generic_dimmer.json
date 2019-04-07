@@ -1,25 +1,27 @@
 {
-    "name": "Dimmer",
-    "shortName": "",
-    "manufacturer": "Generic",
-    "type": "static",
-    "numChannels": 1,
-    "profileID": "ipbfwmznlodmh153nyicj",
-    "channels": [
+    "date": "2019-04-07T20:09:40Z",
+    "editorVersion": "1.1.1.9.0.4",
+    "personalities": [
         {
-            "type": "intensity",
-            "subtype": "intensity",
-            "name": "Intensity",
-            "max": 255,
-            "min": 0,
-            "displayMax": 100,
-            "displayMin": 0,
-            "defaultValue": 0,
-            "dmxAddressOffset": 0,
-            "locked": false,
-            "hidden": false,
-            "isFine": false
+            "dcid": "AD598FD3-74FB-47F0-B87E-834F3A98FB90",
+            "hasIntensity": true,
+            "manufacturerName": "Custom",
+            "maxOffset": 0,
+            "modeName": "-",
+            "modelName": "Dimmer",
+            "parameters": [
+                {
+                    "coarse": 0,
+                    "fadeWithIntensity": false,
+                    "highlight": 65535,
+                    "home": 0,
+                    "invert": false,
+                    "name": "Intensity",
+                    "size": 8,
+                    "snap": false,
+                    "type": 1
+                }
+            ]
         }
-    ],
-    "chips": []
+    ]
 }

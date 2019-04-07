@@ -64,14 +64,14 @@ def sendGetNextFixtureChans():
 		currentFixture = 0
 	else:
 		currentFixture = currentFixture + 1
-    sio.emit('getFixtureChannels', fixtures[currentFixture]['id'])
+    sio.emit('getFixtureParameters', fixtures[currentFixture]['id'])
 
 def sendGetLastFixtureChans():
 	if currentFixture == 0:
 		currentFixture = len(fixtures) - 1
 	else:
 		currentFixture = currentFixture - 1
-    sio.emit('getFixtureChannels', fixtures[currentFixture]['id'])
+    sio.emit('getFixtureParameters', fixtures[currentFixture]['id'])
 
 lastBtn.when_pressed = sendNextCue
 stopRecordBtn.when_pressed = sendStopCue
@@ -168,9 +168,9 @@ def on_connect():
 def getFixtures(data):
     fixtures = data
 
-@sio.on('fixtureChannels')
+@sio.on('fixtureParameters')
 def getCurrentFixture(data):
-    currentFixtureChans = {'id': data['id'], 'name': data['name'], 'channels': data['channels'], 'chips': data['chips']}
+    currentFixtureChans = {'id': data['id'], 'name': data['name'], 'parameters': data['parameters'], 'chips': data['chips']}
 
 @sio.on('cueActionBtn')
 def cueActionBtn(data):

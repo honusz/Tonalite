@@ -28,16 +28,16 @@ var app = new Vue({
         viewPresetSettings: function (presetID) {
             socket.emit('getPresetSettings', presetID);
         },
-        viewFixtureChannels: function (fixtureID) {
-            socket.emit('getFixtureChannels', fixtureID);
+        viewFixtureParameters: function (fixtureID) {
+            socket.emit('getFixtureParameters', fixtureID);
         },
-        viewGroupChannels: function (groupID) {
-            socket.emit('getGroupChannels', groupID);
+        viewGroupParameters: function (groupID) {
+            socket.emit('getGroupParameters', groupID);
         },
         viewCueSettings: function (cueID) {
             socket.emit('getCueSettings', cueID);
         },
-        lockedFixturechannels: function (locked) {
+        lockedFixtureParameters: function (locked) {
             if (locked === true)
                 return "<i class=\"ml-1 far fa-lock-alt fa-sm\"></i>";
             return "";
@@ -146,19 +146,20 @@ socket.on('shows', function (shows) {
     $('#showFilesModal').modal("show");
 });
 
-socket.on('fixtureChannels', function (msg) {
-    openTab('fixtureChannelsPage');
-    $("#fixtureChannels").empty();
-    $("#fixtureChannelsHidden").empty();
+socket.on('fixtureParameters', function (msg) {
+    openTab('fixtureParametersPage');
+    $("#fixtureParameters").empty();
+    $("#fixtureParametersHidden").empty();
     $("#fixtureHiddenChansCollapse").collapse('hide');
-    $("#fixtureChannelsName").text(msg.name + " (" + msg.startDMXAddress + ")");
+    $("#fixtureParametersName").text(msg.name + " (" + msg.startDMXAddress + ")");
     $("#fixtureSettingsBtn").off().on("click", function () { viewFixtureSettings(msg.id); });
     $("#fixtureResetBtn").off().on("click", function () { resetFixture(msg.id); });
-    var hiddenChannels = false;
-    var c = 0; const cMax = msg.channels.length; for (; c < cMax; c++) {
+    var hiddenParameters = false;
+    console.log(msg.parameters);
+    var c = 0; const cMax = msg.parameters.length; for (; c < cMax; c++) {
         chanString = "";
-        if (msg.channels[c].hidden == false) {
-            if (msg.channels[c].locked) {
+        if (msg.parameters[c].hidden == false) {
+            if (msg.parameters[c].locked) {
                 chanString += "<button class=\"btn btn-info\" onclick=\"updateFixtureChannelLock(this, '" + msg.id + "', " + c + ")\"><i class=\"far fa-lock-alt fa-sm\"></i></button>";
             } else {
                 chanString += "<button class=\"btn btn-info\" onclick=\"updateFixtureChannelLock(this, '" + msg.id + "', " + c + ")\"><i class=\"far fa-lock-open-alt fa-sm \"></i></button>";
@@ -167,12 +168,12 @@ socket.on('fixtureChannels', function (msg) {
         } else {
             chanString += "<label ";
         }
-        chanString += "for=\"" + msg.channels[c].type + "\">" + msg.channels[c].name + ":</label><input type=\"range\" class=\"custom-range\" id=\"" + msg.channels[c].type + "\" max=\"" + msg.channels[c].displayMax + "\" min=\"" + msg.channels[c].displayMin + "\" value=\"" + msg.channels[c].value + "\" oninput=\"updateFixtureChannelValue(this, '" + msg.id + "', " + c + ")\">";
-        if (msg.channels[c].hidden == false) {
-            $("#fixtureChannels").append(chanString);
+        chanString += "for=\"" + msg.parameters[c].type + "\">" + msg.parameters[c].name + ":</label><input type=\"range\" class=\"custom-range\" id=\"" + msg.parameters[c].type + "\" max=\"" + msg.parameters[c].max + "\" min=\"" + msg.parameters[c].min + "\" value=\"" + msg.parameters[c].value + "\" oninput=\"updateFixtureChannelValue(this, '" + msg.id + "', " + c + ")\">";
+        if (msg.parameters[c].hidden == false) {
+            $("#fixtureParameters").append(chanString);
         } else {
-            hiddenChannels = true;
-            $("#fixtureChannelsHidden").append(chanString);
+            hiddenParameters = true;
+            $("#fixtureParametersHidden").append(chanString);
         }
 
     }
@@ -184,13 +185,13 @@ socket.on('fixtureChannels', function (msg) {
             div += "<div class=\"col-1\"><div class=\"fixtureChip\" style=\"background-color: " + msg.chips[ch].color + "\" onclick=\"useFixtureChip(this, '" + msg.id + "', " + ch + ")\"></div></div>";
         }
         div += "</div></div>";
-        $("#fixtureChannels").append(div);
+        $("#fixtureParameters").append(div);
     }
 });
 
 socket.on('fixtureSettings', function (fixture) {
     openTab('fixtureSettingsPage');
-    $("#fixtureChannelsBackBtn").off().on("click", function () { app.viewFixtureChannels(fixture.id); });
+    $("#fixtureParametersBackBtn").off().on("click", function () { app.viewFixtureParameters(fixture.id); });
     $("#fixtureDeleteBtn").off().on("click", function () { removeFixture(fixture.id); });
     $("#fixtureSaveBtn").off().on("click", function () { saveFixtureSettings(fixture.id); });
     $("#fixtureNameInput").val(fixture.name);
@@ -252,7 +253,7 @@ socket.on('groups', function (groups) {
 
 socket.on('groupSettings', function (msg) {
     openTab('groupSettingsPage');
-    $("#groupChannelsBackBtn").off().on("click", function () { app.viewGroupChannels(msg.group.id); });
+    $("#groupParametersBackBtn").off().on("click", function () { app.viewGroupParameters(msg.group.id); });
     $("#groupDeleteBtn").off().on("click", function () { removeGroup(msg.group.id); });
     $("#groupSaveBtn").off().on("click", function () { saveGroupSettings(msg.group.id); });
     $("#groupNameInput").val(msg.group.name);
@@ -265,25 +266,25 @@ socket.on('groupSettings', function (msg) {
     }
 });
 
-socket.on('groupChannels', function (msg) {
-    openTab('groupChannelsPage');
-    $("#groupChannels").empty();
-    $("#groupChannelsHidden").empty();
+socket.on('groupParameters', function (msg) {
+    openTab('groupParametersPage');
+    $("#groupParameters").empty();
+    $("#groupParametersHidden").empty();
     $("#groupHiddenChansCollapse").collapse('hide');
-    $("#groupChannelsName").text(msg.name);
+    $("#groupParametersName").text(msg.name);
     $("#groupSettingsBtn").off().on("click", function () { viewGroupSettings(msg.id); });
     $("#groupResetBtn").off().on("click", function () { resetGroup(msg.id); });
-    var hiddenChannels = false;
-    let c = 0; const cMax = msg.channels.length; for (; c < cMax; c++) {
-        if (msg.channels[c].hidden == false) {
-            $("#groupChannels").append("<label class=\"ml-2\" for=\"" + msg.channels[c].type + "\">" + msg.channels[c].name + ":</label><input type=\"range\" class=\"custom-range\" id=\"groupChan" + c + "\" max=\"" + msg.channels[c].displayMax + "\" min=\"" + msg.channels[c].displayMin + "\" value=\"" + msg.channels[c].value + "\" oninput=\"updateGroupChannelValue(this, '" + msg.id + "', " + c + ")\">");
+    var hiddenParameters = false;
+    let c = 0; const cMax = msg.parameters.length; for (; c < cMax; c++) {
+        if (msg.parameters[c].hidden == false) {
+            $("#groupParameters").append("<label class=\"ml-2\" for=\"" + msg.parameters[c].type + "\">" + msg.parameters[c].name + ":</label><input type=\"range\" class=\"custom-range\" id=\"groupChan" + c + "\" max=\"" + msg.parameters[c].max + "\" min=\"" + msg.parameters[c].min + "\" value=\"" + msg.parameters[c].value + "\" oninput=\"updateGroupChannelValue(this, '" + msg.id + "', " + c + ")\">");
         } else {
-            hiddenChannels = true;
-            $("#groupChannelsHidden").append("<label class=\"ml-2\" for=\"" + msg.channels[c].type + "\">" + msg.channels[c].name + ":</label><input type=\"range\" class=\"custom-range\" id=\"groupChan" + c + "\" max=\"" + msg.channels[c].displayMax + "\" min=\"" + msg.channels[c].displayMin + "\" value=\"" + msg.channels[c].value + "\" oninput=\"updateGroupChannelValue(this, '" + msg.id + "', " + c + ")\">");
+            hiddenParameters = true;
+            $("#groupParametersHidden").append("<label class=\"ml-2\" for=\"" + msg.parameters[c].type + "\">" + msg.parameters[c].name + ":</label><input type=\"range\" class=\"custom-range\" id=\"groupChan" + c + "\" max=\"" + msg.parameters[c].max + "\" min=\"" + msg.parameters[c].min + "\" value=\"" + msg.parameters[c].value + "\" oninput=\"updateGroupChannelValue(this, '" + msg.id + "', " + c + ")\">");
         }
     }
-    if (hiddenChannels == false) {
-        $("#groupChannelsHidden").append("There are no hidden channels");
+    if (hiddenParameters == false) {
+        $("#groupParametersHidden").append("There are no hidden parameters");
     }
 });
 

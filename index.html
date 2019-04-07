@@ -98,11 +98,11 @@
         </div>
         <div class="row" id="fixturesList">
           <div class="col-4 col-sm-3 col-lg-2 mb-3" v-for="fixture in fixtures" :key="fixture.id">
-            <div class="fixtureItem" v-on:click="viewFixtureChannels(fixture.id)">
-              <h3 v-if="fixture.channels[0].type === 'intensity'" class="fixtureValue">
-                {{fixture.channels[0].displayValue}}</h3>
+            <div class="fixtureItem" v-on:click="viewFixtureParameters(fixture.id)">
+              <h3 v-if="fixture.parameters[0].type === 1" class="fixtureValue">
+                {{fixture.parameters[0].displayValue}}</h3>
               <p>{{fixture.shortName}} ({{fixture.startDMXAddress}}) <span
-                  v-html="lockedFixturechannels(fixture.hasLockedChannels)"></span></p>
+                  v-html="lockedFixtureParameters(fixture.hasLockedParameters)"></span></p>
             </div>
           </div>
           <div v-if="fixtures.length == 0" class="col-12">
@@ -167,11 +167,11 @@
         </div>
       </div>
     </div>
-    <div id="fixtureChannelsPage" class="tabcontent">
+    <div id="fixtureParametersPage" class="tabcontent">
       <div class="container">
         <div class="row topBtns">
           <div class="col-6">
-            <h5 id="fixtureChannelsName">Fixture name</h5>
+            <h5 id="fixtureParametersName">Fixture name</h5>
           </div>
           <div class="col-3">
             <button id="fixtureSettingsBtn" class="btn btn-primary btn-block"><i
@@ -184,14 +184,14 @@
                 class="d-none d-sm-inline-block">Reset</span></button>
           </div>
         </div>
-        <div id="fixtureChannels"></div>
+        <div id="fixtureParameters"></div>
         <button class="btn btn-primary mb-1" type="button" data-toggle="collapse"
           data-target="#fixtureHiddenChansCollapse" aria-expanded="false" aria-controls="fixtureHiddenChansCollapse">
-          View Hidden Channels
+          View Hidden Parameters
         </button>
         <div class="collapse" id="fixtureHiddenChansCollapse">
           <div class="card card-body bg-dark">
-            <div class="row pl-2 pr-2" id="fixtureChannelsHidden">
+            <div class="row pl-2 pr-2" id="fixtureParametersHidden">
             </div>
           </div>
         </div>
@@ -201,7 +201,7 @@
       <div class="container">
         <div class="row topBtns">
           <div class="col-4">
-            <button id="fixtureChannelsBackBtn" class="btn btn-primary btn-block">Back</button>
+            <button id="fixtureParametersBackBtn" class="btn btn-primary btn-block">Back</button>
           </div>
           <div class="col-4">
             <button id="fixtureSaveBtn" class="btn btn-success btn-block">Save</button>
@@ -289,7 +289,7 @@
           <div class="col-3">
             <button id="cueUpdateBtn" class="btn btn-warning btn-block"><i
                 class="far fa-pencil d-sm-none d-inline-block"></i><span class="d-none d-sm-inline-block">Update
-                Channels</span></button>
+                Parameters</span></button>
           </div>
           <div class="col-3">
             <button id="cueCloneNextBtn" class="btn btn-info btn-block"><i
@@ -343,7 +343,7 @@
         </div>
         <div class="row" id="groupsList">
           <div class="col-4 col-lg-2 mb-3" v-for="group in groups" :key="group.id">
-            <div class="groupItem" v-on:click="viewGroupChannels(group.id)">
+            <div class="groupItem" v-on:click="viewGroupParameters(group.id)">
               <p>{{group.name}}</p>
             </div>
           </div>
@@ -357,7 +357,7 @@
       <div class="container">
         <div class="row topBtns">
           <div class="col-4">
-            <button id="groupChannelsBackBtn" class="btn btn-primary btn-block">Back</button>
+            <button id="groupParametersBackBtn" class="btn btn-primary btn-block">Back</button>
           </div>
           <div class="col-4">
             <button id="groupSaveBtn" class="btn btn-success btn-block">Save</button>
@@ -378,11 +378,11 @@
         <div id="groupFixtures"></div>
       </div>
     </div>
-    <div id="groupChannelsPage" class="tabcontent">
+    <div id="groupParametersPage" class="tabcontent">
       <div class="container">
         <div class="row topBtns">
           <div class="col-6">
-            <h5 id="groupChannelsName">Group name</h5>
+            <h5 id="groupParametersName">Group name</h5>
           </div>
           <div class="col-3">
             <button id="groupSettingsBtn" class="btn btn-primary btn-block"><i
@@ -395,14 +395,14 @@
                 class="d-none d-sm-inline-block">Reset</span></button>
           </div>
         </div>
-        <div id="groupChannels"></div>
+        <div id="groupParameters"></div>
         <button class="btn btn-primary mb-1" type="button" data-toggle="collapse"
           data-target="#groupHiddenChansCollapse" aria-expanded="false" aria-controls="groupHiddenChansCollapse">
-          View Hidden Channels
+          View Hidden Parameters
         </button>
         <div class="collapse" id="groupHiddenChansCollapse">
           <div class="card card-body bg-dark">
-            <div class="row pl-2 pr-2" id="groupChannelsHidden">
+            <div class="row pl-2 pr-2" id="groupParametersHidden">
             </div>
           </div>
         </div>

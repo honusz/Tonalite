@@ -262,14 +262,13 @@ function titleCase(str) {
 function cleanFixtures() {
     var newFixtures = JSON.parse(JSON.stringify(fixtures));
     let f = 0; const fMax = newFixtures.length; for (; f < fMax; f++) {
-        let c = 0; const cMax = newFixtures[f].channels.length; for (; c < cMax; c++) {
-            delete newFixtures[f].channels[c].max;
-            delete newFixtures[f].channels[c].min;
-            delete newFixtures[f].channels[c].defaultValue;
-            delete newFixtures[f].channels[c].dmxAddressOffset;
-            delete newFixtures[f].channels[c].isFine;
-            delete newFixtures[f].channels[c].hidden;
-            newFixtures[f].channels[c].displayValue = Math.round(newFixtures[f].channels[c].displayValue);
+        let c = 0; const cMax = newFixtures[f].parameters.length; for (; c < cMax; c++) {
+            delete newFixtures[f].parameters[c].max;
+            delete newFixtures[f].parameters[c].min;
+            delete newFixtures[f].parameters[c].home;
+            delete newFixtures[f].parameters[c].coarse;
+            delete newFixtures[f].parameters[c].hidden;
+            newFixtures[f].parameters[c].displayValue = Math.round(newFixtures[f].parameters[c].displayValue);
         }
     }
     return newFixtures;
@@ -278,18 +277,18 @@ function cleanFixtures() {
 function cleanFixtureForCue(fixture) {
     var newFixture = JSON.parse(JSON.stringify(fixture));
     delete newFixture.name;
+    delete newFixture.modelName;
     delete newFixture.shortName;
-    delete newFixture.manufacturer;
-    delete newFixture.hasLockedChannels;
+    delete newFixture.manufacturerName;
+    delete newFixture.hasLockedParameters;
     delete newFixture.type;
-    let c = 0; const cMax = newFixture.channels.length; for (; c < cMax; c++) {
-        delete newFixture.channels[c].type;
-        delete newFixture.channels[c].subtype;
-        delete newFixture.channels[c].name;
-        delete newFixture.channels[c].displayValue;
-        delete newFixture.channels[c].defaultValue;
-        delete newFixture.channels[c].locked;
-        delete newFixture.channels[c].hidden;
+    let c = 0; const cMax = newFixture.parameters.length; for (; c < cMax; c++) {
+        delete newFixture.parameters[c].type;
+        delete newFixture.parameters[c].name;
+        delete newFixture.parameters[c].displayValue;
+        delete newFixture.parameters[c].home;
+        delete newFixture.parameters[c].locked;
+        delete newFixture.parameters[c].hidden;
     }
     return newFixture;
 }
@@ -306,11 +305,11 @@ function cleanGroups() {
     var newGroups = JSON.parse(JSON.stringify(groups));
     let g = 0; const gMax = newGroups.length; for (; g < gMax; g++) {
         delete newGroups[g].ids;
-        let c = 0; const cMax = newGroups[g].channels.length; for (; c < cMax; c++) {
-            delete newGroups[g].channels[c].max;
-            delete newGroups[g].channels[c].min;
-            delete newGroups[g].channels[c].defaultValue;
-            delete newGroups[g].channels[c].dmxAddressOffset;
+        let c = 0; const cMax = newGroups[g].parameters.length; for (; c < cMax; c++) {
+            delete newGroups[g].parameters[c].max;
+            delete newGroups[g].parameters[c].min;
+            delete newGroups[g].parameters[c].home;
+            delete newGroups[g].parameters[c].coarse;
         }
     }
     return newGroups;
@@ -334,7 +333,7 @@ function cleanCues() {
 function cleanPresets() {
     var newPresets = JSON.parse(JSON.stringify(presets));
     let p = 0; const pMax = newPresets.length; for (; p < pMax; p++) {
-        delete newPresets[p].channels;
+        delete newPresets[p].parameters;
     }
     return newPresets;
 }
@@ -352,8 +351,8 @@ function getGroupFixtures(groupID) {
 // Set the output channel values to those of the current fixture values
 function calculateChannels() {
     let f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
-        let c = 0; const cMax = fixtures[f].channels.length; for (; c < cMax; c++) {
-            channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].channels[c].dmxAddressOffset] = Math.floor(cppaddon.mapRange(fixtures[f].channels[c].value, fixtures[f].channels[c].displayMin, fixtures[f].channels[c].displayMax, fixtures[f].channels[c].min, fixtures[f].channels[c].max));
+        let c = 0; const cMax = fixtures[f].parameters.length; for (; c < cMax; c++) {
+            channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[c].coarse] = fixtures[f].parameters[c].value;
         }
     }
 };
@@ -361,8 +360,8 @@ function calculateChannels() {
 function calculateChannelsList() {
     var chans = [];
     let f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
-        let c = 0; const cMax = fixtures[f].channels.length; for (; c < cMax; c++) {
-            chans[(fixtures[f].startDMXAddress - 1) + fixtures[f].channels[c].dmxAddressOffset] = Math.floor(cppaddon.mapRange(fixtures[f].channels[c].value, fixtures[f].channels[c].displayMin, fixtures[f].channels[c].displayMax, fixtures[f].channels[c].min, fixtures[f].channels[c].max));
+        let c = 0; const cMax = fixtures[f].parameters.length; for (; c < cMax; c++) {
+            chans[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[c].coarse] = fixtures[f].parameters[c].value;
         }
     }
     return chans;
@@ -373,27 +372,27 @@ function calculateCue(cue) {
     var outputChannels = new Array(512).fill(0);
     let f = 0; const fMax = cue.fixtures.length; for (; f < fMax; f++) {
         var startFixture = fixtures[fixtures.map(el => el.id).indexOf(cue.fixtures[f].id)];
-        let c = 0; const cMax = cue.fixtures[f].channels.length; for (; c < cMax; c++) {
-            if (startFixture.channels[c].locked === false) {
-                var startChannel = Math.floor(cppaddon.mapRange(startFixture.channels[c].value, startFixture.channels[c].displayMin, startFixture.channels[c].displayMax, startFixture.channels[c].min, startFixture.channels[c].max));
-                var endChannel = Math.floor(cppaddon.mapRange(cue.fixtures[f].channels[c].value, cue.fixtures[f].channels[c].displayMin, cue.fixtures[f].channels[c].displayMax, cue.fixtures[f].channels[c].min, cue.fixtures[f].channels[c].max));
+        let c = 0; const cMax = cue.fixtures[f].parameters.length; for (; c < cMax; c++) {
+            if (startFixture.parameters[c].locked === false) {
+                var startChannel = startFixture.parameters[c].value;
+                var endChannel = cue.fixtures[f].parameters[c].value;
                 // If the end channel is greater than the start channel, the value is going in, out is going out if less
                 if (endChannel >= startChannel) {
                     // Make sure that the step does not dip below 0 (finished)
                     if (cue.upStep >= 0) {
-                        outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].channels[c].dmxAddressOffset] = endChannel + (((startChannel - endChannel) / (cue.upTime * 40)) * cue.upStep);
-                        fixtures[fixtures.map(el => el.id).indexOf(cue.fixtures[f].id)].channels[c].displayValue = cue.fixtures[f].channels[c].value + (((startFixture.channels[c].value - cue.fixtures[f].channels[c].value) / (cue.upTime * 40)) * cue.upStep);
+                        outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].parameters[c].coarse] = endChannel + (((startChannel - endChannel) / (cue.upTime * 40)) * cue.upStep);
+                        fixtures[fixtures.map(el => el.id).indexOf(cue.fixtures[f].id)].parameters[c].displayValue = cppaddon.mapRange(cue.fixtures[f].parameters[c].value + (((startFixture.parameters[c].value - cue.fixtures[f].parameters[c].value) / (cue.upTime * 40)) * cue.upStep), cue.fixtures[f].parameters[c].min, cue.fixtures[f].parameters[c].max, 0, 100);
                     }
                 } else {
                     // Make sure that the step does not dip below 0 (finished)
                     if (cue.downStep >= 0) {
-                        outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].channels[c].dmxAddressOffset] = endChannel + (((startChannel - endChannel) / (cue.downTime * 40)) * cue.downStep);
-                        fixtures[fixtures.map(el => el.id).indexOf(cue.fixtures[f].id)].channels[c].displayValue = cue.fixtures[f].channels[c].value + (((startFixture.channels[c].value - cue.fixtures[f].channels[c].value) / (cue.downTime * 40)) * cue.downStep);
+                        outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].parameters[c].coarse] = endChannel + (((startChannel - endChannel) / (cue.downTime * 40)) * cue.downStep);
+                        fixtures[fixtures.map(el => el.id).indexOf(cue.fixtures[f].id)].parameters[c].displayValue = cppaddon.mapRange(cue.fixtures[f].parameters[c].value + (((startFixture.parameters[c].value - cue.fixtures[f].parameters[c].value) / (cue.downTime * 40)) * cue.downStep), cue.fixtures[f].parameters[c].min, cue.fixtures[f].parameters[c].max, 0, 100);
                     }
                 }
             } else {
-                var startChannel = Math.floor(cppaddon.mapRange(startFixture.channels[c].value, startFixture.channels[c].displayMin, startFixture.channels[c].displayMax, startFixture.channels[c].min, startFixture.channels[c].max));
-                outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].channels[c].dmxAddressOffset] = startChannel;
+                var startChannel = startFixture.parameters[c].value;
+                outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].parameters[c].coarse] = startChannel;
             }
         }
     }
@@ -438,11 +437,11 @@ function calculateStack() {
             }
             // Set the fixture's display and real values to the correct values from the cue
             let f = 0; const fMax = cue.fixtures.length; for (; f < fMax; f++) {
-                var startFixtureChannels = fixtures[fixtures.map(el => el.id).indexOf(cue.fixtures[f].id)].channels;
-                let c = 0; const cMax = cue.fixtures[f].channels.length; for (; c < cMax; c++) {
-                    if (startFixtureChannels[c].locked === false) {
-                        startFixtureChannels[c].value = cue.fixtures[f].channels[c].value;
-                        startFixtureChannels[c].displayValue = cue.fixtures[f].channels[c].value;
+                var startFixtureParameters = fixtures[fixtures.map(el => el.id).indexOf(cue.fixtures[f].id)].parameters;
+                let c = 0; const cMax = cue.fixtures[f].parameters.length; for (; c < cMax; c++) {
+                    if (startFixtureParameters[c].locked === false) {
+                        startFixtureParameters[c].value = cue.fixtures[f].parameters[c].value;
+                        startFixtureParameters[c].displayValue = cppaddon.mapRange(cue.fixtures[f].parameters[c].value, cue.fixtures[f].parameters[c].min, cue.fixtures[f].parameters[c].max, 0, 100);
                     }
                 }
             }
@@ -454,14 +453,14 @@ function calculateStack() {
                     var nextCue = cues[cues.map(el => el.id).indexOf(lastCue) + 1];
                 }
                 f = 0; const fMax1 = nextCue.fixtures.length; for (; f < fMax1; f++) {
-                    startFixtureChannels = fixtures[fixtures.map(el => el.id).indexOf(nextCue.fixtures[f].id)].channels;
-                    nextCueFixtureChannels = nextCue.fixtures[f].channels;
-                    if (startFixtureChannels[0].type == "intensity" && startFixtureChannels[0].subtype == "intensity") {
-                        if (startFixtureChannels[0].value === 0 && nextCueFixtureChannels[0].value > 0) {
-                            c = 0; const cMax1 = nextCueFixtureChannels.length; for (; c < cMax1; c++) {
-                                if (startFixtureChannels[c].locked === false && startFixtureChannels[c].type != "intensity" && startFixtureChannels[c].subtype != "intensity") {
-                                    startFixtureChannels[c].value = nextCueFixtureChannels[c].value;
-                                    startFixtureChannels[c].displayValue = nextCueFixtureChannels[c].value;
+                    startFixtureParameters = fixtures[fixtures.map(el => el.id).indexOf(nextCue.fixtures[f].id)].parameters;
+                    nextCueFixtureParameters = nextCue.fixtures[f].parameters;
+                    if (startFixtureParameters[0].type == 1) {
+                        if (startFixtureParameters[0].value === 0 && nextCueFixtureParameters[0].value > 0) {
+                            c = 0; const cMax1 = nextCueFixtureParameters.length; for (; c < cMax1; c++) {
+                                if (startFixtureParameters[c].locked === false && startFixtureParameters[c].type != 1) {
+                                    startFixtureParameters[c].value = nextCueFixtureParameters[c].value;
+                                    startFixtureParameters[c].displayValue = cppaddon.mapRange(nextCueFixtureParameters[c].value, nextCueFixtureParameters[c].min, nextCueFixtureParameters[c].max, 0, 100);
                                 }
                             }
                         }
@@ -476,9 +475,9 @@ function calculateStack() {
     // Allow presets to overide everything else for channels in which they have higher values
     let p = 0; const pMax = presets.length; for (; p < pMax; p++) {
         if (presets[p].active) {
-            let c = 0; const cMax = presets[p].channels.length; for (; c < cMax; c++) {
-                if (presets[p].channels[c] > channels[c]) {
-                    channels[c] = presets[p].channels[c];
+            let c = 0; const cMax = presets[p].parameters.length; for (; c < cMax; c++) {
+                if (presets[p].parameters[c] > channels[c]) {
+                    channels[c] = presets[p].parameters[c];
                 }
             }
         }
@@ -489,11 +488,11 @@ function calculateStack() {
 function setFixtureGroupValues(group, channel) {
     let i = 0; const iMax = group.ids.length; for (; i < iMax; i++) {
         var fixture = fixtures[fixtures.map(el => el.id).indexOf(group.ids[i])];
-        let c = 0; const cMax = fixture.channels.length; for (; c < cMax; c++) {
-            if (fixture.channels[c].name === channel.name && fixture.channels[c].type === channel.type && fixture.channels[c].subtype === channel.subtype) {
-                if (fixture.channels[c].locked != true) {
-                    fixture.channels[c].value = channel.value;
-                    fixture.channels[c].displayValue = fixture.channels[c].value;
+        let c = 0; const cMax = fixture.parameters.length; for (; c < cMax; c++) {
+            if (fixture.parameters[c].name === channel.name && fixture.parameters[c].type === channel.type) {
+                if (fixture.parameters[c].locked != true) {
+                    fixture.parameters[c].value = channel.value;
+                    fixture.parameters[c].displayValue = cppaddon.mapRange(fixture.parameters[c].value, fixture.parameters[c].min, fixture.parameters[c].max, 0, 100);
                 }
             }
         }
@@ -503,10 +502,10 @@ function setFixtureGroupValues(group, channel) {
 // Reset the channel values for each fixture
 function resetFixtures() {
     let f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
-        let c = 0; const cMax = fixtures[f].channels.length; for (; c < cMax; c++) {
-            if (fixtures[f].channels[c].locked != true) {
-                fixtures[f].channels[c].value = fixtures[f].channels[c].defaultValue;
-                fixtures[f].channels[c].displayValue = fixtures[f].channels[c].value;
+        let c = 0; const cMax = fixtures[f].parameters.length; for (; c < cMax; c++) {
+            if (fixtures[f].parameters[c].locked != true) {
+                fixtures[f].parameters[c].value = fixtures[f].parameters[c].home;
+                fixtures[f].parameters[c].displayValue = cppaddon.mapRange(fixtures[f].parameters[c].value, fixtures[f].parameters[c].min, fixtures[f].parameters[c].max, 0, 100);
             }
         }
     }
@@ -515,10 +514,10 @@ function resetFixtures() {
 // Reset the channel values for each group
 function resetGroups() {
     let g = 0; const gMax = groups.length; for (; g < gMax; g++) {
-        let c = 0; const cMax = groups[g].channels.length; for (; c < cMax; c++) {
-            groups[g].channels[c].value = groups[g].channels[c].defaultValue;
-            groups[g].channels[c].displayValue = groups[g].channels[c].value;
-            setFixtureGroupValues(groups[g], groups[g].channels[c]);
+        let c = 0; const cMax = groups[g].parameters.length; for (; c < cMax; c++) {
+            groups[g].parameters[c].value = groups[g].parameters[c].home;
+            groups[g].parameters[c].displayValue = cppaddon.mapRange(groups[g].parameters[c].value, groups[g].parameters[c].min, groups[g].parameters[c].max, 0, 100);
+            setFixtureGroupValues(groups[g], groups[g].parameters[c]);
         }
     }
 };
@@ -700,13 +699,14 @@ io.on('connection', function (socket) {
         var startDMXAddress = 1;
 
         let f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
-            startDMXAddress += fixtures[f].numChannels;
+            startDMXAddress += fixtures[f].maxOffset + 1;
         }
         fs.readdir(process.cwd() + "/fixtures", (err, files) => {
             var fixturesList = [];
             files.forEach(file => {
                 var fixture = require(process.cwd() + "/fixtures/" + file);
-                fixturesList.push([fixture.name, fixture.manufacturer, file.slice(0, -5)]);
+                fixture = fixture.personalities[0];
+                fixturesList.push([fixture.modelName, fixture.manufacturerName, file]);
             });
             socket.emit('fixtureProfiles', [fixturesList, startDMXAddress]);
         });
@@ -748,32 +748,41 @@ io.on('connection', function (socket) {
             if (fixtures[f].startDMXAddress == startDMXAddress) {
                 startDMXAddress = null;
             }
-            if (startDMXAddress >= fixtures[f].startDMXAddress && startDMXAddress < parseInt(fixtures[f].startDMXAddress) + parseInt(fixtures[f].numChannels)) {
+            if (startDMXAddress >= fixtures[f].startDMXAddress && startDMXAddress < parseInt(fixtures[f].startDMXAddress) + parseInt(fixtures[f].maxOffset + 1)) {
                 startDMXAddress = null;
-
             }
         }
         if (startDMXAddress) {
             let i = 0; const iMax = parseInt(msg.creationCount); for (; i < iMax; i++) {
                 // Add a fixture using the fixture spec file in the fixtures folder
-                var fixture = require(process.cwd() + "/fixtures/" + msg.fixtureName + ".json");
+                var fixture = require(process.cwd() + "/fixtures/" + msg.fixtureName);
+                fixture = fixture.personalities[0];
                 fixture.startDMXAddress = startDMXAddress;
-                fixture.hasLockedChannels = false;
-                let c = 0; const cMax = fixture.channels.length; for (; c < cMax; c++) {
-                    fixture.channels[c].value = fixture.channels[c].defaultValue;
-                    fixture.channels[c].displayValue = fixture.channels[c].defaultValue;
+                fixture.hasLockedParameters = false;
+                fixture.name = fixture.modelName;
+                fixture.chips = [];
+                let c = 0; const cMax = fixture.parameters.length; for (; c < cMax; c++) {
+                    fixture.parameters[c].value = fixture.parameters[c].home;
+                    if (fixture.parameters[c].size == 8) {
+                        fixture.parameters[c].max = 255;
+                        fixture.parameters[c].min = 0;
+                    } else if (fixture.parameters[c].size == 16) {
+                        fixture.parameters[c].max = 65535;
+                        fixture.parameters[c].min = 0;
+                    }
+                    fixture.parameters[c].displayValue = cppaddon.mapRange(fixture.parameters[c].home, fixture.parameters[c].min, fixture.parameters[c].max, 0, 100);
+                    fixture.parameters[c].locked = false;
+                    fixture.parameters[c].hidden = false;
                 }
-                if (fixture.shortName == "") {
-                    fixture.shortName = fixture.name.split(" ")[0];
-                }
+                fixture.shortName = fixture.name.split(" ")[0];
                 // Assign a random id for easy access to this fixture
                 fixture.id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
                 fixtures.push(JSON.parse(JSON.stringify(fixture)));
                 let cc = 0; const ccMax = cues.length; for (; cc < ccMax; cc++) {
                     cues[cc].fixtures.push(cleanFixtureForCue(fixture));
                 }
-                startDMXAddress += fixture.numChannels;
-                delete require.cache[require.resolve(process.cwd() + "/fixtures/" + msg.fixtureName + ".json")]
+                startDMXAddress += fixture.maxOffset + 1;
+                delete require.cache[require.resolve(process.cwd() + "/fixtures/" + msg.fixtureName)]
             }
             io.emit('fixtures', cleanFixtures());
             saveShow();
@@ -793,8 +802,8 @@ io.on('connection', function (socket) {
                 }
             }
             var fixture = fixtures[fixtures.map(el => el.id).indexOf(fixtureID)];
-            let cc = 0; const ccMax = fixture.channels.length; for (; cc < ccMax; cc++) {
-                fixture.channels[cc][(fixture.startDMXAddress - 1) + fixture.channels[cc].dmxAddressOffset] = 0;
+            let cc = 0; const ccMax = fixture.parameters.length; for (; cc < ccMax; cc++) {
+                fixture.parameters[cc][(fixture.startDMXAddress - 1) + fixture.parameters[cc].coarse] = 0;
             }
             fixtures.splice(fixtures.map(el => el.id).indexOf(fixtureID), 1);
             socket.emit('message', { type: "info", content: "Fixture has been removed!" });
@@ -834,10 +843,10 @@ io.on('connection', function (socket) {
         }
     });
 
-    socket.on('getFixtureChannels', function (fixtureID) {
+    socket.on('getFixtureParameters', function (fixtureID) {
         if (fixtures.length != 0) {
             var fixture = fixtures[fixtures.map(el => el.id).indexOf(fixtureID)];
-            socket.emit('fixtureChannels', { id: fixture.id, name: fixture.name, startDMXAddress: fixture.startDMXAddress, channels: fixture.channels, chips: fixture.chips });
+            socket.emit('fixtureParameters', { id: fixture.id, name: fixture.name, startDMXAddress: fixture.startDMXAddress, parameters: fixture.parameters, chips: fixture.chips });
         } else {
             socket.emit('message', { type: "error", content: "No fixtures exist!" });
         }
@@ -857,13 +866,13 @@ io.on('connection', function (socket) {
     socket.on('resetFixture', function (fixtureID) {
         if (fixtures.length != 0) {
             var fixture = fixtures[fixtures.map(el => el.id).indexOf(fixtureID)];
-            let c = 0; const cMax = fixture.channels.length; for (; c < cMax; c++) {
-                if (fixture.channels[c].locked != true) {
-                    fixture.channels[c].value = fixture.channels[c].defaultValue;
-                    fixture.channels[c].displayValue = fixture.channels[c].value;
+            let c = 0; const cMax = fixture.parameters.length; for (; c < cMax; c++) {
+                if (fixture.parameters[c].locked != true) {
+                    fixture.parameters[c].value = fixture.parameters[c].home;
+                    fixture.parameters[c].displayValue = cppaddon.mapRange(fixture.parameters[c].value, fixture.parameters[c].min, fixture.parameters[c].max, 0, 100);
                 }
             }
-            socket.emit('fixtureChannels', { id: fixture.id, name: fixture.name, startDMXAddress: fixture.startDMXAddress, channels: fixture.channels, chips: fixture.chips });
+            socket.emit('fixtureParameters', { id: fixture.id, name: fixture.name, startDMXAddress: fixture.startDMXAddress, parameters: fixture.parameters, chips: fixture.chips });
             io.emit('fixtures', cleanFixtures());
             socket.emit('message', { type: "info", content: "Fixture values reset!" });
             saveShow();
@@ -875,9 +884,9 @@ io.on('connection', function (socket) {
     socket.on('changeFixtureChannelValue', function (msg) {
         if (fixtures.length != 0) {
             var fixture = fixtures[fixtures.map(el => el.id).indexOf(msg.id)];
-            var channel = fixture.channels[msg.cid];
+            var channel = fixture.parameters[msg.cid];
             channel.value = parseInt(msg.value);
-            channel.displayValue = channel.value;
+            channel.displayValue = cppaddon.mapRange(channel.value, channel.min, channel.max, 0, 100);
             io.emit('fixtures', cleanFixtures());
         } else {
             socket.emit('message', { type: "error", content: "No fixtures exist!" });
@@ -887,15 +896,15 @@ io.on('connection', function (socket) {
     socket.on('changeFixtureChannelLock', function (msg) {
         if (fixtures.length != 0) {
             var fixture = fixtures[fixtures.map(el => el.id).indexOf(msg.id)];
-            var channel = fixture.channels[msg.cid];
+            var channel = fixture.parameters[msg.cid];
             channel.locked = !channel.locked;
-            fixture.hasLockedChannels = false;
-            let c = 0; const cMax = fixture.channels.length; for (; c < cMax; c++) {
-                if (fixture.channels[c].locked) {
-                    fixture.hasLockedChannels = true;
+            fixture.hasLockedParameters = false;
+            let c = 0; const cMax = fixture.parameters.length; for (; c < cMax; c++) {
+                if (fixture.parameters[c].locked) {
+                    fixture.hasLockedParameters = true;
                 }
             }
-            socket.emit('fixtureChannels', { id: fixture.id, name: fixture.name, startDMXAddress: fixture.startDMXAddress, channels: fixture.channels, chips: fixture.chips });
+            socket.emit('fixtureParameters', { id: fixture.id, name: fixture.name, startDMXAddress: fixture.startDMXAddress, parameters: fixture.parameters, chips: fixture.chips });
             io.emit('fixtures', cleanFixtures());
         } else {
             socket.emit('message', { type: "error", content: "No fixtures exist!" });
@@ -906,11 +915,11 @@ io.on('connection', function (socket) {
         if (fixtures.length != 0) {
             var fixture = fixtures[fixtures.map(el => el.id).indexOf(msg.id)];
             var chip = fixture.chips[msg.cid];
-            let c = 0; const cMax = chip.channels.length; for (; c < cMax; c++) {
-                fixture.channels[chip.channels[c][0]].value = chip.channels[c][1];
-                fixture.channels[chip.channels[c][0]].displayValue = chip.channels[c][1];
+            let c = 0; const cMax = chip.parameters.length; for (; c < cMax; c++) {
+                fixture.parameters[chip.parameters[c][0]].value = chip.parameters[c][1];
+                fixture.parameters[chip.parameters[c][0]].displayValue = cppaddon.mapRange(chip.parameters[c][1], fixture.parameters[chip.parameters[c][0]].min, fixture.parameters[chip.parameters[c][0]].max, 0, 100);
             }
-            socket.emit('fixtureChannels', { id: fixture.id, name: fixture.name, startDMXAddress: fixture.startDMXAddress, channels: fixture.channels, chips: fixture.chips });
+            socket.emit('fixtureParameters', { id: fixture.id, name: fixture.name, startDMXAddress: fixture.startDMXAddress, parameters: fixture.parameters, chips: fixture.chips });
             io.emit('fixtures', cleanFixtures());
         } else {
             socket.emit('message', { type: "error", content: "No fixtures exist!" });
@@ -948,7 +957,7 @@ io.on('connection', function (socket) {
             socket.emit('cueSettings', cue);
             io.emit('currentCue', currentCueID);
             io.emit('cues', cleanCues());
-            socket.emit('message', { type: "info", content: "Cue channels have been updated!" });
+            socket.emit('message', { type: "info", content: "Cue parameters have been updated!" });
             saveShow();
         } else {
             socket.emit('message', { type: "error", content: "No cues exist!" });
@@ -1059,10 +1068,10 @@ io.on('connection', function (socket) {
                 lastCue = cues[0].id;
             }
             let f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
-                var fixtureChannels = fixtures[fixtures.map(el => el.id).indexOf(fixtures[f].id)].channels;
-                let c = 0; const cMax = fixtures[f].channels.length; for (; c < cMax; c++) {
-                    if (fixtureChannels[c].locked === false) {
-                        fixtureChannels[c].value = fixtureChannels[c].displayValue;
+                var fixtureParameters = fixtures[fixtures.map(el => el.id).indexOf(fixtures[f].id)].parameters;
+                let c = 0; const cMax = fixtures[f].parameters.length; for (; c < cMax; c++) {
+                    if (fixtureParameters[c].locked === false) {
+                        fixtureParameters[c].value = fixtureParameters[c].displayValue;
                     }
                 }
             }
@@ -1093,10 +1102,10 @@ io.on('connection', function (socket) {
                 lastCue = cues[cues.length - 1].id;
             }
             let f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
-                var fixtureChannels = fixtures[fixtures.map(el => el.id).indexOf(fixtures[f].id)].channels;
-                let c = 0; const cMax = fixtures[f].channels.length; for (; c < cMax; c++) {
-                    if (fixtureChannels[c].locked === false) {
-                        fixtureChannels[c].value = fixtureChannels[c].displayValue;
+                var fixtureParameters = fixtures[fixtures.map(el => el.id).indexOf(fixtures[f].id)].parameters;
+                let c = 0; const cMax = fixtures[f].parameters.length; for (; c < cMax; c++) {
+                    if (fixtureParameters[c].locked === false) {
+                        fixtureParameters[c].value = fixtureParameters[c].displayValue;
                     }
                 }
             }
@@ -1114,10 +1123,10 @@ io.on('connection', function (socket) {
     socket.on('stopCue', function () {
         if (cues.length != 0) {
             let f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
-                var fixtureChannels = fixtures[fixtures.map(el => el.id).indexOf(fixtures[f].id)].channels;
-                let c = 0; const cMax = fixtures[f].channels.length; for (; c < cMax; c++) {
-                    if (fixtureChannels[c].locked === false) {
-                        fixtureChannels[c].value = fixtureChannels[c].displayValue;
+                var fixtureParameters = fixtures[fixtures.map(el => el.id).indexOf(fixtures[f].id)].parameters;
+                let c = 0; const cMax = fixtures[f].parameters.length; for (; c < cMax; c++) {
+                    if (fixtureParameters[c].locked === false) {
+                        fixtureParameters[c].value = fixtureParameters[c].displayValue;
                     }
                 }
             }
@@ -1143,10 +1152,10 @@ io.on('connection', function (socket) {
                 cues[cues.map(el => el.id).indexOf(lastCue)].following = false;
             }
             let f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
-                var fixtureChannels = fixtures[fixtures.map(el => el.id).indexOf(fixtures[f].id)].channels;
-                let c = 0; const cMax = fixtures[f].channels.length; for (; c < cMax; c++) {
-                    if (fixtureChannels[c].locked === false) {
-                        fixtureChannels[c].value = fixtureChannels[c].displayValue;
+                var fixtureParameters = fixtures[fixtures.map(el => el.id).indexOf(fixtures[f].id)].parameters;
+                let c = 0; const cMax = fixtures[f].parameters.length; for (; c < cMax; c++) {
+                    if (fixtureParameters[c].locked === false) {
+                        fixtureParameters[c].value = fixtureParameters[c].displayValue;
                     }
                 }
             }
@@ -1192,17 +1201,17 @@ io.on('connection', function (socket) {
                 id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
                 name: "Group " + (groups.length + 1),
                 ids: fixtureIDs,
-                channels: []
+                parameters: []
             };
             var channelCats = [];
             let i = 0; const iMax = newGroup.ids.length; for (; i < iMax; i++) {
                 var fixture = fixtures[fixtures.map(el => el.id).indexOf(newGroup.ids[i])];
-                let c = 0; const cMax = fixture.channels.length; for (; c < cMax; c++) {
-                    var newChannel = JSON.parse(JSON.stringify(fixture.channels[c]));
-                    if (!channelCats.includes(newChannel.name + ":" + newChannel.type + ":" + newChannel.subtype)) {
-                        newChannel.value = newChannel.defaultValue;
-                        newGroup.channels.push(newChannel);
-                        channelCats.push(newChannel.name + ":" + newChannel.type + ":" + newChannel.subtype);
+                let c = 0; const cMax = fixture.parameters.length; for (; c < cMax; c++) {
+                    var newChannel = JSON.parse(JSON.stringify(fixture.parameters[c]));
+                    if (!channelCats.includes(newChannel.name + ":" + newChannel.type)) {
+                        newChannel.value = newChannel.home;
+                        newGroup.parameters.push(newChannel);
+                        channelCats.push(newChannel.name + ":" + newChannel.type);
                     }
                 }
             }
@@ -1214,24 +1223,24 @@ io.on('connection', function (socket) {
         }
     });
 
-    socket.on('getGroupChannels', function (groupID) {
+    socket.on('getGroupParameters', function (groupID) {
         if (groups.length != 0) {
             var group = groups[groups.map(el => el.id).indexOf(groupID)];
-            let c = 0; const cMax = group.channels.length; for (; c < cMax; c++) {
+            let c = 0; const cMax = group.parameters.length; for (; c < cMax; c++) {
                 var valAvg = 0;
                 var valAvgCount = 0;
                 let i = 0; const iMax = group.ids.length; for (; i < iMax; i++) {
                     var fixture = fixtures[fixtures.map(el => el.id).indexOf(group.ids[i])];
-                    let fc = 0; const fcMax = fixture.channels.length; for (; fc < fcMax; fc++) {
-                        if (fixture.channels[fc].name === group.channels[c].name && fixture.channels[fc].type === group.channels[c].type && fixture.channels[fc].subtype === group.channels[c].subtype) {
-                            valAvg = valAvg + fixture.channels[fc].value;
+                    let fc = 0; const fcMax = fixture.parameters.length; for (; fc < fcMax; fc++) {
+                        if (fixture.parameters[fc].name === group.parameters[c].name && fixture.parameters[fc].type === group.parameters[c].type) {
+                            valAvg = valAvg + fixture.parameters[fc].value;
                             valAvgCount++;
                         }
                     }
                 }
-                group.channels[c].value = valAvg / valAvgCount;
+                group.parameters[c].value = valAvg / valAvgCount;
             }
-            socket.emit('groupChannels', { id: group.id, name: group.name, channels: group.channels });
+            socket.emit('groupParameters', { id: group.id, name: group.name, parameters: group.parameters });
         } else {
             socket.emit('message', { type: "error", content: "No groups exist!" });
         }
@@ -1240,9 +1249,9 @@ io.on('connection', function (socket) {
     socket.on('changeGroupChannelValue', function (msg) {
         if (fixtures.length != 0 && groups.length != 0) {
             var group = groups[groups.map(el => el.id).indexOf(msg.id)];
-            var channel = group.channels[msg.cid];
+            var channel = group.parameters[msg.cid];
             channel.value = parseInt(msg.value);
-            channel.displayValue = channel.value;
+            channel.displayValue = cppaddon.mapRange(channel.value, channel.min, channel.max, 0, 100);
             setFixtureGroupValues(group, channel);
             io.emit('fixtures', cleanFixtures());
         } else {
@@ -1285,14 +1294,14 @@ io.on('connection', function (socket) {
     socket.on('resetGroup', function (groupID) {
         if (groups.length != 0) {
             var group = groups[groups.map(el => el.id).indexOf(groupID)];
-            let c = 0; const cMax = group.channels.length; for (; c < cMax; c++) {
-                group.channels[c].value = group.channels[c].defaultValue;
-                group.channels[c].displayValue = group.channels[c].value;
-                setFixtureGroupValues(group, group.channels[c]);
+            let c = 0; const cMax = group.parameters.length; for (; c < cMax; c++) {
+                group.parameters[c].value = group.parameters[c].home;
+                group.parameters[c].displayValue = cppaddon.mapRange(group.parameters[c].value, group.parameters[c].min, group.parameters[c].max, 0, 100);
+                setFixtureGroupValues(group, group.parameters[c]);
             }
-            socket.emit('groupChannels', { id: group.id, name: group.name, channels: group.channels });
+            socket.emit('groupParameters', { id: group.id, name: group.name, parameters: group.parameters });
             io.emit('fixtures', cleanFixtures());
-            socket.emit('message', { type: "info", content: "Group channels reset!" });
+            socket.emit('message', { type: "info", content: "Group parameters reset!" });
             saveShow();
         } else {
             socket.emit('message', { type: "error", content: "No groups exist!" });
@@ -1328,7 +1337,7 @@ io.on('connection', function (socket) {
                 id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
                 name: "Preset " + (presets.length + 1),
                 active: false,
-                channels: JSON.parse(JSON.stringify(calculateChannelsList()))
+                parameters: JSON.parse(JSON.stringify(calculateChannelsList()))
             };
             presets.push(newPreset);
             io.emit('presets', cleanPresets());
@@ -1345,7 +1354,7 @@ io.on('connection', function (socket) {
             preset.fixtures = JSON.parse(JSON.stringify(fixtures));
             socket.emit('presetSettings', preset);
             io.emit('presets', cleanPresets());
-            socket.emit('message', { type: "info", content: "Preset channels have been updated!" });
+            socket.emit('message', { type: "info", content: "Preset parameters have been updated!" });
             savePresets();
         } else {
             socket.emit('message', { type: "error", content: "No presets exist!" });
@@ -1408,7 +1417,7 @@ io.on('connection', function (socket) {
                 chan = parseInt(cmd[1]);
                 if (cmd[2] == "@") {
                     let f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
-                        if (chan >= fixtures[f].startDMXAddress && chan < fixtures[f].startDMXAddress + fixtures[f].numChannels) {
+                        if (chan >= fixtures[f].startDMXAddress && chan < fixtures[f].startDMXAddress + (fixtures[f].maxOffset + 1)) {
 
                         }
                     }
@@ -1479,31 +1488,31 @@ io.on('connection', function (socket) {
             files.forEach(file => {
                 var fixtureProfile = require(process.cwd() + "/fixtures/" + file);
                 fixtures.forEach(function (fixture) {
-                    if (fixture.profileID == fixtureProfile.profileID) {
-                        fixture.manufacturer = fixtureProfile.manufacturer;
+                    if (fixture.dcid == fixtureProfile.dcid) {
+                        fixture.manufacturerName = fixtureProfile.manufacturerName;
                         fixture.type = fixtureProfile.type;
                         fixture.chips = fixtureProfile.chips;
-                        fixture.numChannels = fixtureProfile.numChannels;
-                        fixture.channels = fixtureProfile.channels;
-                        let c = 0; const cMax = fixture.channels.length; for (; c < cMax; c++) {
-                            fixture.channels[c].value = fixture.channels[c].defaultValue;
-                            fixture.channels[c].displayValue = fixture.channels[c].defaultValue;
+                        fixture.maxOffset = fixtureProfile.maxOffset;
+                        fixture.parameters = fixtureProfile.parameters;
+                        let c = 0; const cMax = fixture.parameters.length; for (; c < cMax; c++) {
+                            fixture.parameters[c].value = fixture.parameters[c].home;
+                            fixture.parameters[c].displayValue = cppaddon.mapRange(fixture.parameters[c].home, fixture.parameters[c].min, fixture.parameters[c].max, 0, 100);
                         }
                     }
                 });
             });
         });
         groups.forEach(function (group) {
-            group.channels = [];
+            group.parameters = [];
             var channelCats = [];
             group.ids.forEach(function (fixtureID) {
                 var fixture = fixtures[fixtures.map(el => el.id).indexOf(fixtureID)];
-                fixture.channels.forEach(function (channel) {
+                fixture.parameters.forEach(function (channel) {
                     var newChannel = JSON.parse(JSON.stringify(channel));
-                    if (!channelCats.includes(newChannel.name + ":" + newChannel.type + ":" + newChannel.subtype)) {
-                        newChannel.value = newChannel.defaultValue;
-                        group.channels.push(newChannel);
-                        channelCats.push(newChannel.name + ":" + newChannel.type + ":" + newChannel.subtype);
+                    if (!channelCats.includes(newChannel.name + ":" + newChannel.type)) {
+                        newChannel.value = newChannel.home;
+                        group.parameters.push(newChannel);
+                        channelCats.push(newChannel.name + ":" + newChannel.type);
                     }
                 });
             });
