@@ -13,7 +13,7 @@ var app = new Vue({
         fixtureProfiles: [],
         usbPath: "",
         desktop: false,
-        version: "2.0.0 Beta 4",
+        version: "2.0.0 Beta 5",
         qrcode: "",
         currentCue: "",
         blackout: false,
