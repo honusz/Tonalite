@@ -267,7 +267,6 @@ function cleanFixtures() {
             delete newFixtures[f].parameters[c].min;
             delete newFixtures[f].parameters[c].home;
             delete newFixtures[f].parameters[c].coarse;
-            delete newFixtures[f].parameters[c].hidden;
             newFixtures[f].parameters[c].displayValue = Math.round(newFixtures[f].parameters[c].displayValue);
         }
     }
@@ -288,7 +287,6 @@ function cleanFixtureForCue(fixture) {
         delete newFixture.parameters[c].displayValue;
         delete newFixture.parameters[c].home;
         delete newFixture.parameters[c].locked;
-        delete newFixture.parameters[c].hidden;
     }
     return newFixture;
 }
@@ -772,7 +770,6 @@ io.on('connection', function (socket) {
                     }
                     fixture.parameters[c].displayValue = cppaddon.mapRange(fixture.parameters[c].home, fixture.parameters[c].min, fixture.parameters[c].max, 0, 100);
                     fixture.parameters[c].locked = false;
-                    fixture.parameters[c].hidden = false;
                 }
                 fixture.shortName = fixture.name.split(" ")[0];
                 // Assign a random id for easy access to this fixture

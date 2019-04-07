@@ -149,32 +149,19 @@ socket.on('shows', function (shows) {
 socket.on('fixtureParameters', function (msg) {
     openTab('fixtureParametersPage');
     $("#fixtureParameters").empty();
-    $("#fixtureParametersHidden").empty();
-    $("#fixtureHiddenParamsCollapse").collapse('hide');
     $("#fixtureParametersName").text(msg.name + " (" + msg.startDMXAddress + ")");
     $("#fixtureSettingsBtn").off().on("click", function () { viewFixtureSettings(msg.id); });
     $("#fixtureResetBtn").off().on("click", function () { resetFixture(msg.id); });
-    var hiddenParameters = false;
     var c = 0; const cMax = msg.parameters.length; for (; c < cMax; c++) {
         chanString = "";
-        if (msg.parameters[c].hidden == false) {
-            if (msg.parameters[c].locked) {
-                chanString += "<button class=\"btn btn-info\" onclick=\"updateFixtureParameterLock(this, '" + msg.id + "', " + c + ")\"><i class=\"far fa-lock-alt fa-sm\"></i></button>";
-            } else {
-                chanString += "<button class=\"btn btn-info\" onclick=\"updateFixtureParameterLock(this, '" + msg.id + "', " + c + ")\"><i class=\"far fa-lock-open-alt fa-sm \"></i></button>";
-            }
-            chanString += "<label class=\"ml-2\" ";
+        if (msg.parameters[c].locked) {
+            chanString += "<button class=\"btn btn-info\" onclick=\"updateFixtureParameterLock(this, '" + msg.id + "', " + c + ")\"><i class=\"far fa-lock-alt fa-sm\"></i></button>";
         } else {
-            chanString += "<label ";
+            chanString += "<button class=\"btn btn-info\" onclick=\"updateFixtureParameterLock(this, '" + msg.id + "', " + c + ")\"><i class=\"far fa-lock-open-alt fa-sm \"></i></button>";
         }
+        chanString += "<label class=\"ml-2\" ";
         chanString += "for=\"" + msg.parameters[c].type + "\">" + msg.parameters[c].name + ":</label><input type=\"range\" class=\"custom-range\" id=\"" + msg.parameters[c].type + "\" max=\"" + msg.parameters[c].max + "\" min=\"" + msg.parameters[c].min + "\" value=\"" + msg.parameters[c].value + "\" oninput=\"updateFixtureParameterValue(this, '" + msg.id + "', " + c + ")\">";
-        if (msg.parameters[c].hidden == false) {
-            $("#fixtureParameters").append(chanString);
-        } else {
-            hiddenParameters = true;
-            $("#fixtureParametersHidden").append(chanString);
-        }
-
+        $("#fixtureParameters").append(chanString);
     }
 
     if (msg.chips.length != 0) {
@@ -268,22 +255,11 @@ socket.on('groupSettings', function (msg) {
 socket.on('groupParameters', function (msg) {
     openTab('groupParametersPage');
     $("#groupParameters").empty();
-    $("#groupParametersHidden").empty();
-    $("#groupHiddenParamsCollapse").collapse('hide');
     $("#groupParametersName").text(msg.name);
     $("#groupSettingsBtn").off().on("click", function () { viewGroupSettings(msg.id); });
     $("#groupResetBtn").off().on("click", function () { resetGroup(msg.id); });
-    var hiddenParameters = false;
     let c = 0; const cMax = msg.parameters.length; for (; c < cMax; c++) {
-        if (msg.parameters[c].hidden == false) {
-            $("#groupParameters").append("<label class=\"ml-2\" for=\"" + msg.parameters[c].type + "\">" + msg.parameters[c].name + ":</label><input type=\"range\" class=\"custom-range\" id=\"groupChan" + c + "\" max=\"" + msg.parameters[c].max + "\" min=\"" + msg.parameters[c].min + "\" value=\"" + msg.parameters[c].value + "\" oninput=\"updateGroupParameterValue(this, '" + msg.id + "', " + c + ")\">");
-        } else {
-            hiddenParameters = true;
-            $("#groupParametersHidden").append("<label class=\"ml-2\" for=\"" + msg.parameters[c].type + "\">" + msg.parameters[c].name + ":</label><input type=\"range\" class=\"custom-range\" id=\"groupChan" + c + "\" max=\"" + msg.parameters[c].max + "\" min=\"" + msg.parameters[c].min + "\" value=\"" + msg.parameters[c].value + "\" oninput=\"updateGroupParameterValue(this, '" + msg.id + "', " + c + ")\">");
-        }
-    }
-    if (hiddenParameters == false) {
-        $("#groupParametersHidden").append("There are no hidden parameters");
+        $("#groupParameters").append("<label class=\"ml-2\" for=\"" + msg.parameters[c].type + "\">" + msg.parameters[c].name + ":</label><input type=\"range\" class=\"custom-range\" id=\"groupChan" + c + "\" max=\"" + msg.parameters[c].max + "\" min=\"" + msg.parameters[c].min + "\" value=\"" + msg.parameters[c].value + "\" oninput=\"updateGroupParameterValue(this, '" + msg.id + "', " + c + ")\">");
     }
 });
 
