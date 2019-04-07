@@ -1,13 +1,13 @@
 {
-    "date": "2019-04-07T20:09:40Z",
+    "date": "2019-04-07T21:54:20Z",
     "editorVersion": "1.1.1.9.0.4",
     "personalities": [
         {
-            "dcid": "AD598FD3-74FB-47F0-B87E-834F3A98FB90",
+            "dcid": "B453BDAD-E308-43C1-9CFF-396EEDFF2CC7",
             "hasIntensity": true,
-            "manufacturerName": "Custom",
+            "manufacturerName": "Generic",
             "maxOffset": 0,
-            "modeName": "-",
+            "modeName": "8 bit",
             "modelName": "Dimmer",
             "parameters": [
                 {
@@ -18,6 +18,28 @@
                     "invert": false,
                     "name": "Intensity",
                     "size": 8,
+                    "snap": false,
+                    "type": 1
+                }
+            ]
+        },
+        {
+            "dcid": "8BF3DCB8-4F8C-4D69-83FF-515BA98A0A96",
+            "hasIntensity": true,
+            "manufacturerName": "Generic",
+            "maxOffset": 1,
+            "modeName": "16 bit",
+            "modelName": "Dimmer",
+            "parameters": [
+                {
+                    "coarse": 0,
+                    "fadeWithIntensity": false,
+                    "fine": 1,
+                    "highlight": 65535,
+                    "home": 0,
+                    "invert": false,
+                    "name": "Intensity",
+                    "size": 16,
                     "snap": false,
                     "type": 1
                 }

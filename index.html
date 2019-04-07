@@ -99,7 +99,7 @@
         <div class="row" id="fixturesList">
           <div class="col-4 col-sm-3 col-lg-2 mb-3" v-for="fixture in fixtures" :key="fixture.id">
             <div class="fixtureItem" v-on:click="viewFixtureParameters(fixture.id)">
-              <h3 v-if="fixture.parameters[0].type === 1" class="fixtureValue">
+              <h3 v-if="fixture.hasIntensity === true" class="fixtureValue">
                 {{fixture.parameters[0].displayValue}}</h3>
               <p>{{fixture.shortName}} ({{fixture.startDMXAddress}}) <span
                   v-html="lockedFixtureParameters(fixture.hasLockedParameters)"></span></p>

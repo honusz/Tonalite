@@ -455,7 +455,7 @@ function calculateStack() {
                 f = 0; const fMax1 = nextCue.fixtures.length; for (; f < fMax1; f++) {
                     startFixtureParameters = fixtures[fixtures.map(el => el.id).indexOf(nextCue.fixtures[f].id)].parameters;
                     nextCueFixtureParameters = nextCue.fixtures[f].parameters;
-                    if (startFixtureParameters[0].type == 1) {
+                    if (fixtures[fixtures.map(el => el.id).indexOf(nextCue.fixtures[f].id)].hasIntensity == true) {
                         if (startFixtureParameters[0].value === 0 && nextCueFixtureParameters[0].value > 0) {
                             c = 0; const cMax1 = nextCueFixtureParameters.length; for (; c < cMax1; c++) {
                                 if (startFixtureParameters[c].locked === false && startFixtureParameters[c].type != 1) {
