@@ -1,7 +1,7 @@
 # Changing Group Settings
 
 You can change various settings of a group.
-You can access a group's setting page by clicking the `Settings` button on the group's channels page.
+You can access a group's setting page by clicking the `Settings` button on the group's parameters page.
 
 ![Group settings page](../images/group_settings.png)
 
@@ -9,7 +9,7 @@ You can access a group's setting page by clicking the `Settings` button on the g
 
 ### Back
 
-Go back to the group's channels.
+Go back to the group's parameters.
 
 ### Save
 

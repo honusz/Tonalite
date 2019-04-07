@@ -22,9 +22,9 @@ Make a duplicate of this cue and place it at the end of the cue list. The new cl
 
 Transition to this cue specific cue in the time stated in the cue's `Length` setting.
 
-### Update Channels
+### Update Parameters
 
-Update this cue to use the current values of the show's fixture's channels.
+Update this cue to use the current values of the show's fixture's parameters.
 
 ### Clone Next
 

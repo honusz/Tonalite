@@ -8,7 +8,7 @@
 Tonalite is lighting control software that uses a web interface accessible from any device on the network such as a phone, tablet, or laptop. While there are more features coming soon, Tonalite can currently:
 
 - Add fixtures and map them to DMX addresses
-- Control the value of each fixture's channels (attributes)
+- Control the value of each fixture's parameters (attributes)
 - Add cues and cycle through them
 - Add groups to control multiple fixtures at once
 - Record presets for easy system overrides
