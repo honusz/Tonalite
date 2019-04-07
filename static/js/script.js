@@ -150,25 +150,24 @@ socket.on('fixtureParameters', function (msg) {
     openTab('fixtureParametersPage');
     $("#fixtureParameters").empty();
     $("#fixtureParametersHidden").empty();
-    $("#fixtureHiddenChansCollapse").collapse('hide');
+    $("#fixtureHiddenParamsCollapse").collapse('hide');
     $("#fixtureParametersName").text(msg.name + " (" + msg.startDMXAddress + ")");
     $("#fixtureSettingsBtn").off().on("click", function () { viewFixtureSettings(msg.id); });
     $("#fixtureResetBtn").off().on("click", function () { resetFixture(msg.id); });
     var hiddenParameters = false;
-    console.log(msg.parameters);
     var c = 0; const cMax = msg.parameters.length; for (; c < cMax; c++) {
         chanString = "";
         if (msg.parameters[c].hidden == false) {
             if (msg.parameters[c].locked) {
-                chanString += "<button class=\"btn btn-info\" onclick=\"updateFixtureChannelLock(this, '" + msg.id + "', " + c + ")\"><i class=\"far fa-lock-alt fa-sm\"></i></button>";
+                chanString += "<button class=\"btn btn-info\" onclick=\"updateFixtureParameterLock(this, '" + msg.id + "', " + c + ")\"><i class=\"far fa-lock-alt fa-sm\"></i></button>";
             } else {
-                chanString += "<button class=\"btn btn-info\" onclick=\"updateFixtureChannelLock(this, '" + msg.id + "', " + c + ")\"><i class=\"far fa-lock-open-alt fa-sm \"></i></button>";
+                chanString += "<button class=\"btn btn-info\" onclick=\"updateFixtureParameterLock(this, '" + msg.id + "', " + c + ")\"><i class=\"far fa-lock-open-alt fa-sm \"></i></button>";
             }
             chanString += "<label class=\"ml-2\" ";
         } else {
             chanString += "<label ";
         }
-        chanString += "for=\"" + msg.parameters[c].type + "\">" + msg.parameters[c].name + ":</label><input type=\"range\" class=\"custom-range\" id=\"" + msg.parameters[c].type + "\" max=\"" + msg.parameters[c].max + "\" min=\"" + msg.parameters[c].min + "\" value=\"" + msg.parameters[c].value + "\" oninput=\"updateFixtureChannelValue(this, '" + msg.id + "', " + c + ")\">";
+        chanString += "for=\"" + msg.parameters[c].type + "\">" + msg.parameters[c].name + ":</label><input type=\"range\" class=\"custom-range\" id=\"" + msg.parameters[c].type + "\" max=\"" + msg.parameters[c].max + "\" min=\"" + msg.parameters[c].min + "\" value=\"" + msg.parameters[c].value + "\" oninput=\"updateFixtureParameterValue(this, '" + msg.id + "', " + c + ")\">";
         if (msg.parameters[c].hidden == false) {
             $("#fixtureParameters").append(chanString);
         } else {
@@ -270,17 +269,17 @@ socket.on('groupParameters', function (msg) {
     openTab('groupParametersPage');
     $("#groupParameters").empty();
     $("#groupParametersHidden").empty();
-    $("#groupHiddenChansCollapse").collapse('hide');
+    $("#groupHiddenParamsCollapse").collapse('hide');
     $("#groupParametersName").text(msg.name);
     $("#groupSettingsBtn").off().on("click", function () { viewGroupSettings(msg.id); });
     $("#groupResetBtn").off().on("click", function () { resetGroup(msg.id); });
     var hiddenParameters = false;
     let c = 0; const cMax = msg.parameters.length; for (; c < cMax; c++) {
         if (msg.parameters[c].hidden == false) {
-            $("#groupParameters").append("<label class=\"ml-2\" for=\"" + msg.parameters[c].type + "\">" + msg.parameters[c].name + ":</label><input type=\"range\" class=\"custom-range\" id=\"groupChan" + c + "\" max=\"" + msg.parameters[c].max + "\" min=\"" + msg.parameters[c].min + "\" value=\"" + msg.parameters[c].value + "\" oninput=\"updateGroupChannelValue(this, '" + msg.id + "', " + c + ")\">");
+            $("#groupParameters").append("<label class=\"ml-2\" for=\"" + msg.parameters[c].type + "\">" + msg.parameters[c].name + ":</label><input type=\"range\" class=\"custom-range\" id=\"groupChan" + c + "\" max=\"" + msg.parameters[c].max + "\" min=\"" + msg.parameters[c].min + "\" value=\"" + msg.parameters[c].value + "\" oninput=\"updateGroupParameterValue(this, '" + msg.id + "', " + c + ")\">");
         } else {
             hiddenParameters = true;
-            $("#groupParametersHidden").append("<label class=\"ml-2\" for=\"" + msg.parameters[c].type + "\">" + msg.parameters[c].name + ":</label><input type=\"range\" class=\"custom-range\" id=\"groupChan" + c + "\" max=\"" + msg.parameters[c].max + "\" min=\"" + msg.parameters[c].min + "\" value=\"" + msg.parameters[c].value + "\" oninput=\"updateGroupChannelValue(this, '" + msg.id + "', " + c + ")\">");
+            $("#groupParametersHidden").append("<label class=\"ml-2\" for=\"" + msg.parameters[c].type + "\">" + msg.parameters[c].name + ":</label><input type=\"range\" class=\"custom-range\" id=\"groupChan" + c + "\" max=\"" + msg.parameters[c].max + "\" min=\"" + msg.parameters[c].min + "\" value=\"" + msg.parameters[c].value + "\" oninput=\"updateGroupParameterValue(this, '" + msg.id + "', " + c + ")\">");
         }
     }
     if (hiddenParameters == false) {
@@ -313,7 +312,7 @@ socket.on('connect_error', function () {
 });
 
 function resetFixtures() {
-    bootbox.confirm("Are you sure you want to reset all fixture channel values?", function (result) {
+    bootbox.confirm("Are you sure you want to reset all fixture parameter values?", function (result) {
         if (result === true) {
             socket.emit('resetFixtures');
         }
@@ -321,7 +320,7 @@ function resetFixtures() {
 };
 
 function resetFixture(fixtureID) {
-    bootbox.confirm("Are you sure you want to reset this fixture's channel values?", function (result) {
+    bootbox.confirm("Are you sure you want to reset this fixture's parameter values?", function (result) {
         if (result === true) {
             socket.emit('resetFixture', fixtureID);
         }
@@ -344,16 +343,16 @@ function viewFixtureSettings(fixtureID) {
     socket.emit('getFixtureSettings', fixtureID);
 }
 
-function updateFixtureChannelValue(self, fixtureID, channelID) {
-    socket.emit('changeFixtureChannelValue', { id: fixtureID, cid: channelID, value: self.value });
+function updateFixtureParameterValue(self, fixtureID, parameterID) {
+    socket.emit('changeFixtureParameterValue', { id: fixtureID, pid: parameterID, value: self.value });
 }
 
-function updateFixtureChannelLock(self, fixtureID, channelID) {
-    socket.emit('changeFixtureChannelLock', { id: fixtureID, cid: channelID });
+function updateFixtureParameterLock(self, fixtureID, parameterID) {
+    socket.emit('changeFixtureParameterLock', { id: fixtureID, pid: parameterID });
 }
 
 function useFixtureChip(self, fixtureID, chipID) {
-    socket.emit('useFixtureChip', { id: fixtureID, cid: chipID });
+    socket.emit('useFixtureChip', { id: fixtureID, pid: chipID });
 }
 
 function removeFixture(fixtureID) {
@@ -440,7 +439,7 @@ function savePresetSettings(presetID) {
 }
 
 function resetGroup(groupID) {
-    bootbox.confirm("Are you sure you want to reset this group's channel values?", function (result) {
+    bootbox.confirm("Are you sure you want to reset this group's parameter values?", function (result) {
         if (result === true) {
             socket.emit('resetGroup', groupID);
         }
@@ -448,7 +447,7 @@ function resetGroup(groupID) {
 };
 
 function resetGroups() {
-    bootbox.confirm("Are you sure you want to reset all group channel values?", function (result) {
+    bootbox.confirm("Are you sure you want to reset all group parameter values?", function (result) {
         if (result === true) {
             socket.emit('resetGroups');
         }
@@ -460,8 +459,8 @@ function addGroupModal() {
     $('#addGroupModal').modal("show");
 }
 
-function updateGroupChannelValue(self, groupID, channelID) {
-    socket.emit('changeGroupChannelValue', { id: groupID, cid: channelID, value: self.value });
+function updateGroupParameterValue(self, groupID, parameterID) {
+    socket.emit('changeGroupParameterValue', { id: groupID, pid: parameterID, value: self.value });
 }
 
 function removeGroup(groupID) {

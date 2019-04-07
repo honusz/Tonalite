@@ -22,9 +22,9 @@ Features:
 - Remove Fixture - Done - Done UI
 - Get Fixture Settings - Done - Done UI
 - Edit Fixture Settings - Done - Done UI
-- Get Fixture Channels - Done - Done UI
-- Change Fixture Channel Value - Done - Done UI
-- Channel Lock - Done - Done UI
+- Get Fixture Parameters - Done - Done UI
+- Change Fixture Parameter Value - Done - Done UI
+- Parameter Lock - Done - Done UI
 - Reset Fixtures - Done - Done UI
 - Get Cues - Done - Done UI
 - Record Cue - Done - Done UI
@@ -42,8 +42,8 @@ Features:
 - Stop Running Cue - Done - Done UI
 - Get Groups - Done - Done UI
 - Add Group - Done - Done UI
-- Get Group Channels - Done - Done UI
-- Change Group Channel Value - Done - Done UI
+- Get Group Parameters - Done - Done UI
+- Change Group Parameter Value - Done - Done UI
 - Get Group Settings - Done - Done UI
 - Edit Group Settings - Done - Done UI
 - Remove Group - Done - Done UI
@@ -374,25 +374,25 @@ function calculateCue(cue) {
         var startFixture = fixtures[fixtures.map(el => el.id).indexOf(cue.fixtures[f].id)];
         let c = 0; const cMax = cue.fixtures[f].parameters.length; for (; c < cMax; c++) {
             if (startFixture.parameters[c].locked === false) {
-                var startChannel = startFixture.parameters[c].value;
-                var endChannel = cue.fixtures[f].parameters[c].value;
-                // If the end channel is greater than the start channel, the value is going in, out is going out if less
-                if (endChannel >= startChannel) {
+                var startParameter = startFixture.parameters[c].value;
+                var endParameter = cue.fixtures[f].parameters[c].value;
+                // If the end parameter is greater than the start parameter, the value is going in, out is going out if less
+                if (endParameter >= startParameter) {
                     // Make sure that the step does not dip below 0 (finished)
                     if (cue.upStep >= 0) {
-                        outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].parameters[c].coarse] = endChannel + (((startChannel - endChannel) / (cue.upTime * 40)) * cue.upStep);
+                        outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].parameters[c].coarse] = endParameter + (((startParameter - endParameter) / (cue.upTime * 40)) * cue.upStep);
                         fixtures[fixtures.map(el => el.id).indexOf(cue.fixtures[f].id)].parameters[c].displayValue = cppaddon.mapRange(cue.fixtures[f].parameters[c].value + (((startFixture.parameters[c].value - cue.fixtures[f].parameters[c].value) / (cue.upTime * 40)) * cue.upStep), cue.fixtures[f].parameters[c].min, cue.fixtures[f].parameters[c].max, 0, 100);
                     }
                 } else {
                     // Make sure that the step does not dip below 0 (finished)
                     if (cue.downStep >= 0) {
-                        outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].parameters[c].coarse] = endChannel + (((startChannel - endChannel) / (cue.downTime * 40)) * cue.downStep);
+                        outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].parameters[c].coarse] = endParameter + (((startParameter - endParameter) / (cue.downTime * 40)) * cue.downStep);
                         fixtures[fixtures.map(el => el.id).indexOf(cue.fixtures[f].id)].parameters[c].displayValue = cppaddon.mapRange(cue.fixtures[f].parameters[c].value + (((startFixture.parameters[c].value - cue.fixtures[f].parameters[c].value) / (cue.downTime * 40)) * cue.downStep), cue.fixtures[f].parameters[c].min, cue.fixtures[f].parameters[c].max, 0, 100);
                     }
                 }
             } else {
-                var startChannel = startFixture.parameters[c].value;
-                outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].parameters[c].coarse] = startChannel;
+                var startParameter = startFixture.parameters[c].value;
+                outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].parameters[c].coarse] = startParameter;
             }
         }
     }
@@ -484,14 +484,14 @@ function calculateStack() {
     }
 };
 
-// Set the fixture values for each group equal to the group's channel value
-function setFixtureGroupValues(group, channel) {
+// Set the fixture values for each group equal to the group's parameter value
+function setFixtureGroupValues(group, parameter) {
     let i = 0; const iMax = group.ids.length; for (; i < iMax; i++) {
         var fixture = fixtures[fixtures.map(el => el.id).indexOf(group.ids[i])];
         let c = 0; const cMax = fixture.parameters.length; for (; c < cMax; c++) {
-            if (fixture.parameters[c].name === channel.name && fixture.parameters[c].type === channel.type) {
+            if (fixture.parameters[c].name === parameter.name && fixture.parameters[c].type === parameter.type) {
                 if (fixture.parameters[c].locked != true) {
-                    fixture.parameters[c].value = channel.value;
+                    fixture.parameters[c].value = parameter.value;
                     fixture.parameters[c].displayValue = cppaddon.mapRange(fixture.parameters[c].value, fixture.parameters[c].min, fixture.parameters[c].max, 0, 100);
                 }
             }
@@ -499,7 +499,7 @@ function setFixtureGroupValues(group, channel) {
     }
 }
 
-// Reset the channel values for each fixture
+// Reset the parameter values for each fixture
 function resetFixtures() {
     let f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
         let c = 0; const cMax = fixtures[f].parameters.length; for (; c < cMax; c++) {
@@ -511,7 +511,7 @@ function resetFixtures() {
     }
 };
 
-// Reset the channel values for each group
+// Reset the parameter values for each group
 function resetGroups() {
     let g = 0; const gMax = groups.length; for (; g < gMax; g++) {
         let c = 0; const cMax = groups[g].parameters.length; for (; c < cMax; c++) {
@@ -522,12 +522,12 @@ function resetGroups() {
     }
 };
 
-// This is the output dmx loop. It gathers the channels and calculates what the output values should be.
+// This is the output dmx loop. It gathers the parameter and calculates what the output values should be.
 function dmxLoop() {
-    /*// Reset DMX values
+    // Reset DMX values
     let c = 0; const cMax = channels.length; for (; c < cMax; c++) {
         channels[c] = 0;
-    }*/
+    }
     if (blackout === false) {
         calculateChannels();
         calculateStack();
@@ -881,23 +881,23 @@ io.on('connection', function (socket) {
         }
     });
 
-    socket.on('changeFixtureChannelValue', function (msg) {
+    socket.on('changeFixtureParameterValue', function (msg) {
         if (fixtures.length != 0) {
             var fixture = fixtures[fixtures.map(el => el.id).indexOf(msg.id)];
-            var channel = fixture.parameters[msg.cid];
-            channel.value = parseInt(msg.value);
-            channel.displayValue = cppaddon.mapRange(channel.value, channel.min, channel.max, 0, 100);
+            var parameter = fixture.parameters[msg.pid];
+            parameter.value = parseInt(msg.value);
+            parameter.displayValue = cppaddon.mapRange(parameter.value, parameter.min, parameter.max, 0, 100);
             io.emit('fixtures', cleanFixtures());
         } else {
             socket.emit('message', { type: "error", content: "No fixtures exist!" });
         }
     });
 
-    socket.on('changeFixtureChannelLock', function (msg) {
+    socket.on('changeFixtureParameterLock', function (msg) {
         if (fixtures.length != 0) {
             var fixture = fixtures[fixtures.map(el => el.id).indexOf(msg.id)];
-            var channel = fixture.parameters[msg.cid];
-            channel.locked = !channel.locked;
+            var parameter = fixture.parameters[msg.pid];
+            parameter.locked = !parameter.locked;
             fixture.hasLockedParameters = false;
             let c = 0; const cMax = fixture.parameters.length; for (; c < cMax; c++) {
                 if (fixture.parameters[c].locked) {
@@ -1203,15 +1203,15 @@ io.on('connection', function (socket) {
                 ids: fixtureIDs,
                 parameters: []
             };
-            var channelCats = [];
+            var parameterCats = [];
             let i = 0; const iMax = newGroup.ids.length; for (; i < iMax; i++) {
                 var fixture = fixtures[fixtures.map(el => el.id).indexOf(newGroup.ids[i])];
                 let c = 0; const cMax = fixture.parameters.length; for (; c < cMax; c++) {
-                    var newChannel = JSON.parse(JSON.stringify(fixture.parameters[c]));
-                    if (!channelCats.includes(newChannel.name + ":" + newChannel.type)) {
-                        newChannel.value = newChannel.home;
-                        newGroup.parameters.push(newChannel);
-                        channelCats.push(newChannel.name + ":" + newChannel.type);
+                    var newParameter = JSON.parse(JSON.stringify(fixture.parameters[c]));
+                    if (!parameterCats.includes(newParameter.name + ":" + newParameter.type)) {
+                        newParameter.value = newParameter.home;
+                        newGroup.parameters.push(newParameter);
+                        parameterCats.push(newParameter.name + ":" + newParameter.type);
                     }
                 }
             }
@@ -1246,13 +1246,13 @@ io.on('connection', function (socket) {
         }
     });
 
-    socket.on('changeGroupChannelValue', function (msg) {
+    socket.on('changeGroupParameterValue', function (msg) {
         if (fixtures.length != 0 && groups.length != 0) {
             var group = groups[groups.map(el => el.id).indexOf(msg.id)];
-            var channel = group.parameters[msg.cid];
-            channel.value = parseInt(msg.value);
-            channel.displayValue = cppaddon.mapRange(channel.value, channel.min, channel.max, 0, 100);
-            setFixtureGroupValues(group, channel);
+            var parameter = group.parameters[msg.pid];
+            parameter.value = parseInt(msg.value);
+            parameter.displayValue = cppaddon.mapRange(parameter.value, parameter.min, parameter.max, 0, 100);
+            setFixtureGroupValues(group, parameter);
             io.emit('fixtures', cleanFixtures());
         } else {
             socket.emit('message', { type: "error", content: "No fixtures and/or groups exist!" });
@@ -1504,15 +1504,15 @@ io.on('connection', function (socket) {
         });
         groups.forEach(function (group) {
             group.parameters = [];
-            var channelCats = [];
+            var parameterCats = [];
             group.ids.forEach(function (fixtureID) {
                 var fixture = fixtures[fixtures.map(el => el.id).indexOf(fixtureID)];
-                fixture.parameters.forEach(function (channel) {
-                    var newChannel = JSON.parse(JSON.stringify(channel));
-                    if (!channelCats.includes(newChannel.name + ":" + newChannel.type)) {
-                        newChannel.value = newChannel.home;
-                        group.parameters.push(newChannel);
-                        channelCats.push(newChannel.name + ":" + newChannel.type);
+                fixture.parameters.forEach(function (parameter) {
+                    var newParameter = JSON.parse(JSON.stringify(parameter));
+                    if (!parameterCats.includes(newParameter.name + ":" + newParameter.type)) {
+                        newParameter.value = newParameter.home;
+                        group.parameters.push(newParameter);
+                        parameterCats.push(newParameter.name + ":" + newParameter.type);
                     }
                 });
             });

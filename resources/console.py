@@ -87,7 +87,7 @@ def changeChanValue(chan, direction):
     elif direction == -1:
         if currentFixtureChans[chan]['value'] > 0:
             currentFixtureChans[chan]['value'] = currentFixtureChans[chan]['value'] - 1
-    sio.emit('changeFixtureChannelValue', {'id': fixtures[currentFixture]['id'], 'cid': chan, 'value': currentFixtureChans[chan]['value']})
+    sio.emit('changeFixtureParameterValue', {'id': fixtures[currentFixture]['id'], 'pid': chan, 'value': currentFixtureChans[chan]['value']})
     
 
 def chan1EncUpRising():
@@ -133,7 +133,7 @@ chan6EncUp.when_pressed = chan6EncUpRising
 chan6EncDown.when_pressed = chan6EncDownRising
 
 def changeChanLock(chan):
-    sio.emit('changeFixtureChannelLock', {'id': fixtures[currentFixture]['id'], 'cid': chan})
+    sio.emit('changeFixtureParameterLock', {'id': fixtures[currentFixture]['id'], 'pid': chan})
 
 def chan1BtnClick():
     changeChanLock(1)
