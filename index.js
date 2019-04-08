@@ -69,6 +69,7 @@ Features:
 - Blackout - Done - Done UI
 - Auto Mark - Done - Done UI
 - Fine Control
+- Reset Presets
 */
 
 var SETTINGS = {

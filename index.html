@@ -87,7 +87,7 @@
     </nav>
     <div id="fixtures" class="tabcontent">
       <div class="container">
-        <div class="row topBtns">
+        <div class="row topBtns sticky-top">
           <div class="col-6">
             <button class="btn btn-success btn-block" onclick="addFixtureModal()">Add Fixture</button>
           </div>
@@ -169,7 +169,7 @@
     </div>
     <div id="fixtureParametersPage" class="tabcontent">
       <div class="container">
-        <div class="row topBtns">
+        <div class="row topBtns sticky-top">
           <div class="col-6">
             <h5 id="fixtureParametersName">Fixture name</h5>
           </div>
@@ -189,7 +189,7 @@
     </div>
     <div id="fixtureSettingsPage" class="tabcontent">
       <div class="container">
-        <div class="row topBtns">
+        <div class="row topBtns sticky-top">
           <div class="col-4">
             <button id="fixtureParametersBackBtn" class="btn btn-primary btn-block">Back</button>
           </div>
@@ -254,7 +254,7 @@
     </div>
     <div id="cueSettingsPage" class="tabcontent">
       <div class="container">
-        <div class="row topBtns">
+        <div class="row topBtns sticky-top">
           <div class="col-3">
             <button id="cueSaveBtn" class="btn btn-success btn-block">Save</button>
           </div>
@@ -272,7 +272,7 @@
             <button id="moveCueUpBtn" class="btn btn-success btn-block"><i class="far fa-chevron-up"></i></button>
           </div>
         </div>
-        <div class="row topBtns">
+        <div class="row topBtns sticky-top">
           <div class="col-3">
             <button id="gotoCueBtn" class="btn btn-primary btn-block">Go</button>
           </div>
@@ -321,7 +321,7 @@
     </div>
     <div id="groups" class="tabcontent">
       <div class="container">
-        <div class="row topBtns">
+        <div class="row topBtns sticky-top">
           <div class="col-6">
             <button :disabled="fixtures.length == 0" class="btn btn-success btn-block" onclick="addGroupModal()">Add
               Group</button>
@@ -345,7 +345,7 @@
     </div>
     <div id="groupSettingsPage" class="tabcontent">
       <div class="container">
-        <div class="row topBtns">
+        <div class="row topBtns sticky-top">
           <div class="col-4">
             <button id="groupParametersBackBtn" class="btn btn-primary btn-block">Back</button>
           </div>
@@ -370,7 +370,7 @@
     </div>
     <div id="groupParametersPage" class="tabcontent">
       <div class="container">
-        <div class="row topBtns">
+        <div class="row topBtns sticky-top">
           <div class="col-6">
             <h5 id="groupParametersName">Group name</h5>
           </div>
@@ -390,7 +390,7 @@
     </div>
     <div id="presets" class="tabcontent">
       <div class="container">
-        <div class="row topBtns">
+        <div class="row topBtns sticky-top">
           <div class="col-12">
             <button :disabled="fixtures.length == 0" class="btn btn-success btn-block"
               v-on:click="recordPreset()">Record
@@ -422,7 +422,7 @@
     </div>
     <div id="presetSettingsPage" class="tabcontent">
       <div class="container">
-        <div class="row topBtns">
+        <div class="row topBtns sticky-top">
           <div class="col-4">
             <button id="presetSaveBtn" class="btn btn-success btn-block">Save</button>
           </div>
