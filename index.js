@@ -800,6 +800,9 @@ io.on('connection', function (socket) {
                 fixture.hasLockedParameters = false;
                 fixture.name = fixture.modelName;
                 fixture.chips = [];
+                if (fixture.colortable == "3874B444-A11E-47D9-8295-04556EAEBEA7") {
+                    fixture.chips = JSON.parse(JSON.stringify(require(process.cwd() + "/chips/rgb.json")));
+                }
                 let c = 0; const cMax = fixture.parameters.length; for (; c < cMax; c++) {
                     fixture.parameters[c].value = fixture.parameters[c].home;
                     fixture.parameters[c].max = 65535;
