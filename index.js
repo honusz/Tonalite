@@ -824,6 +824,8 @@ io.on('connection', function (socket) {
                     fixture.chips = JSON.parse(JSON.stringify(require(process.cwd() + "/chips/rgb.json")));
                 } else if (fixture.colortable == "77A82F8A-9B24-4C3F-98FC-B6A29FB1AAE6") {
                     fixture.chips = JSON.parse(JSON.stringify(require(process.cwd() + "/chips/rgbw.json")));
+                } else if (fixture.colortable == "D3E71EC8-3406-4572-A64C-52A38649C795") {
+                    fixture.chips = JSON.parse(JSON.stringify(require(process.cwd() + "/chips/rgba.json")));
                 }
 
                 let c = 0; const cMax = fixture.parameters.length; for (; c < cMax; c++) {

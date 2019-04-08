@@ -1,0 +1,170 @@
+[
+    {
+        "color": "#ff6b6b",
+        "parameters": [
+            {
+                "name": "Red",
+                "value": 100
+            },
+            {
+                "name": "Green",
+                "value": 0
+            },
+            {
+                "name": "Blue",
+                "value": 0
+            },
+            {
+                "name": "Amber",
+                "value": 0
+            }
+        ]
+    },
+    {
+        "color": "#51cf66",
+        "parameters": [
+            {
+                "name": "Red",
+                "value": 0
+            },
+            {
+                "name": "Green",
+                "value": 100
+            },
+            {
+                "name": "Blue",
+                "value": 0
+            },
+            {
+                "name": "Amber",
+                "value": 0
+            }
+        ]
+    },
+    {
+        "color": "#339af0",
+        "parameters": [
+            {
+                "name": "Red",
+                "value": 0
+            },
+            {
+                "name": "Green",
+                "value": 0
+            },
+            {
+                "name": "Blue",
+                "value": 100
+            },
+            {
+                "name": "Amber",
+                "value": 0
+            }
+        ]
+    },
+    {
+        "color": "#fd7e14",
+        "parameters": [
+            {
+                "name": "Red",
+                "value": 0
+            },
+            {
+                "name": "Green",
+                "value": 0
+            },
+            {
+                "name": "Blue",
+                "value": 0
+            },
+            {
+                "name": "Amber",
+                "value": 100
+            }
+        ]
+    },
+    {
+        "color": "#f8f9fa",
+        "parameters": [
+            {
+                "name": "Red",
+                "value": 100
+            },
+            {
+                "name": "Green",
+                "value": 100
+            },
+            {
+                "name": "Blue",
+                "value": 100
+            },
+            {
+                "name": "Amber",
+                "value": 100
+            }
+        ]
+    },
+    {
+        "color": "#cc5de8",
+        "parameters": [
+            {
+                "name": "Red",
+                "value": 100
+            },
+            {
+                "name": "Green",
+                "value": 0
+            },
+            {
+                "name": "Blue",
+                "value": 100
+            },
+            {
+                "name": "Amber",
+                "value": 0
+            }
+        ]
+    },
+    {
+        "color": "#fcc419",
+        "parameters": [
+            {
+                "name": "Red",
+                "value": 100
+            },
+            {
+                "name": "Green",
+                "value": 100
+            },
+            {
+                "name": "Blue",
+                "value": 0
+            },
+            {
+                "name": "Amber",
+                "value": 0
+            }
+        ]
+    },
+    {
+        "color": "#22b8cf",
+        "parameters": [
+            {
+                "name": "Red",
+                "value": 0
+            },
+            {
+                "name": "Green",
+                "value": 100
+            },
+            {
+                "name": "Blue",
+                "value": 100
+            },
+            {
+                "name": "Amber",
+                "value": 0
+            }
+        ]
+    }
+]
