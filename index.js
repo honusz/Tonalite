@@ -1550,7 +1550,6 @@ io.on('connection', function (socket) {
                     if (fixture.dcid == fixtureProfile.dcid) {
                         fixture.manufacturerName = fixtureProfile.manufacturerName;
                         fixture.type = fixtureProfile.type;
-                        fixture.chips = fixtureProfile.chips;
                         fixture.maxOffset = fixtureProfile.maxOffset;
                         fixture.parameters = fixtureProfile.parameters;
                         let c = 0; const cMax = fixture.parameters.length; for (; c < cMax; c++) {
