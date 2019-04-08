@@ -265,12 +265,12 @@ function titleCase(str) {
 function cleanFixtures() {
     var newFixtures = JSON.parse(JSON.stringify(fixtures));
     let f = 0; const fMax = newFixtures.length; for (; f < fMax; f++) {
-        let c = 0; const cMax = newFixtures[f].parameters.length; for (; c < cMax; c++) {
-            delete newFixtures[f].parameters[c].max;
-            delete newFixtures[f].parameters[c].min;
-            delete newFixtures[f].parameters[c].home;
-            delete newFixtures[f].parameters[c].coarse;
-            newFixtures[f].parameters[c].displayValue = Math.round(newFixtures[f].parameters[c].displayValue);
+        let p = 0; const pMax = newFixtures[f].parameters.length; for (; p < pMax; p++) {
+            delete newFixtures[f].parameters[p].max;
+            delete newFixtures[f].parameters[p].min;
+            delete newFixtures[f].parameters[p].home;
+            delete newFixtures[f].parameters[p].coarse;
+            newFixtures[f].parameters[p].displayValue = Math.round(newFixtures[f].parameters[p].displayValue);
         }
     }
     return newFixtures;
@@ -284,12 +284,12 @@ function cleanFixtureForCue(fixture) {
     delete newFixture.manufacturerName;
     delete newFixture.hasLockedParameters;
     delete newFixture.type;
-    let c = 0; const cMax = newFixture.parameters.length; for (; c < cMax; c++) {
-        delete newFixture.parameters[c].type;
-        delete newFixture.parameters[c].name;
-        delete newFixture.parameters[c].displayValue;
-        delete newFixture.parameters[c].home;
-        delete newFixture.parameters[c].locked;
+    let p = 0; const pMax = newFixture.parameters.length; for (; p < pMax; p++) {
+        delete newFixture.parameters[p].type;
+        delete newFixture.parameters[p].name;
+        delete newFixture.parameters[p].displayValue;
+        delete newFixture.parameters[p].home;
+        delete newFixture.parameters[p].locked;
     }
     return newFixture;
 }
@@ -306,11 +306,11 @@ function cleanGroups() {
     var newGroups = JSON.parse(JSON.stringify(groups));
     let g = 0; const gMax = newGroups.length; for (; g < gMax; g++) {
         delete newGroups[g].ids;
-        let c = 0; const cMax = newGroups[g].parameters.length; for (; c < cMax; c++) {
-            delete newGroups[g].parameters[c].max;
-            delete newGroups[g].parameters[c].min;
-            delete newGroups[g].parameters[c].home;
-            delete newGroups[g].parameters[c].coarse;
+        let p = 0; const pMax = newGroups[g].parameters.length; for (; p < pMax; p++) {
+            delete newGroups[g].parameters[p].max;
+            delete newGroups[g].parameters[p].min;
+            delete newGroups[g].parameters[p].home;
+            delete newGroups[g].parameters[p].coarse;
         }
     }
     return newGroups;
@@ -352,20 +352,20 @@ function getGroupFixtures(groupID) {
 // Set the output channel values to those of the current fixture values
 function calculateChannels() {
     let f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
-        let c = 0; const cMax = fixtures[f].parameters.length; for (; c < cMax; c++) {
-            if (fixtures[f].parameters[c].fadeWithIntensity == true || fixtures[f].parameters[c].type == 1) {
-                if (fixtures[f].parameters[c].fine == null) {
-                    channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[c].coarse] = (fixtures[f].parameters[c].value / 100.0) * grandmaster;
+        let p = 0; const pMax = fixtures[f].parameters.length; for (; p < pMax; p++) {
+            if (fixtures[f].parameters[p].fadeWithIntensity == true || fixtures[f].parameters[p].type == 1) {
+                if (fixtures[f].parameters[p].fine == null) {
+                    channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[p].coarse] = (fixtures[f].parameters[p].value / 100.0) * grandmaster;
                 } else {
-                    channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[c].coarse] = ((fixtures[f].parameters[c].value >> 8) / 100.0) * grandmaster;
-                    channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[c].fine] = ((fixtures[f].parameters[c].value & 0xff) / 100.0) * grandmaster;
+                    channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[p].coarse] = ((fixtures[f].parameters[p].value >> 8) / 100.0) * grandmaster;
+                    channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[p].fine] = ((fixtures[f].parameters[p].value & 0xff) / 100.0) * grandmaster;
                 }
             } else {
-                if (fixtures[f].parameters[c].fine == null) {
-                    channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[c].coarse] = fixtures[f].parameters[c].value;
+                if (fixtures[f].parameters[p].fine == null) {
+                    channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[p].coarse] = fixtures[f].parameters[p].value;
                 } else {
-                    channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[c].coarse] = (fixtures[f].parameters[c].value >> 8);
-                    channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[c].fine] = (fixtures[f].parameters[c].value & 0xff);
+                    channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[p].coarse] = (fixtures[f].parameters[p].value >> 8);
+                    channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[p].fine] = (fixtures[f].parameters[p].value & 0xff);
                 }
             }
         }
@@ -375,8 +375,8 @@ function calculateChannels() {
 function calculateChannelsList() {
     var chans = [];
     let f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
-        let c = 0; const cMax = fixtures[f].parameters.length; for (; c < cMax; c++) {
-            chans[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[c].coarse] = fixtures[f].parameters[c].value;
+        let p = 0; const pMax = fixtures[f].parameters.length; for (; p < pMax; p++) {
+            chans[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[p].coarse] = fixtures[f].parameters[p].value;
         }
     }
     return chans;
