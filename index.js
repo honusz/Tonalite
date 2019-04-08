@@ -354,9 +354,16 @@ function calculateChannels() {
     let f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
         let p = 0; const pMax = fixtures[f].parameters.length; for (; p < pMax; p++) {
             if (fixtures[f].parameters[p].fadeWithIntensity == true || fixtures[f].parameters[p].type == 1) {
-                channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[p].coarse] = ((fixtures[f].parameters[p].value >> 8) / 100.0) * grandmaster;
-                if (fixtures[f].parameters[p].fine != null) {
-                    channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[p].fine] = ((fixtures[f].parameters[p].value & 0xff) / 100.0) * grandmaster;
+                if (blackout === false) {
+                    channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[p].coarse] = ((fixtures[f].parameters[p].value >> 8) / 100.0) * grandmaster;
+                    if (fixtures[f].parameters[p].fine != null) {
+                        channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[p].fine] = ((fixtures[f].parameters[p].value & 0xff) / 100.0) * grandmaster;
+                    }
+                } else {
+                    channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[p].coarse] = (fixtures[f].parameters[p].min >> 8);
+                    if (fixtures[f].parameters[p].fine != null) {
+                        channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[p].fine] = (fixtures[f].parameters[p].min & 0xff);
+                    }
                 }
             } else {
                 channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[p].coarse] = (fixtures[f].parameters[p].value >> 8);
@@ -562,10 +569,8 @@ function dmxLoop() {
     let c = 0; const cMax = channels.length; for (; c < cMax; c++) {
         channels[c] = 0;
     }
-    if (blackout === false) {
-        calculateChannels();
-        calculateStack();
-    }
+    calculateChannels();
+    calculateStack();
     slotsData = channels;
     client.send(packet);
     artnet.set(channels);
