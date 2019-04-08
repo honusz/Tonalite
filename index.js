@@ -354,17 +354,13 @@ function calculateChannels() {
     let f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
         let p = 0; const pMax = fixtures[f].parameters.length; for (; p < pMax; p++) {
             if (fixtures[f].parameters[p].fadeWithIntensity == true || fixtures[f].parameters[p].type == 1) {
-                if (fixtures[f].parameters[p].fine == null) {
-                    channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[p].coarse] = (fixtures[f].parameters[p].value / 100.0) * grandmaster;
-                } else {
-                    channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[p].coarse] = ((fixtures[f].parameters[p].value >> 8) / 100.0) * grandmaster;
+                channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[p].coarse] = ((fixtures[f].parameters[p].value >> 8) / 100.0) * grandmaster;
+                if (fixtures[f].parameters[p].fine != null) {
                     channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[p].fine] = ((fixtures[f].parameters[p].value & 0xff) / 100.0) * grandmaster;
                 }
             } else {
-                if (fixtures[f].parameters[p].fine == null) {
-                    channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[p].coarse] = fixtures[f].parameters[p].value;
-                } else {
-                    channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[p].coarse] = (fixtures[f].parameters[p].value >> 8);
+                channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[p].coarse] = (fixtures[f].parameters[p].value >> 8);
+                if (fixtures[f].parameters[p].fine != null) {
                     channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[p].fine] = (fixtures[f].parameters[p].value & 0xff);
                 }
             }
@@ -396,17 +392,13 @@ function calculateCue(cue) {
                     // Make sure that the step does not dip below 0 (finished)
                     if (cue.upStep >= 0) {
                         if (cue.fixtures[f].parameters[c].fadeWithIntensity == true || cue.fixtures[f].parameters[c].type == 1) {
-                            if (cue.fixtures[f].parameters[c].fine == null) {
-                                outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].parameters[c].coarse] = (endParameter + (((startParameter - endParameter) / (cue.upTime * 40)) * cue.upStep) / 100.0) * grandmaster;
-                            } else {
-                                outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].parameters[c].coarse] = (((endParameter + (((startParameter - endParameter) / (cue.upTime * 40)) * cue.upStep)) >> 8) / 100.0) * grandmaster;
+                            outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].parameters[c].coarse] = (((endParameter + (((startParameter - endParameter) / (cue.upTime * 40)) * cue.upStep)) >> 8) / 100.0) * grandmaster;
+                            if (cue.fixtures[f].parameters[c].fine != null) {
                                 outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].parameters[c].fine] = (((endParameter + (((startParameter - endParameter) / (cue.upTime * 40)) * cue.upStep)) & 0xff) / 100.0) * grandmaster;
                             }
                         } else {
-                            if (cue.fixtures[f].parameters[c].fine == null) {
-                                outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].parameters[c].coarse] = endParameter + (((startParameter - endParameter) / (cue.upTime * 40)) * cue.upStep);
-                            } else {
-                                outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].parameters[c].coarse] = ((endParameter + (((startParameter - endParameter) / (cue.upTime * 40)) * cue.upStep)) >> 8);
+                            outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].parameters[c].coarse] = ((endParameter + (((startParameter - endParameter) / (cue.upTime * 40)) * cue.upStep)) >> 8);
+                            if (cue.fixtures[f].parameters[c].fine != null) {
                                 outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].parameters[c].fine] = ((endParameter + (((startParameter - endParameter) / (cue.upTime * 40)) * cue.upStep)) & 0xff);
                             }
                         }
@@ -416,17 +408,13 @@ function calculateCue(cue) {
                     // Make sure that the step does not dip below 0 (finished)
                     if (cue.downStep >= 0) {
                         if (cue.fixtures[f].parameters[c].fadeWithIntensity == true || cue.fixtures[f].parameters[c].type == 1) {
-                            if (cue.fixtures[f].parameters[c].fine == null) {
-                                outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].parameters[c].coarse] = (endParameter + (((startParameter - endParameter) / (cue.downTime * 40)) * cue.downStep) / 100.0) * grandmaster;
-                            } else {
-                                outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].parameters[c].coarse] = (((endParameter + (((startParameter - endParameter) / (cue.downTime * 40)) * cue.downStep)) >> 8) / 100.0) * grandmaster;
+                            outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].parameters[c].coarse] = (((endParameter + (((startParameter - endParameter) / (cue.downTime * 40)) * cue.downStep)) >> 8) / 100.0) * grandmaster;
+                            if (cue.fixtures[f].parameters[c].fine != null) {
                                 outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].parameters[c].fine] = (((endParameter + (((startParameter - endParameter) / (cue.downTime * 40)) * cue.downStep)) & 0xff) / 100.0) * grandmaster;
                             }
                         } else {
-                            if (cue.fixtures[f].parameters[c].fine == null) {
-                                outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].parameters[c].coarse] = endParameter + (((startParameter - endParameter) / (cue.downTime * 40)) * cue.downStep);
-                            } else {
-                                outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].parameters[c].coarse] = ((endParameter + (((startParameter - endParameter) / (cue.downTime * 40)) * cue.downStep)) >> 8);
+                            outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].parameters[c].coarse] = ((endParameter + (((startParameter - endParameter) / (cue.downTime * 40)) * cue.downStep)) >> 8);
+                            if (cue.fixtures[f].parameters[c].fine != null) {
                                 outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].parameters[c].fine] = ((endParameter + (((startParameter - endParameter) / (cue.downTime * 40)) * cue.downStep)) & 0xff);
                             }
                         }
@@ -435,10 +423,8 @@ function calculateCue(cue) {
                 }
             } else {
                 var startParameter = startFixture.parameters[c].value;
-                if (cue.fixtures[f].parameters[c].fine == null) {
-                    outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].parameters[c].coarse] = startParameter;
-                } else {
-                    outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].parameters[c].coarse] = (startParameter >> 8);
+                outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].parameters[c].coarse] = (startParameter >> 8);
+                if (cue.fixtures[f].parameters[c].fine != null) {
                     outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].parameters[c].fine] = (startParameter & 0xff);
                 }
             }
@@ -816,13 +802,8 @@ io.on('connection', function (socket) {
                 fixture.chips = [];
                 let c = 0; const cMax = fixture.parameters.length; for (; c < cMax; c++) {
                     fixture.parameters[c].value = fixture.parameters[c].home;
-                    if (fixture.parameters[c].size == 8) {
-                        fixture.parameters[c].max = 255;
-                        fixture.parameters[c].min = 0;
-                    } else if (fixture.parameters[c].size == 16) {
-                        fixture.parameters[c].max = 65535;
-                        fixture.parameters[c].min = 0;
-                    }
+                    fixture.parameters[c].max = 65535;
+                    fixture.parameters[c].min = 0;
                     fixture.parameters[c].displayValue = cppaddon.mapRange(fixture.parameters[c].home, fixture.parameters[c].min, fixture.parameters[c].max, 0, 100);
                     fixture.parameters[c].locked = false;
                 }
