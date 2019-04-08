@@ -69,7 +69,7 @@ Features:
 - Blackout - Done - Done UI
 - Auto Mark - Done - Done UI
 - Fine Control - Done - Done UI
-- Reset Presets
+- Reset Presets - Done - Done UI
 */
 
 var SETTINGS = {
@@ -736,8 +736,15 @@ io.on('connection', function (socket) {
         io.emit('cues', cleanCues());
         io.emit('groups', cleanGroups());
         io.emit('cueActionBtn', false);
-        io.emit('message', { type: "info", content: "The show has been reset!" });
+        io.emit('message', { type: "info", content: "A new show has been created!" });
         saveShow();
+    });
+
+    socket.on('resetPresets', function () {
+        presets = [];
+        socket.emit('presets', cleanPresets());
+        io.emit('message', { type: "info", content: "The presets have been cleared!" });
+        savePresets();
     });
 
     socket.on('getFixtureProfiles', function () {

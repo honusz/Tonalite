@@ -492,6 +492,15 @@ function resetShow() {
     });
 }
 
+function resetPresets() {
+    bootbox.confirm("Are you sure you want to reset the presets?", function (result) {
+        if (result === true) {
+            socket.emit('resetPresets');
+            openTab('presets');
+        }
+    });
+}
+
 function updateFixtureProfiles() {
     bootbox.confirm("Are you sure you want to update your show's fixture profiles? You should save the current show first. This will probably cause a blackout", function (result) {
         if (result === true) {

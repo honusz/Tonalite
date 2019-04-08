@@ -37,6 +37,7 @@
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" onclick="resetShow()">New Show</a>
+              <a class="dropdown-item" onclick="resetPresets()">Reset Presets</a>
               <a v-if="!desktop" class="dropdown-item" onclick="saveShowToUSB()">Save Show To USB</a>
               <a v-if="!desktop" class="dropdown-item" onclick="getShowModal()">Open Show From USB</a>
               <div v-if="ifMobile() || desktop" class="dropdown-divider"></div>
