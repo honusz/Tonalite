@@ -800,9 +800,13 @@ io.on('connection', function (socket) {
                 fixture.hasLockedParameters = false;
                 fixture.name = fixture.modelName;
                 fixture.chips = [];
+
                 if (fixture.colortable == "3874B444-A11E-47D9-8295-04556EAEBEA7") {
                     fixture.chips = JSON.parse(JSON.stringify(require(process.cwd() + "/chips/rgb.json")));
+                } else if (fixture.colortable == "77A82F8A-9B24-4C3F-98FC-B6A29FB1AAE6") {
+                    fixture.chips = JSON.parse(JSON.stringify(require(process.cwd() + "/chips/rgbw.json")));
                 }
+
                 let c = 0; const cMax = fixture.parameters.length; for (; c < cMax; c++) {
                     fixture.parameters[c].value = fixture.parameters[c].home;
                     fixture.parameters[c].max = 65535;
