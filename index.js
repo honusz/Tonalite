@@ -950,10 +950,10 @@ io.on('connection', function (socket) {
     socket.on('useFixtureChip', function (msg) {
         if (fixtures.length != 0) {
             var fixture = fixtures[fixtures.map(el => el.id).indexOf(msg.id)];
-            var chip = fixture.chips[msg.cid];
+            var chip = fixture.chips[msg.pid];
             let c = 0; const cMax = chip.parameters.length; for (; c < cMax; c++) {
-                fixture.parameters[chip.parameters[c][0]].value = chip.parameters[c][1];
-                fixture.parameters[chip.parameters[c][0]].displayValue = cppaddon.mapRange(chip.parameters[c][1], fixture.parameters[chip.parameters[c][0]].min, fixture.parameters[chip.parameters[c][0]].max, 0, 100);
+                fixture.parameters[fixture.parameters.map(el => el.name).indexOf(chip.parameters[c].name)].value = (fixture.parameters[fixture.parameters.map(el => el.name).indexOf(chip.parameters[c].name)].max / 100.0) * chip.parameters[c].value;
+                fixture.parameters[fixture.parameters.map(el => el.name).indexOf(chip.parameters[c].name)].displayValue = parseInt(chip.parameters[c].value);
             }
             socket.emit('fixtureParameters', { id: fixture.id, name: fixture.name, startDMXAddress: fixture.startDMXAddress, parameters: fixture.parameters, chips: fixture.chips });
             io.emit('fixtures', cleanFixtures());
