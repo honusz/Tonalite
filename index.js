@@ -352,7 +352,12 @@ function getGroupFixtures(groupID) {
 function calculateChannels() {
     let f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
         let c = 0; const cMax = fixtures[f].parameters.length; for (; c < cMax; c++) {
-            channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[c].coarse] = fixtures[f].parameters[c].value;
+            if (fixtures[f].parameters[c].fadeWithIntensity == true || fixtures[f].parameters[c].type == 1) {
+                channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[c].coarse] = (fixtures[f].parameters[c].value / 100.0) * grandmaster;
+            } else {
+                channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[c].coarse] = fixtures[f].parameters[c].value;
+            }
+
         }
     }
 };
@@ -380,13 +385,21 @@ function calculateCue(cue) {
                 if (endParameter >= startParameter) {
                     // Make sure that the step does not dip below 0 (finished)
                     if (cue.upStep >= 0) {
-                        outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].parameters[c].coarse] = endParameter + (((startParameter - endParameter) / (cue.upTime * 40)) * cue.upStep);
+                        if (cue.fixtures[f].parameters[c].fadeWithIntensity == true || cue.fixtures[f].parameters[c].type == 1) {
+                            outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].parameters[c].coarse] = (endParameter + (((startParameter - endParameter) / (cue.upTime * 40)) * cue.upStep) / 100.0) * grandmaster;
+                        } else {
+                            outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].parameters[c].coarse] = endParameter + (((startParameter - endParameter) / (cue.upTime * 40)) * cue.upStep);
+                        }
                         fixtures[fixtures.map(el => el.id).indexOf(cue.fixtures[f].id)].parameters[c].displayValue = cppaddon.mapRange(cue.fixtures[f].parameters[c].value + (((startFixture.parameters[c].value - cue.fixtures[f].parameters[c].value) / (cue.upTime * 40)) * cue.upStep), cue.fixtures[f].parameters[c].min, cue.fixtures[f].parameters[c].max, 0, 100);
                     }
                 } else {
                     // Make sure that the step does not dip below 0 (finished)
                     if (cue.downStep >= 0) {
-                        outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].parameters[c].coarse] = endParameter + (((startParameter - endParameter) / (cue.downTime * 40)) * cue.downStep);
+                        if (cue.fixtures[f].parameters[c].fadeWithIntensity == true || cue.fixtures[f].parameters[c].type == 1) {
+                            outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].parameters[c].coarse] = (endParameter + (((startParameter - endParameter) / (cue.downTime * 40)) * cue.downStep) / 100.0) * grandmaster;
+                        } else {
+                            outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].parameters[c].coarse] = endParameter + (((startParameter - endParameter) / (cue.downTime * 40)) * cue.downStep);
+                        }
                         fixtures[fixtures.map(el => el.id).indexOf(cue.fixtures[f].id)].parameters[c].displayValue = cppaddon.mapRange(cue.fixtures[f].parameters[c].value + (((startFixture.parameters[c].value - cue.fixtures[f].parameters[c].value) / (cue.downTime * 40)) * cue.downStep), cue.fixtures[f].parameters[c].min, cue.fixtures[f].parameters[c].max, 0, 100);
                     }
                 }
@@ -531,9 +544,6 @@ function dmxLoop() {
     if (blackout === false) {
         calculateChannels();
         calculateStack();
-        let c = 0; const cMax = channels.length; for (; c < cMax; c++) {
-            channels[c] = (channels[c] / 100.0) * grandmaster;
-        }
     }
     slotsData = channels;
     client.send(packet);
@@ -705,7 +715,7 @@ io.on('connection', function (socket) {
             var fixturesList = [];
             files.forEach(file => {
                 var fixture = require(process.cwd() + "/fixtures/" + file);
-                fixture.personalities.forEach(function(personality) {
+                fixture.personalities.forEach(function (personality) {
                     fixturesList.push([personality.modelName, personality.modeName, personality.manufacturerName, file, personality.dcid]);
                 });
             });
