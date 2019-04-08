@@ -49,8 +49,8 @@ var app = new Vue({
         ifMobile: function () {
             return isMobile.any;
         },
-        addFixture: function (fixture) {
-            socket.emit('addFixture', { fixtureName: fixture, startDMXAddress: $('#newFixtureStartDMXAddress').val(), creationCount: $('#newFixtureCreationCount').val() });
+        addFixture: function (fixture, dcid) {
+            socket.emit('addFixture', { fixtureName: fixture, dcid: dcid, startDMXAddress: $('#newFixtureStartDMXAddress').val(), creationCount: $('#newFixtureCreationCount').val() });
             $('#fixtureProfilesModal').modal("hide");
         },
         upperCase: function (str) {

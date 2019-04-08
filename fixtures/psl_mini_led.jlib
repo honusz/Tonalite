@@ -1,11 +1,11 @@
 {
-    "date": "2019-04-07T23:36:50Z",
+    "date": "2019-04-08T01:37:34Z",
     "editorVersion": "1.1.1.9.0.4",
     "personalities": [
         {
             "colortable": "77A82F8A-9B24-4C3F-98FC-B6A29FB1AAE6",
-            "dcid": "360781AD-F74F-4DB9-ADF8-7C4B18256CAB",
-            "hasIntensity": false,
+            "dcid": "C6BE28E4-BD49-4969-B0A9-50A37154E1CC",
+            "hasIntensity": true,
             "manufacturerName": "PSL",
             "maxOffset": 8,
             "modeName": "9 Channel",
@@ -13,7 +13,7 @@
             "parameters": [
                 {
                     "coarse": 3,
-                    "fadeWithIntensity": true,
+                    "fadeWithIntensity": false,
                     "highlight": 65535,
                     "home": 65535,
                     "invert": false,
@@ -24,7 +24,7 @@
                 },
                 {
                     "coarse": 4,
-                    "fadeWithIntensity": true,
+                    "fadeWithIntensity": false,
                     "highlight": 65535,
                     "home": 65535,
                     "invert": false,
@@ -35,7 +35,7 @@
                 },
                 {
                     "coarse": 5,
-                    "fadeWithIntensity": true,
+                    "fadeWithIntensity": false,
                     "highlight": 65535,
                     "home": 65535,
                     "invert": false,
@@ -46,7 +46,7 @@
                 },
                 {
                     "coarse": 6,
-                    "fadeWithIntensity": true,
+                    "fadeWithIntensity": false,
                     "highlight": 65535,
                     "home": 65535,
                     "invert": false,
@@ -80,39 +80,13 @@
                 {
                     "coarse": 2,
                     "fadeWithIntensity": false,
-                    "highlight": 0,
+                    "highlight": 65535,
                     "home": 0,
                     "invert": false,
-                    "name": "Strobe",
-                    "ranges": [
-                        {
-                            "begin": 0,
-                            "default": 0,
-                            "end": 7,
-                            "label": "Off"
-                        },
-                        {
-                            "begin": 8,
-                            "default": 71,
-                            "end": 134,
-                            "label": "Master Dimmer"
-                        },
-                        {
-                            "begin": 135,
-                            "default": 187,
-                            "end": 239,
-                            "label": "Strobe from slow to fast"
-                        },
-                        {
-                            "begin": 240,
-                            "default": 255,
-                            "end": 255,
-                            "label": "Open"
-                        }
-                    ],
+                    "name": "Intensity",
                     "size": 8,
                     "snap": false,
-                    "type": 4
+                    "type": 1
                 },
                 {
                     "coarse": 7,
@@ -148,8 +122,8 @@
         },
         {
             "colortable": "77A82F8A-9B24-4C3F-98FC-B6A29FB1AAE6",
-            "dcid": "9BD9FBD2-5444-4418-B987-D5CA4A18BCCC",
-            "hasIntensity": false,
+            "dcid": "1C4C25B5-4F85-40CA-A179-E8F3CD1AB4DE",
+            "hasIntensity": true,
             "manufacturerName": "PSL",
             "maxOffset": 13,
             "modeName": "14 Channel",
@@ -157,7 +131,7 @@
             "parameters": [
                 {
                     "coarse": 6,
-                    "fadeWithIntensity": true,
+                    "fadeWithIntensity": false,
                     "highlight": 65535,
                     "home": 65535,
                     "invert": false,
@@ -168,7 +142,7 @@
                 },
                 {
                     "coarse": 7,
-                    "fadeWithIntensity": true,
+                    "fadeWithIntensity": false,
                     "highlight": 65535,
                     "home": 65535,
                     "invert": false,
@@ -179,7 +153,7 @@
                 },
                 {
                     "coarse": 8,
-                    "fadeWithIntensity": true,
+                    "fadeWithIntensity": false,
                     "highlight": 65535,
                     "home": 65535,
                     "invert": false,
@@ -190,7 +164,7 @@
                 },
                 {
                     "coarse": 9,
-                    "fadeWithIntensity": true,
+                    "fadeWithIntensity": false,
                     "highlight": 65535,
                     "home": 65535,
                     "invert": false,
@@ -226,39 +200,13 @@
                 {
                     "coarse": 5,
                     "fadeWithIntensity": false,
-                    "highlight": 0,
+                    "highlight": 65535,
                     "home": 0,
                     "invert": false,
-                    "name": "Strobe",
-                    "ranges": [
-                        {
-                            "begin": 0,
-                            "default": 0,
-                            "end": 7,
-                            "label": "Off"
-                        },
-                        {
-                            "begin": 8,
-                            "default": 71,
-                            "end": 134,
-                            "label": "Master Dimmer"
-                        },
-                        {
-                            "begin": 135,
-                            "default": 187,
-                            "end": 239,
-                            "label": "Strobe from slow to fast"
-                        },
-                        {
-                            "begin": 240,
-                            "default": 255,
-                            "end": 255,
-                            "label": "Open"
-                        }
-                    ],
+                    "name": "Intensity",
                     "size": 8,
                     "snap": false,
-                    "type": 4
+                    "type": 1
                 },
                 {
                     "coarse": 4,

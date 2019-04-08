@@ -115,6 +115,8 @@ var channels = null;
 var artnet = null;
 var cp = null;
 
+require.extensions['.jlib'] = require.extensions['.json'];
+
 // Load the Tonalite settings from file
 function openSettings() {
     fs.readFile(process.cwd() + '/settings.json', function (err, data) {
@@ -703,8 +705,9 @@ io.on('connection', function (socket) {
             var fixturesList = [];
             files.forEach(file => {
                 var fixture = require(process.cwd() + "/fixtures/" + file);
-                fixture = fixture.personalities[0];
-                fixturesList.push([fixture.modelName, fixture.manufacturerName, file]);
+                fixture.personalities.forEach(function(personality) {
+                    fixturesList.push([personality.modelName, personality.modeName, personality.manufacturerName, file, personality.dcid]);
+                });
             });
             socket.emit('fixtureProfiles', [fixturesList, startDMXAddress]);
         });
@@ -754,7 +757,7 @@ io.on('connection', function (socket) {
             let i = 0; const iMax = parseInt(msg.creationCount); for (; i < iMax; i++) {
                 // Add a fixture using the fixture spec file in the fixtures folder
                 var fixture = require(process.cwd() + "/fixtures/" + msg.fixtureName);
-                fixture = fixture.personalities[0];
+                fixture = fixture.personalities[fixture.personalities.map(el => el.dcid).indexOf(msg.dcid)];
                 fixture.startDMXAddress = startDMXAddress;
                 fixture.hasLockedParameters = false;
                 fixture.name = fixture.modelName;
