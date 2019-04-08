@@ -142,7 +142,7 @@
             </div>
             <ul class="list-group" id="fixtureProfilesList">
               <li class="list-group-item fixtureProfileItem" v-for="profile in fixtureProfiles"
-                v-on:click="addFixture(profile[3], profile[4])">{{profile[0]}} {{profile[1]}} - {{profile[2]}}
+                v-on:click="addFixture(profile[3], profile[4])">{{profile[0]}} <span v-if="profile[1] != '-'">- {{profile[1]}}</span> - {{profile[2]}}
               </li>
             </ul>
             <div v-if="fixtureProfiles.length == 0" class="text-danger">
