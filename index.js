@@ -708,7 +708,7 @@ io.on('connection', function (socket) {
     socket.emit('grandmaster', grandmaster);
 
     QRCode.toDataURL(`http://${SETTINGS.url}:${SETTINGS.port}`, function (err, url) {
-        socket.emit('meta', { desktop: SETTINGS.desktop, version: VERSION, qrcode: url });
+        socket.emit('meta', { desktop: SETTINGS.desktop, version: VERSION, qrcode: url, url: `http://${SETTINGS.url}:${SETTINGS.port}` });
     });
 
 

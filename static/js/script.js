@@ -15,6 +15,7 @@ var app = new Vue({
         desktop: false,
         version: "2.0.0 Beta 5",
         qrcode: "",
+        appURL: "",
         currentCue: "",
         blackout: false,
         startDMXAddress: 1,
@@ -277,6 +278,7 @@ socket.on('meta', function (metadata) {
     app.desktop = metadata.desktop;
     app.version = metadata.version;
     app.qrcode = metadata.qrcode;
+    app.appURL = metadata.url;
 });
 
 socket.on('connect', function () {
