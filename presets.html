@@ -21,8 +21,8 @@
     <div id="app">
         <a href="/" class="mt-1 ml-1 btn btn-small btn-light"><i class="far fa-pencil-alt"></i></a>
         <button class="mt-1 btn btn-small btn-light" onclick="resetFixtures()"><i class="far fa-sync"></i></button>
-        <a href="/docs" class="mt-1 ml-1 btn btn-small btn-light float-right"><i class="far fa-book"></i></a>
-        <div class="container mt-3">
+        <a href="/docs" class="mt-1 mr-1 btn btn-small btn-light float-right"><i class="far fa-book"></i></a>
+        <div class="container mt-4">
             <div class="row" id="presetsList">
                 <div class="col-4 col-lg-2 mb-3" v-for="preset in presets" :key="preset.id">
                     <div :class="{ 'presetActive' : preset.active == true}" class="presetViewItem presetItem"
@@ -34,13 +34,13 @@
                     <h5>No presets have been created!</h5>
                 </div>
             </div>
-            <div class="row">
+            <!--<div class="row">
                 <div class="col-12">
                     <label for="grandmaster">Grandmaster:</label>
                     <input type="range" class="custom-range preset-range" id="grandmaster" min="0" max="100"
                         v-on:input="updateGrandmasterValue()" v-model="grandmaster">
                 </div>
-            </div>
+            </div>-->
         </div>
 
         <div id="serverDisconnectedModal" data-backdrop="static" data-keyboard="false" class="modal" tabindex="-1"
