@@ -535,10 +535,18 @@ function calculateStack() {
             if (fixtures[f].effects[e].active == true) {
                 let p = 0; const pMax = fixtures[f].parameters.length; for (; p < pMax; p++) {
                     if (fixtures[f].parameters[p].locked === false) {
-                        //startFixtureParameters[c].value = cue.fixtures[f].parameters[c].value;
+                        var effectChanIndex = fixtures[f].effects[e].parameterNames.findIndex(function (element) { return element == fixtures[f].parameters[p].name });
+                        if (effectChanIndex > -1) {
+                            fixtures[f].parameters[p].value = fixtures[f].effects[e].steps[fixtures[f].effects[e].step][effectChanIndex];
+                            //channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[p].coarse] = (fixtures[f].parameters[p].value >> 8);
+                            channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[p].coarse] = fixtures[f].parameters[p].value;
+                            /*if (fixtures[f].parameters[p].fine != null) {
+                                outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].parameters[c].fine] = (fixtures[f].parameters[p].value & 0xff);
+                            }*/
+                        }
+
                     }
                 }
-                console.log(fixtures[f].effects[e].name);
                 if (fixtures[f].effects[e].step + 1 == fixtures[f].effects[e].steps.length) {
                     fixtures[f].effects[e].step = 0;
                 } else {
@@ -1023,7 +1031,7 @@ io.on('connection', function (socket) {
         if (fixtures.length != 0) {
             var fixture = fixtures[fixtures.map(el => el.id).indexOf(msg.fixtureID)];
             var effect = JSON.parse(JSON.stringify(require(process.cwd() + "/effects/" + msg.effectFile).effectTable));
-            effect.active = false;
+            effect.active = true;
             effect.step = 0;
             fixture.effects.push(effect);
             saveShow();
