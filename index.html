@@ -159,7 +159,7 @@
           <div class="modal-body">
             <ul class="list-group" id="fixtureEffectsList">
               <li class="list-group-item fixtureProfileItem" v-for="effect in fixtureEffects"
-                v-on:click="addEffect(effect[1])">{{effect[0]}}
+                v-on:click="addEffect(effect[2])">{{effect[0]}} - {{effect[1]}}
               </li>
             </ul>
             <div v-if="fixtureEffects.length == 0" class="text-danger">

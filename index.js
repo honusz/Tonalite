@@ -530,29 +530,34 @@ function calculateStack() {
         }
         io.sockets.emit('fixtures', cleanFixtures());
     }
-    let f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
-        let e = 0; const eMax = fixtures[f].effects.length; for (; e < eMax; e++) {
-            if (fixtures[f].effects[e].active == true) {
-                let p = 0; const pMax = fixtures[f].parameters.length; for (; p < pMax; p++) {
-                    if (fixtures[f].parameters[p].locked === false) {
-                        var effectChanIndex = fixtures[f].effects[e].parameterNames.findIndex(function (element) { return element == fixtures[f].parameters[p].name });
-                        if (effectChanIndex > -1) {
-                            var effectValue = cppaddon.mapRange(fixtures[f].effects[e].steps[fixtures[f].effects[e].step][effectChanIndex], 0, 255, fixtures[f].parameters[p].min, fixtures[f].parameters[p].max);
-                            if (effectValue > fixtures[f].parameters[p].value) {
-                                channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[p].coarse] = (effectValue >> 8);
-                                //channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[p].coarse] = fixtures[f].effects[e].steps[fixtures[f].effects[e].step][effectChanIndex];
-                                if (fixtures[f].parameters[p].fine != null) {
-                                    channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[p].fine] = (effectValue & 0xff);
+    if (blackout === false) {
+        let f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
+            let e = 0; const eMax = fixtures[f].effects.length; for (; e < eMax; e++) {
+                if (fixtures[f].effects[e].active == true) {
+                    let p = 0; const pMax = fixtures[f].parameters.length; for (; p < pMax; p++) {
+                        if (fixtures[f].parameters[p].locked === false) {
+                            var effectChanIndex = fixtures[f].effects[e].parameterNames.findIndex(function (element) { return element == fixtures[f].parameters[p].name });
+                            if (effectChanIndex > -1) {
+                                var effectValue = cppaddon.mapRange(fixtures[f].effects[e].steps[fixtures[f].effects[e].step][effectChanIndex], 0, 255, fixtures[f].parameters[p].min, fixtures[f].parameters[p].max);
+                                if (effectValue > fixtures[f].parameters[p].value) {
+                                    if (fixtures[f].parameters[p].fadeWithIntensity == true || fixtures[f].parameters[p].type == 1) {
+                                        effectValue = (effectValue / 100.0) * grandmaster;
+                                    }
+                                    channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[p].coarse] = (effectValue >> 8);
+                                    //channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[p].coarse] = fixtures[f].effects[e].steps[fixtures[f].effects[e].step][effectChanIndex];
+                                    if (fixtures[f].parameters[p].fine != null) {
+                                        channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[p].fine] = (effectValue & 0xff);
+                                    }
                                 }
                             }
-                        }
 
+                        }
                     }
-                }
-                if (fixtures[f].effects[e].step + 1 == fixtures[f].effects[e].steps.length) {
-                    fixtures[f].effects[e].step = 0;
-                } else {
-                    fixtures[f].effects[e].step += 1;
+                    if (fixtures[f].effects[e].step + 1 == fixtures[f].effects[e].steps.length) {
+                        fixtures[f].effects[e].step = 0;
+                    } else {
+                        fixtures[f].effects[e].step += 1;
+                    }
                 }
             }
         }
@@ -805,7 +810,16 @@ io.on('connection', function (socket) {
             var effectsList = [];
             files.forEach(file => {
                 var effect = require(process.cwd() + "/effects/" + file).effectTable;
-                effectsList.push([effect.name, file]);
+                if (JSON.stringify(effect.parameterNames) == JSON.stringify(["Red", "Green", "Blue"])) {
+                    effect.type = "Color";
+                } else if (JSON.stringify(effect.parameterNames) == JSON.stringify(["Intensity"])) {
+                    effect.type = "Intensity";
+                } else if (JSON.stringify(effect.parameterNames) == JSON.stringify(["Pan", "Tilt"])) {
+                    effect.type = "Movement";
+                } else if (JSON.stringify(effect.parameterNames) == JSON.stringify(["Parameter"])) {
+                    effect.type = "Parameter";
+                }
+                effectsList.push([effect.name, effect.type, file]);
             });
             socket.emit('fixtureEffects', [fixtureid, effectsList]);
         });
@@ -1035,6 +1049,15 @@ io.on('connection', function (socket) {
             var effect = JSON.parse(JSON.stringify(require(process.cwd() + "/effects/" + msg.effectFile).effectTable));
             effect.active = true;
             effect.step = 0;
+            if (JSON.stringify(effect.parameterNames) == JSON.stringify(["Red", "Green", "Blue"])) {
+                effect.type = "Color";
+            } else if (JSON.stringify(effect.parameterNames) == JSON.stringify(["Intensity"])) {
+                effect.type = "Intensity";
+            } else if (JSON.stringify(effect.parameterNames) == JSON.stringify(["Pan", "Tilt"])) {
+                effect.type = "Movement";
+            } else if (JSON.stringify(effect.parameterNames) == JSON.stringify(["Parameter"])) {
+                effect.type = "Parameter";
+            }
             fixture.effects.push(effect);
             saveShow();
             socket.emit('fixtureParameters', { id: fixture.id, name: fixture.name, startDMXAddress: fixture.startDMXAddress, parameters: fixture.parameters, chips: fixture.chips, effects: fixture.effects });
