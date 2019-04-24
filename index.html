@@ -142,11 +142,28 @@
             </div>
             <ul class="list-group" id="fixtureProfilesList">
               <li class="list-group-item fixtureProfileItem" v-for="profile in fixtureProfiles"
-                v-on:click="addFixture(profile[3], profile[4])">{{profile[0]}} <span v-if="profile[1] != '-'">- {{profile[1]}}</span> - {{profile[2]}}
+                v-on:click="addFixture(profile[3], profile[4])">{{profile[0]}} <span v-if="profile[1] != '-'">-
+                  {{profile[1]}}</span> - {{profile[2]}}
               </li>
             </ul>
             <div v-if="fixtureProfiles.length == 0" class="text-danger">
               There are no fixture profiles in your library!
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="fixtureAddEffectsModal" class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <ul class="list-group" id="fixtureEffectsList">
+              <li class="list-group-item fixtureProfileItem" v-for="effect in fixtureEffects"
+                v-on:click="addEffect(effect[1])">{{effect[0]}}
+              </li>
+            </ul>
+            <div v-if="fixtureEffects.length == 0" class="text-danger">
+              There are no fixture effects in your library!
             </div>
           </div>
         </div>
@@ -171,7 +188,7 @@
     <div id="fixtureParametersPage" class="tabcontent">
       <div class="container">
         <div class="row topBtns">
-          <div class="col-6">
+          <div class="col-4">
             <h5 id="fixtureParametersName">Fixture name</h5>
           </div>
           <div class="col-3">
@@ -179,10 +196,15 @@
                 class="far fa-cog d-sm-none d-inline-block"></i><span
                 class="d-none d-sm-inline-block">Settings</span></button>
           </div>
-          <div class="col-3">
+          <div class="col-2">
             <button id="fixtureResetBtn" class="btn btn-danger btn-block"><i
                 class="far fa-redo d-sm-none d-inline-block"></i><span
                 class="d-none d-sm-inline-block">Reset</span></button>
+          </div>
+          <div class="col-3">
+            <button id="fixtureAddEffectBtn" class="btn btn-success btn-block"><i
+                class="far fa-hurricane d-sm-none d-inline-block"></i><span class="d-none d-sm-inline-block">Add
+                Effect</span></button>
           </div>
         </div>
         <div id="fixtureParameters"></div>

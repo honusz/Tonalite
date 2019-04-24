@@ -11,6 +11,8 @@ var app = new Vue({
         cues: [],
         showFiles: [],
         fixtureProfiles: [],
+        fixtureEffects: [],
+        effectFixture: "",
         usbPath: "",
         desktop: false,
         version: "2.0.0 Beta 5",
@@ -53,6 +55,10 @@ var app = new Vue({
         addFixture: function (fixture, dcid) {
             socket.emit('addFixture', { fixtureName: fixture, dcid: dcid, startDMXAddress: $('#newFixtureStartDMXAddress').val(), creationCount: $('#newFixtureCreationCount').val() });
             $('#fixtureProfilesModal').modal("hide");
+        },
+        addEffect: function (effectFile) {
+            socket.emit('addEffect', { effectFile: effectFile, fixtureID: app.effectFixture });
+            $('#fixtureAddEffectsModal').modal("hide");
         },
         upperCase: function (str) {
             return str.toUpperCase().replace(/-/g, " ");
@@ -141,6 +147,12 @@ socket.on('fixtureProfiles', function (profiles) {
     $('#fixtureProfilesModal').modal("show");
 });
 
+socket.on('fixtureEffects', function (effects) {
+    app.fixtureEffects = effects[1];
+    app.effectFixture = effects[0];
+    $('#fixtureAddEffectsModal').modal("show");
+});
+
 socket.on('shows', function (shows) {
     app.showFiles = shows[0];
     app.usbPath = shows[1];
@@ -152,6 +164,7 @@ socket.on('fixtureParameters', function (msg) {
     $("#fixtureParameters").empty();
     $("#fixtureParametersName").text(msg.name + " (" + msg.startDMXAddress + ")");
     $("#fixtureSettingsBtn").off().on("click", function () { viewFixtureSettings(msg.id); });
+    $("#fixtureAddEffectBtn").off().on("click", function () { getEffects(msg.id); });
     $("#fixtureResetBtn").off().on("click", function () { resetFixture(msg.id); });
     var c = 0; const cMax = msg.parameters.length; for (; c < cMax; c++) {
         chanString = "";
@@ -319,6 +332,10 @@ function openFixtureDefinitionModal() {
 
 function viewFixtureSettings(fixtureID) {
     socket.emit('getFixtureSettings', fixtureID);
+}
+
+function getEffects(fixtureID) {
+    socket.emit('getEffects', fixtureID);
 }
 
 function updateFixtureParameterValue(self, fixtureID, parameterID) {
