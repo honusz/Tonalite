@@ -49,7 +49,6 @@
   "pkg": {
     "assets": [
       "static/**/*",
-      "chips/**/*",
       "docs/dist/**/*",
       "index.min.html",
       "presets.min.html",
