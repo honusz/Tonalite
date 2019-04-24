@@ -412,7 +412,9 @@ function calculateCue(cue) {
     let f = 0; const fMax = cue.fixtures.length; for (; f < fMax; f++) {
         var startFixture = fixtures[fixtures.map(el => el.id).indexOf(cue.fixtures[f].id)];
         let e = 0; const eMax = cue.fixtures[f].effects.length; for (; e < eMax; e++) {
-            startFixture.effects[e].active = cue.fixtures[f].effects[e].active;
+            if (startFixture.effects[e].id == cue.fixtures[f].effects[e].id) {
+                startFixture.effects[e].active = cue.fixtures[f].effects[e].active;
+            }
         }
         let c = 0; const cMax = cue.fixtures[f].parameters.length; for (; c < cMax; c++) {
             if (startFixture.parameters[c].locked === false) {
