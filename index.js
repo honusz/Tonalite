@@ -265,6 +265,8 @@ function titleCase(str) {
 function cleanFixtures() {
     var newFixtures = JSON.parse(JSON.stringify(fixtures));
     let f = 0; const fMax = newFixtures.length; for (; f < fMax; f++) {
+        delete newFixtures.effects;
+        delete newFixtures.chips;
         let p = 0; const pMax = newFixtures[f].parameters.length; for (; p < pMax; p++) {
             delete newFixtures[f].parameters[p].max;
             delete newFixtures[f].parameters[p].min;
@@ -1059,6 +1061,18 @@ io.on('connection', function (socket) {
                 fixture.parameters[fixture.parameters.map(el => el.name).indexOf(chip.parameters[c].name)].value = (fixture.parameters[fixture.parameters.map(el => el.name).indexOf(chip.parameters[c].name)].max / 100.0) * chip.parameters[c].value;
                 fixture.parameters[fixture.parameters.map(el => el.name).indexOf(chip.parameters[c].name)].displayValue = parseInt(chip.parameters[c].value);
             }
+            socket.emit('fixtureParameters', { id: fixture.id, name: fixture.name, startDMXAddress: fixture.startDMXAddress, parameters: fixture.parameters, chips: fixture.chips, effects: cleanEffects(fixture.effects) });
+            io.emit('fixtures', cleanFixtures());
+        } else {
+            socket.emit('message', { type: "error", content: "No fixtures exist!" });
+        }
+    });
+
+    socket.on('activateFixtureEffect', function (msg) {
+        if (fixtures.length != 0) {
+            var fixture = fixtures[fixtures.map(el => el.id).indexOf(msg.id)];
+            var effect = fixture.effects[fixture.effects.map(el => el.id).indexOf(msg.effectid)];
+
             socket.emit('fixtureParameters', { id: fixture.id, name: fixture.name, startDMXAddress: fixture.startDMXAddress, parameters: fixture.parameters, chips: fixture.chips, effects: cleanEffects(fixture.effects) });
             io.emit('fixtures', cleanFixtures());
         } else {
