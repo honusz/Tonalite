@@ -294,6 +294,10 @@ function cleanFixtureForCue(fixture) {
         delete newFixture.parameters[p].displayValue;
         delete newFixture.parameters[p].home;
         delete newFixture.parameters[p].locked;
+        delete newFixture.parameters[p].ranges;
+        delete newFixture.parameters[p].highlight;
+        delete newFixture.parameters[p].snap;
+        delete newFixture.parameters[p].size;
     }
     return newFixture;
 }
