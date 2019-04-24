@@ -286,6 +286,7 @@ function cleanFixtureForCue(fixture) {
     delete newFixture.manufacturerName;
     delete newFixture.hasLockedParameters;
     delete newFixture.type;
+    delete newFixture.chips;
     newFixture.effects = cleanEffects(newFixture.effects);
     let p = 0; const pMax = newFixture.parameters.length; for (; p < pMax; p++) {
         delete newFixture.parameters[p].type;
@@ -305,6 +306,8 @@ function cleanEffect(effect) {
     delete newEffect.resolution;
     delete newEffect.parameterNames;
     delete newEffect.step;
+    delete newEffect.type;
+    delete newEffect.name;
     return newEffect;
 }
 
