@@ -537,12 +537,14 @@ function calculateStack() {
                     if (fixtures[f].parameters[p].locked === false) {
                         var effectChanIndex = fixtures[f].effects[e].parameterNames.findIndex(function (element) { return element == fixtures[f].parameters[p].name });
                         if (effectChanIndex > -1) {
-                            fixtures[f].parameters[p].value = fixtures[f].effects[e].steps[fixtures[f].effects[e].step][effectChanIndex];
-                            //channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[p].coarse] = (fixtures[f].parameters[p].value >> 8);
-                            channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[p].coarse] = fixtures[f].parameters[p].value;
-                            /*if (fixtures[f].parameters[p].fine != null) {
-                                outputChannels[(cue.fixtures[f].startDMXAddress - 1) + cue.fixtures[f].parameters[c].fine] = (fixtures[f].parameters[p].value & 0xff);
-                            }*/
+                            var effectValue = cppaddon.mapRange(fixtures[f].effects[e].steps[fixtures[f].effects[e].step][effectChanIndex], 0, 255, fixtures[f].parameters[p].min, fixtures[f].parameters[p].max);
+                            if (effectValue > fixtures[f].parameters[p].value) {
+                                channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[p].coarse] = (effectValue >> 8);
+                                //channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[p].coarse] = fixtures[f].effects[e].steps[fixtures[f].effects[e].step][effectChanIndex];
+                                if (fixtures[f].parameters[p].fine != null) {
+                                    channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[p].fine] = (effectValue & 0xff);
+                                }
+                            }
                         }
 
                     }
