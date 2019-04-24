@@ -187,6 +187,20 @@ socket.on('fixtureParameters', function (msg) {
         div += "</div></div>";
         $("#fixtureParameters").append(div);
     }
+
+    if (msg.effects.length != 0) {
+        var div = "<div class=\"fixtureEffects\"><h5>Fixture Effects:</h5><div class=\"row\">";
+
+        var e = 0; const eMax = msg.effects.length; for (; e < eMax; e++) {
+            var active = "";
+            if (msg.effects[e].active == true) {
+                active = "active";
+            }
+            div += "<div class=\"col-1\"><div class=\"fixtureEffect " + active + "\" onclick=\"changeFixtureEffectState(this, '" + msg.id + "', '" + msg.effects[e].id + "')\">" + msg.effects[e].name + "</div></div>";
+        }
+        div += "</div></div>";
+        $("#fixtureParameters").append(div);
+    }
 });
 
 socket.on('fixtureSettings', function (fixture) {
@@ -348,6 +362,10 @@ function updateFixtureParameterLock(self, fixtureID, parameterID) {
 
 function useFixtureChip(self, fixtureID, chipID) {
     socket.emit('useFixtureChip', { id: fixtureID, pid: chipID });
+}
+
+function changeFixtureEffectState(self, fixtureID, effectID) {
+    socket.emit('changeFixtureEffectState', { id: fixtureID, effectid: effectID });
 }
 
 function removeFixture(fixtureID) {

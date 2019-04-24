@@ -300,7 +300,6 @@ function cleanFixtureForCue(fixture) {
 function cleanEffect(effect) {
     var newEffect = JSON.parse(JSON.stringify(effect));
     delete newEffect.steps;
-    delete newEffect.id;
     delete newEffect.valueCount;
     delete newEffect.absolute;
     delete newEffect.resolution;
@@ -415,6 +414,9 @@ function calculateCue(cue) {
         var startFixture = fixtures[fixtures.map(el => el.id).indexOf(cue.fixtures[f].id)];
         let e = 0; const eMax = cue.fixtures[f].effects.length; for (; e < eMax; e++) {
             if (startFixture.effects[e].id == cue.fixtures[f].effects[e].id) {
+                if (cue.fixtures[f].effects[e].active != startFixture.effects[e].active) {
+                    startFixture.effects[e].step = 0;
+                }
                 startFixture.effects[e].active = cue.fixtures[f].effects[e].active;
             }
         }
@@ -563,16 +565,18 @@ function calculateStack() {
                         if (fixtures[f].parameters[p].locked === false) {
                             var effectChanIndex = fixtures[f].effects[e].parameterNames.findIndex(function (element) { return element == fixtures[f].parameters[p].name });
                             if (effectChanIndex > -1) {
-                                var effectValue = cppaddon.mapRange(fixtures[f].effects[e].steps[fixtures[f].effects[e].step][effectChanIndex], 0, 255, fixtures[f].parameters[p].min, fixtures[f].parameters[p].max);
-                                if (effectValue > fixtures[f].parameters[p].value) {
-                                    if (fixtures[f].parameters[p].fadeWithIntensity == true || fixtures[f].parameters[p].type == 1) {
-                                        effectValue = (effectValue / 100.0) * grandmaster;
-                                    }
+                                var effectValue = fixtures[f].effects[e].steps[fixtures[f].effects[e].step][effectChanIndex];
+                                if (fixtures[f].parameters[p].fadeWithIntensity == true || fixtures[f].parameters[p].type == 1) {
+                                    effectValue = (effectValue / 100.0) * grandmaster;
+                                }
+                                if (fixtures[f].effects[e].resolution == 16) {
                                     channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[p].coarse] = (effectValue >> 8);
                                     //channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[p].coarse] = fixtures[f].effects[e].steps[fixtures[f].effects[e].step][effectChanIndex];
                                     if (fixtures[f].parameters[p].fine != null) {
                                         channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[p].fine] = (effectValue & 0xff);
                                     }
+                                } else if (fixtures[f].effects[e].resolution == 8) {
+                                    channels[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[p].coarse] = effectValue;
                                 }
                             }
 
@@ -1068,10 +1072,11 @@ io.on('connection', function (socket) {
         }
     });
 
-    socket.on('activateFixtureEffect', function (msg) {
+    socket.on('changeFixtureEffectState', function (msg) {
         if (fixtures.length != 0) {
             var fixture = fixtures[fixtures.map(el => el.id).indexOf(msg.id)];
             var effect = fixture.effects[fixture.effects.map(el => el.id).indexOf(msg.effectid)];
+            effect.step = 0;
             effect.active = !effect.active;
             socket.emit('fixtureParameters', { id: fixture.id, name: fixture.name, startDMXAddress: fixture.startDMXAddress, parameters: fixture.parameters, chips: fixture.chips, effects: cleanEffects(fixture.effects) });
             io.emit('fixtures', cleanFixtures());
@@ -1084,7 +1089,7 @@ io.on('connection', function (socket) {
         if (fixtures.length != 0) {
             var fixture = fixtures[fixtures.map(el => el.id).indexOf(msg.fixtureID)];
             var effect = JSON.parse(JSON.stringify(require(process.cwd() + "/effects/" + msg.effectFile).effectTable));
-            effect.active = true;
+            effect.active = false;
             effect.step = 0;
             effect.id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
             if (JSON.stringify(effect.parameterNames) == JSON.stringify(["Red", "Green", "Blue"])) {
