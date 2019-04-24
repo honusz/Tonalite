@@ -1072,7 +1072,7 @@ io.on('connection', function (socket) {
         if (fixtures.length != 0) {
             var fixture = fixtures[fixtures.map(el => el.id).indexOf(msg.id)];
             var effect = fixture.effects[fixture.effects.map(el => el.id).indexOf(msg.effectid)];
-
+            effect.active = !effect.active;
             socket.emit('fixtureParameters', { id: fixture.id, name: fixture.name, startDMXAddress: fixture.startDMXAddress, parameters: fixture.parameters, chips: fixture.chips, effects: cleanEffects(fixture.effects) });
             io.emit('fixtures', cleanFixtures());
         } else {
