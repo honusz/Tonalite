@@ -390,6 +390,9 @@ function calculateCue(cue) {
     var outputChannels = new Array(512).fill(0);
     let f = 0; const fMax = cue.fixtures.length; for (; f < fMax; f++) {
         var startFixture = fixtures[fixtures.map(el => el.id).indexOf(cue.fixtures[f].id)];
+        let e = 0; const eMax = cue.fixtures[f].effects.length; for (; e < eMax; e++) {
+            startFixture.effects[e].active = cue.fixtures[f].effects[e].active;
+        }
         let c = 0; const cMax = cue.fixtures[f].parameters.length; for (; c < cMax; c++) {
             if (startFixture.parameters[c].locked === false) {
                 var startParameter = startFixture.parameters[c].value;
@@ -526,6 +529,23 @@ function calculateStack() {
             io.sockets.emit('cues', cleanCues());
         }
         io.sockets.emit('fixtures', cleanFixtures());
+    }
+    let f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
+        let e = 0; const eMax = fixtures[f].effects.length; for (; e < eMax; e++) {
+            if (fixtures[f].effects[e].active == true) {
+                let p = 0; const pMax = fixtures[f].parameters.length; for (; p < pMax; p++) {
+                    if (fixtures[f].parameters[p].locked === false) {
+                        //startFixtureParameters[c].value = cue.fixtures[f].parameters[c].value;
+                    }
+                }
+                console.log(fixtures[f].effects[e].name);
+                if (fixtures[f].effects[e].step + 1 == fixtures[f].effects[e].steps.length) {
+                    fixtures[f].effects[e].step = 0;
+                } else {
+                    fixtures[f].effects[e].step += 1;
+                }
+            }
+        }
     }
     // Allow presets to overide everything else for channels in which they have higher values
     let p = 0; const pMax = presets.length; for (; p < pMax; p++) {
@@ -1004,6 +1024,7 @@ io.on('connection', function (socket) {
             var fixture = fixtures[fixtures.map(el => el.id).indexOf(msg.fixtureID)];
             var effect = JSON.parse(JSON.stringify(require(process.cwd() + "/effects/" + msg.effectFile).effectTable));
             effect.active = false;
+            effect.step = 0;
             fixture.effects.push(effect);
             saveShow();
             socket.emit('fixtureParameters', { id: fixture.id, name: fixture.name, startDMXAddress: fixture.startDMXAddress, parameters: fixture.parameters, chips: fixture.chips, effects: fixture.effects });
