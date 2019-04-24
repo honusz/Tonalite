@@ -294,6 +294,26 @@ function cleanFixtureForCue(fixture) {
     return newFixture;
 }
 
+function cleanEffect(effect) {
+    var newEffect = JSON.parse(JSON.stringify(effect));
+    delete newEffect.steps;
+    delete newEffect.id;
+    delete newEffect.valueCount;
+    delete newEffect.absolute;
+    delete newEffect.resolution;
+    delete newEffect.parameterNames;
+    delete newEffect.step;
+    return newEffect;
+}
+
+function cleanEffects(effects) {
+    var newEffects = JSON.parse(JSON.stringify(effects));
+    let e = 0; const eMax = newEffects.length; for (; e < eMax; e++) {
+        newEffects[e] = cleanEffect(newEffects[e]);
+    }
+    return newEffects;
+}
+
 function cleanFixturesForCue() {
     var newFixtures = [];
     let f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
@@ -963,7 +983,7 @@ io.on('connection', function (socket) {
     socket.on('getFixtureParameters', function (fixtureID) {
         if (fixtures.length != 0) {
             var fixture = fixtures[fixtures.map(el => el.id).indexOf(fixtureID)];
-            socket.emit('fixtureParameters', { id: fixture.id, name: fixture.name, startDMXAddress: fixture.startDMXAddress, parameters: fixture.parameters, chips: fixture.chips, effects: fixture.effects });
+            socket.emit('fixtureParameters', { id: fixture.id, name: fixture.name, startDMXAddress: fixture.startDMXAddress, parameters: fixture.parameters, chips: fixture.chips, effects: cleanEffects(fixture.effects) });
         } else {
             socket.emit('message', { type: "error", content: "No fixtures exist!" });
         }
@@ -989,7 +1009,7 @@ io.on('connection', function (socket) {
                     fixture.parameters[c].displayValue = cppaddon.mapRange(fixture.parameters[c].value, fixture.parameters[c].min, fixture.parameters[c].max, 0, 100);
                 }
             }
-            socket.emit('fixtureParameters', { id: fixture.id, name: fixture.name, startDMXAddress: fixture.startDMXAddress, parameters: fixture.parameters, chips: fixture.chips, effects: fixture.effects });
+            socket.emit('fixtureParameters', { id: fixture.id, name: fixture.name, startDMXAddress: fixture.startDMXAddress, parameters: fixture.parameters, chips: fixture.chips, effects: cleanEffects(fixture.effects) });
             io.emit('fixtures', cleanFixtures());
             socket.emit('message', { type: "info", content: "Fixture values reset!" });
             saveShow();
@@ -1021,7 +1041,7 @@ io.on('connection', function (socket) {
                     fixture.hasLockedParameters = true;
                 }
             }
-            socket.emit('fixtureParameters', { id: fixture.id, name: fixture.name, startDMXAddress: fixture.startDMXAddress, parameters: fixture.parameters, chips: fixture.chips, effects: fixture.effects });
+            socket.emit('fixtureParameters', { id: fixture.id, name: fixture.name, startDMXAddress: fixture.startDMXAddress, parameters: fixture.parameters, chips: fixture.chips, effects: cleanEffects(fixture.effects) });
             io.emit('fixtures', cleanFixtures());
         } else {
             socket.emit('message', { type: "error", content: "No fixtures exist!" });
@@ -1036,7 +1056,7 @@ io.on('connection', function (socket) {
                 fixture.parameters[fixture.parameters.map(el => el.name).indexOf(chip.parameters[c].name)].value = (fixture.parameters[fixture.parameters.map(el => el.name).indexOf(chip.parameters[c].name)].max / 100.0) * chip.parameters[c].value;
                 fixture.parameters[fixture.parameters.map(el => el.name).indexOf(chip.parameters[c].name)].displayValue = parseInt(chip.parameters[c].value);
             }
-            socket.emit('fixtureParameters', { id: fixture.id, name: fixture.name, startDMXAddress: fixture.startDMXAddress, parameters: fixture.parameters, chips: fixture.chips, effects: fixture.effects });
+            socket.emit('fixtureParameters', { id: fixture.id, name: fixture.name, startDMXAddress: fixture.startDMXAddress, parameters: fixture.parameters, chips: fixture.chips, effects: cleanEffects(fixture.effects) });
             io.emit('fixtures', cleanFixtures());
         } else {
             socket.emit('message', { type: "error", content: "No fixtures exist!" });
@@ -1060,7 +1080,7 @@ io.on('connection', function (socket) {
             }
             fixture.effects.push(effect);
             saveShow();
-            socket.emit('fixtureParameters', { id: fixture.id, name: fixture.name, startDMXAddress: fixture.startDMXAddress, parameters: fixture.parameters, chips: fixture.chips, effects: fixture.effects });
+            socket.emit('fixtureParameters', { id: fixture.id, name: fixture.name, startDMXAddress: fixture.startDMXAddress, parameters: fixture.parameters, chips: fixture.chips, effects: cleanEffects(fixture.effects) });
             io.emit('fixtures', cleanFixtures());
         } else {
             socket.emit('message', { type: "error", content: "No fixtures exist!" });
