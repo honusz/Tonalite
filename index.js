@@ -287,6 +287,8 @@ function cleanFixtureForCue(fixture) {
     delete newFixture.hasLockedParameters;
     delete newFixture.type;
     delete newFixture.chips;
+    delete newFixture.dcid;
+    delete newFixture.colortable;
     newFixture.effects = cleanEffects(newFixture.effects);
     let p = 0; const pMax = newFixture.parameters.length; for (; p < pMax; p++) {
         delete newFixture.parameters[p].type;
