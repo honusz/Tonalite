@@ -1070,6 +1070,7 @@ io.on('connection', function (socket) {
             var effect = JSON.parse(JSON.stringify(require(process.cwd() + "/effects/" + msg.effectFile).effectTable));
             effect.active = true;
             effect.step = 0;
+            effect.id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
             if (JSON.stringify(effect.parameterNames) == JSON.stringify(["Red", "Green", "Blue"])) {
                 effect.type = "Color";
             } else if (JSON.stringify(effect.parameterNames) == JSON.stringify(["Intensity"])) {
