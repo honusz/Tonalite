@@ -284,6 +284,7 @@ function cleanFixtureForCue(fixture) {
     delete newFixture.manufacturerName;
     delete newFixture.hasLockedParameters;
     delete newFixture.type;
+    newFixture.effects = cleanEffects(newFixture.effects);
     let p = 0; const pMax = newFixture.parameters.length; for (; p < pMax; p++) {
         delete newFixture.parameters[p].type;
         delete newFixture.parameters[p].name;
@@ -1079,6 +1080,13 @@ io.on('connection', function (socket) {
                 effect.type = "Parameter";
             }
             fixture.effects.push(effect);
+            let cc = 0; const ccMax = cues.length; for (; cc < ccMax; cc++) {
+                let f = 0; const fMax = cues[cc].fixtures.length; for (; f < fMax; f++) {
+                    if (cues[cc].fixtures[f].id == fixture.id) {
+                        cues[cc].fixtures[f].effects.push(cleanEffect(effect));
+                    }
+                }
+            }
             saveShow();
             socket.emit('fixtureParameters', { id: fixture.id, name: fixture.name, startDMXAddress: fixture.startDMXAddress, parameters: fixture.parameters, chips: fixture.chips, effects: cleanEffects(fixture.effects) });
             io.emit('fixtures', cleanFixtures());
