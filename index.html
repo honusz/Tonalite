@@ -157,11 +157,54 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-body">
-            <ul class="list-group" id="fixtureEffectsList">
-              <li class="list-group-item fixtureProfileItem" v-for="effect in fixtureEffects"
-                v-on:click="addEffect(effect[2])">{{effect[0]}} - {{effect[1]}}
+            <ul class="nav nav-tabs" id="effectsTabs" role="tablist" v-if="fixtureEffects.length > 0">
+              <li class="nav-item">
+                <a class="nav-link active" id="colorEffects-tab" data-toggle="tab" href="#colorEffects" role="tab"
+                  aria-controls="colorEffects" aria-selected="true">Color</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="intensityEffects-tab" data-toggle="tab" href="#intensityEffects" role="tab"
+                  aria-controls="intensityEffects" aria-selected="false">Intensity</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="movementEffects-tab" data-toggle="tab" href="#movementEffects" role="tab"
+                  aria-controls="movementEffects" aria-selected="false">Movement</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="parameterEffects-tab" data-toggle="tab" href="#parameterEffects" role="tab"
+                  aria-controls="parameterEffects" aria-selected="false">Parameter</a>
               </li>
             </ul>
+            <div class="tab-content" v-if="fixtureEffects.length > 0">
+              <div class="tab-pane active" id="colorEffects" role="tabpanel" aria-labelledby="colorEffects-tab">
+                <ul class="list-group" id="fixtureEffectsListColor">
+                  <li class="list-group-item fixtureProfileItem" v-for="effect in fixtureEffects"
+                    v-if="effect[1] == 'Color'" v-on:click="addEffect(effect[2])">{{effect[0]}}
+                  </li>
+                </ul>
+              </div>
+              <div class="tab-pane" id="intensityEffects" role="tabpanel" aria-labelledby="intensityEffects-tab">
+                <ul class="list-group" id="fixtureEffectsListIntensity">
+                  <li class="list-group-item fixtureProfileItem" v-for="effect in fixtureEffects"
+                    v-if="effect[1] == 'Intensity'" v-on:click="addEffect(effect[2])">{{effect[0]}}
+                  </li>
+                </ul>
+              </div>
+              <div class="tab-pane" id="movementEffects" role="tabpanel" aria-labelledby="movementEffects-tab">
+                <ul class="list-group" id="fixtureEffectsListMovement">
+                  <li class="list-group-item fixtureProfileItem" v-for="effect in fixtureEffects"
+                    v-if="effect[1] == 'Movement'" v-on:click="addEffect(effect[2])">{{effect[0]}}
+                  </li>
+                </ul>
+              </div>
+              <div class="tab-pane" id="parameterEffects" role="tabpanel" aria-labelledby="parameterEffects-tab">
+                <ul class="list-group" id="fixtureEffectsListParameter">
+                  <li class="list-group-item fixtureProfileItem" v-for="effect in fixtureEffects"
+                    v-if="effect[1] == 'Parameter'" v-on:click="addEffect(effect[2])">{{effect[0]}}
+                  </li>
+                </ul>
+              </div>
+            </div>
             <div v-if="fixtureEffects.length == 0" class="text-danger">
               There are no fixture effects in your library!
             </div>
