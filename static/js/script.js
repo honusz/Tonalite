@@ -216,7 +216,7 @@ socket.on('effectSettings', function (msg) {
     openTab('effectSettingsPage');
     $("#fixtureParametersEffectBackBtn").off().on("click", function () { app.viewFixtureParameters(msg.fixtureID); });
     $("#effectDeleteBtn").off().on("click", function () { removeEffect(msg.effect.id); });
-    $("#effectSaveBtn").off().on("click", function () { saveEffectSettings(msg.effect.id); });
+    $("#effectSaveBtn").off().on("click", function () { saveEffectSettings(msg.fixtureID, msg.effect.id); });
     $("#effectNameInput").val(msg.effect.name);
     $("#effectDepthInput").val(msg.effect.depth);
 });
@@ -393,8 +393,8 @@ function saveFixtureSettings(fixtureID) {
     socket.emit('editFixtureSettings', { id: fixtureID, name: $("#fixtureNameInput").val(), shortName: $("#fixtureShortNameInput").val(), startDMXAddress: $("#fixtureDMXAddressInput").val() });
 }
 
-function saveEffectSettings(effectID) {
-    socket.emit('editEffectSettings', { id: effectID, name: $("#effectNameInput").val(), depth: $("#effectDepthInput").val() });
+function saveEffectSettings(fixtureID, effectID) {
+    socket.emit('editEffectSettings', { fixtureID: fixtureID, effectID: effectID, name: $("#effectNameInput").val(), depth: $("#effectDepthInput").val() });
 }
 
 function removeCue(cueID) {
