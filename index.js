@@ -598,7 +598,7 @@ function calculateStack() {
                             var effectChanIndex = fixtures[f].effects[e].parameterNames.findIndex(function (element) { return element == fixtures[f].parameters[p].name });
                             if (effectChanIndex > -1) {
                                 var effectValue = fixtures[f].effects[e].steps[fixtures[f].effects[e].step][effectChanIndex];
-                                effectValue = (effectValue * fixtures[f].effects[e].depth) + (fixtures[f].parameters[p].value * (1 - fixtures[f].effects[e].depth));
+                                effectValue = (effectValue * fixtures[f].effects[e].depth) + ((fixtures[f].parameters[p].value >> 8) * (1 - fixtures[f].effects[e].depth));
                                 if (fixtures[f].parameters[p].fadeWithIntensity == true || fixtures[f].parameters[p].type == 1) {
                                     effectValue = (effectValue / 100.0) * grandmaster;
                                 }
@@ -945,7 +945,6 @@ io.on('connection', function (socket) {
                 } else if (fixture.colortable == "D3E71EC8-3406-4572-A64C-52A38649C795") {
                     fixture.chips = JSON.parse(JSON.stringify(require(process.cwd() + "/chips/rgba.json")));
                 }
-
                 let c = 0; const cMax = fixture.parameters.length; for (; c < cMax; c++) {
                     fixture.parameters[c].value = fixture.parameters[c].home;
                     fixture.parameters[c].max = 65535;
@@ -1036,6 +1035,8 @@ io.on('connection', function (socket) {
         if (fixtures.length != 0) {
             var fixture = fixtures[fixtures.map(el => el.id).indexOf(msg.fixtureID)];
             var effect = fixture.effects[fixture.effects.map(el => el.id).indexOf(msg.effectID)];
+            effect.name = msg.name;
+            effect.depth = msg.depth;
             socket.emit('effectSettings', { fixtureID: fixture.id, effect: fixture.effects[fixture.effects.map(el => el.id).indexOf(msg.effectID)] });
             socket.emit('message', { type: "info", content: "Effect settings have been updated!" });
             //io.emit('fixtures', cleanFixtures());
