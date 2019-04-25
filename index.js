@@ -1035,10 +1035,10 @@ io.on('connection', function (socket) {
     socket.on('editEffectSettings', function (msg) {
         if (fixtures.length != 0) {
             var fixture = fixtures[fixtures.map(el => el.id).indexOf(msg.fixtureID)];
-            var effect = fixture.effects[fixture.effects.map(el => el.id).indexOf(msg.effectID)]
-            socket.emit('fixtureSettings', fixture);
-            socket.emit('message', { type: "info", content: "Fixture settings have been updated!" });
-            io.emit('fixtures', cleanFixtures());
+            var effect = fixture.effects[fixture.effects.map(el => el.id).indexOf(msg.effectID)];
+            socket.emit('effectSettings', { fixtureID: fixture.id, effect: fixture.effects[fixture.effects.map(el => el.id).indexOf(msg.effectID)] });
+            socket.emit('message', { type: "info", content: "Effect settings have been updated!" });
+            //io.emit('fixtures', cleanFixtures());
             saveShow();
         } else {
             socket.emit('message', { type: "error", content: "No fixtures exist!" });
@@ -1135,7 +1135,7 @@ io.on('connection', function (socket) {
             effect.step = 0;
             effect.active = !effect.active;
             socket.emit('fixtureParameters', { id: fixture.id, name: fixture.name, startDMXAddress: fixture.startDMXAddress, parameters: fixture.parameters, chips: fixture.chips, effects: cleanEffects(fixture.effects) });
-            io.emit('fixtures', cleanFixtures());
+            //io.emit('fixtures', cleanFixtures());
         } else {
             socket.emit('message', { type: "error", content: "No fixtures exist!" });
         }
