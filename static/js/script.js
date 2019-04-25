@@ -192,9 +192,9 @@ socket.on('fixtureParameters', function (msg) {
         var div = "<div class=\"fixtureEffects\"><h5>Fixture Effects:</h5><ul class=\"list-group\">";
         var e = 0; const eMax = msg.effects.length; for (; e < eMax; e++) {
             if (msg.effects[e].active == true) {
-                div += "<li class=\"list-group-item fixtureEffect\">" + msg.effects[e].name + " (" + msg.effects[e].type + ")<button class=\"float-right btn btn-sm btn-primary\">Settings</button><button class=\"float-right btn btn-sm btn-success\" onclick=\"changeFixtureEffectState(this, '" + msg.id + "', '" + msg.effects[e].id + "')\">Deactivate</button></li>";
+                div += "<li class=\"list-group-item fixtureEffect\">" + msg.effects[e].name + " (" + msg.effects[e].type + ")<button class=\"float-right btn btn-sm btn-primary\" onclick=\"viewEffectSettings(this, '" + msg.id + "', '" + msg.effects[e].id + "')\">Settings</button><button class=\"float-right btn btn-sm btn-success\" onclick=\"changeFixtureEffectState(this, '" + msg.id + "', '" + msg.effects[e].id + "')\">Deactivate</button></li>";
             } else {
-                div += "<li class=\"list-group-item fixtureEffect\">" + msg.effects[e].name + " (" + msg.effects[e].type + ")<button class=\"float-right btn btn-sm btn-primary\">Settings</button><button class=\"float-right btn btn-sm btn-warning\" onclick=\"changeFixtureEffectState(this, '" + msg.id + "', '" + msg.effects[e].id + "')\">Activate</button></li>";
+                div += "<li class=\"list-group-item fixtureEffect\">" + msg.effects[e].name + " (" + msg.effects[e].type + ")<button class=\"float-right btn btn-sm btn-primary\" onclick=\"viewEffectSettings(this, '" + msg.id + "', '" + msg.effects[e].id + "')\">Settings</button><button class=\"float-right btn btn-sm btn-warning\" onclick=\"changeFixtureEffectState(this, '" + msg.id + "', '" + msg.effects[e].id + "')\">Activate</button></li>";
             }
         }
         div += "</ul></div>";
@@ -210,6 +210,15 @@ socket.on('fixtureSettings', function (fixture) {
     $("#fixtureNameInput").val(fixture.name);
     $("#fixtureShortNameInput").val(fixture.shortName);
     $("#fixtureDMXAddressInput").val(fixture.startDMXAddress);
+});
+
+socket.on('effectSettings', function (msg) {
+    openTab('effectSettingsPage');
+    $("#fixtureParametersEffectBackBtn").off().on("click", function () { app.viewFixtureParameters(msg.fixtureID); });
+    $("#effectDeleteBtn").off().on("click", function () { removeEffect(msg.effect.id); });
+    $("#effectSaveBtn").off().on("click", function () { saveEffectSettings(msg.effect.id); });
+    $("#effectNameInput").val(msg.effect.name);
+    $("#effectDepthInput").val(msg.effect.depth);
 });
 
 socket.on('cues', function (cues) {
@@ -347,6 +356,10 @@ function viewFixtureSettings(fixtureID) {
     socket.emit('getFixtureSettings', fixtureID);
 }
 
+function viewEffectSettings(self, fixtureID, effectID) {
+    socket.emit('getEffectSettings', { fixtureID: fixtureID, effectID: effectID });
+}
+
 function getEffects(fixtureID) {
     socket.emit('getEffects', fixtureID);
 }
@@ -378,6 +391,10 @@ function removeFixture(fixtureID) {
 
 function saveFixtureSettings(fixtureID) {
     socket.emit('editFixtureSettings', { id: fixtureID, name: $("#fixtureNameInput").val(), shortName: $("#fixtureShortNameInput").val(), startDMXAddress: $("#fixtureDMXAddressInput").val() });
+}
+
+function saveEffectSettings(effectID) {
+    socket.emit('editEffectSettings', { id: effectID, name: $("#effectNameInput").val(), depth: $("#effectDepthInput").val() });
 }
 
 function removeCue(cueID) {

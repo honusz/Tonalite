@@ -1003,6 +1003,16 @@ io.on('connection', function (socket) {
         }
     });
 
+    socket.on('getEffectSettings', function (msg) {
+        // TODO check to make sure fixture exists
+        if (fixtures.length != 0) {
+            var fixture = fixtures[fixtures.map(el => el.id).indexOf(msg.fixtureID)];
+            socket.emit('effectSettings', { fixtureID: fixture.id, effect: fixture.effects[fixture.effects.map(el => el.id).indexOf(msg.effectID)] });
+        } else {
+            socket.emit('message', { type: "error", content: "No fixtures exist!" });
+        }
+    });
+
     socket.on('editFixtureSettings', function (msg) {
         if (fixtures.length != 0) {
             var fixture = fixtures[fixtures.map(el => el.id).indexOf(msg.id)];
@@ -1124,7 +1134,7 @@ io.on('connection', function (socket) {
             var effect = JSON.parse(JSON.stringify(require(process.cwd() + "/effects/" + msg.effectFile).effectTable));
             effect.active = false;
             effect.step = 0;
-            effect.depth = 1;
+            effect.depth = 1.0;
             effect.speed = 1;
             effect.id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
             if (JSON.stringify(effect.parameterNames) == JSON.stringify(["Red", "Green", "Blue"])) {
