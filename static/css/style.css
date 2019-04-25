@@ -272,19 +272,11 @@ body::-webkit-scrollbar {
     margin-bottom: 1rem;
 }
 
-.fixtureChip, .fixtureEffect {
+.fixtureChip {
     height: 4.5vw;
     width: 100%;
     border-radius: 0.25rem;
     margin-top: 0.25rem;
-}
-
-.fixtureEffect {
-    background-color: #ff6b6b;
-}
-
-.fixtureEffect.active {
-    background-color: #51cf66;
 }
 
 .fixtureChip:hover, .fixtureEffect:hover {

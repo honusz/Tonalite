@@ -189,16 +189,15 @@ socket.on('fixtureParameters', function (msg) {
     }
 
     if (msg.effects.length != 0) {
-        var div = "<div class=\"fixtureEffects\"><h5>Fixture Effects:</h5><div class=\"row\">";
-
+        var div = "<div class=\"fixtureEffects\"><h5>Fixture Effects:</h5><ul class=\"list-group\">";
         var e = 0; const eMax = msg.effects.length; for (; e < eMax; e++) {
-            var active = "";
             if (msg.effects[e].active == true) {
-                active = "active";
+                div += "<li class=\"list-group-item fixtureEffect\">" + msg.effects[e].name + " (" + msg.effects[e].type + ")<button class=\"float-right btn btn-sm btn-primary\">Settings</button><button class=\"float-right btn btn-sm btn-success\" onclick=\"changeFixtureEffectState(this, '" + msg.id + "', '" + msg.effects[e].id + "')\">Deactivate</button></li>";
+            } else {
+                div += "<li class=\"list-group-item fixtureEffect\">" + msg.effects[e].name + " (" + msg.effects[e].type + ")<button class=\"float-right btn btn-sm btn-primary\">Settings</button><button class=\"float-right btn btn-sm btn-warning\" onclick=\"changeFixtureEffectState(this, '" + msg.id + "', '" + msg.effects[e].id + "')\">Activate</button></li>";
             }
-            div += "<div class=\"col-1\"><div class=\"fixtureEffect " + active + "\" onclick=\"changeFixtureEffectState(this, '" + msg.id + "', '" + msg.effects[e].id + "')\">" + msg.effects[e].name + "</div></div>";
         }
-        div += "</div></div>";
+        div += "</ul></div>";
         $("#fixtureParameters").append(div);
     }
 });

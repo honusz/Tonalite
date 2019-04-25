@@ -289,7 +289,7 @@ function cleanFixtureForCue(fixture) {
     delete newFixture.chips;
     delete newFixture.dcid;
     delete newFixture.colortable;
-    newFixture.effects = cleanEffects(newFixture.effects);
+    newFixture.effects = cleanEffectsForCue(newFixture.effects);
     let p = 0; const pMax = newFixture.parameters.length; for (; p < pMax; p++) {
         delete newFixture.parameters[p].type;
         delete newFixture.parameters[p].name;
@@ -312,8 +312,6 @@ function cleanEffect(effect) {
     delete newEffect.resolution;
     delete newEffect.parameterNames;
     delete newEffect.step;
-    delete newEffect.type;
-    delete newEffect.name;
     return newEffect;
 }
 
@@ -321,6 +319,27 @@ function cleanEffects(effects) {
     var newEffects = JSON.parse(JSON.stringify(effects));
     let e = 0; const eMax = newEffects.length; for (; e < eMax; e++) {
         newEffects[e] = cleanEffect(newEffects[e]);
+    }
+    return newEffects;
+}
+
+function cleanEffectForCue(effect) {
+    var newEffect = JSON.parse(JSON.stringify(effect));
+    delete newEffect.steps;
+    delete newEffect.valueCount;
+    delete newEffect.absolute;
+    delete newEffect.resolution;
+    delete newEffect.parameterNames;
+    delete newEffect.step;
+    delete newEffect.type;
+    delete newEffect.name;
+    return newEffect;
+}
+
+function cleanEffectsForCue(effects) {
+    var newEffects = JSON.parse(JSON.stringify(effects));
+    let e = 0; const eMax = newEffects.length; for (; e < eMax; e++) {
+        newEffects[e] = cleanEffectForCue(newEffects[e]);
     }
     return newEffects;
 }
