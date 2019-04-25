@@ -389,6 +389,15 @@ function removeFixture(fixtureID) {
     });
 }
 
+function removeEffect(fixtureID, effectID) {
+    bootbox.confirm("Are you sure you want to delete this effect?", function (result) {
+        if (result === true) {
+            socket.emit('removeEffect', { fixtureID: fixtureID, effectID: effectID });
+            app.viewFixtureParameters(fixtureID);
+        }
+    });
+}
+
 function saveFixtureSettings(fixtureID) {
     socket.emit('editFixtureSettings', { id: fixtureID, name: $("#fixtureNameInput").val(), shortName: $("#fixtureShortNameInput").val(), startDMXAddress: $("#fixtureDMXAddressInput").val() });
 }
