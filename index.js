@@ -877,7 +877,7 @@ io.on('connection', function (socket) {
                 } else if (JSON.stringify(effect.parameterNames) == JSON.stringify(["Intensity"])) {
                     effect.type = "Intensity";
                 } else if (JSON.stringify(effect.parameterNames) == JSON.stringify(["Pan", "Tilt"])) {
-                    effect.type = "Movement";
+                    effect.type = "Shape";
                 } else if (JSON.stringify(effect.parameterNames) == JSON.stringify(["Parameter"])) {
                     effect.type = "Parameter";
                 }
@@ -1132,7 +1132,7 @@ io.on('connection', function (socket) {
             } else if (JSON.stringify(effect.parameterNames) == JSON.stringify(["Intensity"])) {
                 effect.type = "Intensity";
             } else if (JSON.stringify(effect.parameterNames) == JSON.stringify(["Pan", "Tilt"])) {
-                effect.type = "Movement";
+                effect.type = "Shape";
             } else if (JSON.stringify(effect.parameterNames) == JSON.stringify(["Parameter"])) {
                 effect.type = "Parameter";
             }

@@ -167,12 +167,12 @@
                   aria-controls="intensityEffects" aria-selected="false">Intensity</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" id="movementEffects-tab" data-toggle="tab" href="#movementEffects" role="tab"
-                  aria-controls="movementEffects" aria-selected="false">Movement</a>
+                <a class="nav-link" id="shapeEffects-tab" data-toggle="tab" href="#shapeEffects" role="tab"
+                  aria-controls="shapeEffects" aria-selected="false">Shape</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" id="parameterEffects-tab" data-toggle="tab" href="#parameterEffects" role="tab"
-                  aria-controls="parameterEffects" aria-selected="false">Parameter</a>
+                  aria-controls="parameterEffects" aria-selected="false">Param.</a>
               </li>
             </ul>
             <div class="tab-content" v-if="fixtureEffects.length > 0">
@@ -190,10 +190,10 @@
                   </li>
                 </ul>
               </div>
-              <div class="tab-pane" id="movementEffects" role="tabpanel" aria-labelledby="movementEffects-tab">
-                <ul class="list-group" id="fixtureEffectsListMovement">
+              <div class="tab-pane" id="shapeEffects" role="tabpanel" aria-labelledby="shapeEffects-tab">
+                <ul class="list-group" id="fixtureEffectsListShape">
                   <li class="list-group-item fixtureProfileItem" v-for="effect in fixtureEffects"
-                    v-if="effect[1] == 'Movement'" v-on:click="addEffect(effect[2])">{{effect[0]}}
+                    v-if="effect[1] == 'Shape'" v-on:click="addEffect(effect[2])">{{effect[0]}}
                   </li>
                 </ul>
               </div>
