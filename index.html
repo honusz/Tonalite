@@ -282,8 +282,38 @@
           <div class="col-12">
             <div class="form-group">
               <label for="fixtureDMXAddressInput">Starting DMX Address:</label>
-              <input class="form-control" type="number" id="fixtureDMXAddressInput"
+              <input class="form-control" min="1" max="512" type="number" id="fixtureDMXAddressInput"
                 placeholder="Fixture Starting DMX Address">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="fixtureEffectsPage" class="tabcontent">
+      <div class="container">
+        <div class="row topBtns">
+          <div class="col-4">
+            <button id="fixtureParametersBackBtn" class="btn btn-primary btn-block">Back</button>
+          </div>
+          <div class="col-4">
+            <button id="fixtureEffectSaveBtn" class="btn btn-success btn-block">Save</button>
+          </div>
+          <div class="col-4">
+            <button id="fixtureEffectDeleteBtn" class="btn btn-danger btn-block">Delete</button>
+          </div>
+        </div>
+        <div class="row" id="effectSettings">
+          <div class="col-12">
+            <div class="form-group">
+              <label for="effectNameInput">Name:</label>
+              <input class="form-control" type="text" id="effectNameInput" placeholder="Effect Name">
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="form-group">
+              <label for="effectDepthInput">Depth:</label>
+              <input class="form-control" min="0.0" max="1.0" type="number" id="effectDepthInput"
+                placeholder="Effect Depth">
             </div>
           </div>
         </div>
@@ -366,13 +396,15 @@
           <div class="col-12">
             <div class="form-group">
               <label for="cueUpTimeInput">Up Time:</label>
-              <input class="form-control" type="number" id="cueUpTimeInput" placeholder="Cue Up Length In Seconds">
+              <input class="form-control" min="0" type="number" id="cueUpTimeInput"
+                placeholder="Cue Up Length In Seconds">
             </div>
           </div>
           <div class="col-12">
             <div class="form-group">
               <label for="cueDownTimeInput">Down Time:</label>
-              <input class="form-control" type="number" id="cueDownTimeInput" placeholder="Cue Down Length In Seconds">
+              <input class="form-control" min="0" type="number" id="cueDownTimeInput"
+                placeholder="Cue Down Length In Seconds">
             </div>
           </div>
           <div class="col-12">
@@ -578,15 +610,15 @@
               <div class="col-md-6 col-sm-12">
                 <div class="form-group">
                   <label class="dark" for="defaultUpTime">Default Up Time:</label>
-                  <input v-on:input="saveSettingsBackground()" class="form-control" type="number" id="defaultUpTime"
-                    placeholder="Default Cue Up Time">
+                  <input v-on:input="saveSettingsBackground()" min="0" class="form-control" type="number"
+                    id="defaultUpTime" placeholder="Default Cue Up Time">
                 </div>
               </div>
               <div class="col-md-6 col-sm-12">
                 <div class="form-group">
                   <label class="dark" for="defaultDownTime">Default Down Time:</label>
-                  <input v-on:input="saveSettingsBackground()" class="form-control" type="number" id="defaultDownTime"
-                    placeholder="Default Cue Up Time">
+                  <input v-on:input="saveSettingsBackground()" min="0" class="form-control" type="number"
+                    id="defaultDownTime" placeholder="Default Cue Up Time">
                 </div>
               </div>
             </div>
