@@ -448,6 +448,8 @@ function calculateCue(cue) {
                     startFixture.effects[e].step = 0;
                 }
                 startFixture.effects[e].active = cue.fixtures[f].effects[e].active;
+                startFixture.effects[e].depth = cue.fixtures[f].effects[e].depth;
+                startFixture.effects[e].speed = cue.fixtures[f].effects[e].speed;
             }
         }
         let c = 0; const cMax = cue.fixtures[f].parameters.length; for (; c < cMax; c++) {
@@ -596,6 +598,7 @@ function calculateStack() {
                             var effectChanIndex = fixtures[f].effects[e].parameterNames.findIndex(function (element) { return element == fixtures[f].parameters[p].name });
                             if (effectChanIndex > -1) {
                                 var effectValue = fixtures[f].effects[e].steps[fixtures[f].effects[e].step][effectChanIndex];
+                                effectValue = (effectValue * fixtures[f].effects[e].depth) + (fixtures[f].parameters[p].value * (1 - fixtures[f].effects[e].depth));
                                 if (fixtures[f].parameters[p].fadeWithIntensity == true || fixtures[f].parameters[p].type == 1) {
                                     effectValue = (effectValue / 100.0) * grandmaster;
                                 }
@@ -612,10 +615,10 @@ function calculateStack() {
 
                         }
                     }
-                    if (fixtures[f].effects[e].step + 1 == fixtures[f].effects[e].steps.length) {
+                    if (fixtures[f].effects[e].step + fixtures[f].effects[e].speed == fixtures[f].effects[e].steps.length) {
                         fixtures[f].effects[e].step = 0;
                     } else {
-                        fixtures[f].effects[e].step += 1;
+                        fixtures[f].effects[e].step += fixtures[f].effects[e].speed;
                     }
                 }
             }
@@ -1121,8 +1124,8 @@ io.on('connection', function (socket) {
             var effect = JSON.parse(JSON.stringify(require(process.cwd() + "/effects/" + msg.effectFile).effectTable));
             effect.active = false;
             effect.step = 0;
-            effect.depth = 0;
-            effect.speed = 0;
+            effect.depth = 1;
+            effect.speed = 1;
             effect.id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
             if (JSON.stringify(effect.parameterNames) == JSON.stringify(["Red", "Green", "Blue"])) {
                 effect.type = "Color";
