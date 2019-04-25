@@ -312,6 +312,8 @@ function cleanEffect(effect) {
     delete newEffect.resolution;
     delete newEffect.parameterNames;
     delete newEffect.step;
+    delete newEffect.speed;
+    delete newEffect.depth;
     return newEffect;
 }
 
@@ -1119,6 +1121,8 @@ io.on('connection', function (socket) {
             var effect = JSON.parse(JSON.stringify(require(process.cwd() + "/effects/" + msg.effectFile).effectTable));
             effect.active = false;
             effect.step = 0;
+            effect.depth = 0;
+            effect.speed = 0;
             effect.id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
             if (JSON.stringify(effect.parameterNames) == JSON.stringify(["Red", "Green", "Blue"])) {
                 effect.type = "Color";
