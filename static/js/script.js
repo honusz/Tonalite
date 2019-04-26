@@ -111,6 +111,8 @@ socket.on('message', function (msg) {
     $("#alert").addClass("show");
     $("#alert").fadeTo(1000, 500).slideUp(500, function () {
         $("#alert").removeClass('show');
+        $("#alert").removeClass('alert-info');
+        $("#alert").removeClass('alert-danger');
     });
     if (msg.type == "info") {
         $("#alert").addClass("alert-info");
@@ -215,7 +217,7 @@ socket.on('fixtureSettings', function (fixture) {
 socket.on('effectSettings', function (msg) {
     openTab('effectSettingsPage');
     $("#fixtureParametersEffectBackBtn").off().on("click", function () { app.viewFixtureParameters(msg.fixtureID); });
-    $("#effectDeleteBtn").off().on("click", function () { removeEffect(msg.effect.id); });
+    $("#effectDeleteBtn").off().on("click", function () { removeEffect(msg.fixtureID, msg.effect.id); });
     $("#effectSaveBtn").off().on("click", function () { saveEffectSettings(msg.fixtureID, msg.effect.id); });
     $("#effectNameInput").val(msg.effect.name);
     $("#effectDepthInput").val(msg.effect.depth);
