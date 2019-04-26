@@ -1212,7 +1212,9 @@ io.on('connection', function (socket) {
                 } else if (JSON.stringify(effect.parameterNames) == JSON.stringify(["Pan", "Tilt"])) {
                     effect.type = "Shape";
                 } else if (JSON.stringify(effect.parameterNames) == JSON.stringify(["Parameter"])) {
+                    effect.parameterNames = [msg.parameterName];
                     effect.type = "Parameter";
+                    effect.name = effect.name + " (" + msg.parameterName + ")";
                 }
                 fixture.effects.push(effect);
                 let cc = 0; const ccMax = cues.length; for (; cc < ccMax; cc++) {

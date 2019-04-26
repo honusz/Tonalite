@@ -6,6 +6,7 @@ var app = new Vue({
     el: '#app',
     data: {
         fixtures: [],
+        fixtureParameters: [],
         groups: [],
         presets: [],
         cues: [],
@@ -57,7 +58,7 @@ var app = new Vue({
             $('#fixtureProfilesModal').modal("hide");
         },
         addEffect: function (effectFile) {
-            socket.emit('addEffect', { effectFile: effectFile, fixtureID: app.effectFixture });
+            socket.emit('addEffect', { effectFile: effectFile, fixtureID: app.effectFixture, parameterName: $('#fixtureEffectParametersList').val() });
             $('#fixtureAddEffectsModal').modal("hide");
         },
         upperCase: function (str) {
@@ -162,6 +163,7 @@ socket.on('shows', function (shows) {
 });
 
 socket.on('fixtureParameters', function (msg) {
+    app.fixtureParameters = msg.parameters;
     openTab('fixtureParametersPage');
     $("#fixtureParameters").empty();
     $("#fixtureParametersName").text(msg.name + " (" + msg.startDMXAddress + ")");

@@ -198,6 +198,11 @@
                 </ul>
               </div>
               <div class="tab-pane" id="parameterEffects" role="tabpanel" aria-labelledby="parameterEffects-tab">
+                <label for="fixtureEffectParametersList" class="mb-0 text-dark mt-1">Apply Effect To:</label>
+                <select class="form-control mb-1" id="fixtureEffectParametersList" name="fixtureEffectParametersList">
+                  <option v-for="(parameter, index) in fixtureParameters" :key="index" :value="parameter.name">
+                    {{parameter.name}}</option>
+                </select>
                 <ul class="list-group" id="fixtureEffectsListParameter">
                   <li class="list-group-item fixtureProfileItem" v-for="effect in fixtureEffects"
                     v-if="effect[1] == 'Parameter'" v-on:click="addEffect(effect[2])">{{effect[0]}}
@@ -672,7 +677,7 @@
             <div class="form-group">
               <label class="dark mr-2" for="groupFixtureIDs">Fixtures:</label>
               <select class="form-control" multiple id="groupFixtureIDs" name="groupFixtureIDs" size="5">
-                <option v-for="fixture in fixtures" :key="fixture.id" :value="fixture.id">{{fixture.shortName}}
+                <option v-for="fixture in fixtures" :key="fixture.id" :value="fixture.id">{{fixture.name}}
                   ({{fixture.startDMXAddress}})</option>
               </select>
             </div>
