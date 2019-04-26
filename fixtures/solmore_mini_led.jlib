@@ -1,0 +1,146 @@
+{
+    "date": "2019-04-26T00:56:13Z",
+    "editorVersion": "1.1.1.9.0.4",
+    "personalities": [
+        {
+            "colortable": "3874B444-A11E-47D9-8295-04556EAEBEA7",
+            "dcid": "B3525049-3973-47C3-98E6-DBAE835599DC",
+            "hasIntensity": true,
+            "manufacturerName": "Solmore",
+            "maxOffset": 6,
+            "modeName": "-",
+            "modelName": "Unknown",
+            "parameters": [
+                {
+                    "coarse": 1,
+                    "fadeWithIntensity": false,
+                    "highlight": 65535,
+                    "home": 65280,
+                    "invert": false,
+                    "name": "Red",
+                    "size": 8,
+                    "snap": false,
+                    "type": 5
+                },
+                {
+                    "coarse": 2,
+                    "fadeWithIntensity": false,
+                    "highlight": 65535,
+                    "home": 65280,
+                    "invert": false,
+                    "name": "Green",
+                    "size": 8,
+                    "snap": false,
+                    "type": 5
+                },
+                {
+                    "coarse": 3,
+                    "fadeWithIntensity": false,
+                    "highlight": 65535,
+                    "home": 65280,
+                    "invert": false,
+                    "name": "Blue",
+                    "size": 8,
+                    "snap": false,
+                    "type": 5
+                },
+                {
+                    "coarse": 0,
+                    "fadeWithIntensity": false,
+                    "highlight": 65535,
+                    "home": 0,
+                    "invert": false,
+                    "name": "Intensity",
+                    "size": 8,
+                    "snap": false,
+                    "type": 1
+                },
+                {
+                    "coarse": 4,
+                    "fadeWithIntensity": false,
+                    "highlight": 0,
+                    "home": 0,
+                    "invert": false,
+                    "name": "Strobe",
+                    "ranges": [
+                        {
+                            "begin": 0,
+                            "default": 0,
+                            "end": 7,
+                            "label": "No Flicker"
+                        },
+                        {
+                            "begin": 8,
+                            "default": 255,
+                            "end": 255,
+                            "label": "Strobr from slow to fast"
+                        }
+                    ],
+                    "size": 8,
+                    "snap": false,
+                    "type": 4
+                },
+                {
+                    "coarse": 5,
+                    "fadeWithIntensity": false,
+                    "highlight": 0,
+                    "home": 0,
+                    "invert": false,
+                    "name": "Special Functions",
+                    "ranges": [
+                        {
+                            "begin": 0,
+                            "default": 0,
+                            "end": 10,
+                            "label": "Manual control"
+                        },
+                        {
+                            "begin": 11,
+                            "default": 35,
+                            "end": 60,
+                            "label": "Color selection"
+                        },
+                        {
+                            "begin": 61,
+                            "default": 85,
+                            "end": 110,
+                            "label": "Gradient"
+                        },
+                        {
+                            "begin": 111,
+                            "default": 135,
+                            "end": 160,
+                            "label": "Variable pulse"
+                        },
+                        {
+                            "begin": 161,
+                            "default": 185,
+                            "end": 210,
+                            "label": "Jump"
+                        },
+                        {
+                            "begin": 211,
+                            "default": 211,
+                            "end": 215,
+                            "label": "Voice"
+                        }
+                    ],
+                    "size": 8,
+                    "snap": false,
+                    "type": 4
+                },
+                {
+                    "coarse": 6,
+                    "fadeWithIntensity": false,
+                    "highlight": 0,
+                    "home": 0,
+                    "invert": false,
+                    "name": "Color selection speed",
+                    "size": 8,
+                    "snap": false,
+                    "type": 4
+                }
+            ]
+        }
+    ]
+}
