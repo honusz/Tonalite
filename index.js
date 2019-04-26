@@ -598,7 +598,11 @@ function calculateStack() {
                             var effectChanIndex = fixtures[f].effects[e].parameterNames.findIndex(function (element) { return element == fixtures[f].parameters[p].name });
                             if (effectChanIndex > -1) {
                                 var effectValue = fixtures[f].effects[e].steps[fixtures[f].effects[e].step][effectChanIndex];
+                                if (fixtures[f].effects[e].resolution == 8) {
+                                    effectValue = cppaddon.mapRange(effectValue, 0, 255, fixtures[f].parameters[p].min, fixtures[f].parameters[p].max);
+                                }
                                 effectValue = (effectValue * fixtures[f].effects[e].depth) + ((fixtures[f].parameters[p].value >> 8) * (1 - fixtures[f].effects[e].depth));
+                                fixtures[f].parameters[p].displayValue = cppaddon.mapRange(effectValue, fixtures[f].parameters[p].min, fixtures[f].parameters[p].max, 0, 100);
                                 if (fixtures[f].parameters[p].fadeWithIntensity == true || fixtures[f].parameters[p].type == 1) {
                                     effectValue = (effectValue / 100.0) * grandmaster;
                                 }
@@ -623,6 +627,7 @@ function calculateStack() {
                 }
             }
         }
+        io.sockets.emit('fixtures', cleanFixtures());
     }
     // Allow presets to overide everything else for channels in which they have higher values
     let p = 0; const pMax = presets.length; for (; p < pMax; p++) {
