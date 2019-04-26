@@ -590,6 +590,7 @@ function calculateStack() {
         io.sockets.emit('fixtures', cleanFixtures());
     }
     if (blackout === false) {
+        var displayChanged = false;
         let f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
             let e = 0; const eMax = fixtures[f].effects.length; for (; e < eMax; e++) {
                 if (fixtures[f].effects[e].active == true) {
@@ -602,7 +603,10 @@ function calculateStack() {
                                     effectValue = cppaddon.mapRange(effectValue, 0, 255, fixtures[f].parameters[p].min, fixtures[f].parameters[p].max);
                                 }
                                 effectValue = (effectValue * fixtures[f].effects[e].depth) + ((fixtures[f].parameters[p].value >> 8) * (1 - fixtures[f].effects[e].depth));
-                                fixtures[f].parameters[p].displayValue = cppaddon.mapRange(effectValue, fixtures[f].parameters[p].min, fixtures[f].parameters[p].max, 0, 100);
+                                if (fixtures[f].parameters[p].type == 1) {
+                                    fixtures[f].parameters[p].displayValue = cppaddon.mapRange(effectValue, fixtures[f].parameters[p].min, fixtures[f].parameters[p].max, 0, 100);
+                                    displayChanged = true;
+                                }
                                 if (fixtures[f].parameters[p].fadeWithIntensity == true || fixtures[f].parameters[p].type == 1) {
                                     effectValue = (effectValue / 100.0) * grandmaster;
                                 }
@@ -627,7 +631,9 @@ function calculateStack() {
                 }
             }
         }
-        io.sockets.emit('fixtures', cleanFixtures());
+        if (displayChanged === true) {
+            io.sockets.emit('fixtures', cleanFixtures());
+        }
     }
     // Allow presets to overide everything else for channels in which they have higher values
     let p = 0; const pMax = presets.length; for (; p < pMax; p++) {
