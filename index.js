@@ -1011,9 +1011,6 @@ io.on('connection', function (socket) {
                 if (fixture.effects.some(e => e.id === msg.effectID)) {
                     fixture.effects.splice(fixture.effects.map(el => el.id).indexOf(msg.effectID), 1);
                     socket.emit('message', { type: "info", content: "Fixture effect has been removed!" });
-                    io.emit('fixtures', cleanFixtures());
-                    io.emit('currentCue', currentCueID);
-                    io.emit('cues', cleanCues());
                     saveShow();
                 }
             }
@@ -1076,7 +1073,6 @@ io.on('connection', function (socket) {
                     effect.depth = msg.depth;
                     socket.emit('effectSettings', { fixtureID: fixture.id, effect: fixture.effects[fixture.effects.map(el => el.id).indexOf(msg.effectID)] });
                     socket.emit('message', { type: "info", content: "Effect settings have been updated!" });
-                    //io.emit('fixtures', cleanFixtures());
                     saveShow();
                 }
             }
@@ -1187,7 +1183,6 @@ io.on('connection', function (socket) {
                     effect.step = 0;
                     effect.active = !effect.active;
                     socket.emit('fixtureParameters', { id: fixture.id, name: fixture.name, startDMXAddress: fixture.startDMXAddress, parameters: fixture.parameters, chips: fixture.chips, effects: cleanEffects(fixture.effects) });
-                    //io.emit('fixtures', cleanFixtures());
                 }
             }
         } else {
@@ -1224,7 +1219,7 @@ io.on('connection', function (socket) {
                 }
                 saveShow();
                 socket.emit('fixtureParameters', { id: fixture.id, name: fixture.name, startDMXAddress: fixture.startDMXAddress, parameters: fixture.parameters, chips: fixture.chips, effects: cleanEffects(fixture.effects) });
-                io.emit('fixtures', cleanFixtures());
+                socket.emit('message', { type: "info", content: "Effect has been added to fixture!" });
             }
         } else {
             socket.emit('message', { type: "error", content: "No fixtures exist!" });
