@@ -7,8 +7,7 @@ body {
     color: #F8F9FA;
 }
 
-.nav-item.dropdown,
-.dropdown-item:hover {
+.nav-item.dropdown, .dropdown-item:hover {
     cursor: pointer;
 }
 
@@ -16,10 +15,7 @@ body {
     background-color: rgba(0, 0, 0, 0.1);
 }
 
-.fixtureItem,
-.cueItem,
-.groupItem,
-.presetItem {
+.fixtureItem, .cueItem, .groupItem, .presetItem {
     width: 100%;
     background-color: #228BE6;
     color: #F8F9FA;
@@ -75,9 +71,7 @@ body {
     background-color: #ae3ec9;
 }
 
-#fixturesList,
-#cuesList,
-#groupsList {
+#fixturesList, #cuesList, #groupsList {
     margin-bottom: 3rem;
 }
 
@@ -116,10 +110,7 @@ body {
     margin-top: 1rem;
 }
 
-.list-group-item,
-.dark,
-.bootbox-body,
-.modal-title {
+.list-group-item, .dark, .bootbox-body, .modal-title {
     color: #343A40;
 }
 
@@ -273,8 +264,8 @@ body::-webkit-scrollbar {
 }
 
 .fixtureChip {
-    height: 4.5vw;
-    width: 100%;
+    height: 3rem;
+    width: 3rem;
     border-radius: 0.25rem;
     margin-top: 0.25rem;
 }
@@ -283,7 +274,7 @@ body::-webkit-scrollbar {
     cursor: pointer;
 }
 
-.bootbox > .modal-dialog > .modal-content > .modal-header {
+.bootbox>.modal-dialog>.modal-content>.modal-header {
     display: block;
 }
 

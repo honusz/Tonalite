@@ -183,22 +183,32 @@ socket.on('fixtureParameters', function (msg) {
     }
 
     if (msg.chips.length != 0) {
-        var div = "<div class=\"fixtureChips\"><h5>Fixture Chips:</h5><div class=\"row\">";
+        var div = "<div class=\"fixtureChips\"><h5>Fixture Chips:</h5>";
 
         var ch = 0; const chMax = msg.chips.length; for (; ch < chMax; ch++) {
-            div += "<div class=\"col-1\"><div class=\"fixtureChip\" style=\"background-color: " + msg.chips[ch].color + "\" onclick=\"useFixtureChip(this, '" + msg.id + "', " + ch + ")\"></div></div>";
+            div += "<div class=\"fixtureChip d-inline-block mr-2\" style=\"background-color: " + msg.chips[ch].color + "\" onclick=\"useFixtureChip(this, '" + msg.id + "', " + ch + ")\"></div>";
         }
-        div += "</div></div>";
+        div += "</div>";
         $("#fixtureParameters").append(div);
     }
 
     if (msg.effects.length != 0) {
         var div = "<div class=\"fixtureEffects\"><h5>Fixture Effects:</h5><ul class=\"list-group\">";
         var e = 0; const eMax = msg.effects.length; for (; e < eMax; e++) {
+            var icon = "";
+            if (msg.effects[e].type == "Color") {
+                icon = "fa-palette";
+            } else if (msg.effects[e].type == "Shape") {
+                icon = "fa-running";
+            } else if (msg.effects[e].type == "Intensity") {
+                icon = "fa-lightbulb";
+            } else if (msg.effects[e].type == "Parameter") {
+                icon = "fa-cog";
+            }
             if (msg.effects[e].active == true) {
-                div += "<li class=\"list-group-item fixtureEffect\">" + msg.effects[e].name + " (" + msg.effects[e].type + ")<button class=\"float-right btn btn-sm btn-primary\" onclick=\"viewEffectSettings(this, '" + msg.id + "', '" + msg.effects[e].id + "')\">Settings</button><button class=\"float-right btn btn-sm btn-success\" onclick=\"changeFixtureEffectState(this, '" + msg.id + "', '" + msg.effects[e].id + "')\">Deactivate</button></li>";
+                div += "<li class=\"list-group-item fixtureEffect\"><i class=\"mr-1 far " + icon + "\"></i>" + msg.effects[e].name + "<button class=\"float-right btn btn-sm btn-primary d-inline-block\" onclick=\"viewEffectSettings(this, '" + msg.id + "', '" + msg.effects[e].id + "')\">Settings</button><button class=\"float-right btn btn-sm btn-success d-inline-block mr-1\" onclick=\"changeFixtureEffectState(this, '" + msg.id + "', '" + msg.effects[e].id + "')\">Deactivate</button></li>";
             } else {
-                div += "<li class=\"list-group-item fixtureEffect\">" + msg.effects[e].name + " (" + msg.effects[e].type + ")<button class=\"float-right btn btn-sm btn-primary\" onclick=\"viewEffectSettings(this, '" + msg.id + "', '" + msg.effects[e].id + "')\">Settings</button><button class=\"float-right btn btn-sm btn-warning\" onclick=\"changeFixtureEffectState(this, '" + msg.id + "', '" + msg.effects[e].id + "')\">Activate</button></li>";
+                div += "<li class=\"list-group-item fixtureEffect\"><i class=\"mr-1 far " + icon + "\"></i>" + msg.effects[e].name + "<button class=\"float-right btn btn-sm btn-primary d-inline-block\" onclick=\"viewEffectSettings(this, '" + msg.id + "', '" + msg.effects[e].id + "')\">Settings</button><button class=\"float-right btn btn-sm btn-warning d-inline-block mr-1\" onclick=\"changeFixtureEffectState(this, '" + msg.id + "', '" + msg.effects[e].id + "')\">Activate</button></li>";
             }
         }
         div += "</ul></div>";
