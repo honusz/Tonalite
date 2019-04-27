@@ -17,3 +17,7 @@ Go to this fixture's settings.
 ### Reset
 
 Reset the parameter values for just this fixture.
+
+### Add Effect
+
+Add an effect to run on the current fixture.
