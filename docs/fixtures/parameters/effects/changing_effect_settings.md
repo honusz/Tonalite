@@ -27,4 +27,4 @@ The full name of the effect. This can be any length needed to be descriptive.
 
 ### Depth
 
-How much this effect affects the fixture that it is applied to. Depth is in a range of `0.0` to `1.0` where `0.0` is the least affect, and `1.0` means that this effect completely ovverides the values from the fixture. If the value is in between, the values of the effect and the values of the fixture are mixed. This is useful when used on shape effects to scale the shape produced by the effect to fit your stage.
+How much this effect affects the fixture that it is applied to. Depth is in a range of `0.0` to `1.0` where `0.0` is the least affect, and `1.0` means that this effect completely overrides the values from the fixture. If depth is between `0.0` and `1.0`, the values of the effect and the values of the fixture are mixed. This is useful when used on shape effects to scale the shape produced to fit your stage.

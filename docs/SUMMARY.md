@@ -9,6 +9,7 @@
         * [Resetting Parameter Values](fixtures/parameters/resetting_fixture_parameter_values.md)
         * [Effects](fixtures/parameters/effects/README.md)
           * [Adding Effects](fixtures/parameters/effects/adding_effects.md)
+          * [Changing Effect Settings](fixtures/parameters/effects/changing_effect_settings.md)
     * [Changing Fixture Settings](fixtures/changing_fixture_settings.md)
 * [Cues](cues/README.md)
     * [Recording Cues](cues/recording_cues.md)
