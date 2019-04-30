@@ -944,6 +944,7 @@ io.on('connection', function (socket) {
                 var fixture = require(process.cwd() + "/fixtures/" + msg.fixtureName);
                 fixture = fixture.personalities[fixture.personalities.map(el => el.dcid).indexOf(msg.dcid)];
                 fixture.startDMXAddress = startDMXAddress;
+                fixture.dmxUniverse = 0;
                 fixture.hasLockedParameters = false;
                 fixture.name = fixture.modelName;
                 fixture.chips = [];
@@ -1210,6 +1211,10 @@ io.on('connection', function (socket) {
                 effect.step = 0;
                 effect.depth = 1.0;
                 effect.speed = 1;
+                effect.chroma = 1;
+                effect.fan = 1;
+                effect.aspect = 1;
+                effect.rotation = 0;
                 effect.id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
                 if (JSON.stringify(effect.parameterNames) == JSON.stringify(["Red", "Green", "Blue"])) {
                     effect.type = "Color";
