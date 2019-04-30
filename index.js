@@ -314,6 +314,10 @@ function cleanEffect(effect) {
     delete newEffect.step;
     delete newEffect.speed;
     delete newEffect.depth;
+    delete newEffect.chroma;
+    delete newEffect.fan;
+    delete newEffect.aspect;
+    delete newEffect.rotation;
     return newEffect;
 }
 
@@ -450,6 +454,10 @@ function calculateCue(cue) {
                 startFixture.effects[e].active = cue.fixtures[f].effects[e].active;
                 startFixture.effects[e].depth = cue.fixtures[f].effects[e].depth;
                 startFixture.effects[e].speed = cue.fixtures[f].effects[e].speed;
+                startFixture.effects[e].chroma = cue.fixtures[f].effects[e].chroma;
+                startFixture.effects[e].fan = cue.fixtures[f].effects[e].fan;
+                startFixture.effects[e].aspect = cue.fixtures[f].effects[e].aspect;
+                startFixture.effects[e].rotation = cue.fixtures[f].effects[e].rotation;
             }
         }
         let c = 0; const cMax = cue.fixtures[f].parameters.length; for (; c < cMax; c++) {
