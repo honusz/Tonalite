@@ -448,16 +448,16 @@ function calculateCue(cue) {
         var startFixture = fixtures[fixtures.map(el => el.id).indexOf(cue.fixtures[f].id)];
         let e = 0; const eMax = cue.fixtures[f].effects.length; for (; e < eMax; e++) {
             if (startFixture.effects[e].id == cue.fixtures[f].effects[e].id) {
+                startFixture.effects[e].fan = cue.fixtures[f].effects[e].fan;
                 if (cue.fixtures[f].effects[e].active != startFixture.effects[e].active) {
-                    startFixture.effects[e].step = 0;
+                    startFixture.effects[e].step = startFixture.effects[e].fan;
                 }
-                startFixture.effects[e].active = cue.fixtures[f].effects[e].active;
                 startFixture.effects[e].depth = cue.fixtures[f].effects[e].depth;
                 startFixture.effects[e].speed = cue.fixtures[f].effects[e].speed;
                 startFixture.effects[e].chroma = cue.fixtures[f].effects[e].chroma;
-                startFixture.effects[e].fan = cue.fixtures[f].effects[e].fan;
                 startFixture.effects[e].aspect = cue.fixtures[f].effects[e].aspect;
                 startFixture.effects[e].rotation = cue.fixtures[f].effects[e].rotation;
+                startFixture.effects[e].active = cue.fixtures[f].effects[e].active;
             }
         }
         let c = 0; const cMax = cue.fixtures[f].parameters.length; for (; c < cMax; c++) {
@@ -1226,7 +1226,7 @@ io.on('connection', function (socket) {
                 effect.depth = 1.0;
                 effect.speed = 1;
                 effect.chroma = 1;
-                effect.fan = 1;
+                effect.fan = 0;
                 effect.aspect = 1;
                 effect.rotation = 0;
                 effect.id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
