@@ -285,13 +285,11 @@ function cleanFixtureForCue(fixture) {
     delete newFixture.shortName;
     delete newFixture.manufacturerName;
     delete newFixture.hasLockedParameters;
-    delete newFixture.type;
     delete newFixture.chips;
     delete newFixture.dcid;
     delete newFixture.colortable;
     newFixture.effects = cleanEffectsForCue(newFixture.effects);
     let p = 0; const pMax = newFixture.parameters.length; for (; p < pMax; p++) {
-        delete newFixture.parameters[p].type;
         delete newFixture.parameters[p].name;
         delete newFixture.parameters[p].displayValue;
         delete newFixture.parameters[p].home;
@@ -375,7 +373,6 @@ function cleanGroups() {
 function cleanCues() {
     var newCues = JSON.parse(JSON.stringify(cues));
     let c = 0; const cMax = newCues.length; for (; c < cMax; c++) {
-        delete newCues[c].type;
         delete newCues[c].upTime;
         delete newCues[c].downTime;
         delete newCues[c].follow;
@@ -1267,7 +1264,6 @@ io.on('connection', function (socket) {
         if (fixtures.length != 0) {
             var newCue = {
                 id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
-                type: "cue",
                 name: "Cue " + (cues.length + 1),
                 upTime: SETTINGS.defaultUpTime,
                 downTime: SETTINGS.defaultDownTime,
@@ -1839,7 +1835,6 @@ io.on('connection', function (socket) {
                 fixtures.forEach(function (fixture) {
                     if (fixture.dcid == fixtureProfile.dcid) {
                         fixture.manufacturerName = fixtureProfile.manufacturerName;
-                        fixture.type = fixtureProfile.type;
                         fixture.maxOffset = fixtureProfile.maxOffset;
                         fixture.parameters = fixtureProfile.parameters;
                         let c = 0; const cMax = fixture.parameters.length; for (; c < cMax; c++) {
