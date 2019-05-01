@@ -233,6 +233,7 @@ socket.on('effectSettings', function (msg) {
     $("#effectSaveBtn").off().on("click", function () { saveEffectSettings(msg.fixtureID, msg.effect.id); });
     $("#effectNameInput").val(msg.effect.name);
     $("#effectDepthInput").val(msg.effect.depth);
+    $("#effectFanInput").val(msg.effect.fan);
 });
 
 socket.on('cues', function (cues) {
@@ -417,7 +418,7 @@ function saveFixtureSettings(fixtureID) {
 }
 
 function saveEffectSettings(fixtureID, effectID) {
-    socket.emit('editEffectSettings', { fixtureID: fixtureID, effectID: effectID, name: $("#effectNameInput").val(), depth: $("#effectDepthInput").val() });
+    socket.emit('editEffectSettings', { fixtureID: fixtureID, effectID: effectID, name: $("#effectNameInput").val(), depth: $("#effectDepthInput").val(), fan: $("#effectFanInput").val() });
 }
 
 function removeCue(cueID) {

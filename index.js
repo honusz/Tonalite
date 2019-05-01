@@ -1095,6 +1095,7 @@ io.on('connection', function (socket) {
                     var effect = fixture.effects[fixture.effects.map(el => el.id).indexOf(msg.effectID)];
                     effect.name = msg.name;
                     effect.depth = msg.depth;
+                    effect.fan = msg.fan;
                     socket.emit('effectSettings', { fixtureID: fixture.id, effect: fixture.effects[fixture.effects.map(el => el.id).indexOf(msg.effectID)] });
                     socket.emit('message', { type: "info", content: "Effect settings have been updated!" });
                     saveShow();
