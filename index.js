@@ -321,8 +321,8 @@ function cleanEffect(effect) {
     return newEffect;
 }
 
-function cleanEffects(effects) {
-    var newEffects = JSON.parse(JSON.stringify(effects));
+function cleanEffects(ineffects) {
+    var newEffects = JSON.parse(JSON.stringify(ineffects));
     let e = 0; const eMax = newEffects.length; for (; e < eMax; e++) {
         newEffects[e] = cleanEffect(newEffects[e]);
     }
@@ -342,8 +342,8 @@ function cleanEffectForCue(effect) {
     return newEffect;
 }
 
-function cleanEffectsForCue(effects) {
-    var newEffects = JSON.parse(JSON.stringify(effects));
+function cleanEffectsForCue(ineffects) {
+    var newEffects = JSON.parse(JSON.stringify(ineffects));
     let e = 0; const eMax = newEffects.length; for (; e < eMax; e++) {
         newEffects[e] = cleanEffectForCue(newEffects[e]);
     }
@@ -1280,7 +1280,7 @@ io.on('connection', function (socket) {
         if (cues.length != 0) {
             if (cues.some(e => e.id === cueID)) {
                 var cue = cues[cues.map(el => el.id).indexOf(cueID)];
-                cue.fixtures = JSON.parse(JSON.stringify(fixtures));
+                cue.fixtures = cleanFixturesForCue();
                 socket.emit('cueSettings', cue);
                 io.emit('currentCue', currentCueID);
                 io.emit('cues', cleanCues());
