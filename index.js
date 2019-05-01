@@ -1202,6 +1202,12 @@ io.on('connection', function (socket) {
                     var effect = fixture.effects[fixture.effects.map(el => el.id).indexOf(msg.effectid)];
                     effect.step = 0;
                     effect.active = !effect.active;
+                    if (effect.active == false) {
+                        let p = 0; const pMax = fixture.parameters.length; for (; p < pMax; p++) {
+                            fixture.parameters[p].displayValue = cppaddon.mapRange(fixture.parameters[p].value, fixture.parameters[p].min, fixture.parameters[p].max, 0, 100);
+                            io.sockets.emit('fixtures', cleanFixtures());
+                        }
+                    }
                     socket.emit('fixtureParameters', { id: fixture.id, name: fixture.name, startDMXAddress: fixture.startDMXAddress, parameters: fixture.parameters, chips: fixture.chips, effects: cleanEffects(fixture.effects) });
                 }
             }
