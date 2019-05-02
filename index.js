@@ -628,10 +628,10 @@ function calculateStack() {
 
                         }
                     }
-                    if (fixtures[f].effects[e].step + fixtures[f].effects[e].speed == fixtures[f].effects[e].steps.length) {
-                        fixtures[f].effects[e].step = 0;
+                    if (fixtures[f].effects[e].step + fixtures[f].effects[e].speed >= fixtures[f].effects[e].steps.length - 1) {
+                        fixtures[f].effects[e].step = fixtures[f].effects[e].fan;
                     } else {
-                        fixtures[f].effects[e].step += fixtures[f].effects[e].speed;
+                        fixtures[f].effects[e].step = fixtures[f].effects[e].step + fixtures[f].effects[e].speed;
                     }
                 }
             }
@@ -1091,8 +1091,8 @@ io.on('connection', function (socket) {
                 if (fixture.effects.some(e => e.id === msg.effectID)) {
                     var effect = fixture.effects[fixture.effects.map(el => el.id).indexOf(msg.effectID)];
                     effect.name = msg.name;
-                    effect.depth = msg.depth;
-                    effect.fan = msg.fan;
+                    effect.depth = parseFloat(msg.depth);
+                    effect.fan = parseInt(msg.fan);
                     socket.emit('effectSettings', { fixtureID: fixture.id, effect: fixture.effects[fixture.effects.map(el => el.id).indexOf(msg.effectID)] });
                     socket.emit('message', { type: "info", content: "Effect settings have been updated!" });
                     saveShow();
@@ -1202,7 +1202,7 @@ io.on('connection', function (socket) {
                 var fixture = fixtures[fixtures.map(el => el.id).indexOf(msg.id)];
                 if (fixture.effects.some(e => e.id === msg.effectid)) {
                     var effect = fixture.effects[fixture.effects.map(el => el.id).indexOf(msg.effectid)];
-                    effect.step = 0;
+                    effect.step = effect.fan;
                     effect.active = !effect.active;
                     if (effect.active == false) {
                         let p = 0; const pMax = fixture.parameters.length; for (; p < pMax; p++) {
