@@ -432,7 +432,10 @@ function calculateChannelsList() {
     var chans = [];
     let f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
         let p = 0; const pMax = fixtures[f].parameters.length; for (; p < pMax; p++) {
-            chans[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[p].coarse] = fixtures[f].parameters[p].value;
+            chans[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[p].coarse] = (fixtures[f].parameters[p].value >> 8);
+            if (fixtures[f].parameters[p].fine != null) {
+                chans[(fixtures[f].startDMXAddress - 1) + fixtures[f].parameters[p].fine] = (fixtures[f].parameters[p].value & 0xff);
+            }
         }
     }
     return chans;
@@ -1721,6 +1724,7 @@ io.on('connection', function (socket) {
         if (presets.length != 0) {
             var preset = presets[presets.map(el => el.id).indexOf(msg.id)];
             preset.name = msg.name;
+            preset.intensity = parseInt(msg.intensity);
             socket.emit('presetSettings', preset);
             socket.emit('message', { type: "info", content: "Preset settings have been updated!" });
             io.emit('presets', cleanPresets());

@@ -250,6 +250,7 @@ socket.on('presetSettings', function (preset) {
     $("#presetSaveBtn").off().on("click", function () { savePresetSettings(preset.id); });
     $("#presetActiveBtn").off().on("click", function () { app.changePresetActive(preset.id); });
     $("#presetNameInput").val(preset.name);
+    $("#presetIntensityInput").val(preset.intensity);
     if (preset.active) {
         $("#presetActiveBtn").html("Deactivate");
     } else {
@@ -488,7 +489,7 @@ function viewPresetSettings(presetID) {
 }
 
 function savePresetSettings(presetID) {
-    socket.emit('editPresetSettings', { id: presetID, name: $("#presetNameInput").val() });
+    socket.emit('editPresetSettings', { id: presetID, name: $("#presetNameInput").val(), intensity: $("#presetIntensityInput").val() });
 }
 
 function resetGroup(groupID) {
