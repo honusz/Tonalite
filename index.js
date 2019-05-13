@@ -1684,6 +1684,7 @@ io.on('connection', function (socket) {
                 name: "Preset " + (presets.length + 1),
                 active: false,
                 intensity: 0,
+                displayAsDimmer: false,
                 parameters: JSON.parse(JSON.stringify(calculateChannelsList()))
             };
             presets.push(newPreset);
