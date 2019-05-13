@@ -644,8 +644,9 @@ function calculateStack() {
     let p = 0; const pMax = presets.length; for (; p < pMax; p++) {
         if (presets[p].active) {
             let c = 0; const cMax = presets[p].parameters.length; for (; c < cMax; c++) {
-                if (presets[p].parameters[c] > channels[c]) {
-                    channels[c] = presets[p].parameters[c];
+                var tempvalue = (presets[p].parameters[c] / 100.0) * presets[p].intensity;
+                if (tempvalue > channels[c]) {
+                    channels[c] = tempvalue;
                 }
             }
         }
@@ -1682,6 +1683,7 @@ io.on('connection', function (socket) {
                 id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
                 name: "Preset " + (presets.length + 1),
                 active: false,
+                intensity: 0,
                 parameters: JSON.parse(JSON.stringify(calculateChannelsList()))
             };
             presets.push(newPreset);
@@ -1742,6 +1744,11 @@ io.on('connection', function (socket) {
         if (presets.length != 0) {
             var preset = presets[presets.map(el => el.id).indexOf(presetID)];
             preset.active = !preset.active;
+            if (preset.active == true) {
+                preset.intensity = 100;
+            } else {
+                preset.intensity = 0;
+            }
             socket.emit('presetSettings', preset);
             socket.emit('presets', cleanPresets());
             io.emit('presets', cleanPresets());
