@@ -1757,6 +1757,24 @@ io.on('connection', function (socket) {
         }
     });
 
+    socket.on('changePresetIntensity', function (settings) {
+        if (presets.length != 0) {
+            var preset = presets[presets.map(el => el.id).indexOf(settings.presetID)];
+            var intensity = parseInt(settings.intensity);
+            if (intensity > 0) {
+                preset.active = true;
+            } else {
+                preset.active = false;
+            }
+            preset.intensity = intensity;
+            socket.emit('presetSettings', preset);
+            socket.emit('presets', cleanPresets());
+            io.emit('presets', cleanPresets());
+        } else {
+            socket.emit('message', { type: "error", content: "No presets exist!" });
+        }
+    });
+
     socket.on('toggleBlackout', function () {
         blackout = !blackout;
         io.emit('blackout', blackout);
