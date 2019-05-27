@@ -18,3 +18,17 @@ Remove the preset from the show. You will be prompted to make sure you really wa
 ### Activate
 
 Active the current preset. When activated, this button witll switch to `Deactivate` which does the opposite.
+
+## Inputs
+
+### Name
+
+The full name of the preset. This can be any length needed to be descriptive though we suggest that you keep it short so as to fit into the interface easily.
+
+### Display As Dimmer
+
+Display the preset as a dimmable value rather than as an on/off button in the interface.
+
+### Intensity
+
+Control the overall intensity of this preset.
