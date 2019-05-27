@@ -57,6 +57,26 @@ Options:
 
 Reboot required after change.
 
+## udmx
+
+Whether or not to output to uDMX.
+
+Options:
+
+- `true` - Enables uDMX-Artnet
+- `false` - disables uDMX-Artnet
+
+Reboot required after change.
+
+## automark
+
+Whether or not to use automark while transitioning cues.
+
+Options:
+
+- `true` - Enables automark
+- `false` - disables automark
+
 ## artnetIP
 
 The IP on which to output ArtNet data.
@@ -65,6 +85,16 @@ Default: `null`
 
 When the value is `null`, ArtNet will choose where to output automatically.
 
+Reboot required after change.
+
+## artnetHost
+
+The host IP mask on which to output ArtNet data.
+
+Default: `255.255.255.255`
+
+Reboot required after change.
+
 ## sacnIP
 
 The IP on which to output sACN data.
@@ -72,3 +102,5 @@ The IP on which to output sACN data.
 Default: `null`
 
 When the value is `null`, sACN will choose where to output automatically.
+
+Reboot required after change.
