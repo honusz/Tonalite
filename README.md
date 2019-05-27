@@ -14,6 +14,7 @@ Tonalite is lighting control software that uses a web interface accessible from 
 - Record presets for easy system overrides
 - Support RGB and moving lights
 - Support automark
+- Support ETC's fixture profile format
   
 All these features make Tonalite a direct competetor to other well-known theater lighting consoles.
 
