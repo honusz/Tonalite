@@ -36,12 +36,11 @@
                 </div>
             </div>
             <div class="row" id="presetsDimmerList">
-                <div class="col-4 col-lg-2 mb-3" v-for="preset in presets" :key="preset.id"
+                <div class="col-12 mb-3" v-for="preset in presets" :key="preset.id"
                     v-if="preset.displayAsDimmer == true">
-                    <div :class="{ 'presetActive' : preset.active == true}" class="presetViewItem presetItem"
-                        v-on:click="changePresetActive(preset.id)">
-                        <p>{{preset.name}} slider</p>
-                    </div>
+                    <label v-bind:for="'P'+preset.id">{{preset.name}}:</label>
+                    <input type="range" class="custom-range preset-range" v-bind:id="'P'+preset.id" min="0" max="100"
+                        v-on:input="updatePresetIntensity(preset.id)" v-bind:value="preset.intensity">
                 </div>
             </div>
             <!--<div class="row">

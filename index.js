@@ -867,6 +867,7 @@ io.on('connection', function (socket) {
     socket.on('resetPresets', function () {
         presets = [];
         socket.emit('presets', cleanPresets());
+        io.emit('presets', cleanPresets());
         io.emit('message', { type: "info", content: "The presets have been cleared!" });
         savePresets();
     });
@@ -1688,7 +1689,7 @@ io.on('connection', function (socket) {
                 id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
                 name: "Preset " + (presets.length + 1),
                 active: false,
-                intensity: 100,
+                intensity: 0,
                 displayAsDimmer: false,
                 parameters: JSON.parse(JSON.stringify(calculateChannelsList()))
             };

@@ -72,6 +72,9 @@ var app = new Vue({
         updateGrandmasterValue: function () {
             socket.emit('changeGrandmasterValue', app.grandmaster);
         },
+        updatePresetIntensity: function () {
+            socket.emit('changePresetIntensity', { presetID: $("#presetIntensityInput").prop('presetID'), intensity: $("#presetIntensityInput").val() });
+        },
         toggleBlackout: function () {
             socket.emit('toggleBlackout');
         },
@@ -257,6 +260,7 @@ socket.on('presetSettings', function (preset) {
         $("#presetActiveBtn").html("Activate");
     }
     $("#displayPresetAsDimmer").prop('checked', preset.displayAsDimmer);
+    $("#presetIntensityInput").prop('presetID', preset.id);
 });
 
 socket.on('cueSettings', function (cue) {

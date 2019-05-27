@@ -540,7 +540,8 @@
           <div class="col-12">
             <div class="form-group">
               <label class="ml-2" for="presetIntensityInput">Intensity:</label>
-              <input type="range" class="custom-range" id="presetIntensityInput" min="0" max="100">
+              <input type="range" class="custom-range" id="presetIntensityInput" min="0" max="100"
+                v-on:input="updatePresetIntensity()">
             </div>
           </div>
         </div>

@@ -14,6 +14,9 @@ var app = new Vue({
         updateGrandmasterValue: function () {
             socket.emit('changeGrandmasterValue', app.grandmaster);
         },
+        updatePresetIntensity: function (presetID) {
+            socket.emit('changePresetIntensity', { presetID: presetID, intensity: $("#P" + presetID).val() });
+        },
     }
 });
 
