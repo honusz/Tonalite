@@ -1,7 +1,5 @@
 # Tonalite v2.0.0 Beta 5 [![Build Status](https://travis-ci.com/johnroper100/Tonalite.svg?token=J2xpoTVMPM4kTrogdYRc&branch=master)](https://travis-ci.com/johnroper100/Tonalite)
 
-
-
 ![Tonalite fixtures](docs/images/fixture_added.png)
 ![Tonalite cues](docs/images/cue_recorded.png)
 ![Tonalite groups](docs/images/group_added.png)
@@ -21,7 +19,7 @@ Tonalite is lighting control software that uses a web interface accessible from 
   
 All these features make Tonalite a direct competetor to other well-known theater lighting consoles.
 
-Tonalite currently works with `ArtNet`, `E1.31 (sACN)`, and `uDMX (using uDMXArtNet)` interfaces.
+Tonalite currently works with all `ArtNet`, `E1.31 (sACN)`, and `uDMX (using uDMXArtNet)` interfaces.
 
 You can read the full documentation [here](docs/documentation.pdf).
 
@@ -37,7 +35,11 @@ You will find the UI at `localhost:3000` by default.
 
 To build Tonalite, run `npm run build-(linux/win/macos)`
 
-To generate the documentation run `npm run build-docs` and `npm run build-docs-pdf`
+To generate the HTML documentation run `npm run build-docs`
+
+You must build the HTML documentation to use the program, the PDF documentation is optional.
+
+To generate the PDF documentation run `npm run build-docs-pdf`
 
 ## Dependency Instructions
 
