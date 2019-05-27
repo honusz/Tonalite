@@ -598,7 +598,7 @@ function calculateStack() {
         io.sockets.emit('fixtures', cleanFixtures());
     }
     if (blackout === false) {
-        var displayChanged = false;
+        //var displayChanged = false;
         let f = 0; const fMax = fixtures.length; for (; f < fMax; f++) {
             let e = 0; const eMax = fixtures[f].effects.length; for (; e < eMax; e++) {
                 if (fixtures[f].effects[e].active == true) {
