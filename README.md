@@ -37,7 +37,7 @@ To build Tonalite, run `npm run build-(linux/win/macos)`
 
 To generate the HTML documentation run `npm run build-docs`
 
-You must build the HTML documentation to use the program, the PDF documentation is optional.
+*You must build the HTML documentation to use the program, the PDF documentation is optional.*
 
 To generate the PDF documentation run `npm run build-docs-pdf`
 
