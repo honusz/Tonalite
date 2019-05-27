@@ -1,5 +1,4 @@
-# Tonalite v2.0.0 Beta 5 [![Build Status](https://travis-ci.com/johnroper100/Tonalite.svg?token=J2xpoTVMPM4kTrogdYRc&branch=master)](https://travis-ci.com/johnroper100/Tonalite) [View Current Documentation](docs/documentation.pdf)
-
+# Tonalite v2.0.0 Beta 5 [![Build Status](https://travis-ci.com/johnroper100/Tonalite.svg?token=J2xpoTVMPM4kTrogdYRc&branch=master)](https://travis-ci.com/johnroper100/Tonalite)
 
 
 
