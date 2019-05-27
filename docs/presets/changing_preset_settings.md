@@ -23,7 +23,7 @@ Active the current preset. When activated, this button witll switch to `Deactiva
 
 ### Name
 
-The full name of the preset. This can be any length needed to be descriptive though we suggest that you keep it short so as to fit into the interface easily.
+The full name of the preset. This can be any length needed to be descriptive though you should keep it short enough so as to fit into the interface easily.
 
 ### Display As Dimmer
 
