@@ -963,11 +963,65 @@ io.on('connection', function (socket) {
                 fixture.effects = [];
 
                 if (fixture.colortable == "3874B444-A11E-47D9-8295-04556EAEBEA7") {
-                    fixture.chips = JSON.parse(JSON.stringify(require(process.cwd() + "/chips/rgb.json")));
+                    // RGB
+                    colortable = JSON.parse(JSON.stringify(require(process.cwd() + "/chips/rgb.json")));
+                    let col = 0; const colMax = colortable.length; for (; col < colMax; col++) {
+                        var color = { color: colortable[col].color, parameters: [] };
+
+                        color.parameters.push({ name: "Red", value: colortable[col].parameters[0] });
+                        color.parameters.push({ name: "Green", value: colortable[col].parameters[1] });
+                        color.parameters.push({ name: "Blue", value: colortable[col].parameters[2] });
+
+                        fixture.chips.push(color);
+                    }
                 } else if (fixture.colortable == "77A82F8A-9B24-4C3F-98FC-B6A29FB1AAE6") {
-                    fixture.chips = JSON.parse(JSON.stringify(require(process.cwd() + "/chips/rgbw.json")));
+                    // RGBW
+                    colortable = JSON.parse(JSON.stringify(require(process.cwd() + "/chips/rgb.json")));
+                    let col = 0; const colMax = colortable.length; for (; col < colMax; col++) {
+                        var color = { color: colortable[col].color, parameters: [] };
+
+                        w = Math.min(colortable[col].parameters[0], colortable[col].parameters[1], colortable[col].parameters[2]);
+
+                        color.parameters.push({ name: "Red", value: colortable[col].parameters[0] - w });
+                        color.parameters.push({ name: "Green", value: colortable[col].parameters[1] - w });
+                        color.parameters.push({ name: "Blue", value: colortable[col].parameters[2] - w });
+                        color.parameters.push({ name: "White", value: w });
+
+                        fixture.chips.push(color);
+                    }
                 } else if (fixture.colortable == "D3E71EC8-3406-4572-A64C-52A38649C795") {
-                    fixture.chips = JSON.parse(JSON.stringify(require(process.cwd() + "/chips/rgba.json")));
+                    // RGBA
+                    colortable = JSON.parse(JSON.stringify(require(process.cwd() + "/chips/rgb.json")));
+                    let col = 0; const colMax = colortable.length; for (; col < colMax; col++) {
+                        var color = { color: colortable[col].color, parameters: [] };
+
+                        w = Math.min(colortable[col].parameters[0], colortable[col].parameters[1], colortable[col].parameters[2]);
+                        a = cppaddon.getAFromRGB(colortable[col].parameters[0], colortable[col].parameters[1], colortable[col].parameters[2]);
+
+                        color.parameters.push({ name: "Red", value: colortable[col].parameters[0] - a });
+                        color.parameters.push({ name: "Green", value: colortable[col].parameters[1] - a / 2 });
+                        color.parameters.push({ name: "Blue", value: colortable[col].parameters[2] });
+                        color.parameters.push({ name: "Amber", value: a });
+
+                        fixture.chips.push(color);
+                    }
+                } else if (fixture.colortable == "C7A1FB0A-AA23-468F-9060-AC1625155DE8") {
+                    // RGBAW
+                    colortable = JSON.parse(JSON.stringify(require(process.cwd() + "/chips/rgb.json")));
+                    let col = 0; const colMax = colortable.length; for (; col < colMax; col++) {
+                        var color = { color: colortable[col].color, parameters: [] };
+
+                        w = Math.min(colortable[col].parameters[0], colortable[col].parameters[1], colortable[col].parameters[2]);
+                        a = cppaddon.getAFromRGB(colortable[col].parameters[0], colortable[col].parameters[1], colortable[col].parameters[2]);
+
+                        color.parameters.push({ name: "Red", value: colortable[col].parameters[0] - w - a });
+                        color.parameters.push({ name: "Green", value: colortable[col].parameters[1] - w - a / 2 });
+                        color.parameters.push({ name: "Blue", value: colortable[col].parameters[2] - w });
+                        color.parameters.push({ name: "Amber", value: a });
+                        color.parameters.push({ name: "White", value: w });
+
+                        fixture.chips.push(color);
+                    }
                 }
                 let c = 0; const cMax = fixture.parameters.length; for (; c < cMax; c++) {
                     fixture.parameters[c].value = fixture.parameters[c].home;
