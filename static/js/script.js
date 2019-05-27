@@ -256,6 +256,7 @@ socket.on('presetSettings', function (preset) {
     } else {
         $("#presetActiveBtn").html("Activate");
     }
+    $("#displayPresetAsDimmer").prop('checked', preset.displayAsDimmer);
 });
 
 socket.on('cueSettings', function (cue) {
@@ -318,8 +319,8 @@ socket.on('groupParameters', function (msg) {
 socket.on('settings', function (settings) {
     $("#defaultUpTime").val(settings.defaultUpTime);
     $("#defaultDownTime").val(settings.defaultDownTime);
-    $("#useUDMX").prop('indeterminate', settings.udmx);
-    $("#useAutomark").prop('indeterminate', settings.automark);
+    $("#useUDMX").prop('checked', settings.udmx);
+    $("#useAutomark").prop('checked', settings.automark);
     $("#sacnIP").val(settings.sacnIP);
     $("#artnetIP").val(settings.artnetIP);
     $('#openSettingsModal').modal("show");
@@ -489,7 +490,7 @@ function viewPresetSettings(presetID) {
 }
 
 function savePresetSettings(presetID) {
-    socket.emit('editPresetSettings', { id: presetID, name: $("#presetNameInput").val(), intensity: $("#presetIntensityInput").val() });
+    socket.emit('editPresetSettings', { id: presetID, name: $("#presetNameInput").val(), displayAsDimmer: $("#displayPresetAsDimmer").prop('checked') });
 }
 
 function resetGroup(groupID) {

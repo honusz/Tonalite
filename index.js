@@ -647,9 +647,11 @@ function calculateStack() {
     let p = 0; const pMax = presets.length; for (; p < pMax; p++) {
         if (presets[p].active) {
             let c = 0; const cMax = presets[p].parameters.length; for (; c < cMax; c++) {
-                var tempvalue = (presets[p].parameters[c] / 100.0) * presets[p].intensity;
-                if (tempvalue > channels[c]) {
-                    channels[c] = tempvalue;
+                if (presets[p].parameters[c] != null) {
+                    var tempvalue = (presets[p].parameters[c] / 100.0) * presets[p].intensity;
+                    if (tempvalue > channels[c]) {
+                        channels[c] = tempvalue;
+                    }
                 }
             }
         }
@@ -1686,7 +1688,7 @@ io.on('connection', function (socket) {
                 id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
                 name: "Preset " + (presets.length + 1),
                 active: false,
-                intensity: 0,
+                intensity: 100,
                 displayAsDimmer: false,
                 parameters: JSON.parse(JSON.stringify(calculateChannelsList()))
             };
@@ -1724,7 +1726,7 @@ io.on('connection', function (socket) {
         if (presets.length != 0) {
             var preset = presets[presets.map(el => el.id).indexOf(msg.id)];
             preset.name = msg.name;
-            preset.intensity = parseInt(msg.intensity);
+            preset.displayAsDimmer = msg.displayAsDimmer;
             socket.emit('presetSettings', preset);
             socket.emit('message', { type: "info", content: "Preset settings have been updated!" });
             io.emit('presets', cleanPresets());

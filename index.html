@@ -523,10 +523,18 @@
           </div>
         </div>
         <div class="row" id="presetSettings">
-          <div class="col-12">
+          <div class="col-md-8 col-12">
             <div class="form-group">
               <label for="presetNameInput">Name:</label>
               <input class="form-control" type="text" id="presetNameInput" placeholder="Preset Name">
+            </div>
+          </div>
+          <div class="col-md-4 col-12">
+            <div class="form-group mt-0 mt-md-4">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="displayPresetAsDimmer">
+                <label class="custom-control-label" for="displayPresetAsDimmer">Display As Dimmer</label>
+              </div>
             </div>
           </div>
           <div class="col-12">
@@ -618,7 +626,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-md-12">
+              <div class="col-12">
                 <div class="form-group">
                   <div class="custom-control custom-checkbox">
                     <input v-on:input="saveSettingsBackground()" :disabled="!desktop" type="checkbox"
@@ -629,7 +637,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-md-12">
+              <div class="col-12">
                 <div class="form-group">
                   <div class="custom-control custom-checkbox">
                     <input v-on:input="saveSettingsBackground()" type="checkbox" class="custom-control-input"
