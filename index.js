@@ -1284,7 +1284,7 @@ io.on('connection', function (socket) {
             if (fixtures.some(e => e.id === msg.fixtureID)) {
                 var fixture = fixtures[fixtures.map(el => el.id).indexOf(msg.fixtureID)];
                 var effect = JSON.parse(JSON.stringify(require(process.cwd() + "/effects/" + msg.effectFile).effectTable));
-                effect.active = false;
+                effect.active = true;
                 effect.step = 0;
                 effect.depth = 1.0;
                 effect.speed = 1;
