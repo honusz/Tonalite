@@ -200,7 +200,7 @@ function updateFirmware(callback) {
             }
         });
     });
-}
+};
 
 function importFixtures(callback) {
     var importComplete = false;
@@ -230,14 +230,14 @@ function importFixtures(callback) {
         });
     });
     return callback(importComplete);
-}
+};
 
 function logError(msg) {
     var datetime = new Date();
     fs.appendFile('error-' + datetime + '.txt', msg, (err) => {
         if (err) logError(err);
     });
-}
+};
 
 function moveArrayItem(arr, old_index, new_index) {
     while (old_index < 0) {
@@ -260,7 +260,11 @@ function titleCase(str) {
     return str.toLowerCase().split(' ').map(function (word) {
         return (word.charAt(0).toUpperCase() + word.slice(1));
     }).join(' ');
-}
+};
+
+function generateID() {
+    return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+};
 
 function cleanFixtures() {
     var newFixtures = JSON.parse(JSON.stringify(fixtures));
@@ -276,7 +280,7 @@ function cleanFixtures() {
         }
     }
     return newFixtures;
-}
+};
 
 function cleanFixtureForCue(fixture) {
     var newFixture = JSON.parse(JSON.stringify(fixture));
@@ -300,7 +304,7 @@ function cleanFixtureForCue(fixture) {
         delete newFixture.parameters[p].size;
     }
     return newFixture;
-}
+};
 
 function cleanEffect(effect) {
     var newEffect = JSON.parse(JSON.stringify(effect));
@@ -1032,7 +1036,7 @@ io.on('connection', function (socket) {
                 }
                 fixture.shortName = fixture.name.split(" ")[0];
                 // Assign a random id for easy access to this fixture
-                fixture.id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+                fixture.id = generateID();
                 fixtures.push(JSON.parse(JSON.stringify(fixture)));
                 let cc = 0; const ccMax = cues.length; for (; cc < ccMax; cc++) {
                     cues[cc].fixtures.push(cleanFixtureForCue(fixture));
@@ -1292,7 +1296,7 @@ io.on('connection', function (socket) {
                 effect.fan = 0;
                 effect.aspect = 1;
                 effect.rotation = 0;
-                effect.id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+                effect.id = generateID();
                 if (JSON.stringify(effect.parameterNames) == JSON.stringify(["Red", "Green", "Blue"])) {
                     effect.type = "Color";
                 } else if (JSON.stringify(effect.parameterNames) == JSON.stringify(["Intensity"])) {
@@ -1324,7 +1328,7 @@ io.on('connection', function (socket) {
     socket.on('recordCue', function () {
         if (fixtures.length != 0) {
             var newCue = {
-                id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
+                id: generateID(),
                 name: "Cue " + (cues.length + 1),
                 upTime: SETTINGS.defaultUpTime,
                 downTime: SETTINGS.defaultDownTime,
@@ -1364,7 +1368,7 @@ io.on('connection', function (socket) {
         if (cues.length != 0) {
             if (cues.some(e => e.id === cueID)) {
                 var newCue = JSON.parse(JSON.stringify(cues[cues.map(el => el.id).indexOf(cueID)]));
-                newCue.id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+                newCue.id = generateID();
                 cues.push(newCue);
                 socket.emit('cueSettings', cues[cues.map(el => el.id).indexOf(cueID)]);
                 io.emit('currentCue', currentCueID);
@@ -1381,7 +1385,7 @@ io.on('connection', function (socket) {
         if (cues.length != 0) {
             if (cues.some(e => e.id === cueID)) {
                 var newCue = JSON.parse(JSON.stringify(cues[cues.map(el => el.id).indexOf(cueID)]));
-                newCue.id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+                newCue.id = generateID();
                 cues.push(newCue);
                 moveArrayItem(cues, cues.map(el => el.id).indexOf(newCue.id), cues.map(el => el.id).indexOf(cueID) + 1);
                 socket.emit('cueSettings', cues[cues.map(el => el.id).indexOf(cueID)]);
@@ -1610,7 +1614,7 @@ io.on('connection', function (socket) {
     socket.on('addGroup', function (fixtureIDs) {
         if (fixtureIDs.length > 0) {
             var newGroup = {
-                id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
+                id: generateID(),
                 name: "Group " + (groups.length + 1),
                 ids: fixtureIDs,
                 parameters: []
@@ -1746,7 +1750,7 @@ io.on('connection', function (socket) {
     socket.on('recordPreset', function () {
         if (fixtures.length != 0) {
             var newPreset = {
-                id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
+                id: generateID(),
                 name: "Preset " + (presets.length + 1),
                 active: false,
                 intensity: 0,
