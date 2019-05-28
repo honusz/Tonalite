@@ -1312,7 +1312,9 @@ io.on('connection', function (socket) {
                 let cc = 0; const ccMax = cues.length; for (; cc < ccMax; cc++) {
                     let f = 0; const fMax = cues[cc].fixtures.length; for (; f < fMax; f++) {
                         if (cues[cc].fixtures[f].id == fixture.id) {
-                            cues[cc].fixtures[f].effects.push(cleanEffectForCue(effect));
+                            var topush = cleanEffectForCue(effect);
+                            topush.active = false;
+                            cues[cc].fixtures[f].effects.push(topush);
                         }
                     }
                 }
