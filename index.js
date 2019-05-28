@@ -1134,7 +1134,7 @@ io.on('connection', function (socket) {
                     fixture.shortName = msg.shortName;
                 }
                 fixture.name = msg.name;
-                fixture.startDMXAddress = msg.startDMXAddress;
+                fixture.startDMXAddress = parseInt(msg.startDMXAddress);
                 socket.emit('fixtureSettings', fixture);
                 socket.emit('message', { type: "info", content: "Fixture settings have been updated!" });
                 io.emit('fixtures', cleanFixtures());
@@ -1247,7 +1247,7 @@ io.on('connection', function (socket) {
                 var chip = fixture.chips[msg.pid];
                 let c = 0; const cMax = chip.parameters.length; for (; c < cMax; c++) {
                     fixture.parameters[fixture.parameters.map(el => el.name).indexOf(chip.parameters[c].name)].value = (fixture.parameters[fixture.parameters.map(el => el.name).indexOf(chip.parameters[c].name)].max / 100.0) * chip.parameters[c].value;
-                    fixture.parameters[fixture.parameters.map(el => el.name).indexOf(chip.parameters[c].name)].displayValue = parseInt(chip.parameters[c].value);
+                    fixture.parameters[fixture.parameters.map(el => el.name).indexOf(chip.parameters[c].name)].displayValue = chip.parameters[c].value;
                 }
                 socket.emit('fixtureParameters', { id: fixture.id, name: fixture.name, startDMXAddress: fixture.startDMXAddress, parameters: fixture.parameters, chips: fixture.chips, effects: cleanEffects(fixture.effects) });
                 io.emit('fixtures', cleanFixtures());
@@ -1409,9 +1409,13 @@ io.on('connection', function (socket) {
         if (cues.length != 0) {
             if (cues.some(e => e.id === msg.id)) {
                 var cue = cues[cues.map(el => el.id).indexOf(msg.id)];
+                var changed = true;
+                if (parseInt(msg.upTime) == cue.upTime && parseInt(msg.downTime) == cue.downTime) {
+                    changed = false;
+                }
                 cue.name = msg.name;
-                cue.upTime = msg.upTime;
-                cue.downTime = msg.downTime;
+                cue.upTime = parseInt(msg.upTime);
+                cue.downTime = parseInt(msg.downTime);
                 if (cue.upTime == 0) {
                     cue.upTime = 0.001;
                 }
@@ -1426,8 +1430,10 @@ io.on('connection', function (socket) {
                 if (cue.follow === 0) {
                     cue.follow = 0.001;
                 }
-                cue.upStep = cue.upTime * 40;
-                cue.downStep = cue.downTime * 40;
+                if (changed == true) {
+                    cue.upStep = cue.upTime * 40;
+                    cue.downStep = cue.downTime * 40;
+                }
                 socket.emit('cueSettings', cue);
                 socket.emit('message', { type: "info", content: "Cue settings have been updated!" });
                 io.emit('currentCue', currentCueID);
