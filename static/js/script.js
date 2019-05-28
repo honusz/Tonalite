@@ -197,7 +197,7 @@ socket.on('fixtureParameters', function (msg) {
 
     if (msg.effects.length != 0) {
         var div = "<div class=\"fixtureEffects\"><h5>Fixture Effects:</h5><ul class=\"list-group\">";
-        var e = 0; const eMax = msg.effects.length; for (; e < eMax; e++) {
+        var e = msg.effects.length - 1; const eMax = 0; for (; e >= eMax; e--) {
             var icon = "";
             if (msg.effects[e].type == "Color") {
                 icon = "fa-palette";
