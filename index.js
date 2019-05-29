@@ -686,6 +686,9 @@ function resetFixtures() {
                 fixtures[f].parameters[c].displayValue = cppaddon.mapRange(fixtures[f].parameters[c].value, fixtures[f].parameters[c].min, fixtures[f].parameters[c].max, 0, 100);
             }
         }
+        let e = 0; const eMax = fixtures[f].effects.length; for (; e < eMax; e++) {
+            fixtures[f].effects[e].active = false;
+        }
     }
 };
 
@@ -1199,6 +1202,9 @@ io.on('connection', function (socket) {
                         fixture.parameters[c].value = fixture.parameters[c].home;
                         fixture.parameters[c].displayValue = cppaddon.mapRange(fixture.parameters[c].value, fixture.parameters[c].min, fixture.parameters[c].max, 0, 100);
                     }
+                }
+                let e = 0; const eMax = fixture.effects.length; for (; e < eMax; e++) {
+                    fixture.effects[e].active = false;
                 }
                 socket.emit('fixtureParameters', { id: fixture.id, name: fixture.name, startDMXAddress: fixture.startDMXAddress, parameters: fixture.parameters, chips: fixture.chips, effects: cleanEffects(fixture.effects) });
                 io.emit('fixtures', cleanFixtures());
