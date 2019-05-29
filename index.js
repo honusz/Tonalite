@@ -281,7 +281,7 @@ function generateGroupParameters(newGroup) {
         }
     }
     return parameters;
-}
+};
 
 function cleanFixtures() {
     var newFixtures = JSON.parse(JSON.stringify(fixtures));
@@ -338,7 +338,7 @@ function cleanEffect(effect) {
     delete newEffect.aspect;
     delete newEffect.rotation;
     return newEffect;
-}
+};
 
 function cleanEffects(ineffects) {
     var newEffects = JSON.parse(JSON.stringify(ineffects));
@@ -346,7 +346,7 @@ function cleanEffects(ineffects) {
         newEffects[e] = cleanEffect(newEffects[e]);
     }
     return newEffects;
-}
+};
 
 function cleanEffectForCue(effect) {
     var newEffect = JSON.parse(JSON.stringify(effect));
@@ -359,7 +359,7 @@ function cleanEffectForCue(effect) {
     delete newEffect.type;
     delete newEffect.name;
     return newEffect;
-}
+};
 
 function cleanEffectsForCue(ineffects) {
     var newEffects = JSON.parse(JSON.stringify(ineffects));
@@ -367,7 +367,7 @@ function cleanEffectsForCue(ineffects) {
         newEffects[e] = cleanEffectForCue(newEffects[e]);
     }
     return newEffects;
-}
+};
 
 function cleanFixturesForCue() {
     var newFixtures = [];
@@ -375,7 +375,7 @@ function cleanFixturesForCue() {
         newFixtures.push(cleanFixtureForCue(fixtures[f]));
     }
     return newFixtures;
-}
+};
 
 function cleanGroups() {
     var newGroups = JSON.parse(JSON.stringify(groups));
@@ -389,7 +389,7 @@ function cleanGroups() {
         }
     }
     return newGroups;
-}
+};
 
 function cleanCues() {
     var newCues = JSON.parse(JSON.stringify(cues));
@@ -403,7 +403,7 @@ function cleanCues() {
         delete newCues[c].fixtures;
     }
     return newCues;
-}
+};
 
 function cleanPresets() {
     var newPresets = JSON.parse(JSON.stringify(presets));
@@ -411,7 +411,7 @@ function cleanPresets() {
         delete newPresets[p].parameters;
     }
     return newPresets;
-}
+};
 
 function getGroupFixtures(groupID) {
     var group = groups[groups.map(el => el.id).indexOf(groupID)];
@@ -421,7 +421,7 @@ function getGroupFixtures(groupID) {
         fixtureStarts.push([fixture.name, fixture.startDMXAddress, fixture.id]);
     }
     return fixtureStarts;
-}
+};
 
 // Set the output channel values to those of the current fixture values
 function calculateChannels() {
@@ -543,7 +543,7 @@ function calculateCue(cue) {
         }
     }
     return outputChannels;
-}
+};
 
 function calculateStack() {
     // If there is a running cue
@@ -692,7 +692,7 @@ function setFixtureGroupValues(group, parameter) {
             }
         }
     }
-}
+};
 
 // Reset the parameter values for each fixture
 function resetFixtures() {
@@ -746,7 +746,7 @@ function openShow(file = "show.json") {
         io.emit('cues', cleanCues());
         io.emit('groups', cleanGroups());
     });
-}
+};
 
 // Save the fixtures, cues, and groups of the show to file
 function saveShow() {
@@ -757,7 +757,7 @@ function saveShow() {
         };
     });
     return true;
-}
+};
 
 // Load the presets from file
 function openPresets() {
@@ -766,7 +766,7 @@ function openPresets() {
         presets = JSON.parse(data);
         io.emit('presets', cleanPresets());
     });
-}
+};
 
 // Save the presets to file
 function savePresets() {
@@ -777,7 +777,7 @@ function savePresets() {
         };
     });
     return true;
-}
+};
 
 app.use('/static', express.static(__dirname + '/static'));
 app.use('/docs', express.static(__dirname + '/docs/dist'));
@@ -1996,7 +1996,6 @@ io.on('connection', function (socket) {
     });
 
     socket.on('reboot', function () {
-
         var cp = spawn('reboot');
     });
 
