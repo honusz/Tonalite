@@ -266,6 +266,23 @@ function generateID() {
     return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 };
 
+function generateGroupParameters(newGroup) {
+    var parameterCats = [];
+    var parameters = [];
+    let i = 0; const iMax = newGroup.ids.length; for (; i < iMax; i++) {
+        var fixture = fixtures[fixtures.map(el => el.id).indexOf(newGroup.ids[i])];
+        let c = 0; const cMax = fixture.parameters.length; for (; c < cMax; c++) {
+            var newParameter = JSON.parse(JSON.stringify(fixture.parameters[c]));
+            if (!parameterCats.includes(newParameter.name + ":" + newParameter.type)) {
+                newParameter.value = newParameter.home;
+                parameters.push(newParameter);
+                parameterCats.push(newParameter.name + ":" + newParameter.type);
+            }
+        }
+    }
+    return parameters;
+}
+
 function cleanFixtures() {
     var newFixtures = JSON.parse(JSON.stringify(fixtures));
     let f = 0; const fMax = newFixtures.length; for (; f < fMax; f++) {
@@ -1065,6 +1082,12 @@ io.on('connection', function (socket) {
                         }
                     }
                 }
+                let g = 0; const gMax = groups.length; for (; g < gMax; g++) {
+                    if (groups[g].ids.some(e => e === fixtureID)) {
+                        groups[g].ids.splice(groups[g].ids.map(el => el).indexOf(fixtureID), 1);
+                        groups[g].parameters = generateGroupParameters(groups[g]);
+                    }
+                }
                 var fixture = fixtures[fixtures.map(el => el.id).indexOf(fixtureID)];
                 let cc = 0; const ccMax = fixture.parameters.length; for (; cc < ccMax; cc++) {
                     fixture.parameters[cc][(fixture.startDMXAddress - 1) + fixture.parameters[cc].coarse] = 0;
@@ -1627,18 +1650,7 @@ io.on('connection', function (socket) {
                 ids: fixtureIDs,
                 parameters: []
             };
-            var parameterCats = [];
-            let i = 0; const iMax = newGroup.ids.length; for (; i < iMax; i++) {
-                var fixture = fixtures[fixtures.map(el => el.id).indexOf(newGroup.ids[i])];
-                let c = 0; const cMax = fixture.parameters.length; for (; c < cMax; c++) {
-                    var newParameter = JSON.parse(JSON.stringify(fixture.parameters[c]));
-                    if (!parameterCats.includes(newParameter.name + ":" + newParameter.type)) {
-                        newParameter.value = newParameter.home;
-                        newGroup.parameters.push(newParameter);
-                        parameterCats.push(newParameter.name + ":" + newParameter.type);
-                    }
-                }
-            }
+            newGroup.parameters = generateGroupParameters(newGroup);
             groups.push(newGroup);
             io.emit('groups', cleanGroups());
             saveShow();
@@ -1735,7 +1747,10 @@ io.on('connection', function (socket) {
     socket.on('removeGroupFixture', function (msg) {
         if (groups.length != 0) {
             var group = groups[groups.map(el => el.id).indexOf(msg.group)];
-            group.ids.splice(group.ids.map(el => el).indexOf(msg.fixture), 1);
+            if (group.ids.some(e => e === msg.fixture)) {
+                group.ids.splice(group.ids.map(el => el).indexOf(msg.fixture), 1);
+                group.parameters = generateGroupParameters(group);
+            }
             socket.emit('groupSettings', { group: group, groupFixtures: getGroupFixtures(group.id) });
             socket.emit('message', { type: "info", content: "Fixture removed from group!" });
             saveShow();
